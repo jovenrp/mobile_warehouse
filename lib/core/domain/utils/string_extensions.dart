@@ -12,7 +12,7 @@ extension FilePathExtension on String {
 
 extension CharExtensions on String {
   int getFirstUpperCasePosition() {
-    final String allCapitals = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const String allCapitals = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     int index = 0;
 

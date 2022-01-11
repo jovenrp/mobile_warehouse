@@ -6,6 +6,8 @@ part 'login_response_model.g.dart';
 class LoginResponseModel {
   const LoginResponseModel({
     this.token,
+    this.isError = false,
+    this.errorMessage,
   });
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
@@ -14,4 +16,10 @@ class LoginResponseModel {
 
   @JsonKey(name: 'token')
   final String? token;
+
+  @JsonKey(name: 'isError')
+  final bool isError;
+
+  @JsonKey(name: 'errorMessage')
+  final String? errorMessage;
 }

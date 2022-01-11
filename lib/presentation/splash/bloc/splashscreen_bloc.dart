@@ -9,7 +9,7 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
   void loadSplashScreen() {
     emit(state.copyWith(isLoading: true));
 
-    Timer.periodic(const Duration(seconds: 2), (timer) {
+    Timer.periodic(const Duration(seconds: 2), (Timer timer) {
       emit(state.copyWith(isLoading: false));
     });
   }

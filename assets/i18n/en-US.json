@@ -5,6 +5,7 @@
   "powered_by" : "powered by",
   "enter_username" : "Enter your username",
   "enter_password" : "Enter your password",
+  "invalid_credentials" : "Wrong username or password entered.",
   "sign_in" : "Sign In",
   "authentication_message__after_changed_pin__title": "Login session expired",
   "server_message__forbidden__supporting_text": "You do not have access resource for now",

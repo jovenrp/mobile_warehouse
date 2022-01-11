@@ -1,7 +1,4 @@
-import 'package:dio/dio.dart';
-import 'package:mobile_warehouse/core/data/services/utils/api_error_transformer.dart';
-import 'package:mobile_warehouse/core/domain/models/errors/actiontrak_api_error.dart';
-import 'package:mobile_warehouse/core/domain/models/errors/api_error.dart';
+import 'package:mobile_warehouse/presentation/login/data/models/login_response_model.dart';
 import 'package:mobile_warehouse/presentation/login/data/services/login_api_service.dart';
 
 import 'login_repository.dart';
@@ -12,7 +9,7 @@ class LoginRepositoryImpl implements LoginRepository {
   final LoginApiService _apiService;
 
   @override
-  Future<String> login(
+  Future<LoginResponseModel> login(
       {required String username, required String password}) async {
     try {
       String token = await _apiService.authenticateUser(
@@ -20,15 +17,12 @@ class LoginRepositoryImpl implements LoginRepository {
         password,
       );
 
-      print('here ${token}');
-
-      return token;
-    } on DioError catch (e) {
-      final ApiServiceException error = ApiErrorTransformer.transform(e);
-      final ActionTRAKApiErrorCode? errorCode = error.firstError?.code;
-
-      print('error ${error}');
-      rethrow;
+      return LoginResponseModel(token: token, isError: false);
+    } catch (_) {
+      //Logger.i(_);
+      //Todo Create a proper way to handle login error
+      return const LoginResponseModel(
+          isError: true, errorMessage: 'Wrong username or password entered');
     }
   }
 }

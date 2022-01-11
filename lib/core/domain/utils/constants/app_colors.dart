@@ -99,19 +99,19 @@ class AppColors {
   static const Color gomoPurpleGradient2 = Color(0xFF3E2E5B);
   static const Color offWhite = Color(0xffF5F4F6);
 
-  static Color bodyColor25 = Color(0x401F314A);
-  static Color bodyColor80 = Color(0xCC1F314A);
+  static const Color bodyColor25 = Color(0x401F314A);
+  static const Color bodyColor80 = Color(0xCC1F314A);
 
-  static Color unlitextAllNetText = Color(0xFFBD940C);
+  static const Color unlitextAllNetText = Color(0xFFBD940C);
 
-  static Color mnpWhite = Color(0xFF000000);
-  static Color mnpEditRed = Color(0xFFE8123D);
-  static Color mnpDisabledTextColor = Color(0xFF8B8395);
-  static Color mnpDisabledColor = Color(0xFF730042);
-  static Color mnpCellColor = Color(0xFFABABB6);
-  static Color mnpShadowColor = Color(0x55555514);
+  static const Color mnpWhite = Color(0xFF000000);
+  static const Color mnpEditRed = Color(0xFFE8123D);
+  static const Color mnpDisabledTextColor = Color(0xFF8B8395);
+  static const Color mnpDisabledColor = Color(0xFF730042);
+  static const Color mnpCellColor = Color(0xFFABABB6);
+  static const Color mnpShadowColor = Color(0x55555514);
 
-  static Color bluishPurple = Color(0xff171022);
+  static const Color bluishPurple = Color(0xff171022);
 
   static const LinearGradient defaultGradient = LinearGradient(
     begin: Alignment.topLeft,

@@ -14,7 +14,6 @@ import 'package:mobile_warehouse/application/theme.dart';
 import 'package:mobile_warehouse/core/data/services/api_service.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/core/data/services/utils/flutter_user_agent.dart';
-import 'package:mobile_warehouse/core/domain/models/errors/actiontrak_api_error.dart';
 import 'package:mobile_warehouse/core/domain/models/errors/api_error.dart';
 import 'package:mobile_warehouse/core/domain/repositories/local_repository/memory_repository.dart';
 import 'package:mobile_warehouse/core/domain/repositories/local_repository/secured_local_repository.dart';
@@ -60,8 +59,8 @@ class _ApplicationState extends State<Application> {
   late PersistenceService _persistenceService;
   bool _showingRequiredUpdate = false;
   bool _showingServiceUnavailable = false;
-  bool _showingNoInternetError = false;
-  bool _sessionExpiredIsVisible = false;
+  //bool _showingNoInternetError = false;
+  //bool _sessionExpiredIsVisible = false;
   late ApplicationBloc _appBloc;
   late ApiService _apiService;
 
@@ -74,8 +73,8 @@ class _ApplicationState extends State<Application> {
     navigatorKey = GlobalKey<NavigatorState>();
     _showingRequiredUpdate = false;
     _showingServiceUnavailable = false;
-    _showingNoInternetError = false;
-    _sessionExpiredIsVisible = false;
+    //_showingNoInternetError = false;
+    //_sessionExpiredIsVisible = false;
 
     themeState = getThemeState(
       false,
@@ -263,10 +262,10 @@ extension ApplicationApiErrorHandling on _ApplicationState {
   void _handleRequiredUpdateError(RequiredUpdateException exception) {
     BuildContext? context = navigatorKey.currentContext;
     if (!_showingRequiredUpdate && context != null) {
-      String? errorTitle = exception.errorData?.title;
+      /*String? errorTitle = exception.errorData?.title;
       String? errorMessage = exception.errorData?.description;
       //Uncomment and redirect to update app screen
-      /*Navigator.of(context, rootNavigator: true).push(
+      Navigator.of(context, rootNavigator: true).push(
         UpdateRequiredScreen.route(title: errorTitle, message: errorMessage),
       );*/
       _showingRequiredUpdate = true;
@@ -277,7 +276,7 @@ extension ApplicationApiErrorHandling on _ApplicationState {
   void _handleServiceUnavailableError(ServiceUnavailableException exception) {
     final BuildContext? context = navigatorKey.currentContext;
     if (!_showingServiceUnavailable && context != null) {
-      final String? title = exception.errorData?.title ??
+      /*final String? title = exception.errorData?.title ??
           I18n.of(context).server_message__forbidden__title;
       final String? description = exception.errorData?.description ??
           I18n.of(context).server_message__forbidden__supporting_text;
@@ -285,7 +284,7 @@ extension ApplicationApiErrorHandling on _ApplicationState {
       _showingServiceUnavailable = true;
 
       //Comment out and redirect to maintenance screen
-      /*Navigator.of(context, rootNavigator: true).push(
+      Navigator.of(context, rootNavigator: true).push(
         MaintenanceScreen.route(title: title, message: description),
       );*/
 
@@ -296,7 +295,7 @@ extension ApplicationApiErrorHandling on _ApplicationState {
   void _handleUnauthenticatedError(
     UnauthorizedException exception,
   ) async {
-    if (exception.originalException is! DioError) {
+    /*if (exception.originalException is! DioError) {
       return;
     }
     final BuildContext context = navigatorKey.currentContext ?? this.context;
@@ -327,7 +326,7 @@ extension ApplicationApiErrorHandling on _ApplicationState {
     if (await canShowExpiredTokenDialog(context)) return;
 
     //Comment out and show relogin dialog
-    /*DialogUtils.showSingleButtonDialog(
+    DialogUtils.showSingleButtonDialog(
       context,
       title: title,
       message: message ?? '',

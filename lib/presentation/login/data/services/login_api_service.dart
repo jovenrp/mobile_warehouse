@@ -8,9 +8,9 @@ part 'login_api_service.g.dart';
 abstract class LoginApiService {
   factory LoginApiService(Dio dio, {String baseUrl}) = _LoginApiService;
 
-  @POST("/userBasicLogin.html?useHdrs&uid={uid}&pwd={pwd}")
+  @POST('/userBasicLogin.html?useHdrs&uid={uid}&pwd={pwd}')
   Future<String> authenticateUser(
-      @Path("uid") String uid, @Path("pwd") String pwd);
+      @Path('uid') String uid, @Path('pwd') String pwd);
 
   @POST('/userBasicLogin.html')
   Future<LoginResponseModel> login({
