@@ -26,15 +26,6 @@ class ATTextButton extends StatelessWidget {
         builder: (BuildContext context, LoginScreenState state) {
           return TextButton(
             onPressed: !state.isLoading ? onTap ?? () {} : () {},
-            child: Padding(
-                padding: const EdgeInsets.only(top: 3, bottom: 3),
-                child: state.isLoading
-                    ? const ATLoadingIndicator()
-                    : Text(
-                        buttonText ?? '',
-                        style: buttonTextStyle ??
-                            const TextStyle(color: AppColors.white),
-                      )),
             style: buttonStyle ??
                 ButtonStyle(
                     backgroundColor:
@@ -43,6 +34,15 @@ class ATTextButton extends StatelessWidget {
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ))),
+            child: Padding(
+                padding: const EdgeInsets.only(top: 3, bottom: 3),
+                child: state.isLoading
+                    ? const ATLoadingIndicator()
+                    : Text(
+                  buttonText ?? '',
+                  style: buttonTextStyle ??
+                      const TextStyle(color: AppColors.white),
+                )),
           );
         });
   }

@@ -19,7 +19,7 @@ class UnsecuredLocalRepository implements LocalRepository {
 
   @override
   Future<void> resetForUser(String? userId) async {
-    return null;
+    return;
   }
 
   @override
@@ -71,7 +71,7 @@ class UnsecuredLocalRepository implements LocalRepository {
     Map<String, dynamic>? object,
   ) async {
     await _prefs.setString(
-        generateRepoKey(userId, key), JsonEncoder().convert(object));
+        generateRepoKey(userId, key), const JsonEncoder().convert(object));
     return;
   }
 
@@ -79,7 +79,7 @@ class UnsecuredLocalRepository implements LocalRepository {
   Future<Map<String, dynamic>?> getObject(String? userId, String key) async {
     final String? stringObject = _prefs.getString(generateRepoKey(userId, key));
     if (stringObject == null) return null;
-    return JsonDecoder().convert(stringObject) as Map<String, dynamic>;
+    return const JsonDecoder().convert(stringObject) as Map<String, dynamic>;
   }
 
   @override

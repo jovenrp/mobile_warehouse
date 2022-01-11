@@ -1,3 +1,6 @@
+import 'package:mobile_warehouse/presentation/login/data/models/login_response_model.dart';
+
 abstract class LoginRepository {
-  Future<String> login({required String username, required String password});
+  Future<LoginResponseModel> login(
+      {required String username, required String password});
 }

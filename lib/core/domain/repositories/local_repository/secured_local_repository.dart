@@ -73,7 +73,7 @@ class SecuredLocalRepository implements LocalRepository {
   ) =>
       _securedStorage.write(
         key: generateRepoKey(userId, key),
-        value: JsonEncoder().convert(object),
+        value: const JsonEncoder().convert(object),
       );
 
   @override
@@ -83,7 +83,7 @@ class SecuredLocalRepository implements LocalRepository {
     if (stringObject == null) {
       return null;
     }
-    return JsonDecoder().convert(stringObject) as Map<String, dynamic>;
+    return const JsonDecoder().convert(stringObject) as Map<String, dynamic>;
   }
 
   @override

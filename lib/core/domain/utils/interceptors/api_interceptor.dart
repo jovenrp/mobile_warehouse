@@ -155,7 +155,7 @@ class ApiInterceptor extends Interceptor {
     final String manufacturer = await gomoPlatform.getManufacturer();
     final String brand = await gomoPlatform.getBrand();
     final String deviceId = await gomoPlatform.getDeviceId();
-    final String requestUUID = Uuid().v4();
+    final String requestUUID = const Uuid().v4();
 
     final bool hasAppDynamicsStarted =
         (await _persistenceService.hasStartedAppDynamics.get()) ?? false;
@@ -287,10 +287,10 @@ class ApiInterceptor extends Interceptor {
     options.headers.remove(ApiInterceptor.apiDynamicUrl);
   }*/
 
-  String? _getFullDynamicPathFromConfig(
+  /*String? _getFullDynamicPathFromConfig(
       Map<String, String> endpoints, String key) {
     return endpoints[key];
-  }
+  }*/
 
   Future<String> _getUserAgent() async => await userAgent.getUserAgent() ?? '';
 

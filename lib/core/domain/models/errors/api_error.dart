@@ -66,7 +66,7 @@ abstract class ApiServiceException extends Error implements Exception {
 
     return errors.map<ActionTRAKApiError>((dynamic json) {
       if (json['code'] == '') {
-        return ActionTRAKApiError.unknown();
+        return const ActionTRAKApiError.unknown();
       }
 
       return ActionTRAKApiError.fromJson(json);
