@@ -32,17 +32,17 @@ class ATTextButton extends StatelessWidget {
                         MaterialStateProperty.all(AppColors.beachSea),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
+                      borderRadius: BorderRadius.circular(8.0),
                     ))),
             child: Padding(
                 padding: const EdgeInsets.only(top: 3, bottom: 3),
                 child: state.isLoading
                     ? const ATLoadingIndicator()
                     : Text(
-                  buttonText ?? '',
-                  style: buttonTextStyle ??
-                      const TextStyle(color: AppColors.white),
-                )),
+                        buttonText ?? '',
+                        style: buttonTextStyle ??
+                            const TextStyle(color: AppColors.white),
+                      )),
           );
         });
   }

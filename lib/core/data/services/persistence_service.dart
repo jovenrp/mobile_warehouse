@@ -1,5 +1,6 @@
 import 'package:mobile_warehouse/core/domain/interfaces/local_repository.dart';
 import 'package:mobile_warehouse/core/domain/models/persistence_value_container.dart';
+import 'package:mobile_warehouse/core/domain/models/user_profile_model.dart';
 
 class PersistenceService {
   PersistenceService(
@@ -125,6 +126,13 @@ class PersistenceService {
   BoolValueContainer get hasUnreadMessage => BoolValueContainer(
         'keys.hasUnreadMessage',
         _unsecuredStorage,
+      );
+
+  ObjectValueContainer<UserProfileModel> get userProfile =>
+      ObjectValueContainer<UserProfileModel>(
+        'keys.userProfile',
+        _securedStorage,
+        UserProfileModel.fromJsonX,
       );
 
   /*ObjectValueContainer<AppConfigurationDataDto> get appConfiguration =>
