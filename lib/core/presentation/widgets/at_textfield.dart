@@ -27,7 +27,7 @@ class _ATTextfield extends State<ATTextfield> {
       obscureText: widget.isPasswordField ? _passwordNotVisible : false,
       decoration: InputDecoration(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(8.0),
           ),
           isDense: true,
           contentPadding:

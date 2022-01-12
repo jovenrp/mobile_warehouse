@@ -11,8 +11,8 @@ class ATLoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height ?? 18,
-      width: width ?? 18,
+      height: height ?? 17,
+      width: width ?? 17,
       child: const CircularProgressIndicator(
         valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
       ),
