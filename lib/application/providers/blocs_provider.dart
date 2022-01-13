@@ -24,7 +24,8 @@ class BlocsProvider {
           create: (_) => ApplicationBloc(),
         ),
         BlocProvider<SplashScreenBloc>(
-          create: (_) => SplashScreenBloc(),
+          create: (_) =>
+              SplashScreenBloc(persistenceService: persistenceService),
         ),
         BlocProvider<LoginScreenBloc>(
           create: (_) => LoginScreenBloc(

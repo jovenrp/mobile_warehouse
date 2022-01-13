@@ -11,5 +11,6 @@ class DashboardScreenState with _$DashboardScreenState {
     ActionTRAKApiErrorCode? errorCode,
     String? errorMessage,
     @Default(false) bool didFinish,
+    @Default(false) bool isSignedOut,
   }) = _DashboardScreenState;
 }

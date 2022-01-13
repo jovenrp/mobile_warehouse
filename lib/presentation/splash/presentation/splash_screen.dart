@@ -4,6 +4,7 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/application_logo.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/company_name.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
+import 'package:mobile_warehouse/presentation/dashboard/presentation/dashboard_screen.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_state.dart';
@@ -25,9 +26,15 @@ class SplashScreen extends StatelessWidget {
     return BlocConsumer<SplashScreenBloc, SplashScreenState>(
         listener: (BuildContext context, SplashScreenState state) {
       if (!state.isLoading) {
-        Navigator.of(context).pushReplacement(
-          LoginScreen.route(),
-        );
+        if (state.isAlreadySignedIn) {
+          Navigator.of(context).pushReplacement(
+            DashboardScreen.route(userProfileModel: state.userProfileModel),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            LoginScreen.route(),
+          );
+        }
       }
     }, builder: (BuildContext context, SplashScreenState state) {
       return Scaffold(

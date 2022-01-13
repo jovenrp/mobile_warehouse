@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse/core/data/mixin/back_pressed_mixin.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/application_logo.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
@@ -25,7 +26,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreen createState() => _LoginScreen();
 }
 
-class _LoginScreen extends State<LoginScreen> {
+class _LoginScreen extends State<LoginScreen> with BackPressedMixin{
   late TextEditingController usernameController;
   late TextEditingController passwordController;
   @override
@@ -39,12 +40,18 @@ class _LoginScreen extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginScreenBloc, LoginScreenState>(
         listener: (BuildContext context, LoginScreenState state) {
-      if (state.loginResponseModel?.token?.isNotEmpty ?? false) {
-        Navigator.of(context).pushReplacement(DashboardScreen.route());
-      }
+          if (!state.isLoading) {
+            if (!state.hasError) {
+              Navigator.of(context).pushReplacement(
+                  DashboardScreen.route(userProfileModel: state.userProfileModel));
+            }
+          }
     }, builder: (BuildContext context, LoginScreenState state) {
       return SafeArea(
-          child: Scaffold(
+            child: WillPopScope(
+              onWillPop: () async {
+                return false;
+              }, child : Scaffold(
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Padding(
@@ -74,7 +81,7 @@ class _LoginScreen extends State<LoginScreen> {
                         ? ATText(
                             text: state.loginResponseModel?.errorMessage,
                             fontColor: AppColors.atRed,
-                      fontSize: 12,
+                            fontSize: 12,
                           )
                         : SizedBox(),
                     const SizedBox(height: 8),
@@ -82,8 +89,10 @@ class _LoginScreen extends State<LoginScreen> {
                       onTap: () =>
                           context.read<LoginScreenBloc>().forgotPassword(),
                       child: ATText(
-                          text: I18n.of(context).forgot_password,
-                          fontColor: AppColors.beachSea, fontSize: 12,),
+                        text: I18n.of(context).forgot_password,
+                        fontColor: AppColors.beachSea,
+                        fontSize: 12,
+                      ),
                     )
                   ],
                 )
@@ -102,7 +111,7 @@ class _LoginScreen extends State<LoginScreen> {
             },
           ),
         ),
-      ));
+      )));
     });
   }
 

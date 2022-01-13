@@ -29,10 +29,12 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
           hasError: result.isError)); //turn off loading indicator
       if (!result.isError) {
         //success
+        UserProfileModel userProfileModel =
+            UserProfileModel(username: username);
         await persistenceService.dwnToken.set(result.token);
-        await persistenceService.userProfile
-            .set(UserProfileModel(username: username).toJson());
-        emit(state.copyWith(loginResponseModel: result));
+        await persistenceService.userProfile.set(userProfileModel.toJson());
+        emit(state.copyWith(
+            loginResponseModel: result, userProfileModel: userProfileModel));
       } else {
         //should be error as token should not be null
         emit(state.copyWith(loginResponseModel: result)); //

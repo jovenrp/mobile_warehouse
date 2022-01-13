@@ -22,7 +22,7 @@ class LoginRepositoryImpl implements LoginRepository {
       //Logger.i(_);
       //Todo Create a proper way to handle login error
       return const LoginResponseModel(
-          isError: true, errorMessage: 'Wrong username or password entered.');
+          isError: true, errorMessage: 'Wrong username or password entered.', token: null);
     }
   }
 }

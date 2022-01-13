@@ -4,7 +4,12 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 
 class ATAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ATAppBar(
-      {Key? key, this.appBarHeight, this.title, this.icon, this.onTap, this.rotation})
+      {Key? key,
+      this.appBarHeight,
+      this.title,
+      this.icon,
+      this.onTap,
+      this.rotation})
       : super(key: key);
 
   final double? appBarHeight;
@@ -18,7 +23,10 @@ class ATAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: ATText(
           text: title ?? '',
-          style: TextStyle(fontSize: 18, color: AppColors.black)),
+          style: TextStyle(
+              fontSize: 18,
+              color: AppColors.black,
+              fontWeight: FontWeight.w700)),
       automaticallyImplyLeading: false,
       leading: GestureDetector(
         onTap: onTap ??
@@ -27,11 +35,12 @@ class ATAppBar extends StatelessWidget implements PreferredSizeWidget {
             },
         child: RotatedBox(
           quarterTurns: rotation ?? 0,
-          child: icon ?? Icon(
-            Icons.arrow_back_sharp,
-            color: Colors.black,
-            size: 24.0,
-          ),
+          child: icon ??
+              Icon(
+                Icons.arrow_back_sharp,
+                color: Colors.black,
+                size: 24.0,
+              ),
         ),
       ),
     );

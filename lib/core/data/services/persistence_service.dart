@@ -22,7 +22,7 @@ class PersistenceService {
   Future<void> logout() async {
     await currentUserServiceNumber.removeData();
     await dwnToken.removeData();
-    //await userProfile.removeData();
+    await userProfile.removeData();
     //await userEmailVerification.removeData();
   }
 

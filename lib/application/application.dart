@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:alice_lightweight/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_formatter/dio_http_formatter.dart';
 import 'package:dio_retry/dio_retry.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,6 +28,7 @@ import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/splash/presentation/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:shake/shake.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'domain/bloc/application_bloc.dart';
@@ -59,6 +62,7 @@ class _ApplicationState extends State<Application> {
   late PersistenceService _persistenceService;
   bool _showingRequiredUpdate = false;
   bool _showingServiceUnavailable = false;
+  bool _loggerIsVisible = false;
   //bool _showingNoInternetError = false;
   //bool _sessionExpiredIsVisible = false;
   late ApplicationBloc _appBloc;
@@ -66,11 +70,14 @@ class _ApplicationState extends State<Application> {
 
   // Expose, context from this key can be safely used for dialogs
   late GlobalKey<NavigatorState> navigatorKey;
+  late ShakeDetector detector;
+  Alice? globalAlice;
 
   @override
   void initState() {
     super.initState();
     navigatorKey = GlobalKey<NavigatorState>();
+    _loggerIsVisible = false;
     _showingRequiredUpdate = false;
     _showingServiceUnavailable = false;
     //_showingNoInternetError = false;
@@ -97,6 +104,13 @@ class _ApplicationState extends State<Application> {
 
     _appBloc = ApplicationBloc();
     _apiService = ApiService(dio: _dio);
+
+    if (widget.config.isUiDebuggerEnabled) {
+      navigatorKey = globalAlice?.getNavigatorKey() ?? navigatorKey;
+      detector = ShakeDetector.autoStart(onPhoneShake: () {
+        _showLoggers();
+      });
+    }
   }
 
   @override
@@ -159,6 +173,41 @@ class _ApplicationState extends State<Application> {
 }
 
 extension ApplicationApiInterceptors on _ApplicationState {
+  void _showLoggers() {
+    if (_loggerIsVisible) return;
+    _loggerIsVisible = true;
+
+    BuildContext? context = navigatorKey.currentContext;
+
+    if (context != null) {
+      showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) => CupertinoActionSheet(
+          title: const Text('GomoX'),
+          message: const Text('Show Logs'),
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop();
+                _loggerIsVisible = false;
+                globalAlice?.showInspector();
+              },
+              child: const Text('Show API Logs'),
+            ),
+            CupertinoActionSheetAction(
+              isDestructiveAction: true,
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop();
+                _loggerIsVisible = false;
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   Dio _createDioInstance({
     required PersistenceService persistenceService,
     required bool isApiDebuggerEnabled,
