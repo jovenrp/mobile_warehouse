@@ -183,7 +183,7 @@ extension ApplicationApiInterceptors on _ApplicationState {
       showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) => CupertinoActionSheet(
-          title: const Text('GomoX'),
+          title: const Text('ActionTRAK'),
           message: const Text('Show Logs'),
           actions: <Widget>[
             CupertinoActionSheetAction(
