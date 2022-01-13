@@ -26,7 +26,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreen createState() => _LoginScreen();
 }
 
-class _LoginScreen extends State<LoginScreen> with BackPressedMixin{
+class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
   late TextEditingController usernameController;
   late TextEditingController passwordController;
   @override
@@ -40,78 +40,80 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin{
   Widget build(BuildContext context) {
     return BlocConsumer<LoginScreenBloc, LoginScreenState>(
         listener: (BuildContext context, LoginScreenState state) {
-          if (!state.isLoading) {
-            if (!state.hasError) {
-              Navigator.of(context).pushReplacement(
-                  DashboardScreen.route(userProfileModel: state.userProfileModel));
-            }
-          }
+      if (!state.isLoading) {
+        if (!state.hasError) {
+          Navigator.of(context).pushReplacement(
+              DashboardScreen.route(userProfileModel: state.userProfileModel));
+        }
+      }
     }, builder: (BuildContext context, LoginScreenState state) {
       return SafeArea(
-            child: WillPopScope(
+          child: WillPopScope(
               onWillPop: () async {
                 return false;
-              }, child : Scaffold(
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * .1,
+              },
+              child: Scaffold(
+                body: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * .1,
+                        ),
+                        const ApplicationLogo(),
+                        ATTextfield(
+                          hintText: I18n.of(context).enter_username,
+                          textEditingController: usernameController,
+                        ),
+                        const SizedBox(height: 8),
+                        ATTextfield(
+                          hintText: I18n.of(context).enter_password,
+                          textEditingController: passwordController,
+                          isPasswordField: true,
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            state.hasError
+                                ? ATText(
+                                    text:
+                                        state.loginResponseModel?.errorMessage,
+                                    fontColor: AppColors.atRed,
+                                    fontSize: 12,
+                                  )
+                                : SizedBox(),
+                            const SizedBox(height: 8),
+                            InkWell(
+                              onTap: () => context
+                                  .read<LoginScreenBloc>()
+                                  .forgotPassword(),
+                              child: ATText(
+                                text: I18n.of(context).forgot_password,
+                                fontColor: AppColors.beachSea,
+                                fontSize: 12,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-                const ApplicationLogo(),
-                ATTextfield(
-                  hintText: I18n.of(context).enter_username,
-                  textEditingController: usernameController,
+                bottomNavigationBar: Padding(
+                  padding: const EdgeInsets.only(left: 24, right: 24),
+                  child: ATTextButton(
+                    buttonText: I18n.of(context).sign_in,
+                    onTap: () {
+                      context.read<LoginScreenBloc>().login(
+                          usernameController.text, passwordController.text);
+                    },
+                  ),
                 ),
-                const SizedBox(height: 8),
-                ATTextfield(
-                  hintText: I18n.of(context).enter_password,
-                  textEditingController: passwordController,
-                  isPasswordField: true,
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    state.hasError
-                        ? ATText(
-                            text: state.loginResponseModel?.errorMessage,
-                            fontColor: AppColors.atRed,
-                            fontSize: 12,
-                          )
-                        : SizedBox(),
-                    const SizedBox(height: 8),
-                    InkWell(
-                      onTap: () =>
-                          context.read<LoginScreenBloc>().forgotPassword(),
-                      child: ATText(
-                        text: I18n.of(context).forgot_password,
-                        fontColor: AppColors.beachSea,
-                        fontSize: 12,
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24),
-          child: ATTextButton(
-            buttonText: I18n.of(context).sign_in,
-            onTap: () {
-              context
-                  .read<LoginScreenBloc>()
-                  .login(usernameController.text, passwordController.text);
-            },
-          ),
-        ),
-      )));
+              )));
     });
   }
 

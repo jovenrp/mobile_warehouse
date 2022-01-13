@@ -26,6 +26,11 @@ extension CharExtensions on String {
     return -1;
   }
 
+  String capitalizeFirstofEach() {
+    String str = this;
+    return str.split(' ').map((String text) => text.capitalize()).join(' ');
+  }
+
   bool equalsIgnoreCase(String compareString) {
     return (toLowerCase() == compareString.toLowerCase());
   }

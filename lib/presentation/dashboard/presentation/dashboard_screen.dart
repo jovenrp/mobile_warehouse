@@ -13,10 +13,11 @@ import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_blo
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/dashboard/presentation/localtion_mapper_widget.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
+import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
 
 import 'action_cards_widget.dart';
 
-class DashboardScreen extends StatefulWidget{
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key, this.userProfileModel}) : super(key: key);
 
   static const String routeName = '/dashboard';
@@ -35,8 +36,7 @@ class DashboardScreen extends StatefulWidget{
   _DashboardScreen createState() => _DashboardScreen();
 }
 
-class _DashboardScreen extends State<DashboardScreen>  with BackPressedMixin{
-
+class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
   bool _isDoubleBackPressed = false;
 
   @override
@@ -65,7 +65,8 @@ class _DashboardScreen extends State<DashboardScreen>  with BackPressedMixin{
           child: WillPopScope(
               onWillPop: () async {
                 if (Platform.isAndroid) {
-                  _isDoubleBackPressed = onBackPressed(context, _isDoubleBackPressed, (bool value) {
+                  _isDoubleBackPressed = onBackPressed(
+                      context, _isDoubleBackPressed, (bool value) {
                     _isDoubleBackPressed = value;
                   });
                   return false;
@@ -153,7 +154,8 @@ class _DashboardScreen extends State<DashboardScreen>  with BackPressedMixin{
                           ),
                           SizedBox(height: 14),
                           InkWell(
-                            onTap: () {},
+                            onTap: () => Navigator.of(context)
+                                .push(PickTicketsScreen.route()),
                             child: Padding(
                                 padding:
                                     const EdgeInsets.only(left: 20, right: 20),

@@ -8,6 +8,9 @@ import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_blo
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_bloc.dart';
 import 'package:mobile_warehouse/presentation/login/data/services/login_api_service.dart';
 import 'package:mobile_warehouse/presentation/login/domain/repositories/login_repository_impl.dart';
+import 'package:mobile_warehouse/presentation/picktickets/bloc/pick_tickets_bloc.dart';
+import 'package:mobile_warehouse/presentation/picktickets/data/services/pick_tickets_api_service.dart';
+import 'package:mobile_warehouse/presentation/picktickets/domain/repositories/pick_tickets_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -37,6 +40,12 @@ class BlocsProvider {
         BlocProvider<DashboardScreenBloc>(
           create: (_) =>
               DashboardScreenBloc(persistenceService: persistenceService),
+        ),
+        BlocProvider<PickTicketsBloc>(
+          create: (_) => PickTicketsBloc(
+              pickTicketsRepository: PickTicketsRepositoryImpl(
+                  PickTicketsApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
         ),
       ];
 }
