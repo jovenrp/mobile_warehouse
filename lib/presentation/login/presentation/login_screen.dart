@@ -11,6 +11,7 @@ import 'package:mobile_warehouse/presentation/dashboard/presentation/dashboard_s
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_bloc.dart';
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_state.dart';
 
+// This class to display the loging page
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
