@@ -77,43 +77,46 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                 itemCount: state.pickTicketsModel?.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   if (index == 0) {
-                                    return Table(
-                                      defaultVerticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      columnWidths: const <int,
-                                          TableColumnWidth>{
-                                        0: FixedColumnWidth(38),
-                                        1: FixedColumnWidth(70),
-                                        2: FlexColumnWidth(),
-                                        3: FixedColumnWidth(50),
-                                        4: FixedColumnWidth(40)
-                                      },
-                                      children: <TableRow>[
-                                        TableRow(children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 18, top: 5, bottom: 5),
-                                            child: SizedBox(),
-                                          ),
-                                          Container(
-                                            child: Text('Ticket #'),
-                                          ),
-                                          Container(
-                                            child: Text('Location'),
-                                          ),
-                                          Container(
-                                            child: Text('Lines'),
-                                          ),
-                                          InkWell(
-                                            onTap: () {},
-                                            child: Container(
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 20, bottom: 10),
+                                      child: Table(
+                                        defaultVerticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                        columnWidths: const <int,
+                                            TableColumnWidth>{
+                                          0: FixedColumnWidth(38),
+                                          1: FixedColumnWidth(70),
+                                          2: FlexColumnWidth(),
+                                          3: FixedColumnWidth(50),
+                                          4: FixedColumnWidth(40)
+                                        },
+                                        children: <TableRow>[
+                                          TableRow(children: <Widget>[
+                                            Padding(
                                               padding: const EdgeInsets.only(
-                                                  right: 18, top: 5, bottom: 5),
+                                                  left: 18, top: 5, bottom: 5),
                                               child: SizedBox(),
                                             ),
-                                          )
-                                        ]),
-                                      ],
+                                            Container(
+                                              child: Text('Ticket #'),
+                                            ),
+                                            Container(
+                                              child: Text('Location'),
+                                            ),
+                                            Container(
+                                              child: Text('Lines'),
+                                            ),
+                                            InkWell(
+                                              onTap: () {},
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    right: 18, top: 5, bottom: 5),
+                                                child: SizedBox(),
+                                              ),
+                                            )
+                                          ]),
+                                        ],
+                                      ),
                                     );
                                   }
                                   index -= 1;

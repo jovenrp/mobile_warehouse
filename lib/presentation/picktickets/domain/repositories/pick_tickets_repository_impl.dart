@@ -20,7 +20,7 @@ class PickTicketsRepositoryImpl implements PickTicketsRepository {
       print('asd');
       print(result);
 
-      /*PickTicketsModel pickTicketsModel1 = PickTicketsModel(
+      PickTicketsModel pickTicketsModel1 = PickTicketsModel(
         status: '1',
         ticketId: '00001',
         location: 'Warehouse',
@@ -90,9 +90,9 @@ class PickTicketsRepositoryImpl implements PickTicketsRepository {
         pickTicketsModel1,
         pickTicketsModel2,
         pickTicketsModel3,
-      ];*/
-
-      return <PickTicketsModel>[];
+      ];
+      return pickTicketsModel;
+      //return <PickTicketsModel>[];
     } catch (_) {
       logger.e(_.toString());
       return <PickTicketsModel>[];
