@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets/bloc/pick_tickets_state.dart';
+import 'package:mobile_warehouse/presentation/picktickets/data/models/pick_tickets_model.dart';
 import 'package:mobile_warehouse/presentation/picktickets/domain/repositories/pick_tickets_repository.dart';
 
 class PickTicketsBloc extends Cubit<PickTicketsState> {
@@ -15,15 +16,17 @@ class PickTicketsBloc extends Cubit<PickTicketsState> {
   Future<void> getPickTickets() async {
     emit(state.copyWith(isLoading: true)); //turn on loading indicator
 
-    print('fetching');
     try {
       String? token = await persistenceService.dwnToken.get();
-      final String result =
+      final List<PickTicketsModel> pickTicketsModel =
           await pickTicketsRepository.fetchPickTickets(token: token);
 
-      print('here');
-      print(result);
+      emit(state.copyWith(
+          isLoading: false,
+          pickTicketsModel: pickTicketsModel,
+          hasError: false));
     } catch (_) {
+      emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
     }
   }

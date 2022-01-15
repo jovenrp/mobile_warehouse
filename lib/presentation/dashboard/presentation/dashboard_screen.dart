@@ -79,7 +79,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                     title: I18n.of(context).dashboard,
                     icon: Icon(
                       Icons.logout,
-                      color: Colors.black,
+                      color: AppColors.white,
                       size: 24.0,
                     ),
                     rotation: 2,
@@ -105,7 +105,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.only(left: 18),
+                            padding: const EdgeInsets.only(left: 18, top: 20),
                             child: ATText(
                               text: I18n.of(context)
                                   .hi_name(widget.userProfileModel?.username),
@@ -113,7 +113,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                   fontSize: 18, fontWeight: FontWeight.w400),
                             ),
                           ),
-                          SizedBox(height: 40),
+                          SizedBox(height: 50),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
@@ -122,7 +122,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                       .showSnackBar(snackBar)),
                             ],
                           ),
-                          SizedBox(height: 40),
+                          SizedBox(height: 30),
                           InkWell(
                             onTap: () {
                               ScaffoldMessenger.of(context)

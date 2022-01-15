@@ -1,3 +1,4 @@
+import 'package:mobile_warehouse/application/application.dart';
 import 'package:mobile_warehouse/presentation/login/data/models/login_response_model.dart';
 import 'package:mobile_warehouse/presentation/login/data/services/login_api_service.dart';
 
@@ -17,9 +18,12 @@ class LoginRepositoryImpl implements LoginRepository {
         password,
       );
 
+      print('token');
+      print(token);
+
       return LoginResponseModel(token: token, isError: false);
     } catch (_) {
-      //Logger.i(_);
+      logger.e(_);
       //Todo Create a proper way to handle login error
       return const LoginResponseModel(
           isError: true,

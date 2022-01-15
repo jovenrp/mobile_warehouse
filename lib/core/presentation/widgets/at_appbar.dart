@@ -21,11 +21,12 @@ class ATAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: AppColors.beachSea,
       title: ATText(
           text: title ?? '',
           style: TextStyle(
               fontSize: 18,
-              color: AppColors.black,
+              color: AppColors.white,
               fontWeight: FontWeight.w700)),
       automaticallyImplyLeading: false,
       leading: GestureDetector(
@@ -38,7 +39,7 @@ class ATAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: icon ??
               Icon(
                 Icons.arrow_back_sharp,
-                color: Colors.black,
+                color: AppColors.white,
                 size: 24.0,
               ),
         ),
