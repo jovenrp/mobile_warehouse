@@ -9,6 +9,7 @@
   "forgot_password" : "Forgot password?",
   "sign_in" : "Sign In",
   "hi_name" : "Hi {name}, what do you wanna do today?",
+  "ticket_ticket_id" : "Ticket #{ticketId}",
   "logout_from_mobile_warehouse" : "Logout from Mobile Warehouse?",
   "yes_logout" : "Yes, logout",
   "no_go_back" : "No, go back",

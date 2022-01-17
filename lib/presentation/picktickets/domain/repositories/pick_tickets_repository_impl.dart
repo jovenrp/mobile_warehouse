@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:mobile_warehouse/application/application.dart';
-import 'package:mobile_warehouse/presentation/picktickets/data/models/pick_tickets_model.dart';
+import 'package:mobile_warehouse/presentation/picktickets/data/models/pick_tickets_response.dart';
 import 'package:mobile_warehouse/presentation/picktickets/data/services/pick_tickets_api_service.dart';
+import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_ticket_details_response.dart';
 
 import 'pick_tickets_repository.dart';
 
@@ -10,92 +13,18 @@ class PickTicketsRepositoryImpl implements PickTicketsRepository {
   final PickTicketsApiService _apiService;
 
   @override
-  Future<List<PickTicketsModel>> fetchPickTickets({String? token}) async {
+  Future<PickTicketsResponse> fetchPickTickets({String? token}) async {
     try {
-      //dynamic result = await _apiService.fetchPickTickets();
-
       final String result =
           await _apiService.fetchPickTickets(token, headers: 'true');
 
-      print('asd');
-      print(result);
+      final PickTicketsResponse response =
+          PickTicketsResponse.fromJson(jsonDecode(result));
 
-      PickTicketsModel pickTicketsModel1 = PickTicketsModel(
-        status: '1',
-        ticketId: '00001',
-        location: 'Warehouse',
-        lines: '21',
-        sku: '00001',
-      );
-      PickTicketsModel pickTicketsModel2 = PickTicketsModel(
-        status: '2',
-        ticketId: '00002',
-        location: 'Fritz House',
-        lines: '33',
-        sku: '00001',
-      );
-      PickTicketsModel pickTicketsModel3 = PickTicketsModel(
-        status: '3',
-        ticketId: '00003',
-        location: 'Mike House',
-        lines: '345',
-        sku: '00001',
-      );
-      List<PickTicketsModel> pickTicketsModel = [
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-        pickTicketsModel1,
-        pickTicketsModel2,
-        pickTicketsModel3,
-      ];
-      return pickTicketsModel;
-      //return <PickTicketsModel>[];
+      return response;
     } catch (_) {
       logger.e(_.toString());
-      return <PickTicketsModel>[];
+      return PickTicketsResponse();
     }
   }
 }

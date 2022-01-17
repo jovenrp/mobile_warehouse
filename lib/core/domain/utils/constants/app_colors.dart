@@ -12,6 +12,10 @@ class AppColors {
   static const Color atRed = Color(0xFFD20E56);
   static const Color atDark = Color(0xFF114B63);
   static const Color semiDark = Color(0xFF2297C9);
+  static const Color lightSea = Color(0xFF2BC0FF);
+  static const Color warningOrange = Color(0xFFF0821D);
+  static const Color successGreen = Color(0xFF2A941B);
+  static const Color lightBlue = Color(0xFFF1F7FF);
 
   //Custom Colors
   static const Color primaryColor = Color(0xFFD5305F);

@@ -8,10 +8,13 @@ abstract class PickTicketsApiService {
   factory PickTicketsApiService(Dio dio, {String baseUrl}) =
       _PickTicketsApiService;
 
-  @POST('/mobile(getContainers)?useHdrs={headers}&authToken={token}')
-  Future<String> getContainers(@Path('token') String? token);
+  @POST('/mobile(getPickTickets)?useHdrs=true&sessId={token}')
+  Future<dynamic> fetchPickTickets(@Path('token') String? token,
+      {@Path('headers') String? headers});
 
-  @POST('/mobile(getPickTickets)?authToken={token}&useHdrs=true')
-  Future<String> fetchPickTickets(@Path('token') String? token,
+  @POST(
+      '/mobile(getPickTicketDetails)?useHdrs=true&sessId={token}&pickTicketId={pickTicketId}')
+  Future<dynamic> fetchPickTicketsDetails(
+      @Path('token') String? token, @Path('pickTicketId') String? pickTicketId,
       {@Path('headers') String? headers});
 }
