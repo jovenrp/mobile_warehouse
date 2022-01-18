@@ -106,51 +106,68 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                             itemBuilder: (BuildContext context,
                                                 int index) {
                                               if (index == 0) {
-                                                return Padding(padding: const EdgeInsets.only(top: 15, bottom: 10), child: Row(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: SizedBox()),
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: ATText(
-                                                          text: 'Location',
-                                                          weight:
-                                                          FontWeight.w700,
-                                                        )),
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: ATText(
-                                                          text: 'SKU',
-                                                          weight:
-                                                          FontWeight.w700,
-                                                        )),
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: Container(
-                                                          alignment: Alignment
-                                                              .centerRight,
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 15, bottom: 10),
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                          flex: 1,
+                                                          child: SizedBox()),
+                                                      Expanded(
+                                                          flex: 2,
                                                           child: ATText(
-                                                            text: 'Quantity',
+                                                            text: 'Location',
                                                             weight:
-                                                            FontWeight.w700,
-                                                          ),
-                                                        )),
-                                                    Expanded(
-                                                        flex: 1,
-                                                        child: SizedBox()),
-                                                  ],
-                                                ),);
+                                                                FontWeight.w700,
+                                                          )),
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: ATText(
+                                                            text: 'SKU',
+                                                            weight:
+                                                                FontWeight.w700,
+                                                          )),
+                                                      Expanded(
+                                                          flex: 2,
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .centerRight,
+                                                            child: ATText(
+                                                              text: 'Quantity',
+                                                              weight: FontWeight
+                                                                  .w700,
+                                                            ),
+                                                          )),
+                                                      Expanded(
+                                                          flex: 1,
+                                                          child: SizedBox()),
+                                                    ],
+                                                  ),
+                                                );
                                               }
                                               index -= 1;
                                               return Container(
                                                 padding: const EdgeInsets.only(
                                                     top: 5, bottom: 5),
-                                                color: (index % 2) == 0
-                                                    ? AppColors.white
-                                                    : AppColors.lightBlue,
+                                                color: state
+                                                            .pickTicketsDetailsResponse
+                                                            ?.pickTicketsResponse?[
+                                                                index]
+                                                            .qtyPicked !=
+                                                        state
+                                                            .pickTicketsDetailsResponse
+                                                            ?.pickTicketsResponse?[
+                                                                index]
+                                                            .qtyPick
+                                                    ? AppColors.warningOrange
+                                                    : (index % 2) == 0
+                                                        ? AppColors.white
+                                                        : AppColors.lightBlue,
                                                 child:
                                                     Column(children: <Widget>[
                                                   Row(
@@ -173,10 +190,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                   state
                                                                       .pickTicketsDetailsResponse
                                                                       ?.pickTicketsResponse?[
-                                                                  index]
+                                                                          index]
                                                                       .setIsChecked(
-                                                                      value ??
-                                                                          false);
+                                                                          value ??
+                                                                              false);
                                                                 });
                                                               }),
                                                         ),
@@ -188,7 +205,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                               .pickTicketsDetailsResponse
                                                               ?.pickTicketsResponse?[
                                                                   index]
-                                                              .itemId,
+                                                              .location,
                                                           weight:
                                                               FontWeight.bold,
                                                         ),
@@ -211,15 +228,8 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                           alignment: Alignment
                                                               .centerRight,
                                                           child: ATText(
-                                                            text: '${state
-                                                                .pickTicketsDetailsResponse
-                                                                ?.pickTicketsResponse?[
-                                                            index]
-                                                                .qtyPicked} of ${state
-                                                                .pickTicketsDetailsResponse
-                                                                ?.pickTicketsResponse?[
-                                                            index]
-                                                                .qtyPick}',
+                                                            text:
+                                                                '${state.pickTicketsDetailsResponse?.pickTicketsResponse?[index].qtyPicked} of ${state.pickTicketsDetailsResponse?.pickTicketsResponse?[index].qtyPick}',
                                                             weight:
                                                                 FontWeight.bold,
                                                           ),
