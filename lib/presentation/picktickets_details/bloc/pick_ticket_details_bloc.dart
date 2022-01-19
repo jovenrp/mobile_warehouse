@@ -24,7 +24,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
 
       emit(state.copyWith(
           isLoading: false,
-          pickTicketsDetailsResponse: response,
+          pickTicketsResponse: response.pickTicketsResponse,
           hasError: false));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));

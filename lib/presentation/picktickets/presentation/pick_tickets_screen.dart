@@ -118,18 +118,22 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                 ),
                                                 Container(
                                                   child: ATText(
-                                                      text: 'Ticket #',
-                                                      weight: FontWeight.w700),
+                                                      text: I18n.of(context)
+                                                          .ticket_number
+                                                          .toUpperCase()),
                                                 ),
                                                 Container(
                                                   child: ATText(
-                                                      text: 'Location',
-                                                      weight: FontWeight.w700),
+                                                    text: I18n.of(context)
+                                                        .location
+                                                        .toUpperCase(),
+                                                  ),
                                                 ),
                                                 Container(
                                                   child: ATText(
-                                                      text: 'Lines',
-                                                      weight: FontWeight.w700),
+                                                      text: I18n.of(context)
+                                                          .lines
+                                                          .toUpperCase()),
                                                 ),
                                                 InkWell(
                                                   onTap: () {},

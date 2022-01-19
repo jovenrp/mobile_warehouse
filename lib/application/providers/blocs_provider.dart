@@ -13,6 +13,7 @@ import 'package:mobile_warehouse/presentation/picktickets/data/services/pick_tic
 import 'package:mobile_warehouse/presentation/picktickets/domain/repositories/pick_tickets_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/domain/repositories/pick_ticket_details_repository_impl.dart';
+import 'package:mobile_warehouse/presentation/sku_details/bloc/sku_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -51,6 +52,12 @@ class BlocsProvider {
         ),
         BlocProvider<PickTicketDetailsBloc>(
           create: (_) => PickTicketDetailsBloc(
+              pickTicketDetailsRepository: PickTicketDetailsRepositoryImpl(
+                  PickTicketsApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<SkuDetailsBloc>(
+          create: (_) => SkuDetailsBloc(
               pickTicketDetailsRepository: PickTicketDetailsRepositoryImpl(
                   PickTicketsApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),

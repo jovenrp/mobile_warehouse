@@ -25,6 +25,8 @@ class PickTicketDetailsModel {
     this.createdTime,
     this.modifiedTime,
     this.isChecked = false,
+    this.isVisible = false,
+    this.pickedItem,
   });
 
   factory PickTicketDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -91,8 +93,23 @@ class PickTicketDetailsModel {
   @JsonKey(name: 'isChecked', defaultValue: false)
   bool? isChecked;
 
+  @JsonKey(name: 'isVisible', defaultValue: false)
+  bool? isVisible;
+
+  @JsonKey(name: 'pickedItem')
+  String? pickedItem;
+
   bool setIsChecked(bool value) {
     isChecked = value;
     return isChecked ?? false;
+  }
+
+  bool setIsVisible(bool value) {
+    isVisible = value;
+    return isVisible ?? false;
+  }
+
+  void setPickedItem(String? value) {
+    pickedItem = value;
   }
 }
