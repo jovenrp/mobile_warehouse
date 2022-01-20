@@ -65,8 +65,8 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                     SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 18, right: 18),
-                      child:
-                          ATSearchfield(hintText: 'Search', onPressed: () {}),
+                      child: ATSearchfield(
+                          hintText: I18n.of(context).search, onPressed: () {}),
                     ),
                     SizedBox(height: 20),
                     Expanded(

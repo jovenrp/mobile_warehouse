@@ -13,6 +13,7 @@ import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_tick
 
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
+import 'package:mobile_warehouse/presentation/sku_details/presentation/sku_details_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class PickTicketDetailsScreen extends StatefulWidget {
@@ -86,7 +87,8 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                         Padding(
                           padding: const EdgeInsets.only(left: 18, right: 18),
                           child: ATSearchfield(
-                              hintText: 'Search', onPressed: () {}),
+                              hintText: I18n.of(context).search,
+                              onPressed: () {}),
                         ),
                         SizedBox(height: 20),
                         Expanded(
@@ -110,7 +112,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                             ))
                                         : ListView.builder(
                                             itemCount: (state
-                                                .pickTicketsResponse?.length ?? 0) + 1,
+                                                        .pickTicketsResponse
+                                                        ?.length ??
+                                                    0) +
+                                                1,
                                             itemBuilder: (BuildContext context,
                                                 int index) {
                                               if (index == 0) {
@@ -189,16 +194,12 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                           index]
                                                                       .isVisible ==
                                                                   false) {
-                                                                print(
-                                                                    'set to true');
                                                                 state
                                                                     .pickTicketsResponse?[
                                                                         index]
                                                                     .setIsVisible(
                                                                         true);
                                                               } else {
-                                                                print(
-                                                                    'set to false');
                                                                 state
                                                                     .pickTicketsResponse?[
                                                                         index]
@@ -270,8 +271,11 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                       Alignment
                                                                           .centerRight,
                                                                   child: ATText(
-                                                                    text:
-                                                                        '${state.pickTicketsResponse?[index].qtyPicked} of ${state.pickTicketsResponse?[index].qtyPick}',
+                                                                    text: double.parse(state.pickTicketsResponse?[index].qtyPicked ??
+                                                                                '0') ==
+                                                                            0
+                                                                        ? '${state.pickTicketsResponse?[index].qtyPick}'
+                                                                        : '${state.pickTicketsResponse?[index].qtyPick} of ${state.pickTicketsResponse?[index].qtyPick}',
                                                                     weight:
                                                                         FontWeight
                                                                             .bold,
@@ -280,10 +284,22 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                               ),
                                                               Expanded(
                                                                   flex: 1,
-                                                                  child: Icon(
-                                                                    Icons
-                                                                        .double_arrow_sharp,
-                                                                    size: 18,
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () => Navigator.of(context).push(SkuDetailsScreen.route(
+                                                                        ticketItemModel:
+                                                                            state.pickTicketsResponse?[
+                                                                                index],
+                                                                        ticketList:
+                                                                            state
+                                                                                .pickTicketsResponse,
+                                                                        currentIndex:
+                                                                            index)),
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .double_arrow_sharp,
+                                                                      size: 18,
+                                                                    ),
                                                                   )),
                                                             ],
                                                           )),
@@ -533,8 +549,8 @@ class _TicketPicker extends State<TicketPicker> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child:
-                        ATTextButton(buttonText: 'Save', onTap: widget.onTap),
+                    child: ATTextButton(
+                        buttonText: I18n.of(context).save, onTap: widget.onTap),
                   )
                 ],
               )

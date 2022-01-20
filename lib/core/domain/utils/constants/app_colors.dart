@@ -17,6 +17,7 @@ class AppColors {
   static const Color successGreen = Color(0xFF2A941B);
   static const Color lightBlue = Color(0xFFF1F7FF);
   static const Color greyText = Color(0xFF9D9EA3);
+  static const Color semiDarkText = Color(0xFF5E616B);
 
   //Custom Colors
   static const Color primaryColor = Color(0xFFD5305F);
