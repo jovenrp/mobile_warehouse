@@ -109,8 +109,8 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                       'Please wait a moment while data is being loaded...'),
                                             ))
                                         : ListView.builder(
-                                            itemCount: state
-                                                .pickTicketsResponse?.length,
+                                            itemCount: (state
+                                                .pickTicketsResponse?.length ?? 0) + 1,
                                             itemBuilder: (BuildContext context,
                                                 int index) {
                                               if (index == 0) {
@@ -323,49 +323,83 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                       ),
                                                       SizedBox(height: 5),
                                                       TicketPicker(
-                                                          pickTicketDetailsModel:
-                                                              state.pickTicketsResponse?[
-                                                                  index],
-                                                          controller:
-                                                              textFieldControllers[
-                                                                  index],
-                                                          onTap: () =>
-                                                                  setState(() {
-                                                                    state.pickTicketsResponse?[
-                                                                    index].setPickedItem(textFieldControllers[
-                                                                    index].text);
-                                                                    state.pickTicketsResponse?[
-                                                                    index].setIsVisible(false);
-                                                                    state.pickTicketsResponse?[
-                                                                    index].setIsChecked(true);
-                                                                    print(state.pickTicketsResponse?[
-                                                                    index].pickedItem);}
-                                                                    ),
-                                                          onChanged: (String? text) {
+                                                        pickTicketDetailsModel:
+                                                            state.pickTicketsResponse?[
+                                                                index],
+                                                        controller:
+                                                            textFieldControllers[
+                                                                index],
+                                                        onTap: () =>
                                                             setState(() {
-                                                              if (textFieldControllers[index].text.isNotEmpty ==
-                                                                  true) {
-                                                                if (double.parse(
-                                                                    textFieldControllers[index].text) >
-                                                                    double.parse(state.pickTicketsResponse?[
-                                                                    index].qtyPick ??
-                                                                        '0')) {
-                                                                  textFieldControllers[index].clear();
-                                                                  state.pickTicketsResponse?[
-                                                                  index].setIsChecked(false);
-                                                                  ScaffoldMessenger.of(context)
-                                                                      .showSnackBar(snackBar);
-                                                                }
-                                                              } else {
-                                                                state.pickTicketsResponse?[
-                                                                index].setIsChecked(false);
-                                                                state.pickTicketsResponse?[
-                                                                index].setPickedItem(textFieldControllers[
-                                                                index].text);
+                                                          state
+                                                              .pickTicketsResponse?[
+                                                                  index]
+                                                              .setPickedItem(
+                                                                  textFieldControllers[
+                                                                          index]
+                                                                      .text);
+                                                          state
+                                                              .pickTicketsResponse?[
+                                                                  index]
+                                                              .setIsVisible(
+                                                                  false);
+                                                          state
+                                                              .pickTicketsResponse?[
+                                                                  index]
+                                                              .setIsChecked(
+                                                                  true);
+                                                          print(state
+                                                              .pickTicketsResponse?[
+                                                                  index]
+                                                              .pickedItem);
+                                                        }),
+                                                        onChanged:
+                                                            (String? text) {
+                                                          setState(() {
+                                                            if (textFieldControllers[
+                                                                        index]
+                                                                    .text
+                                                                    .isNotEmpty ==
+                                                                true) {
+                                                              if (double.parse(
+                                                                      textFieldControllers[
+                                                                              index]
+                                                                          .text) >
+                                                                  double.parse(state
+                                                                          .pickTicketsResponse?[
+                                                                              index]
+                                                                          .qtyPick ??
+                                                                      '0')) {
+                                                                textFieldControllers[
+                                                                        index]
+                                                                    .clear();
+                                                                state
+                                                                    .pickTicketsResponse?[
+                                                                        index]
+                                                                    .setIsChecked(
+                                                                        false);
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .showSnackBar(
+                                                                        snackBar);
                                                               }
-                                                            });
-                                                          }
-                                                      ,),
+                                                            } else {
+                                                              state
+                                                                  .pickTicketsResponse?[
+                                                                      index]
+                                                                  .setIsChecked(
+                                                                      false);
+                                                              state
+                                                                  .pickTicketsResponse?[
+                                                                      index]
+                                                                  .setPickedItem(
+                                                                      textFieldControllers[
+                                                                              index]
+                                                                          .text);
+                                                            }
+                                                          });
+                                                        },
+                                                      ),
                                                     ]),
                                               );
                                             }))))
@@ -387,7 +421,12 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
 }
 
 class TicketPicker extends StatefulWidget {
-  const TicketPicker({Key? key, this.pickTicketDetailsModel, this.controller, required this.onTap, required this.onChanged})
+  const TicketPicker(
+      {Key? key,
+      this.pickTicketDetailsModel,
+      this.controller,
+      required this.onTap,
+      required this.onChanged})
       : super(key: key);
 
   final PickTicketDetailsModel? pickTicketDetailsModel;
@@ -494,9 +533,8 @@ class _TicketPicker extends State<TicketPicker> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: ATTextButton(
-                        buttonText: 'Save',
-                        onTap: widget.onTap),
+                    child:
+                        ATTextButton(buttonText: 'Save', onTap: widget.onTap),
                   )
                 ],
               )
