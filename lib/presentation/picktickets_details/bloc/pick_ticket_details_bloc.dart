@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_state.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_ticket_details_response.dart';
+import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/domain/repositories/pick_ticket_details_repository.dart';
 
 class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
@@ -28,6 +29,20 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
           hasError: false));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
+      print(_);
+    }
+  }
+
+  Future<void> updateTicketDetails(
+      {List<PickTicketDetailsModel>? pickTicketDetailsModel}) async {
+    emit(state.copyWith(isUpdateLoading: true));
+
+    try {
+      final PickTicketsDetailsResponse response =
+          await pickTicketDetailsRepository.updateTicketDetails(
+              pickTicketDetailsModel: pickTicketDetailsModel);
+    } catch (_) {
+      emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
     }
   }

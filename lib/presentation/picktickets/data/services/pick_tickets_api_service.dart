@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:mobile_warehouse/core/domain/utils/interceptors/api_interceptor.dart';
+import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
 import 'package:retrofit/http.dart';
 
 part 'pick_tickets_api_service.g.dart';
@@ -17,4 +19,11 @@ abstract class PickTicketsApiService {
   Future<dynamic> fetchPickTicketsDetails(
       @Path('token') String? token, @Path('pickTicketId') String? pickTicketId,
       {@Path('headers') String? headers});
+
+  @POST('/mobile(getPickTicketDetails)')
+  @Headers(<String, dynamic>{
+    ApiInterceptor.includeDwnToken: 'true',
+  })
+  Future<dynamic> updateTicketDetails(
+      {List<PickTicketDetailsModel>? pickTicketDetailsModel});
 }

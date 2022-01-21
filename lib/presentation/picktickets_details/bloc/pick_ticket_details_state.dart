@@ -8,6 +8,7 @@ part 'pick_ticket_details_state.freezed.dart';
 class PickTicketDetailsState with _$PickTicketDetailsState {
   factory PickTicketDetailsState(
       {@Default(false) bool isLoading,
+      @Default(false) bool isUpdateLoading,
       @Default(false) bool hasError,
       ActionTRAKApiErrorCode? errorCode,
       String? errorMessage,
