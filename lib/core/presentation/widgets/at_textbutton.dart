@@ -8,7 +8,8 @@ class ATTextButton extends StatelessWidget {
       this.buttonText,
       this.buttonTextStyle,
       this.buttonStyle,
-      this.onTap, this.isLoading})
+      this.onTap,
+      this.isLoading})
       : super(key: key);
 
   final String? buttonText;
@@ -23,21 +24,20 @@ class ATTextButton extends StatelessWidget {
       onPressed: isLoading == false ? onTap ?? () {} : () {},
       style: buttonStyle ??
           ButtonStyle(
-              backgroundColor:
-              MaterialStateProperty.all(AppColors.beachSea),
+              backgroundColor: MaterialStateProperty.all(AppColors.beachSea),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ))),
+                borderRadius: BorderRadius.circular(8.0),
+              ))),
       child: Padding(
           padding: const EdgeInsets.only(top: 3, bottom: 3),
           child: isLoading ?? false
               ? const ATLoadingIndicator()
               : Text(
-            buttonText ?? '',
-            style: buttonTextStyle ??
-                const TextStyle(color: AppColors.white),
-          )),
+                  buttonText ?? '',
+                  style: buttonTextStyle ??
+                      const TextStyle(color: AppColors.white),
+                )),
     );
   }
 }

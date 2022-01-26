@@ -41,7 +41,7 @@ class ATDialog extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width * .3,
                     child: ATTextButton(
-                      isLoading: isLoading,
+                        isLoading: isLoading,
                         buttonText: positiveActionText,
                         onTap: positiveAction ??
                             () => Navigator.of(context).pushReplacement(
