@@ -12,7 +12,8 @@ class ATDialog extends StatelessWidget {
       this.positiveActionText,
       this.positiveAction,
       this.negativeActionText,
-      this.negativeAction})
+      this.negativeAction,
+      this.isLoading})
       : super(key: key);
 
   final String? bodyMessage;
@@ -20,6 +21,7 @@ class ATDialog extends StatelessWidget {
   final VoidCallback? positiveAction;
   final String? negativeActionText;
   final VoidCallback? negativeAction;
+  final bool? isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class ATDialog extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width * .3,
                     child: ATTextButton(
+                      isLoading: isLoading,
                         buttonText: positiveActionText,
                         onTap: positiveAction ??
                             () => Navigator.of(context).pushReplacement(

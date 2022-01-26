@@ -18,6 +18,7 @@ class AppColors {
   static const Color lightBlue = Color(0xFFF1F7FF);
   static const Color greyText = Color(0xFF9D9EA3);
   static const Color semiDarkText = Color(0xFF5E616B);
+  static const Color greyBorder = Color(0xFF363B47);
 
   //Custom Colors
   static const Color primaryColor = Color(0xFFD5305F);

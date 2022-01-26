@@ -7,13 +7,17 @@ class ATMiniTextfield extends StatefulWidget {
       this.hintText,
       this.textEditingController,
       this.qtyPick,
-      this.onChanged})
+      this.onChanged,
+      this.autoFocus,
+      this.onFieldSubmitted})
       : super(key: key);
 
   final String? hintText;
   final TextEditingController? textEditingController;
   final String? qtyPick;
+  final bool? autoFocus;
   final Function(String?)? onChanged;
+  final Function(String?)? onFieldSubmitted;
 
   @override
   _ATMiniTextfield createState() => _ATMiniTextfield();
@@ -25,11 +29,13 @@ class _ATMiniTextfield extends State<ATMiniTextfield> {
     return TextFormField(
       controller: widget.textEditingController,
       key: widget.key,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      autofocus: widget.autoFocus ?? false,
       keyboardType: TextInputType.number,
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(2.0),
         ),
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
@@ -54,7 +55,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
   Widget build(BuildContext context) {
     SnackBar snackBar = SnackBar(
       content: ATText(
-        text: 'Quantity must not be greate than the limit.',
+        text: 'Quantity must not be greater than the limit.',
         fontColor: AppColors.white,
       ),
       duration: Duration(seconds: 1),
@@ -148,26 +149,58 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                         .toUpperCase(),
                                                   ),
                                                 )),
-                                            Expanded(
-                                                flex: 1, child: SizedBox()),
+                                            SizedBox(width: 18)
                                           ],
                                         ),
                                       );
                                     }
                                     index -= 1;
-                                    textFieldControllers
-                                        .add(TextEditingController());
-                                    return Container(
+                                    textFieldControllers.add(
+                                        TextEditingController(
+                                            text: state
+                                                .pickTicketsResponse?[index]
+                                                .qtyPick));
+                                    return Slidable(
+                                        key: ValueKey<int>(index),
+                                        startActionPane: ActionPane(
+                                          // A motion is a widget used to control how the pane animates.
+                                            motion: const ScrollMotion(),
+                                            children: <Widget>[
+                                              SlidableAction(
+                                                onPressed: (BuildContext context){},
+                                                backgroundColor: Color(0xFFFE4A49),
+                                                foregroundColor: Colors.white,
+                                                icon: Icons.assignment_ind_outlined,
+                                              ),
+                                              SlidableAction(
+                                                onPressed: (BuildContext context){
+                                                  Navigator.of(
+                                                      context)
+                                                      .push(SkuDetailsScreen.route(
+                                                      ticketItemModel:
+                                                      state.pickTicketsResponse?[
+                                                      index],
+                                                      ticketList: state
+                                                          .pickTicketsResponse,
+                                                      currentIndex:
+                                                      index));
+                                                },
+                                                backgroundColor: Color(0xFF21B7CA),
+                                                foregroundColor: Colors.white,
+                                                icon: Icons.list_alt,
+                                                label: 'SKU',
+                                              ),
+                                            ]), child: Container(
                                       padding: const EdgeInsets.only(
                                           top: 5, bottom: 5),
-                                      color: state.pickTicketsResponse?[index]
+                                      /*color: state.pickTicketsResponse?[index]
                                                   .qtyPicked !=
                                               state.pickTicketsResponse?[index]
                                                   .qtyPick
                                           ? AppColors.warningOrange
                                           : (index % 2) == 0
                                               ? AppColors.white
-                                              : AppColors.lightBlue,
+                                              : AppColors.lightBlue,*/
                                       child: Column(children: <Widget>[
                                         GestureDetector(
                                             onTap: () {
@@ -203,8 +236,15 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                   flex: 1,
                                                   child: SizedBox(
                                                     width: 24,
-                                                    height: 24,
                                                     child: Checkbox(
+                                                        visualDensity:
+                                                            VisualDensity(
+                                                                horizontal: -4,
+                                                                vertical: -4),
+                                                        activeColor: state.pickTicketsResponse?[index].pickedItem == null ? AppColors.successGreen : double.parse(state.pickTicketsResponse?[index].pickedItem?.isEmpty ?? false
+                                                            ? '0' : state.pickTicketsResponse?[index].pickedItem ?? '0')
+                                                            < double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0') ? AppColors.warningOrange
+                                                            : AppColors.successGreen,
                                                         value: state
                                                                 .pickTicketsResponse?[
                                                                     index]
@@ -253,33 +293,17 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                       .pickTicketsResponse?[
                                                                           index]
                                                                       .qtyPicked ??
-                                                                  '0') ==
-                                                              0
+                                                                  '0') == 0 && (state.pickTicketsResponse?[index].pickedItem == null ||
+                                                          state.pickTicketsResponse?[index].pickedItem?.isEmpty == true)
                                                           ? '${state.pickTicketsResponse?[index].qtyPick}'
-                                                          : '${state.pickTicketsResponse?[index].qtyPick} of ${state.pickTicketsResponse?[index].qtyPick}',
+                                                          : state.pickTicketsResponse?[index].pickedItem == null ||  state.pickTicketsResponse?[index].pickedItem?.isEmpty == true ?
+                                                      '${state.pickTicketsResponse?[index].qtyPick} of ${state.pickTicketsResponse?[index].qtyPick}' :
+                                                      '${state.pickTicketsResponse?[index].pickedItem} of ${state.pickTicketsResponse?[index].qtyPick}',
                                                       weight: FontWeight.bold,
                                                     ),
                                                   ),
                                                 ),
-                                                Expanded(
-                                                    flex: 1,
-                                                    child: GestureDetector(
-                                                      onTap: () => Navigator.of(
-                                                              context)
-                                                          .push(SkuDetailsScreen.route(
-                                                              ticketItemModel:
-                                                                  state.pickTicketsResponse?[
-                                                                      index],
-                                                              ticketList: state
-                                                                  .pickTicketsResponse,
-                                                              currentIndex:
-                                                                  index)),
-                                                      child: Icon(
-                                                        Icons
-                                                            .double_arrow_sharp,
-                                                        size: 18,
-                                                      ),
-                                                    )),
+                                                SizedBox(width: 18)
                                               ],
                                             )),
                                         Row(
@@ -309,10 +333,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                 ),
                                               ),
                                             ),
-                                            Expanded(
-                                              flex: 1,
-                                              child: SizedBox(),
-                                            ),
+                                            SizedBox(width: 18)
                                           ],
                                         ),
                                         SizedBox(height: 5),
@@ -321,7 +342,8 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                               state.pickTicketsResponse?[index],
                                           controller:
                                               textFieldControllers[index],
-                                          onTap: () => setState(() {
+                                          onFieldSubmitted: (String? value) =>
+                                              setState(() {
                                             state.pickTicketsResponse?[index]
                                                 .setPickedItem(
                                                     textFieldControllers[index]
@@ -372,13 +394,14 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                           },
                                         ),
                                       ]),
-                                    );
+                                    ));
                                   }))))
             ])),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: ATTextButton(
             buttonText: I18n.of(context).complete_tickets,
+            isLoading: state.isUpdateLoading,
             onTap: () {
               List<PickTicketDetailsModel> itemsChecked =
                   <PickTicketDetailsModel>[];
@@ -432,13 +455,13 @@ class TicketPicker extends StatefulWidget {
       {Key? key,
       this.pickTicketDetailsModel,
       this.controller,
-      required this.onTap,
+      required this.onFieldSubmitted,
       required this.onChanged})
       : super(key: key);
 
   final PickTicketDetailsModel? pickTicketDetailsModel;
   final TextEditingController? controller;
-  final VoidCallback onTap;
+  final Function(String?) onFieldSubmitted;
   final Function(String?) onChanged;
 
   @override
@@ -448,20 +471,26 @@ class TicketPicker extends StatefulWidget {
 class _TicketPicker extends State<TicketPicker> {
   @override
   Widget build(BuildContext context) {
-    SnackBar snackBar = SnackBar(
-      content: ATText(
-        text:
-            'Quantity must not be greater than ${widget.pickTicketDetailsModel?.qtyPick}',
-        fontColor: AppColors.white,
-      ),
-      duration: Duration(seconds: 1),
-    );
     return Visibility(
         visible: widget.pickTicketDetailsModel?.isVisible ?? false,
         child: Container(
-          color: AppColors.lightGrey,
           padding:
-              const EdgeInsets.only(left: 18, right: 18, top: 5, bottom: 5),
+              const EdgeInsets.only(left: 18, right: 18, top: 15, bottom: 30),
+          decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(2),
+                  topRight: Radius.circular(2),
+                  bottomLeft: Radius.circular(2),
+                  bottomRight: Radius.circular(2)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ]),
           child: Column(
             children: <Widget>[
               Row(
@@ -515,19 +544,9 @@ class _TicketPicker extends State<TicketPicker> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Container(
-                            width: 60,
-                            child: ATMiniTextfield(
-                              hintText:
-                                  widget.pickTicketDetailsModel?.qtyPicked,
-                              qtyPick: widget.pickTicketDetailsModel?.qtyPick,
-                              textEditingController: widget.controller,
-                              onChanged: widget.onChanged,
-                            ),
-                          ),
                           ATText(
                             text:
-                                ' of ${widget.pickTicketDetailsModel?.qtyPick}',
+                                '${widget.pickTicketDetailsModel?.qtyPicked} of ${widget.pickTicketDetailsModel?.qtyPick}',
                             fontSize: 14,
                           )
                         ],
@@ -536,12 +555,26 @@ class _TicketPicker extends State<TicketPicker> {
                   )
                 ],
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 30),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Expanded(
-                    child: ATTextButton(
-                        buttonText: I18n.of(context).save, onTap: widget.onTap),
+                  Column(
+                    children: <Widget>[
+                      ATText(text: I18n.of(context).quantity_picked.toUpperCase(), fontSize: 14, weight: FontWeight.bold,),
+                      SizedBox(height: 10),
+                      Container(
+                        width: 80,
+                        child: ATMiniTextfield(
+                          qtyPick: widget.pickTicketDetailsModel?.qtyPick,
+                          textEditingController: widget.controller,
+                          onChanged: widget.onChanged,
+                          autoFocus: true,
+                          hintText: widget.pickTicketDetailsModel?.qtyPick,
+                          onFieldSubmitted: widget.onFieldSubmitted,
+                        ),
+                      )
+                    ],
                   )
                 ],
               )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
@@ -103,8 +104,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                               0: FixedColumnWidth(38),
                                               1: FixedColumnWidth(70),
                                               2: FlexColumnWidth(),
-                                              3: FixedColumnWidth(50),
-                                              4: FixedColumnWidth(40)
+                                              3: FixedColumnWidth(70),
                                             },
                                             children: <TableRow>[
                                               TableRow(children: <Widget>[
@@ -130,29 +130,47 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                   ),
                                                 ),
                                                 Container(
+                                                  alignment: Alignment.centerRight,
+                                                  padding: const EdgeInsets.only(right: 18),
                                                   child: ATText(
                                                       text: I18n.of(context)
                                                           .lines
                                                           .toUpperCase()),
                                                 ),
-                                                InkWell(
-                                                  onTap: () {},
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 18,
-                                                            top: 5,
-                                                            bottom: 5),
-                                                    child: SizedBox(),
-                                                  ),
-                                                )
                                               ]),
                                             ],
                                           ),
                                         );
                                       }
                                       index -= 1;
-                                      return Table(
+                                      return Slidable(
+                                        key: ValueKey<int>(index),
+                                        startActionPane: ActionPane(
+                                        // A motion is a widget used to control how the pane animates.
+                                        motion: const ScrollMotion(),
+                                        children: <Widget>[
+                                          SlidableAction(
+                                            onPressed: (BuildContext context){},
+                                            backgroundColor: Color(0xFFFE4A49),
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.assignment_ind_outlined,
+                                          ),
+                                          SlidableAction(
+                                            onPressed: (BuildContext context){
+                                              Navigator.of(context).push(
+                                                  PickTicketDetailsScreen.route(
+                                                      ticketItemModel: state
+                                                          .pickTicketsModel
+                                                          ?.pickTickets?[
+                                                      index]));
+                                            },
+                                            backgroundColor: Color(0xFF21B7CA),
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.list_alt,
+                                            label: 'Ticket List',
+                                          ),
+                                        ]),
+                                        child: Table(
                                         defaultVerticalAlignment:
                                             TableCellVerticalAlignment.middle,
                                         columnWidths: const <int,
@@ -160,8 +178,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                           0: FixedColumnWidth(40),
                                           1: FixedColumnWidth(70),
                                           2: FlexColumnWidth(),
-                                          3: FixedColumnWidth(50),
-                                          4: FixedColumnWidth(40)
+                                          3: FixedColumnWidth(70),
                                         },
                                         children: <TableRow>[
                                           TableRow(
@@ -174,8 +191,8 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                   padding:
                                                       const EdgeInsets.only(
                                                           left: 18,
-                                                          top: 5,
-                                                          bottom: 5),
+                                                          top: 15,
+                                                          bottom: 15),
                                                   child: Container(
                                                     alignment:
                                                         Alignment.centerLeft,
@@ -202,40 +219,20 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                           .location ??
                                                       ''),
                                                 ),
-                                                Container(
-                                                  child: Text(state
-                                                          .pickTicketsModel
-                                                          ?.pickTickets?[index]
-                                                          .lines ??
-                                                      ''),
-                                                ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).push(
-                                                        PickTicketDetailsScreen.route(
-                                                            ticketItemModel: state
-                                                                    .pickTicketsModel
-                                                                    ?.pickTickets?[
-                                                                index]));
-                                                  },
+                                                Padding(
+                                                  padding: const EdgeInsets.only(right: 18) ,
                                                   child: Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 18,
-                                                            top: 5,
-                                                            bottom: 5),
-                                                    child: RotatedBox(
-                                                      quarterTurns: 1,
-                                                      child: Icon(
-                                                        Icons.keyboard_control,
-                                                        size: 16.0,
-                                                      ),
-                                                    ),
+                                                    alignment: Alignment.centerRight,
+                                                    child: Text(state
+                                                        .pickTicketsModel
+                                                        ?.pickTickets?[index]
+                                                        .lines ??
+                                                        ''),
                                                   ),
-                                                )
+                                                ),
                                               ]),
                                         ],
-                                      );
+                                      ));
                                     })),
                       ),
                     )

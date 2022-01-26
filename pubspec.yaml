@@ -55,6 +55,7 @@ dependencies:
   device_info: ^2.0.2
   package_info: ^2.0.2
   pull_to_refresh: ^2.0.0
+  flutter_slidable: ^1.2.0
 
   ## Testing and Development
   alice_lightweight: ^3.0.0

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_state.dart';
@@ -37,13 +39,16 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       {List<PickTicketDetailsModel>? pickTicketDetailsModel}) async {
     emit(state.copyWith(isUpdateLoading: true));
 
-    try {
+    Timer.periodic(const Duration(seconds: 2), (Timer timer) {
+      emit(state.copyWith(isUpdateLoading: false));
+    });
+    /*try {
       final PickTicketsDetailsResponse response =
           await pickTicketDetailsRepository.updateTicketDetails(
               pickTicketDetailsModel: pickTicketDetailsModel);
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
-    }
+    }*/
   }
 }

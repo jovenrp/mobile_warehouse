@@ -107,8 +107,10 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                 bottomNavigationBar: Padding(
                   padding: const EdgeInsets.only(left: 24, right: 24),
                   child: ATTextButton(
+                    isLoading: state.isLoading,
                     buttonText: I18n.of(context).sign_in,
                     onTap: () {
+                      print('asdas');
                       context.read<LoginScreenBloc>().login(
                           usernameController.text, passwordController.text);
                     },

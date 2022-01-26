@@ -88,6 +88,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                           context: context,
                           builder: (BuildContext context) {
                             return ATDialog(
+                              isLoading: state.isLoading,
                               bodyMessage:
                                   I18n.of(context).logout_from_mobile_warehouse,
                               positiveActionText: I18n.of(context).yes_logout,
