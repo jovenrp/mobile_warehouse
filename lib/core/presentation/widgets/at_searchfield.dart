@@ -3,7 +3,11 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 
 class ATSearchfield extends StatefulWidget {
   const ATSearchfield(
-      {Key? key, this.hintText, this.textEditingController, this.onPressed, this.onChanged})
+      {Key? key,
+      this.hintText,
+      this.textEditingController,
+      this.onPressed,
+      this.onChanged})
       : super(key: key);
 
   final String? hintText;
@@ -21,7 +25,7 @@ class _ATSearchfield extends State<ATSearchfield> {
     return TextFormField(
       controller: widget.textEditingController,
       key: widget.key,
-      onChanged: widget.onChanged ?? (String value){},
+      onChanged: widget.onChanged ?? (String value) {},
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),

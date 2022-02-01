@@ -22,7 +22,9 @@ class PickTicketsBloc extends Cubit<PickTicketsState> {
           await pickTicketsRepository.fetchPickTickets(token: token);
 
       emit(state.copyWith(
-          isLoading: false, pickTicketsItemModel: response.pickTickets, hasError: false));
+          isLoading: false,
+          pickTicketsItemModel: response.pickTickets,
+          hasError: false));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
@@ -34,23 +36,28 @@ class PickTicketsBloc extends Cubit<PickTicketsState> {
     try {
       String? token = await persistenceService.dwnToken.get();
       final PickTicketsResponse response =
-      await pickTicketsRepository.fetchPickTickets(token: token);
+          await pickTicketsRepository.fetchPickTickets(token: token);
 
       String searchText = value?.toLowerCase() ?? '';
-      List<PickTicketsItemModel> values = response.pickTickets?.where((PickTicketsItemModel item) {
-        String ticketId = item.num?.toLowerCase() ?? '';
-        String status = item.status?.toLowerCase() ?? '';
-        String location = item.location?.toLowerCase() ?? '';
-        return ticketId.contains(searchText) || status.contains((searchText)) || location.contains(searchText);
-      }).toList() ?? <PickTicketsItemModel>[];
+      List<PickTicketsItemModel> values =
+          response.pickTickets?.where((PickTicketsItemModel item) {
+                String ticketId = item.num?.toLowerCase() ?? '';
+                String status = item.status?.toLowerCase() ?? '';
+                String location = item.location?.toLowerCase() ?? '';
+                return ticketId.contains(searchText) ||
+                    status.contains((searchText)) ||
+                    location.contains(searchText);
+              }).toList() ??
+              <PickTicketsItemModel>[];
 
       emit(state.copyWith(
-          isLoading: false, pickTicketsItemModel: value?.isEmpty == true ? response.pickTickets : values, hasError: false));
-
+          isLoading: false,
+          pickTicketsItemModel:
+              value?.isEmpty == true ? response.pickTickets : values,
+          hasError: false));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
     }
-
   }
 }

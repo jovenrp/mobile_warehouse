@@ -99,6 +99,9 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                           onRefresh: () => _forcedRefresh(
                               pickTicketId: widget.ticketItemModel?.id),
                           controller: refreshController,
+                          header: WaterDropMaterialHeader(
+                            backgroundColor: AppColors.beachSea,
+                          ),
                           child: state.isLoading
                               ? Container(
                                   alignment: Alignment.topCenter,
@@ -169,29 +172,25 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                               SlidableAction(
                                                 onPressed:
                                                     (BuildContext context) {},
-                                                backgroundColor:
-                                                    Color(0xFFFE4A49),
-                                                foregroundColor: Colors.white,
-                                                icon: Icons
-                                                    .assignment_ind_outlined,
+                                                backgroundColor: AppColors.semiGrey,
+                                                foregroundColor: AppColors.white,
+                                                icon: Icons.cancel_presentation,
                                               ),
                                               SlidableAction(
                                                 onPressed:
                                                     (BuildContext context) {
-                                                  Navigator.of(context).push(
-                                                      SkuDetailsScreen.route(
-                                                          ticketItemModel: state
+                                                      Navigator.of(context).push(
+                                                          SkuDetailsScreen.route(
+                                                              ticketItemModel: state
                                                                   .pickTicketsResponse?[
                                                               index],
-                                                          ticketList: state
-                                                              .pickTicketsResponse,
-                                                          currentIndex: index));
+                                                              ticketList: state
+                                                                  .pickTicketsResponse,
+                                                              currentIndex: index));
                                                 },
-                                                backgroundColor:
-                                                    Color(0xFF21B7CA),
-                                                foregroundColor: Colors.white,
+                                                backgroundColor: AppColors.greyRed,
+                                                foregroundColor: AppColors.white,
                                                 icon: Icons.list_alt,
-                                                label: 'SKU',
                                               ),
                                             ]),
                                         child: Container(

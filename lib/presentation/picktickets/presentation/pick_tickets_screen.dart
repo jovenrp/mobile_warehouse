@@ -77,11 +77,13 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                           textEditingController: searchController,
                           hintText: I18n.of(context).search,
                           onPressed: () {
-                            setState(() {
-                              context
-                                  .read<PickTicketsBloc>()
-                                  .searchTicket(value: searchController.text);
-                            });
+                            if(searchController.text.isNotEmpty == true) {
+                              setState(() {
+                                  context
+                                      .read<PickTicketsBloc>()
+                                      .searchTicket(value: searchController.text);
+                              });
+                            }
                           }, onChanged: (String value) {
                             EasyDebounce.debounce(
                                 'deebouncer1',
@@ -102,14 +104,16 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                             enablePullDown: canRefresh,
                             onRefresh: _forcedRefresh,
                             controller: refreshController,
+                            header: WaterDropMaterialHeader(
+                              backgroundColor: AppColors.beachSea,
+                            ),
                             child: state.isLoading
                                 ? Container(
                                     alignment: Alignment.topCenter,
                                     child: Padding(
                                       padding: const EdgeInsets.only(top: 30),
                                       child: ATText(
-                                          text:
-                                              'Please wait a moment while data is being loaded...'),
+                                          text: I18n.of(context).please_wait_while_data_is_loaded),
                                     ))
                                 : ListView.builder(
                                     itemCount: (state.pickTicketsItemModel?.length ?? 0) + 1,
@@ -121,7 +125,9 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                               top: 20, bottom: 10),
                                           child: Column(
                                             children: <Widget>[
-                                              Table(
+                                              Visibility(
+                                                  visible: state.pickTicketsItemModel?.isNotEmpty == true,
+                                              child: Table(
                                                   defaultVerticalAlignment:
                                                   TableCellVerticalAlignment
                                                       .middle,
@@ -165,12 +171,12 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                             text: I18n.of(context)
                                                                 .lines
                                                                 .toUpperCase()),
-                                                      )])]),
+                                                      )])])),
                                               Visibility(
                                                   visible: state.pickTicketsItemModel?.isEmpty == true,
                                                   child: Padding(
                                                     padding: const EdgeInsets.only(top: 30),
-                                                    child: ATText(text: 'Oops! The item returned 0 results.'),
+                                                    child: ATText(text: I18n.of(context).oops_item_returned_0_results),
                                                   ))
                                             ],
                                           )
@@ -186,9 +192,15 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                 SlidableAction(
                                                   onPressed:
                                                       (BuildContext context) {},
-                                                  backgroundColor:
-                                                      Color(0xFFFE4A49),
-                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: AppColors.semiGrey,
+                                                  foregroundColor: AppColors.white,
+                                                  icon: Icons.cancel_presentation,
+                                                ),
+                                                SlidableAction(
+                                                  onPressed:
+                                                      (BuildContext context) {},
+                                                  backgroundColor: AppColors.grey,
+                                                  foregroundColor: AppColors.white,
                                                   icon: Icons
                                                       .assignment_ind_outlined,
                                                 ),
@@ -201,11 +213,9 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                                     .pickTicketsItemModel?[
                                                                 index]));
                                                   },
-                                                  backgroundColor:
-                                                      Color(0xFF21B7CA),
-                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: AppColors.greyRed,
+                                                  foregroundColor: AppColors.white,
                                                   icon: Icons.list_alt,
-                                                  label: 'Ticket List',
                                                 ),
                                               ]),
                                           child: Table(

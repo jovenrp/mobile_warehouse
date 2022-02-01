@@ -19,6 +19,15 @@ class AppColors {
   static const Color greyText = Color(0xFF9D9EA3);
   static const Color semiDarkText = Color(0xFF5E616B);
   static const Color greyBorder = Color(0xFF363B47);
+  static const Color semiGrey = Color(0xFFADADAD);
+  static const Color grey = Color(0xFF6E6E6E);
+  static const Color lightGrey = Color(0xFFD4D4D4);
+  static const Color greyRed = Color(0xFFA19191);
+  static const Color atSemiRed = Color(0xFFED3E5A);
+  static const Color atYellow = Color(0xFFEDE30E);
+  static const Color atDarkYellow = Color(0xFFA19A12);
+  static const Color atBrown = Color(0xFFA15600);
+  static const Color atOrange = Color(0xFFED9126);
 
   //Custom Colors
   static const Color primaryColor = Color(0xFFD5305F);
@@ -56,7 +65,6 @@ class AppColors {
   static const Color violet = Color(0xFF33264A);
   static const Color mediumPurple = Color(0xff837A90);
   static const Color white = Color(0xFFFFFFFF);
-  static const Color lightGrey = Color(0xFFE4E4E5);
   static const Color darkGrey = Color(0xFF837A90);
   static const Color silver = Color(0xFFD4DADE);
   static const Color nobel = Color(0xFF979797);
