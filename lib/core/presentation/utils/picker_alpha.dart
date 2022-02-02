@@ -10,7 +10,7 @@ class PickerAlpha extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ATText(
-      text: index < 10 ? '0${index + 1}' : '${index + 1}',
+      text: (index + 1) < 10 ? '0${index + 1}' : '${index + 1}',
       fontColor: AppColors.white,
       fontSize: 24,
       weight: FontWeight.bold,

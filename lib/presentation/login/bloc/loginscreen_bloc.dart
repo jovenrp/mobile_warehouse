@@ -15,6 +15,11 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
   final LoginRepository loginRepository;
   final PersistenceService persistenceService;
 
+  Future<void> init() async {
+    emit(state.copyWith(
+        isLoading: false, hasError: false, errorMessage: '')); //t
+  }
+
   Future<void> login(String username, String password) async {
     emit(state.copyWith(isLoading: true)); //turn on loading indicator
 

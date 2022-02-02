@@ -23,7 +23,7 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
 
     print('$loginTimestamp $currentTimestamp');
     print('$token $isExpire');
-    Timer.periodic(const Duration(seconds: 2), (Timer timer) {
+    Timer(const Duration(seconds: 2), () {
       emit(state.copyWith(isLoading: false));
       if (token == null || isExpire) {
         emit(state.copyWith(isAlreadySignedIn: false));

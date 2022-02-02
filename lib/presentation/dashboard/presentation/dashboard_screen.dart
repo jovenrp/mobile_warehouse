@@ -96,7 +96,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                               negativeActionText: I18n.of(context).no_go_back,
                               positiveAction: () =>
                                   context.read<DashboardScreenBloc>().logout(),
-                              negativeAction: () => context.read<DashboardScreenBloc>().logout(),
+                              negativeAction: () =>
+                                  context.read<DashboardScreenBloc>().logout(),
                             );
                           });
                     },

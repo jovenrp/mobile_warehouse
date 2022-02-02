@@ -8,6 +8,7 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_textbutton.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_textfield.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/dashboard/presentation/dashboard_screen.dart';
+import 'package:mobile_warehouse/presentation/forgot_password/presentation/forgot_password_screen.dart';
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_bloc.dart';
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_state.dart';
 
@@ -35,6 +36,8 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
     super.initState();
     usernameController = TextEditingController();
     passwordController = TextEditingController();
+
+    context.read<LoginScreenBloc>().init();
   }
 
   @override
@@ -92,19 +95,38 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                               onTap: () => context
                                   .read<LoginScreenBloc>()
                                   .forgotPassword(),
-                              child: ATText(
-                                text: I18n.of(context).forgot_password,
-                                fontColor: AppColors.beachSea,
-                                fontSize: 12,
+                              child: Ink(
+                                child: InkWell(
+                                  onTap: () => Navigator.of(context)
+                                      .push(ForgotPasswordScreen.route()),
+                                  child: ATText(
+                                    text: I18n.of(context).forgot_password,
+                                    fontColor: AppColors.beachSea,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                             )
                           ],
+                        ),
+                        SizedBox(height: 50),
+                        Container(
+                          width: double.infinity,
+                          child: ATTextButton(
+                            isLoading: state.isLoading,
+                            buttonText: I18n.of(context).sign_in,
+                            onTap: () {
+                              context.read<LoginScreenBloc>().login(
+                                  usernameController.text,
+                                  passwordController.text);
+                            },
+                          ),
                         )
                       ],
                     ),
                   ),
                 ),
-                bottomNavigationBar: Padding(
+                /*bottomNavigationBar: Padding(
                   padding: const EdgeInsets.only(left: 24, right: 24),
                   child: ATTextButton(
                     isLoading: state.isLoading,
@@ -114,7 +136,7 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                           usernameController.text, passwordController.text);
                     },
                   ),
-                ),
+                ),*/
               )));
     });
   }

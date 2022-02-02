@@ -15,8 +15,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class LocationMapperScreen extends StatefulWidget {
   const LocationMapperScreen({Key? key}) : super(key: key);
 
-  static const String routeName = '/pickTickets';
-  static const String screenName = 'pickTicketsScreen';
+  static const String routeName = '/locationMapper';
+  static const String screenName = 'locationMapperScreen';
 
   static ModalRoute<LocationMapperScreen> route() =>
       MaterialPageRoute<LocationMapperScreen>(
