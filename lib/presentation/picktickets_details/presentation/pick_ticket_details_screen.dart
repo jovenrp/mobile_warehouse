@@ -172,24 +172,28 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                               SlidableAction(
                                                 onPressed:
                                                     (BuildContext context) {},
-                                                backgroundColor: AppColors.semiGrey,
-                                                foregroundColor: AppColors.white,
+                                                backgroundColor:
+                                                    AppColors.semiGrey,
+                                                foregroundColor:
+                                                    AppColors.white,
                                                 icon: Icons.cancel_presentation,
                                               ),
                                               SlidableAction(
                                                 onPressed:
                                                     (BuildContext context) {
-                                                      Navigator.of(context).push(
-                                                          SkuDetailsScreen.route(
-                                                              ticketItemModel: state
+                                                  Navigator.of(context).push(
+                                                      SkuDetailsScreen.route(
+                                                          ticketItemModel: state
                                                                   .pickTicketsResponse?[
                                                               index],
-                                                              ticketList: state
-                                                                  .pickTicketsResponse,
-                                                              currentIndex: index));
+                                                          ticketList: state
+                                                              .pickTicketsResponse,
+                                                          currentIndex: index));
                                                 },
-                                                backgroundColor: AppColors.greyRed,
-                                                foregroundColor: AppColors.white,
+                                                backgroundColor:
+                                                    AppColors.greyRed,
+                                                foregroundColor:
+                                                    AppColors.white,
                                                 icon: Icons.list_alt,
                                               ),
                                             ]),

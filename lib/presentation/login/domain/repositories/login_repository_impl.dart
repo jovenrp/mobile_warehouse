@@ -18,9 +18,6 @@ class LoginRepositoryImpl implements LoginRepository {
         password,
       );
 
-      print('token');
-      print(token);
-
       return LoginResponseModel(token: token, isError: false);
     } catch (_) {
       logger.e(_);

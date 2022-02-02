@@ -33,6 +33,8 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
             UserProfileModel(username: username);
         await persistenceService.dwnToken.set(result.token);
         await persistenceService.userProfile.set(userProfileModel.toJson());
+        await persistenceService.loginTimestamp
+            .set(DateTime.now().millisecondsSinceEpoch.toString());
         emit(state.copyWith(
             loginResponseModel: result, userProfileModel: userProfileModel));
       } else {

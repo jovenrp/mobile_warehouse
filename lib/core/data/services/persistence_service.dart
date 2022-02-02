@@ -135,6 +135,11 @@ class PersistenceService {
         UserProfileModel.fromJsonX,
       );
 
+  StringValueContainer get loginTimestamp => StringValueContainer(
+        'keys.loginTimestamp',
+        _securedStorage,
+      );
+
   /*ObjectValueContainer<AppConfigurationDataDto> get appConfiguration =>
       ObjectValueContainer<AppConfigurationDataDto>(
         'keys.appConfiguration',

@@ -110,7 +110,6 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                     isLoading: state.isLoading,
                     buttonText: I18n.of(context).sign_in,
                     onTap: () {
-                      print('asdas');
                       context.read<LoginScreenBloc>().login(
                           usernameController.text, passwordController.text);
                     },

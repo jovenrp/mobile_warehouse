@@ -12,6 +12,7 @@ import 'package:mobile_warehouse/presentation/dashboard/bloc/dashboardscreen_sta
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/dashboard/presentation/localtion_mapper_widget.dart';
+import 'package:mobile_warehouse/presentation/location_mapper/presentation/location_mapper_screen.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
 
@@ -95,6 +96,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                               negativeActionText: I18n.of(context).no_go_back,
                               positiveAction: () =>
                                   context.read<DashboardScreenBloc>().logout(),
+                              negativeAction: () => context.read<DashboardScreenBloc>().logout(),
                             );
                           });
                     },
@@ -119,8 +121,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               LocationMapperWidget(
-                                  onTap: () => ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar)),
+                                  onTap: () => Navigator.of(context)
+                                      .push(LocationMapperScreen.route())),
                             ],
                           ),
                           SizedBox(height: 30),

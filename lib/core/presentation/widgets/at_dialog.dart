@@ -56,7 +56,7 @@ class ATDialog extends StatelessWidget {
                         buttonStyle: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(AppColors.white)),
-                        onTap: negativeAction ?? () => Navigator.pop(context)),
+                        onTap: negativeAction ?? () => print('asd')),
                   )
                 ],
               ))

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/application/domain/bloc/application_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
+import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_bloc.dart';
 import 'package:mobile_warehouse/presentation/login/data/services/login_api_service.dart';
 import 'package:mobile_warehouse/presentation/login/domain/repositories/login_repository_impl.dart';
@@ -43,6 +44,10 @@ class BlocsProvider {
         BlocProvider<DashboardScreenBloc>(
           create: (_) =>
               DashboardScreenBloc(persistenceService: persistenceService),
+        ),
+        BlocProvider<LocationMapperBloc>(
+          create: (_) =>
+              LocationMapperBloc(persistenceService: persistenceService),
         ),
         BlocProvider<PickTicketsBloc>(
           create: (_) => PickTicketsBloc(
