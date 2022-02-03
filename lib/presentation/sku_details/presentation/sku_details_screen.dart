@@ -68,7 +68,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       ATText(
-                          text: 'Title here',
+                          text: widget.ticketItemModel?.location,
                           weight: FontWeight.w700,
                           fontSize: 24),
                       SizedBox(height: 6),

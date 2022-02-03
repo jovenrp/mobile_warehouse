@@ -18,6 +18,8 @@ class PickTicketDetailsModel {
     this.qtyPick,
     this.qtyPicked,
     this.location,
+    this.locId,
+    this.locCode,
     this.note,
     this.complete,
     this.partial,
@@ -70,7 +72,13 @@ class PickTicketDetailsModel {
   final String? qtyPicked;
 
   @JsonKey(name: 'location')
-  final String? location;
+  String? location;
+
+  @JsonKey(name: 'locId')
+  final String? locId;
+
+  @JsonKey(name: 'locCode')
+  final String? locCode;
 
   @JsonKey(name: 'note')
   final String? note;
@@ -111,5 +119,9 @@ class PickTicketDetailsModel {
 
   void setPickedItem(String? value) {
     pickedItem = value;
+  }
+
+  void setLocation(String? value) {
+    location = value;
   }
 }

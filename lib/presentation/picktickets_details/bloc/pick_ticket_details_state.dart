@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobile_warehouse/core/domain/models/errors/actiontrak_api_error.dart';
+import 'package:mobile_warehouse/presentation/picktickets/data/models/pick_tickets_item_model.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
 
 part 'pick_ticket_details_state.freezed.dart';
@@ -14,5 +15,6 @@ class PickTicketDetailsState with _$PickTicketDetailsState {
       String? errorMessage,
       @Default(false) bool didFinish,
       List<PickTicketDetailsModel>? pickTicketsResponse,
+      List<PickTicketsItemModel>? pickTicketResponse,
       String? token}) = _PickTicketDetailsState;
 }

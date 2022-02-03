@@ -18,6 +18,7 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
       final String result =
           await _apiService.fetchPickTicketsDetails(token, pickTicketId);
 
+      print(result);
       final PickTicketsDetailsResponse response =
           PickTicketsDetailsResponse.fromJson(jsonDecode(result));
 

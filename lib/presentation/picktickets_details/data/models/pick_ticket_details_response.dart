@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:mobile_warehouse/presentation/picktickets/data/models/pick_tickets_item_model.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
 
 part 'pick_ticket_details_response.g.dart';
@@ -7,6 +8,7 @@ part 'pick_ticket_details_response.g.dart';
 class PickTicketsDetailsResponse {
   const PickTicketsDetailsResponse({
     this.pickTicketsResponse,
+    this.pickTicketResponse,
   });
 
   factory PickTicketsDetailsResponse.fromJson(Map<String, dynamic> json) =>
@@ -15,4 +17,7 @@ class PickTicketsDetailsResponse {
 
   @JsonKey(name: 'pickTicketDetails')
   final List<PickTicketDetailsModel>? pickTicketsResponse;
+
+  @JsonKey(name: 'pickTicket')
+  final List<PickTicketsItemModel>? pickTicketResponse;
 }

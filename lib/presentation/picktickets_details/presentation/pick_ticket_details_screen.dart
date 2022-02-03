@@ -163,6 +163,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                             text: state
                                                 .pickTicketsResponse?[index]
                                                 .qtyPick));
+                                    //set the location here
+                                    state.pickTicketsResponse?[index]
+                                        .setLocation(state
+                                            .pickTicketResponse?[0].location);
                                     return Slidable(
                                         key: ValueKey<int>(index),
                                         startActionPane: ActionPane(
@@ -291,7 +295,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                         text: state
                                                             .pickTicketsResponse?[
                                                                 index]
-                                                            .location,
+                                                            .locCode,
                                                         weight: FontWeight.bold,
                                                       ),
                                                     ),
