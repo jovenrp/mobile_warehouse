@@ -175,6 +175,11 @@ class PersistenceService {
         _memoryStorage,
       );
 
+  BoolValueContainer get pickLimitSetting => BoolValueContainer(
+        'keys.pickLimitSetting',
+        _securedStorage,
+      );
+
   Future<void> updateHomeLastRefresh() async {
     int now = DateTime.now().millisecondsSinceEpoch;
     String? userId = await currentUserServiceNumber.get();

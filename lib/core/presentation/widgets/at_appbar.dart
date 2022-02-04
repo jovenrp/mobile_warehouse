@@ -9,7 +9,8 @@ class ATAppBar extends StatelessWidget implements PreferredSizeWidget {
       this.title,
       this.icon,
       this.onTap,
-      this.rotation})
+      this.rotation,
+      this.actions})
       : super(key: key);
 
   final double? appBarHeight;
@@ -17,6 +18,7 @@ class ATAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Icon? icon;
   final VoidCallback? onTap;
   final int? rotation;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class ATAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
         ),
       ),
+      actions: actions ?? <Widget>[],
     );
   }
 

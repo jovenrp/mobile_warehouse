@@ -15,6 +15,7 @@ import 'package:mobile_warehouse/presentation/dashboard/presentation/localtion_m
 import 'package:mobile_warehouse/presentation/location_mapper/presentation/location_mapper_screen.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
+import 'package:mobile_warehouse/presentation/settings/presentation/settings_screen.dart';
 
 import 'action_cards_widget.dart';
 
@@ -84,6 +85,22 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                       size: 24.0,
                     ),
                     rotation: 2,
+                    actions: <Widget>[
+                      Ink(
+                        child: InkWell(
+                          onTap: () => Navigator.of(context)
+                              .push(SettingsScreen.route()),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 18, right: 18),
+                            child: Icon(
+                              Icons.settings,
+                              color: AppColors.white,
+                              size: 25,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                     onTap: () {
                       showDialog(
                           context: context,

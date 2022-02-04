@@ -22,6 +22,7 @@
   "yes_logout" : "Yes, logout",
   "no_go_back" : "No, go back",
   "dashboard" : "Dashboard",
+  "settings" : "Settings",
   "location_mapper" : "Locaction mapper",
   "dashboard_android_back" : "Press back again to exit",
   "count_list" : "Count list",

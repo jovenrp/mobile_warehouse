@@ -16,5 +16,6 @@ class PickTicketDetailsState with _$PickTicketDetailsState {
       @Default(false) bool didFinish,
       List<PickTicketDetailsModel>? pickTicketsResponse,
       List<PickTicketsItemModel>? pickTicketResponse,
+      bool? pickLimitSetting,
       String? token}) = _PickTicketDetailsState;
 }

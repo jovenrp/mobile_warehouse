@@ -11,9 +11,4 @@ abstract class PickTicketsApiService {
   @POST('/mobile(getPickTickets)?useHdrs=true&sessId={token}')
   Future<dynamic> fetchPickTickets(@Path('token') String? token,
       {@Path('headers') String? headers});
-
-  @POST('/mobile(getPickTicket)?useHdrs=true&sessId={token}&id={pickTicketId}')
-  Future<dynamic> fetchPickTicketsDetails(
-      @Path('token') String? token, @Path('pickTicketId') String? pickTicketId,
-      {@Path('headers') String? headers});
 }

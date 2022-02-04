@@ -14,7 +14,9 @@ import 'package:mobile_warehouse/presentation/picktickets/bloc/pick_tickets_bloc
 import 'package:mobile_warehouse/presentation/picktickets/data/services/pick_tickets_api_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets/domain/repositories/pick_tickets_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_bloc.dart';
+import 'package:mobile_warehouse/presentation/picktickets_details/data/services/pick_ticket_details_api_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/domain/repositories/pick_ticket_details_repository_impl.dart';
+import 'package:mobile_warehouse/presentation/settings/bloc/settings_bloc.dart';
 import 'package:mobile_warehouse/presentation/sku_details/bloc/sku_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart';
 import 'package:provider/single_child_widget.dart';
@@ -50,6 +52,10 @@ class BlocsProvider {
           create: (_) =>
               DashboardScreenBloc(persistenceService: persistenceService),
         ),
+        BlocProvider<SettingsScreenBloc>(
+          create: (_) =>
+              SettingsScreenBloc(persistenceService: persistenceService),
+        ),
         BlocProvider<LocationMapperBloc>(
           create: (_) =>
               LocationMapperBloc(persistenceService: persistenceService),
@@ -63,13 +69,13 @@ class BlocsProvider {
         BlocProvider<PickTicketDetailsBloc>(
           create: (_) => PickTicketDetailsBloc(
               pickTicketDetailsRepository: PickTicketDetailsRepositoryImpl(
-                  PickTicketsApiService(dio, baseUrl: apiUrl)),
+                  PickTicketDetailsApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
         BlocProvider<SkuDetailsBloc>(
           create: (_) => SkuDetailsBloc(
               pickTicketDetailsRepository: PickTicketDetailsRepositoryImpl(
-                  PickTicketsApiService(dio, baseUrl: apiUrl)),
+                  PickTicketDetailsApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
       ];

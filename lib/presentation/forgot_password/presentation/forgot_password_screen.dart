@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
@@ -6,14 +6,11 @@ import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_textbutton.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_textfield.dart';
-import 'package:mobile_warehouse/generated/assets.gen.dart';
-import 'package:mobile_warehouse/core/presentation/widgets/application_logo.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/presentation/forgot_password/bloc/forgot_password_bloc.dart';
 import 'package:mobile_warehouse/presentation/forgot_password/bloc/forgot_password_state.dart';
 
 import 'package:mobile_warehouse/generated/i18n.dart';
-import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
