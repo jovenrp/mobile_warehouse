@@ -94,10 +94,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   }
 
   Future<void> getSettings() async {
-    emit(state.copyWith(isLoading: true));
-
     bool pickLimitSetting =
         await persistenceService.pickLimitSetting.get() ?? false;
-    emit(state.copyWith(isLoading: false, pickLimitSetting: pickLimitSetting));
+    emit(state.copyWith(pickLimitSetting: pickLimitSetting));
   }
 }
