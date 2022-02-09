@@ -4,7 +4,8 @@ abstract class PickTicketDetailsRepository {
   Future<PickTicketsDetailsResponse> fetchPickTicketsDetails(
       {String? token, String? pickTicketId});
 
-  Future<String> beginPick({required String pickTicketDetailId});
+  Future<String> beginPick(
+      {required String pickTicketDetailId, required String sessId});
   Future<String> exitPick({required String pickTicketDetailId});
   Future<String> completePickTicket({required String pickTicket});
   Future<String> exitPickTicket({required String pickTicket});

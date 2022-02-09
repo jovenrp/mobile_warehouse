@@ -38,9 +38,11 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   Future<void> beginPick({required String pickTicketDetailId}) async {
     emit(state.copyWith(isUpdateLoading: true));
     try {
-      print('BEGIN pick is called $pickTicketDetailId');
+      String sessId = await persistenceService.dwnToken.get() ?? '';
+      print('BEGIN pick is called $pickTicketDetailId $sessId');
+
       final String response = await pickTicketDetailsRepository.beginPick(
-          pickTicketDetailId: pickTicketDetailId);
+          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
       print(response);
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));

@@ -14,14 +14,14 @@ abstract class PickTicketDetailsApiService {
       {@Path('headers') String? headers});
 
   @POST(
-      '/mobile(getPickTickets)?useHdrs=true&sessId={token}&pickTicketDetailId={pickTicketDetailId}')
+      '/mobile(beginPick)?useHdrs=true&sessId={sessId}&pickTicketDetailId={pickTicketDetailId}')
   Future<dynamic> beginPick(
       {@Path('headers') String? headers,
-      @Path('token') String? token,
+      @Path('sessId') String? sessId,
       @Path('pickTicketDetailId') String? pickTicketDetailId});
 
   @POST(
-      '/mobile(getPickTickets)?useHdrs=true&sessId={token}&pickTicketDetailId={pickTicketDetailId}&qtyPicked={qtyPicked}')
+      '/mobile(submitPick)?useHdrs=true&sessId={token}&pickTicketDetailId={pickTicketDetailId}&qtyPicked={qtyPicked}')
   Future<dynamic> submitPick({
     @Path('headers') String? headers,
     @Path('token') String? token,
@@ -30,21 +30,21 @@ abstract class PickTicketDetailsApiService {
   });
 
   @POST(
-      '/mobile(getPickTickets)?useHdrs=true&sessId={token}&pickTicketDetailId={pickTicketDetailId}')
+      '/mobile(exitPick)?useHdrs=true&sessId={token}&pickTicketDetailId={pickTicketDetailId}')
   Future<dynamic> exitPick(
       {@Path('headers') String? headers,
       @Path('token') String? token,
       @Path('pickTicketDetailId') String? pickTicketDetailId});
 
   @POST(
-      '/mobile(getPickTickets)?useHdrs=true&sessId={token}&pickTicket={pickTicket}')
+      '/mobile(completePickTicket)?useHdrs=true&sessId={token}&pickTicket={pickTicket}')
   Future<dynamic> completePickTicket(
       {@Path('headers') String? headers,
       @Path('token') String? token,
       @Path('pickTicket') String? pickTicket});
 
   @POST(
-      '/mobile(getPickTickets)?useHdrs=true&sessId={token}&pickTicket={pickTicket}')
+      '/mobile(exitPickTicket)?useHdrs=true&sessId={token}&pickTicket={pickTicket}')
   Future<dynamic> exitPickTicket(
       {@Path('headers') String? headers,
       @Path('token') String? token,

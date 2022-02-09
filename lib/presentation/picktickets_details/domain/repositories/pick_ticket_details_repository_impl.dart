@@ -28,11 +28,12 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
   }
 
   @override
-  Future<String> beginPick({required String pickTicketDetailId}) async {
+  Future<String> beginPick(
+      {required String pickTicketDetailId, required String sessId}) async {
     print('SHOULD BE HERE');
     try {
-      final String result =
-          await _apiService.beginPick(pickTicketDetailId: pickTicketDetailId);
+      final String result = await _apiService.beginPick(
+          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
       print('result here $result');
       return '';
     } catch (_) {
