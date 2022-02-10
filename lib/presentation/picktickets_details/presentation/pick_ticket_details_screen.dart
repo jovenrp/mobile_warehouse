@@ -125,7 +125,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                     padding: const EdgeInsets.only(top: 30),
                                     child: ATText(text: 'Please wait a moment while data is being loaded...'),
                                   ))
-                              : ListView.builder(
+                              : state.pickTicketsResponse?.isNotEmpty == true ? ListView.builder(
                                   itemCount: (state.pickTicketsResponse?.length ?? 0) + 1,
                                   itemBuilder: (BuildContext context, int index) {
                                     if (index == 0) {
@@ -352,7 +352,18 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                             ),
                                           ]),
                                         ));
-                                  }))))
+                                  }) : Container(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.only(
+                                  top: 30),
+                              child: ATText(
+                                  text: I18n.of(context)
+                                      .oops_item_returned_0_results),
+                            ),
+                          )
+                      )))
             ])),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
