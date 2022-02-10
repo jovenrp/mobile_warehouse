@@ -30,7 +30,6 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
   @override
   Future<String> beginPick(
       {required String pickTicketDetailId, required String sessId}) async {
-    print('SHOULD BE HERE');
     try {
       final String result = await _apiService.beginPick(
           pickTicketDetailId: pickTicketDetailId, sessId: sessId);
@@ -38,7 +37,6 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
       return '';
     } catch (_) {
       logger.e(_.toString());
-      print('IS IT HERE?');
       return '';
     }
   }
