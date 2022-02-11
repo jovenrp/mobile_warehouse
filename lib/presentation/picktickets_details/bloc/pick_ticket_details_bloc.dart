@@ -21,10 +21,15 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
 
     try {
       String? token = await persistenceService.dwnToken.get();
-      final PickTicketsDetailsResponse response = await pickTicketDetailsRepository.fetchPickTicketsDetails(token: token, pickTicketId: pickTicketId);
+      final PickTicketsDetailsResponse response =
+          await pickTicketDetailsRepository.fetchPickTicketsDetails(
+              token: token, pickTicketId: pickTicketId);
 
       emit(state.copyWith(
-          isLoading: false, pickTicketsResponse: response.pickTicketsResponse, pickTicketResponse: response.pickTicketResponse, hasError: false));
+          isLoading: false,
+          pickTicketsResponse: response.pickTicketsResponse,
+          pickTicketResponse: response.pickTicketResponse,
+          hasError: false));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
@@ -57,7 +62,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     }
   }
 
-  Future<void> submitPick({required String pickTicketDetailId, required String qtyPicked}) async {
+  Future<void> submitPick(
+      {required String pickTicketDetailId, required String qtyPicked}) async {
     emit(state.copyWith(isUpdateLoading: true));
     try {
       print('SUBMIT pick is called $pickTicketDetailId $qtyPicked');
@@ -91,38 +97,47 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   }
 
   Future<void> getSettings() async {
-    bool pickLimitSetting = await persistenceService.pickLimitSetting.get() ?? false;
+    bool pickLimitSetting =
+        await persistenceService.pickLimitSetting.get() ?? false;
     emit(state.copyWith(pickLimitSetting: pickLimitSetting));
   }
 
-  Future<void> searchTicket({String? value, required String pickTicketId}) async {
+  Future<void> searchTicket(
+      {String? value, required String pickTicketId}) async {
     emit(state.copyWith(isLoading: true));
     try {
       String? token = await persistenceService.dwnToken.get();
-      final PickTicketsDetailsResponse response = await pickTicketDetailsRepository.fetchPickTicketsDetails(token: token, pickTicketId: pickTicketId);
+      final PickTicketsDetailsResponse response =
+          await pickTicketDetailsRepository.fetchPickTicketsDetails(
+              token: token, pickTicketId: pickTicketId);
 
       String searchText = value?.toLowerCase() ?? '';
-      List<PickTicketDetailsModel> values = response.pickTicketsResponse?.where((PickTicketDetailsModel item) {
-            String sku = item.sku?.toLowerCase() ?? '';
-            String description = item.description?.toLowerCase() ?? '';
-            String locCode = item.locCode?.toLowerCase() ?? '';
-            String status = item.status?.toLowerCase() ?? '';
-            String uom = item.uom?.toLowerCase() ?? '';
-            String qtyPicked = item.qtyPicked?.toLowerCase() ?? '';
-            String qtyPick = item.qtyPick?.toLowerCase() ?? '';
-            return sku.contains(searchText) ||
-                description.contains((searchText)) ||
-                status.contains((searchText)) ||
-                uom.contains((searchText)) ||
-                qtyPicked.contains((searchText)) ||
-                qtyPick.contains((searchText)) ||
-                locCode.contains(searchText);
-          }).toList() ??
-          <PickTicketDetailsModel>[];
+      List<PickTicketDetailsModel> values =
+          response.pickTicketsResponse?.where((PickTicketDetailsModel item) {
+                String sku = item.sku?.toLowerCase() ?? '';
+                String description = item.description?.toLowerCase() ?? '';
+                String locCode = item.locCode?.toLowerCase() ?? '';
+                String status = item.status?.toLowerCase() ?? '';
+                String uom = item.uom?.toLowerCase() ?? '';
+                String qtyPicked = item.qtyPicked?.toLowerCase() ?? '';
+                String qtyPick = item.qtyPick?.toLowerCase() ?? '';
+                return sku.contains(searchText) ||
+                    description.contains((searchText)) ||
+                    status.contains((searchText)) ||
+                    uom.contains((searchText)) ||
+                    qtyPicked.contains((searchText)) ||
+                    qtyPick.contains((searchText)) ||
+                    locCode.contains(searchText);
+              }).toList() ??
+              <PickTicketDetailsModel>[];
 
       print('$value ${values.length}');
 
-      emit(state.copyWith(isLoading: false, pickTicketsResponse: value?.isEmpty == true ? response.pickTicketsResponse : values, hasError: false));
+      emit(state.copyWith(
+          isLoading: false,
+          pickTicketsResponse:
+              value?.isEmpty == true ? response.pickTicketsResponse : values,
+          hasError: false));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);

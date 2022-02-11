@@ -24,6 +24,7 @@
   "dashboard" : "Dashboard",
   "settings" : "Settings",
   "location_mapper" : "Locaction mapper",
+  "barcode_scanner" : "Scanner",
   "dashboard_android_back" : "Press back again to exit",
   "count_list" : "Count list",
   "count_list_description" : "A short description of count list",

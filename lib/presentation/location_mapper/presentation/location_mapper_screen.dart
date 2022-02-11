@@ -10,6 +10,7 @@ import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapp
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_state.dart';
 
 import 'package:mobile_warehouse/generated/i18n.dart';
+import 'package:mobile_warehouse/presentation/qr_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class LocationMapperScreen extends StatefulWidget {
@@ -18,8 +19,7 @@ class LocationMapperScreen extends StatefulWidget {
   static const String routeName = '/locationMapper';
   static const String screenName = 'locationMapperScreen';
 
-  static ModalRoute<LocationMapperScreen> route() =>
-      MaterialPageRoute<LocationMapperScreen>(
+  static ModalRoute<LocationMapperScreen> route() => MaterialPageRoute<LocationMapperScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => const LocationMapperScreen(),
       );
@@ -40,8 +40,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LocationMapperBloc, LocationMapperState>(
-        listener: (BuildContext context, LocationMapperState state) {
+    return BlocConsumer<LocationMapperBloc, LocationMapperState>(listener: (BuildContext context, LocationMapperState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
       }
@@ -59,52 +58,59 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
               ),
               body: Container(
                   color: AppColors.beachSea,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
-                              hintText: I18n.of(context).search,
-                              onPressed: () {},
-                              onChanged: (String value) {}),
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          color: AppColors.beachSea,
-                          height: 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              SizedBox(
-                                  width: 100,
-                                  child: WheelPicker(
-                                    title: 'Isle',
-                                    index: 50,
-                                  )),
-                              SizedBox(
-                                  width: 100,
-                                  child: WheelPicker(
-                                    title: 'Row',
-                                    index: 20,
-                                  )),
-                              SizedBox(
-                                  width: 100,
-                                  child: WheelPicker(
-                                    title: 'Column',
-                                    index: 100,
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            color: AppColors.white,
-                          ),
-                        )
-                      ]))));
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, right: 18),
+                      child: ATSearchfield(
+                          hintText: '${I18n.of(context).search} by location serial no.',
+                          isScanner: true,
+                          onPressed: () => Navigator.of(context).push(QRScreen.route()),
+                          onChanged: (String value) {}),
+                    ),
+                    SizedBox(height: 20),
+                    Container(
+                      color: AppColors.beachSea,
+                      height: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                              width: 100,
+                              child: WheelPickerByLetters(
+                                title: 'Aisle',
+                                index: 50,
+                              )),
+                          SizedBox(
+                              width: 100,
+                              child: WheelPicker(
+                                title: 'Section',
+                                index: 20,
+                              )),
+                          SizedBox(
+                              width: 100,
+                              child: WheelPickerByLetters(
+                                title: 'Shelf',
+                                index: 100,
+                              ))
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, right: 18),
+                      child: ATSearchfield(
+                          hintText: '${I18n.of(context).search} by SKU',
+                          isScanner: true,
+                          onPressed: () => Navigator.of(context).push(QRScreen.route()),
+                          onChanged: (String value) {}),
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: Container(
+                        color: AppColors.white,
+                      ),
+                    )
+                  ]))));
     });
   }
 
@@ -115,8 +121,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 }
 
 class WheelPicker extends StatelessWidget {
-  const WheelPicker({Key? key, this.title, required this.index})
-      : super(key: key);
+  const WheelPicker({Key? key, this.title, required this.index}) : super(key: key);
 
   final String? title;
   final int index;
@@ -146,7 +151,75 @@ class WheelPicker extends StatelessWidget {
                   builder: (BuildContext context, int index) {
                     return Container(
                       alignment: Alignment.bottomCenter,
-                      child: PickerAlpha(index: index),
+                      child: PickerAlpha(index: index.toString()),
+                    );
+                  })),
+        )
+      ],
+    );
+  }
+}
+
+class WheelPickerByLetters extends StatelessWidget {
+  WheelPickerByLetters({Key? key, this.title, required this.index}) : super(key: key);
+
+  final String? title;
+  final int index;
+  final List<String> alphabet = <String>[
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+            child: ATText(
+          text: title,
+          fontColor: AppColors.white,
+          fontSize: 24,
+          weight: FontWeight.bold,
+        )),
+        Container(
+          width: 100,
+          height: 50,
+          child: ListWheelScrollView.useDelegate(
+              itemExtent: 50,
+              perspective: 0.005,
+              diameterRatio: .2,
+              clipBehavior: Clip.none,
+              physics: FixedExtentScrollPhysics(),
+              childDelegate: ListWheelChildBuilderDelegate(
+                  childCount: alphabet.length,
+                  builder: (BuildContext context, int index) {
+                    return Container(
+                      alignment: Alignment.bottomCenter,
+                      child: PickerAlpha(index: alphabet[index], isAlphabet: true),
                     );
                   })),
         )

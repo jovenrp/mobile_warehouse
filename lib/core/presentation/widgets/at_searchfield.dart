@@ -7,13 +7,15 @@ class ATSearchfield extends StatefulWidget {
       this.hintText,
       this.textEditingController,
       this.onPressed,
-      this.onChanged})
+      this.onChanged,
+      this.isScanner = false})
       : super(key: key);
 
   final String? hintText;
   final TextEditingController? textEditingController;
   final VoidCallback? onPressed;
   final ValueChanged<String>? onChanged;
+  final bool? isScanner;
 
   @override
   _ATSearchfield createState() => _ATSearchfield();
@@ -22,6 +24,7 @@ class ATSearchfield extends StatefulWidget {
 class _ATSearchfield extends State<ATSearchfield> {
   @override
   Widget build(BuildContext context) {
+    print(widget.isScanner);
     return TextFormField(
       controller: widget.textEditingController,
       key: widget.key,
@@ -42,7 +45,8 @@ class _ATSearchfield extends State<ATSearchfield> {
           filled: true,
           fillColor: Colors.white,
           suffixIcon: IconButton(
-            icon: Icon(Icons.search, color: AppColors.semiDark),
+            icon: Icon(widget.isScanner ?? false ? Icons.qr_code : Icons.search,
+                color: AppColors.semiDark),
             onPressed: widget.onPressed ?? () {},
           )),
     );
