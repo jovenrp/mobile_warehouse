@@ -10,7 +10,7 @@ import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapp
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_state.dart';
 
 import 'package:mobile_warehouse/generated/i18n.dart';
-import 'package:mobile_warehouse/presentation/qr_screen.dart';
+import 'package:mobile_warehouse/presentation/qr/presentation/qr_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class LocationMapperScreen extends StatefulWidget {
