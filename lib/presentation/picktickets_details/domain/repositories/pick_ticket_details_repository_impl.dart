@@ -43,10 +43,15 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
 
   @override
   Future<String> submitPick(
-      {required String pickTicketDetailId, required String qtyPicked}) async {
+      {required String pickTicketDetailId,
+      required String qtyPicked,
+      required String sessId}) async {
     try {
       final String result = await _apiService.submitPick(
-          pickTicketDetailId: pickTicketDetailId, qtyPicked: qtyPicked);
+          pickTicketDetailId: pickTicketDetailId,
+          qtyPicked: qtyPicked,
+          sessId: sessId);
+      print('result here $result');
       return '';
     } catch (_) {
       return '';
@@ -54,10 +59,12 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
   }
 
   @override
-  Future<String> exitPick({required String pickTicketDetailId}) async {
+  Future<String> exitPick(
+      {required String pickTicketDetailId, required String sessId}) async {
     try {
-      final String result =
-          await _apiService.exitPick(pickTicketDetailId: pickTicketDetailId);
+      final String result = await _apiService.exitPick(
+          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+      print('result here $result');
       return '';
     } catch (_) {
       return '';
@@ -65,21 +72,26 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
   }
 
   @override
-  Future<String> completePickTicket({required String pickTicket}) async {
+  Future<String> completePickTicket(
+      {required String pickTicket, required String sessId}) async {
     try {
-      final String result =
-          await _apiService.completePickTicket(pickTicket: pickTicket);
+      final String result = await _apiService.completePickTicket(
+          pickTicketId: pickTicket, sessId: sessId);
+      print('result here $result');
       return '';
     } catch (_) {
+      print('result here $_');
       return '';
     }
   }
 
   @override
-  Future<String> exitPickTicket({required String pickTicket}) async {
+  Future<String> exitPickTicket(
+      {required String pickTicket, required String sessId}) async {
     try {
-      final String result =
-          await _apiService.exitPickTicket(pickTicket: pickTicket);
+      final String result = await _apiService.exitPickTicket(
+          pickTicket: pickTicket, sessId: sessId);
+      print('result here $result');
       return '';
     } catch (_) {
       return '';

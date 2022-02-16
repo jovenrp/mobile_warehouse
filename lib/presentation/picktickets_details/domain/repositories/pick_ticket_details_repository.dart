@@ -6,9 +6,14 @@ abstract class PickTicketDetailsRepository {
 
   Future<String> beginPick(
       {required String pickTicketDetailId, required String sessId});
-  Future<String> exitPick({required String pickTicketDetailId});
-  Future<String> completePickTicket({required String pickTicket});
-  Future<String> exitPickTicket({required String pickTicket});
+  Future<String> exitPick(
+      {required String pickTicketDetailId, required String sessId});
+  Future<String> completePickTicket(
+      {required String pickTicket, required String sessId});
+  Future<String> exitPickTicket(
+      {required String pickTicket, required String sessId});
   Future<String> submitPick(
-      {required String pickTicketDetailId, required String qtyPicked});
+      {required String pickTicketDetailId,
+      required String qtyPicked,
+      required String sessId});
 }

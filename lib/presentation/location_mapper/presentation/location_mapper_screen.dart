@@ -19,7 +19,8 @@ class LocationMapperScreen extends StatefulWidget {
   static const String routeName = '/locationMapper';
   static const String screenName = 'locationMapperScreen';
 
-  static ModalRoute<LocationMapperScreen> route() => MaterialPageRoute<LocationMapperScreen>(
+  static ModalRoute<LocationMapperScreen> route() =>
+      MaterialPageRoute<LocationMapperScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => const LocationMapperScreen(),
       );
@@ -40,7 +41,8 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LocationMapperBloc, LocationMapperState>(listener: (BuildContext context, LocationMapperState state) {
+    return BlocConsumer<LocationMapperBloc, LocationMapperState>(
+        listener: (BuildContext context, LocationMapperState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
       }
@@ -58,59 +60,65 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
               ),
               body: Container(
                   color: AppColors.beachSea,
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18, right: 18),
-                      child: ATSearchfield(
-                          hintText: '${I18n.of(context).search} by location serial no.',
-                          isScanner: true,
-                          onPressed: () => Navigator.of(context).push(QRScreen.route()),
-                          onChanged: (String value) {}),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      color: AppColors.beachSea,
-                      height: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                              width: 100,
-                              child: WheelPickerByLetters(
-                                title: 'Aisle',
-                                index: 50,
-                              )),
-                          SizedBox(
-                              width: 100,
-                              child: WheelPicker(
-                                title: 'Section',
-                                index: 20,
-                              )),
-                          SizedBox(
-                              width: 100,
-                              child: WheelPickerByLetters(
-                                title: 'Shelf',
-                                index: 100,
-                              ))
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18, right: 18),
-                      child: ATSearchfield(
-                          hintText: '${I18n.of(context).search} by SKU',
-                          isScanner: true,
-                          onPressed: () => Navigator.of(context).push(QRScreen.route()),
-                          onChanged: (String value) {}),
-                    ),
-                    SizedBox(height: 20),
-                    Expanded(
-                      child: Container(
-                        color: AppColors.white,
-                      ),
-                    )
-                  ]))));
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: ATSearchfield(
+                              hintText:
+                                  '${I18n.of(context).search} by location serial no.',
+                              isScanner: true,
+                              onPressed: () =>
+                                  Navigator.of(context).push(QRScreen.route()),
+                              onChanged: (String value) {}),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          color: AppColors.beachSea,
+                          height: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                  width: 100,
+                                  child: WheelPickerByLetters(
+                                    title: 'Aisle',
+                                    index: 50,
+                                  )),
+                              SizedBox(
+                                  width: 100,
+                                  child: WheelPicker(
+                                    title: 'Section',
+                                    index: 20,
+                                  )),
+                              SizedBox(
+                                  width: 100,
+                                  child: WheelPickerByLetters(
+                                    title: 'Shelf',
+                                    index: 100,
+                                  ))
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: ATSearchfield(
+                              hintText: '${I18n.of(context).search} by SKU',
+                              isScanner: true,
+                              onPressed: () =>
+                                  Navigator.of(context).push(QRScreen.route()),
+                              onChanged: (String value) {}),
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: Container(
+                            color: AppColors.white,
+                          ),
+                        )
+                      ]))));
     });
   }
 
@@ -121,7 +129,8 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 }
 
 class WheelPicker extends StatelessWidget {
-  const WheelPicker({Key? key, this.title, required this.index}) : super(key: key);
+  const WheelPicker({Key? key, this.title, required this.index})
+      : super(key: key);
 
   final String? title;
   final int index;
@@ -161,7 +170,8 @@ class WheelPicker extends StatelessWidget {
 }
 
 class WheelPickerByLetters extends StatelessWidget {
-  WheelPickerByLetters({Key? key, this.title, required this.index}) : super(key: key);
+  WheelPickerByLetters({Key? key, this.title, required this.index})
+      : super(key: key);
 
   final String? title;
   final int index;
@@ -219,7 +229,8 @@ class WheelPickerByLetters extends StatelessWidget {
                   builder: (BuildContext context, int index) {
                     return Container(
                       alignment: Alignment.bottomCenter,
-                      child: PickerAlpha(index: alphabet[index], isAlphabet: true),
+                      child:
+                          PickerAlpha(index: alphabet[index], isAlphabet: true),
                     );
                   })),
         )

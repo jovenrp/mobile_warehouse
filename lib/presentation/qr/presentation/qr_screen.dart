@@ -61,18 +61,19 @@ class _QRScreen extends State<QRScreen> {
                   },
                   child: FutureBuilder(
                     future: controller?.getFlashStatus(),
-                    builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<Object?> snapshot) {
                       return snapshot.data == true
                           ? Icon(
-                        Icons.flash_on,
-                        size: 30,
-                        color: AppColors.white,
-                      )
+                              Icons.flash_on,
+                              size: 30,
+                              color: AppColors.white,
+                            )
                           : Icon(
-                        Icons.flash_off,
-                        size: 30,
-                        color: AppColors.white,
-                      );
+                              Icons.flash_off,
+                              size: 30,
+                              color: AppColors.white,
+                            );
                     },
                   ))),
           SizedBox(width: 18),
@@ -84,9 +85,14 @@ class _QRScreen extends State<QRScreen> {
                   },
                   child: FutureBuilder(
                     future: controller?.getCameraInfo(),
-                    builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<Object?> snapshot) {
                       if (snapshot.data != null) {
-                        return Icon(Icons.flip_camera_ios_outlined, size: 30, color: AppColors.white,);
+                        return Icon(
+                          Icons.flip_camera_ios_outlined,
+                          size: 30,
+                          color: AppColors.white,
+                        );
                       } else {
                         return SizedBox();
                       }
@@ -105,14 +111,23 @@ class _QRScreen extends State<QRScreen> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    double scanArea = (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 150.0 : 300.0;
+    double scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(borderColor: Colors.red, borderRadius: 10, borderLength: 30, borderWidth: 10, cutOutSize: scanArea),
-      onPermissionSet: (QRViewController ctrl, bool p) => _onPermissionSet(context, ctrl, p),
+      overlay: QrScannerOverlayShape(
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: scanArea),
+      onPermissionSet: (QRViewController ctrl, bool p) =>
+          _onPermissionSet(context, ctrl, p),
     );
   }
 

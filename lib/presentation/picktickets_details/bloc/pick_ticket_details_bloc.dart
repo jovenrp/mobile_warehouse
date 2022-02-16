@@ -42,9 +42,9 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       String sessId = await persistenceService.dwnToken.get() ?? '';
       print('BEGIN pick is called $pickTicketDetailId $sessId');
 
-      /*final String response = await pickTicketDetailsRepository.beginPick(
-          pickTicketDetailId: pickTicketDetailId, sessId: sessId);*/
-      //print(response);
+      final String response = await pickTicketDetailsRepository.beginPick(
+          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+      print(response);
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
@@ -55,7 +55,10 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(isUpdateLoading: true));
     try {
       print('EXIT pick is called $pickTicketDetailId');
-      //final String response = await pickTicketDetailsRepository.exitPick(pickTicketDetailId: pickTicketDetailId);
+      String sessId = await persistenceService.dwnToken.get() ?? '';
+      final String response = await pickTicketDetailsRepository.exitPick(
+          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+      print(response);
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
@@ -67,7 +70,12 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(isUpdateLoading: true));
     try {
       print('SUBMIT pick is called $pickTicketDetailId $qtyPicked');
-      //final String response = await pickTicketDetailsRepository.submitPick(pickTicketDetailId: pickTicketDetailId, qtyPicked: qtyPicked);
+      String sessId = await persistenceService.dwnToken.get() ?? '';
+      final String response = await pickTicketDetailsRepository.submitPick(
+          pickTicketDetailId: pickTicketDetailId,
+          qtyPicked: qtyPicked,
+          sessId: sessId);
+      print(response);
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
@@ -78,7 +86,10 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(isUpdateLoading: true));
     try {
       print('COMPLETE pick is called $pickTicket');
-      //final String response = await pickTicketDetailsRepository.completePickTicket(pickTicket: pickTicket);
+      String sessId = await persistenceService.dwnToken.get() ?? '';
+      final String response = await pickTicketDetailsRepository
+          .completePickTicket(pickTicket: pickTicket, sessId: sessId);
+      print(response);
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
@@ -89,7 +100,10 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(isUpdateLoading: true));
     try {
       print('EXIT pick ticket is called $pickTicket');
-      //final String response = await pickTicketDetailsRepository.exitPickTicket(pickTicket: pickTicket);
+      String sessId = await persistenceService.dwnToken.get() ?? '';
+      final String response = await pickTicketDetailsRepository.exitPickTicket(
+          pickTicket: pickTicket, sessId: sessId);
+      print(response);
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);

@@ -47,6 +47,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
   bool canRefresh = true;
   int currentIndex = -1;
   bool pickLimitSetting = false;
+  bool isUndo = false;
 
   @override
   void initState() {
@@ -65,6 +66,19 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
         fontColor: AppColors.white,
       ),
       duration: Duration(seconds: 1),
+    );
+    SnackBar submitSnackbar = SnackBar(
+      content: ATText(
+        text: 'Ticket Completed',
+        fontColor: AppColors.white,
+      ),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Undo',
+        onPressed: () {
+          isUndo = true;
+        },
+      ),
     );
     return BlocConsumer<PickTicketDetailsBloc, PickTicketDetailsState>(
         listener: (BuildContext context, PickTicketDetailsState state) {
@@ -211,6 +225,19 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                 .setLocation(state
                                                     .pickTicketResponse?[0]
                                                     .location);
+                                            if (double.parse(state
+                                                        .pickTicketsResponse?[
+                                                            index]
+                                                        .qtyPicked ??
+                                                    '0') >
+                                                0) {
+                                              state.pickTicketsResponse?[index]
+                                                  .setPickedItem(state
+                                                      .pickTicketsResponse?[
+                                                          index]
+                                                      .qtyPicked);
+                                              //state.pickTicketsResponse?[index].setIsChecked(true);
+                                            }
                                             return Slidable(
                                                 key: ValueKey<int>(index),
                                                 startActionPane: ActionPane(
@@ -345,7 +372,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                             : double.parse(state.pickTicketsResponse?[index].pickedItem?.isEmpty ?? false ? '0' : state.pickTicketsResponse?[index].pickedItem ?? '0') < double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0')
                                                                                 ? AppColors.warningOrange
                                                                                 : AppColors.successGreen,
-                                                                        value: state.pickTicketsResponse?[index].isChecked ?? false,
+                                                                        value: double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') >= double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0') ? true : state.pickTicketsResponse?[index].isChecked ?? false,
                                                                         onChanged: (bool? value) {
                                                                           setState(
                                                                               () {
@@ -394,8 +421,8 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                             .centerRight,
                                                                     child:
                                                                         ATText(
-                                                                      text: double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') == 0 &&
-                                                                              (state.pickTicketsResponse?[index].pickedItem == null || state.pickTicketsResponse?[index].pickedItem?.isEmpty == true)
+                                                                      text: (state.pickTicketsResponse?[index].pickedItem == null ||
+                                                                              state.pickTicketsResponse?[index].pickedItem?.isEmpty == true)
                                                                           ? '${state.pickTicketsResponse?[index].qtyPick}'
                                                                           : state.pickTicketsResponse?[index].pickedItem == null || state.pickTicketsResponse?[index].pickedItem?.isEmpty == true
                                                                               ? '${state.pickTicketsResponse?[index].qtyPick} of ${state.pickTicketsResponse?[index].qtyPick}'
@@ -474,11 +501,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                             index]
                                                                         .id ??
                                                                     '',
-                                                                qtyPicked: state
-                                                                        .pickTicketsResponse?[
+                                                                qtyPicked:
+                                                                    textFieldControllers[
                                                                             index]
-                                                                        .qtyPick ??
-                                                                    '');
+                                                                        .text);
                                                           }),
                                                           onChanged:
                                                               (String? text) {
@@ -547,8 +573,15 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
             isLoading: state.isLoading,
             onTap: () {
               //complete pick ticket here
-              context.read<PickTicketDetailsBloc>().completePickTicket(
-                  pickTicket: widget.ticketItemModel?.id ?? '0');
+              isUndo = false;
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(submitSnackbar);
+              Future<void>.delayed(const Duration(seconds: 3), () {
+                if (!isUndo) {
+                  context.read<PickTicketDetailsBloc>().completePickTicket(
+                      pickTicket: widget.ticketItemModel?.id ?? '0');
+                }
+              });
             },
           ),
         ),
@@ -664,8 +697,19 @@ class _TicketPicker extends State<TicketPicker> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           ATText(
-                            text:
-                                '${widget.pickTicketDetailsModel?.qtyPicked} of ${widget.pickTicketDetailsModel?.qtyPick}',
+                            text: (widget.pickTicketDetailsModel?.pickedItem ==
+                                        null ||
+                                    widget.pickTicketDetailsModel?.pickedItem
+                                            ?.isEmpty ==
+                                        true)
+                                ? '${widget.pickTicketDetailsModel?.qtyPick}'
+                                : widget.pickTicketDetailsModel?.pickedItem ==
+                                            null ||
+                                        widget.pickTicketDetailsModel
+                                                ?.pickedItem?.isEmpty ==
+                                            true
+                                    ? '${widget.pickTicketDetailsModel?.qtyPick} of ${widget.pickTicketDetailsModel?.qtyPick}'
+                                    : '${widget.pickTicketDetailsModel?.pickedItem} of ${widget.pickTicketDetailsModel?.qtyPick}',
                             fontSize: 14,
                           )
                         ],
