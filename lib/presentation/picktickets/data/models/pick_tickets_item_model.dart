@@ -8,7 +8,7 @@ class PickTicketsItemModel {
     this.status,
     this.id,
     this.location,
-    this.lines,
+    this.numLines,
     this.num,
   });
 
@@ -28,6 +28,6 @@ class PickTicketsItemModel {
   @JsonKey(name: 'location')
   final String? location;
 
-  @JsonKey(name: 'lines')
-  final String? lines;
+  @JsonKey(name: 'numLines')
+  final String? numLines;
 }

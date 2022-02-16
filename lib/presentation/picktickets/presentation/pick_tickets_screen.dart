@@ -20,8 +20,7 @@ class PickTicketsScreen extends StatefulWidget {
   static const String routeName = '/pickTickets';
   static const String screenName = 'pickTicketsScreen';
 
-  static ModalRoute<PickTicketsScreen> route() =>
-      MaterialPageRoute<PickTicketsScreen>(
+  static ModalRoute<PickTicketsScreen> route() => MaterialPageRoute<PickTicketsScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => const PickTicketsScreen(),
       );
@@ -44,8 +43,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PickTicketsBloc, PickTicketsState>(
-        listener: (BuildContext context, PickTicketsState state) {
+    return BlocConsumer<PickTicketsBloc, PickTicketsState>(listener: (BuildContext context, PickTicketsState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
       }
@@ -75,19 +73,14 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                           onPressed: () {
                             if (searchController.text.isNotEmpty == true) {
                               setState(() {
-                                context
-                                    .read<PickTicketsBloc>()
-                                    .searchTicket(value: searchController.text);
+                                context.read<PickTicketsBloc>().searchTicket(value: searchController.text);
                               });
                             }
                           },
                           onChanged: (String value) {
-                            EasyDebounce.debounce(
-                                'deebouncer1', Duration(milliseconds: 700), () {
+                            EasyDebounce.debounce('deebouncer1', Duration(milliseconds: 700), () {
                               setState(() {
-                                context
-                                    .read<PickTicketsBloc>()
-                                    .searchTicket(value: searchController.text);
+                                context.read<PickTicketsBloc>().searchTicket(value: searchController.text);
                               });
                             });
                           }),
@@ -108,99 +101,52 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                     alignment: Alignment.topCenter,
                                     child: Padding(
                                       padding: const EdgeInsets.only(top: 30),
-                                      child: ATText(
-                                          text: I18n.of(context)
-                                              .please_wait_while_data_is_loaded),
+                                      child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
                                     ))
                                 : ListView.builder(
-                                    itemCount:
-                                        (state.pickTicketsItemModel?.length ??
-                                                0) +
-                                            1,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
+                                    itemCount: (state.pickTicketsItemModel?.length ?? 0) + 1,
+                                    itemBuilder: (BuildContext context, int index) {
                                       if (index == 0) {
                                         return Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20, bottom: 10),
+                                            padding: const EdgeInsets.only(top: 20, bottom: 10),
                                             child: Column(
                                               children: <Widget>[
                                                 Visibility(
-                                                    visible: state
-                                                            .pickTicketsItemModel
-                                                            ?.isNotEmpty ==
-                                                        true,
+                                                    visible: state.pickTicketsItemModel?.isNotEmpty == true,
                                                     child: Table(
-                                                        defaultVerticalAlignment:
-                                                            TableCellVerticalAlignment
-                                                                .middle,
-                                                        columnWidths: const <
-                                                            int,
-                                                            TableColumnWidth>{
-                                                          0: FixedColumnWidth(
-                                                              38),
-                                                          1: FixedColumnWidth(
-                                                              70),
+                                                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                                        columnWidths: const <int, TableColumnWidth>{
+                                                          0: FixedColumnWidth(38),
+                                                          1: FixedColumnWidth(70),
                                                           2: FlexColumnWidth(),
-                                                          3: FixedColumnWidth(
-                                                              70),
+                                                          3: FixedColumnWidth(70),
                                                         },
                                                         children: <TableRow>[
-                                                          TableRow(children: <
-                                                              Widget>[
+                                                          TableRow(children: <Widget>[
                                                             Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 18,
-                                                                      top: 5,
-                                                                      bottom:
-                                                                          5),
+                                                              padding: const EdgeInsets.only(left: 18, top: 5, bottom: 5),
                                                               child: SizedBox(),
                                                             ),
                                                             Container(
-                                                              child: ATText(
-                                                                  text: I18n.of(
-                                                                          context)
-                                                                      .ticket_number
-                                                                      .toUpperCase()),
+                                                              child: ATText(text: I18n.of(context).ticket_number.toUpperCase()),
                                                             ),
                                                             Container(
                                                               child: ATText(
-                                                                text: I18n.of(
-                                                                        context)
-                                                                    .location
-                                                                    .toUpperCase(),
+                                                                text: I18n.of(context).location.toUpperCase(),
                                                               ),
                                                             ),
                                                             Container(
-                                                              alignment: Alignment
-                                                                  .centerRight,
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      right:
-                                                                          18),
-                                                              child: ATText(
-                                                                  text: I18n.of(
-                                                                          context)
-                                                                      .lines
-                                                                      .toUpperCase()),
+                                                              alignment: Alignment.centerRight,
+                                                              padding: const EdgeInsets.only(right: 18),
+                                                              child: ATText(text: I18n.of(context).lines.toUpperCase()),
                                                             )
                                                           ])
                                                         ])),
                                                 Visibility(
-                                                    visible: state
-                                                            .pickTicketsItemModel
-                                                            ?.isEmpty ==
-                                                        true,
+                                                    visible: state.pickTicketsItemModel?.isEmpty == true,
                                                     child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 30),
-                                                      child: ATText(
-                                                          text: I18n.of(context)
-                                                              .oops_item_returned_0_results),
+                                                      padding: const EdgeInsets.only(top: 30),
+                                                      child: ATText(text: I18n.of(context).oops_item_returned_0_results),
                                                     ))
                                               ],
                                             ));
@@ -210,51 +156,34 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                           key: ValueKey<int>(index),
                                           startActionPane: ActionPane(
                                               // A motion is a widget used to control how the pane animates.
+                                              // A motion is a widget used to control how the pane animates.
                                               motion: const ScrollMotion(),
                                               children: <Widget>[
                                                 SlidableAction(
-                                                  onPressed:
-                                                      (BuildContext context) {},
-                                                  backgroundColor:
-                                                      AppColors.semiGrey,
-                                                  foregroundColor:
-                                                      AppColors.white,
-                                                  icon:
-                                                      Icons.cancel_presentation,
+                                                  onPressed: (BuildContext context) {},
+                                                  backgroundColor: AppColors.semiGrey,
+                                                  foregroundColor: AppColors.white,
+                                                  icon: Icons.cancel_presentation,
                                                 ),
                                                 SlidableAction(
-                                                  onPressed:
-                                                      (BuildContext context) {},
-                                                  backgroundColor:
-                                                      AppColors.grey,
-                                                  foregroundColor:
-                                                      AppColors.white,
-                                                  icon: Icons
-                                                      .assignment_ind_outlined,
+                                                  onPressed: (BuildContext context) {},
+                                                  backgroundColor: AppColors.grey,
+                                                  foregroundColor: AppColors.white,
+                                                  icon: Icons.assignment_ind_outlined,
                                                 ),
                                                 SlidableAction(
-                                                  onPressed:
-                                                      (BuildContext context) {
-                                                    Navigator.of(context).push(
-                                                        PickTicketDetailsScreen
-                                                            .route(
-                                                                ticketItemModel:
-                                                                    state.pickTicketsItemModel?[
-                                                                        index]));
+                                                  onPressed: (BuildContext context) {
+                                                    Navigator.of(context)
+                                                        .push(PickTicketDetailsScreen.route(ticketItemModel: state.pickTicketsItemModel?[index]));
                                                   },
-                                                  backgroundColor:
-                                                      AppColors.greyRed,
-                                                  foregroundColor:
-                                                      AppColors.white,
+                                                  backgroundColor: AppColors.greyRed,
+                                                  foregroundColor: AppColors.white,
                                                   icon: Icons.list_alt,
                                                 ),
                                               ]),
                                           child: Table(
-                                            defaultVerticalAlignment:
-                                                TableCellVerticalAlignment
-                                                    .middle,
-                                            columnWidths: const <int,
-                                                TableColumnWidth>{
+                                            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                            columnWidths: const <int, TableColumnWidth>{
                                               0: FixedColumnWidth(40),
                                               1: FixedColumnWidth(70),
                                               2: FlexColumnWidth(),
@@ -262,54 +191,26 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                             },
                                             children: <TableRow>[
                                               TableRow(
-                                                  decoration: BoxDecoration(
-                                                      color: (index % 2) == 0
-                                                          ? AppColors.white
-                                                          : AppColors
-                                                              .lightBlue),
+                                                  decoration: BoxDecoration(color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue),
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 18,
-                                                              top: 15,
-                                                              bottom: 15),
+                                                      padding: const EdgeInsets.only(left: 18, top: 15, bottom: 15),
                                                       child: Container(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: PickTicketsStatusWidget(
-                                                            status: state
-                                                                .pickTicketsItemModel?[
-                                                                    index]
-                                                                .status),
+                                                        alignment: Alignment.centerLeft,
+                                                        child: PickTicketsStatusWidget(status: state.pickTicketsItemModel?[index].status),
                                                       ),
                                                     ),
                                                     Container(
-                                                      child: Text(state
-                                                              .pickTicketsItemModel?[
-                                                                  index]
-                                                              .num ??
-                                                          ''),
+                                                      child: Text(state.pickTicketsItemModel?[index].num ?? ''),
                                                     ),
                                                     Container(
-                                                      child: Text(state
-                                                              .pickTicketsItemModel?[
-                                                                  index]
-                                                              .location ??
-                                                          ''),
+                                                      child: Text(state.pickTicketsItemModel?[index].location ?? ''),
                                                     ),
                                                     Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 18),
+                                                      padding: const EdgeInsets.only(right: 18),
                                                       child: Container(
-                                                        alignment: Alignment
-                                                            .centerRight,
-                                                        child: Text(state
-                                                                .pickTicketsItemModel?[
-                                                                    index]
-                                                                .lines ??
-                                                            ''),
+                                                        alignment: Alignment.centerRight,
+                                                        child: Text(state.pickTicketsItemModel?[index].numLines ?? ''),
                                                       ),
                                                     ),
                                                   ]),

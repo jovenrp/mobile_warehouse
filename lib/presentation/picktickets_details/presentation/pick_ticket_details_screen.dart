@@ -220,7 +220,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                         .pickTicketsResponse?[
                                                             index]
                                                         .qtyPick));
-                                            //set the location here
                                             state.pickTicketsResponse?[index]
                                                 .setLocation(state
                                                     .pickTicketResponse?[0]
@@ -236,7 +235,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                       .pickTicketsResponse?[
                                                           index]
                                                       .qtyPicked);
-                                              //state.pickTicketsResponse?[index].setIsChecked(true);
                                             }
                                             return Slidable(
                                                 key: ValueKey<int>(index),
@@ -372,17 +370,23 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                             : double.parse(state.pickTicketsResponse?[index].pickedItem?.isEmpty ?? false ? '0' : state.pickTicketsResponse?[index].pickedItem ?? '0') < double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0')
                                                                                 ? AppColors.warningOrange
                                                                                 : AppColors.successGreen,
-                                                                        value: double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') >= double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0') ? true : state.pickTicketsResponse?[index].isChecked ?? false,
+                                                                        value: state.pickTicketsResponse?[index].isChecked ?? false,
                                                                         onChanged: (bool? value) {
+                                                                          print(
+                                                                              'checkbox $value');
                                                                           setState(
                                                                               () {
-                                                                            state.pickTicketsResponse?[index].setIsChecked(value ??
-                                                                                false);
                                                                             if (value ==
                                                                                 true) {
+                                                                              state.pickTicketsResponse?[index].setPickedItem(state.pickTicketsResponse?[index].qtyPick);
+                                                                              state.pickTicketsResponse?[index].setIsVisible(false);
+                                                                              state.pickTicketsResponse?[index].setIsChecked(true);
                                                                               context.read<PickTicketDetailsBloc>().submitPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '', qtyPicked: state.pickTicketsResponse?[index].qtyPick ?? '');
                                                                             } else {
-                                                                              context.read<PickTicketDetailsBloc>().submitPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '', qtyPicked: textFieldControllers[index].text);
+                                                                              state.pickTicketsResponse?[index].setPickedItem('0');
+                                                                              state.pickTicketsResponse?[index].setIsVisible(false);
+                                                                              state.pickTicketsResponse?[index].setIsChecked(false);
+                                                                              context.read<PickTicketDetailsBloc>().submitPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '', qtyPicked: '0');
                                                                             }
                                                                           });
                                                                         }),
