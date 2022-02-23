@@ -18,7 +18,6 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   final PersistenceService persistenceService;
 
   Future<void> resetStates() async {
-    print('asdasdsad');
     emit(state.copyWith(isLoading: false, isUpdateLoading: false, isCompleteTicket: false));
   }
   Future<void> getPickTicketDetails({String? pickTicketId}) async {

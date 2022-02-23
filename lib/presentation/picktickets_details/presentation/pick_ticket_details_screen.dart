@@ -154,7 +154,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
           onTap: () {
             //complete pick ticket here
             //context.read<PickTicketDetailsBloc>().exitPickTicket(pickTicket: widget.ticketItemModel?.id ?? '0');
-            Navigator.of(context).pop();
+            Navigator.of(context).popUntil(ModalRoute.withName('/pickTickets'));
           },
         ),
         body: Container(
@@ -339,7 +339,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                         : AppColors.successGreen,
                                                                 value: state.pickTicketsResponse?[index].isChecked ?? false,
                                                                 onChanged: (bool? value) {
-                                                                  print('checkbox $value');
                                                                   setState(() {
                                                                     if (value == true) {
                                                                       state.pickTicketsResponse?[index]
