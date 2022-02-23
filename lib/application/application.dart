@@ -105,6 +105,10 @@ class _ApplicationState extends State<Application> {
     _appBloc = ApplicationBloc();
     _apiService = ApiService(dio: _dio);
 
+    globalAlice = Alice(navigatorKey: navigatorKey, darkTheme: false);
+    if (widget.config.isApiDebuggerEnabled && globalAlice != null) {
+      _dio.interceptors.add(globalAlice!.getDioInterceptor());
+    }
     if (widget.config.isUiDebuggerEnabled) {
       navigatorKey = globalAlice?.getNavigatorKey() ?? navigatorKey;
       detector = ShakeDetector.autoStart(onPhoneShake: () {
@@ -138,6 +142,11 @@ class _ApplicationState extends State<Application> {
       ...blocs,
       ...services,
     ];
+
+    providers.addAll(<SingleChildWidget>[
+      Provider<GlobalKey<NavigatorState>>.value(value: navigatorKey),
+      if (globalAlice != null) Provider<Alice>.value(value: globalAlice!)
+    ]);
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),

@@ -21,8 +21,6 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
     int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
     bool isExpire = currentTimestamp < (int.parse(loginTimestamp) + 7200);
 
-    print('$loginTimestamp $currentTimestamp');
-    print('$token $isExpire');
     Timer(const Duration(seconds: 2), () {
       emit(state.copyWith(isLoading: false));
       if (token == null || isExpire) {

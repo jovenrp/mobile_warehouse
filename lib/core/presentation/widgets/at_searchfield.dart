@@ -24,7 +24,6 @@ class ATSearchfield extends StatefulWidget {
 class _ATSearchfield extends State<ATSearchfield> {
   @override
   Widget build(BuildContext context) {
-    print(widget.isScanner);
     return TextFormField(
       controller: widget.textEditingController,
       key: widget.key,

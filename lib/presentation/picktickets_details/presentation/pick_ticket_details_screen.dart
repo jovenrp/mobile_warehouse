@@ -5,6 +5,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_dialog.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_mini_textfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
@@ -98,6 +100,20 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
             color: AppColors.white,
             size: 24.0,
           ),
+          actions: <Widget>[
+            state.isUpdateLoading
+                ? Container(
+                    padding:
+                        const EdgeInsets.only(top: 20, bottom: 20, right: 18),
+                    width: 30,
+                    child: ATLoadingIndicator(
+                      strokeWidth: 3.0,
+                      width: 10,
+                      height: 10,
+                    ),
+                  )
+                : SizedBox()
+          ],
           onTap: () {
             //complete pick ticket here
             //context.read<PickTicketDetailsBloc>().exitPickTicket(pickTicket: widget.ticketItemModel?.id ?? '0');
@@ -154,14 +170,28 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                 backgroundColor: AppColors.beachSea,
                               ),
                               child: state.isLoading
-                                  ? Container(
-                                      alignment: Alignment.topCenter,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 30),
-                                        child: ATText(
-                                            text:
-                                                'Please wait a moment while data is being loaded...'),
-                                      ))
+                                  ? Column(
+                                      children: <Widget>[
+                                        SizedBox(height: 50),
+                                        Padding(
+                                          padding: const EdgeInsets.all(20),
+                                          child: Icon(
+                                            Icons.move_to_inbox,
+                                            size: 100,
+                                            color: AppColors.grayElevent,
+                                          ),
+                                        ),
+                                        Container(
+                                            alignment: Alignment.topCenter,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10),
+                                              child: ATText(
+                                                  text: I18n.of(context)
+                                                      .please_wait_while_data_is_loaded),
+                                            ))
+                                      ],
+                                    )
                                   : state.pickTicketsResponse?.isNotEmpty ==
                                           true
                                       ? ListView.builder(
@@ -513,6 +543,9 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                           onChanged:
                                                               (String? text) {
                                                             setState(() {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .hideCurrentSnackBar();
                                                               if (textFieldControllers[
                                                                           index]
                                                                       .text

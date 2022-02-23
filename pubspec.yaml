@@ -34,6 +34,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   intl: any
+  flutter_launcher_icons: ^0.9.2
 
   ## Architecture
   flutter_bloc: ^7.2.0
@@ -100,6 +101,11 @@ dev_dependencies:
   freezed: ^0.14.2
   flutter_gen_runner: ^3.0.2
   retrofit_generator: ^2.0.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

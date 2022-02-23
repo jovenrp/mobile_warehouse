@@ -5,6 +5,8 @@ import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_state.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_ticket_details_response.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
+import 'package:mobile_warehouse/presentation/picktickets_details/data/models/ticket_details_response.dart';
+import 'package:mobile_warehouse/presentation/picktickets_details/data/models/ticket_details_response_model.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/domain/repositories/pick_ticket_details_repository.dart';
 
 class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
@@ -40,11 +42,15 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(isUpdateLoading: true));
     try {
       String sessId = await persistenceService.dwnToken.get() ?? '';
-      print('BEGIN pick is called $pickTicketDetailId $sessId');
 
-      final String response = await pickTicketDetailsRepository.beginPick(
-          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
-      print(response);
+      final TicketDetailsResponseModel response =
+          await pickTicketDetailsRepository.beginPick(
+              pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+
+      emit(state.copyWith(
+          isUpdateLoading: false,
+          hasError: false,
+          ticketDetailsResponseModel: response));
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
@@ -54,11 +60,15 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   Future<void> exitPick({required String pickTicketDetailId}) async {
     emit(state.copyWith(isUpdateLoading: true));
     try {
-      print('EXIT pick is called $pickTicketDetailId');
       String sessId = await persistenceService.dwnToken.get() ?? '';
-      final String response = await pickTicketDetailsRepository.exitPick(
-          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
-      print(response);
+      final TicketDetailsResponseModel response =
+          await pickTicketDetailsRepository.exitPick(
+              pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+
+      emit(state.copyWith(
+          isUpdateLoading: false,
+          hasError: false,
+          ticketDetailsResponseModel: response));
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
@@ -69,13 +79,17 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       {required String pickTicketDetailId, required String qtyPicked}) async {
     emit(state.copyWith(isUpdateLoading: true));
     try {
-      print('SUBMIT pick is called $pickTicketDetailId $qtyPicked');
       String sessId = await persistenceService.dwnToken.get() ?? '';
-      final String response = await pickTicketDetailsRepository.submitPick(
-          pickTicketDetailId: pickTicketDetailId,
-          qtyPicked: qtyPicked,
-          sessId: sessId);
-      print(response);
+      final TicketDetailsResponseModel response =
+          await pickTicketDetailsRepository.submitPick(
+              pickTicketDetailId: pickTicketDetailId,
+              qtyPicked: qtyPicked,
+              sessId: sessId);
+
+      emit(state.copyWith(
+          isUpdateLoading: false,
+          hasError: false,
+          ticketDetailsResponseModel: response));
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
@@ -83,15 +97,21 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   }
 
   Future<void> completePickTicket({required String pickTicket}) async {
-    emit(state.copyWith(isUpdateLoading: true));
+    emit(state.copyWith(isUpdateLoading: true, isCompleteTicket: false));
     try {
-      print('COMPLETE pick is called $pickTicket');
       String sessId = await persistenceService.dwnToken.get() ?? '';
-      final String response = await pickTicketDetailsRepository
-          .completePickTicket(pickTicket: pickTicket, sessId: sessId);
-      print(response);
+      final TicketDetailsResponseModel response =
+          await pickTicketDetailsRepository.completePickTicket(
+              pickTicket: pickTicket, sessId: sessId);
+
+      emit(state.copyWith(
+          isUpdateLoading: false,
+          hasError: false,
+          isCompleteTicket: true,
+          ticketDetailsResponseModel: response));
     } catch (_) {
-      emit(state.copyWith(isUpdateLoading: false, hasError: true));
+      emit(state.copyWith(
+          isUpdateLoading: false, isCompleteTicket: false, hasError: true));
       print(_);
     }
   }
@@ -99,11 +119,14 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   Future<void> exitPickTicket({required String pickTicket}) async {
     emit(state.copyWith(isUpdateLoading: true));
     try {
-      print('EXIT pick ticket is called $pickTicket');
       String sessId = await persistenceService.dwnToken.get() ?? '';
-      final String response = await pickTicketDetailsRepository.exitPickTicket(
-          pickTicket: pickTicket, sessId: sessId);
-      print(response);
+      final TicketDetailsResponseModel response =
+          await pickTicketDetailsRepository.exitPickTicket(
+              pickTicket: pickTicket, sessId: sessId);
+      emit(state.copyWith(
+          isUpdateLoading: false,
+          hasError: false,
+          ticketDetailsResponseModel: response));
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);

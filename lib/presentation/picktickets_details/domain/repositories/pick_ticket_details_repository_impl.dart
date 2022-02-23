@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:mobile_warehouse/application/application.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_ticket_details_response.dart';
+import 'package:mobile_warehouse/presentation/picktickets_details/data/models/ticket_details_response.dart';
+import 'package:mobile_warehouse/presentation/picktickets_details/data/models/ticket_details_response_model.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/services/pick_ticket_details_api_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/domain/repositories/pick_ticket_details_repository.dart';
 
@@ -28,21 +30,23 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
   }
 
   @override
-  Future<String> beginPick(
+  Future<TicketDetailsResponseModel> beginPick(
       {required String pickTicketDetailId, required String sessId}) async {
     try {
       final String result = await _apiService.beginPick(
           pickTicketDetailId: pickTicketDetailId, sessId: sessId);
-      print('result here $result');
-      return '';
+
+      final TicketDetailsResponseModel response =
+          TicketDetailsResponseModel.fromJson(jsonDecode(result));
+      return response;
     } catch (_) {
       logger.e(_.toString());
-      return '';
+      return TicketDetailsResponseModel();
     }
   }
 
   @override
-  Future<String> submitPick(
+  Future<TicketDetailsResponseModel> submitPick(
       {required String pickTicketDetailId,
       required String qtyPicked,
       required String sessId}) async {
@@ -51,50 +55,54 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
           pickTicketDetailId: pickTicketDetailId,
           qtyPicked: qtyPicked,
           sessId: sessId);
-      print('result here $result');
-      return '';
+      final TicketDetailsResponseModel response =
+          TicketDetailsResponseModel.fromJson(jsonDecode(result));
+      return response;
     } catch (_) {
-      return '';
+      return TicketDetailsResponseModel();
     }
   }
 
   @override
-  Future<String> exitPick(
+  Future<TicketDetailsResponseModel> exitPick(
       {required String pickTicketDetailId, required String sessId}) async {
     try {
       final String result = await _apiService.exitPick(
           pickTicketDetailId: pickTicketDetailId, sessId: sessId);
-      print('result here $result');
-      return '';
+      final TicketDetailsResponseModel response =
+          TicketDetailsResponseModel.fromJson(jsonDecode(result));
+      return response;
     } catch (_) {
-      return '';
+      return TicketDetailsResponseModel();
     }
   }
 
   @override
-  Future<String> completePickTicket(
+  Future<TicketDetailsResponseModel> completePickTicket(
       {required String pickTicket, required String sessId}) async {
     try {
       final String result = await _apiService.completePickTicket(
           pickTicketId: pickTicket, sessId: sessId);
-      print('result here $result');
-      return '';
+
+      final TicketDetailsResponseModel response =
+          TicketDetailsResponseModel.fromJson(jsonDecode(result));
+      return response;
     } catch (_) {
-      print('result here $_');
-      return '';
+      return TicketDetailsResponseModel();
     }
   }
 
   @override
-  Future<String> exitPickTicket(
+  Future<TicketDetailsResponseModel> exitPickTicket(
       {required String pickTicket, required String sessId}) async {
     try {
       final String result = await _apiService.exitPickTicket(
           pickTicket: pickTicket, sessId: sessId);
-      print('result here $result');
-      return '';
+      final TicketDetailsResponseModel response =
+          TicketDetailsResponseModel.fromJson(jsonDecode(result));
+      return response;
     } catch (_) {
-      return '';
+      return TicketDetailsResponseModel();
     }
   }
 }

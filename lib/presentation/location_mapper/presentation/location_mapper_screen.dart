@@ -76,6 +76,16 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                               onChanged: (String value) {}),
                         ),
                         SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: ATSearchfield(
+                              hintText: '${I18n.of(context).search} by SKU',
+                              isScanner: true,
+                              onPressed: () =>
+                                  Navigator.of(context).push(QRScreen.route()),
+                              onChanged: (String value) {}),
+                        ),
+                        SizedBox(height: 20),
                         Container(
                           color: AppColors.beachSea,
                           height: 100,
@@ -103,16 +113,6 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
-                              hintText: '${I18n.of(context).search} by SKU',
-                              isScanner: true,
-                              onPressed: () =>
-                                  Navigator.of(context).push(QRScreen.route()),
-                              onChanged: (String value) {}),
-                        ),
-                        SizedBox(height: 20),
                         Expanded(
                           child: Container(
                             color: AppColors.white,

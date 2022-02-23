@@ -7,6 +7,8 @@ part 'pick_ticket_details_response.g.dart';
 @JsonSerializable()
 class PickTicketsDetailsResponse {
   const PickTicketsDetailsResponse({
+    this.error,
+    this.message,
     this.pickTicketsResponse,
     this.pickTicketResponse,
   });
@@ -14,6 +16,12 @@ class PickTicketsDetailsResponse {
   factory PickTicketsDetailsResponse.fromJson(Map<String, dynamic> json) =>
       _$PickTicketsDetailsResponseFromJson(json);
   Map<String, dynamic> toJson() => _$PickTicketsDetailsResponseToJson(this);
+
+  @JsonKey(name: 'error')
+  final bool? error;
+
+  @JsonKey(name: 'message')
+  final String? message;
 
   @JsonKey(name: 'pickTicketDetails')
   final List<PickTicketDetailsModel>? pickTicketsResponse;
