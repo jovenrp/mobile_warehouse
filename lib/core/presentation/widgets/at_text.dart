@@ -8,7 +8,8 @@ class ATText extends StatelessWidget {
       this.fontColor,
       this.fontSize,
       this.style,
-      this.weight})
+      this.weight,
+      this.textAlign})
       : super(key: key);
 
   final String? text;
@@ -16,10 +17,12 @@ class ATText extends StatelessWidget {
   final double? fontSize;
   final TextStyle? style;
   final FontWeight? weight;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(text ?? '',
+        textAlign: textAlign ?? TextAlign.left,
         style: style ??
             TextStyle(
                 color: fontColor ?? AppColors.black,

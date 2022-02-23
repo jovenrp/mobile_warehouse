@@ -51,12 +51,13 @@ class ATDialog extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width * .3,
                     child: ATTextButton(
+                        isLoading: isLoading,
                         buttonText: negativeActionText,
                         buttonTextStyle: TextStyle(color: AppColors.beachSea),
                         buttonStyle: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(AppColors.white)),
-                        onTap: negativeAction ?? () => print('asd')),
+                        onTap: negativeAction ?? () {}),
                   )
                 ],
               ))
