@@ -467,8 +467,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
           child: ATTextButton(
             buttonText: I18n.of(context).complete_tickets,
             isLoading: state.isLoading,
-            onTap: () {
+            onTap: () async {
               //complete pick ticket here
+              await context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: widget.ticketItemModel?.id);
+
               int openChecker = 0;
               int processedChecker = 0;
               for (PickTicketDetailsModel item in state.pickTicketsResponse ?? <PickTicketDetailsModel>[]) {
@@ -477,7 +479,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                 } else if (item.status?.toLowerCase() == 'open') {
                   openChecker++;
                 } else if (item.status?.toLowerCase() == 'partial') {
-                  showDialog(
+                  await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return Dialog(
@@ -500,13 +502,12 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                   Container(
                                     width: double.infinity,
                                     child: ATTextButton(
-                                      isLoading: false,
-                                      buttonText: 'Yes, Complete pick',
-                                      onTap: () {
-                                        Navigator.of(context).pop();
-                                        completePickTicket();
-                                      }
-                                    ),
+                                        isLoading: false,
+                                        buttonText: 'Yes, Complete pick',
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                          completePickTicket();
+                                        }),
                                   ),
                                   SizedBox(height: 10),
                                   Container(
@@ -535,7 +536,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
               }
 
               if (openChecker == state.pickTicketsResponse?.length) {
-                showDialog(
+                await showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return Dialog(
@@ -578,6 +579,59 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                     context.read<PickTicketDetailsBloc>().completePickTicket(pickTicket: widget.ticketItemModel?.id ?? '0');
                   }
                 });
+              } else {
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * .4,
+                          width: MediaQuery.of(context).size.width * .5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(14),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(height: 50),
+                                ATText(
+                                  text: 'There are lines on this ticket that are partially picked. \n\n Complete ticket anyway?',
+                                  fontSize: 16,
+                                  weight: FontWeight.bold,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 50),
+                                Container(
+                                  width: double.infinity,
+                                  child: ATTextButton(
+                                      isLoading: false,
+                                      buttonText: 'Yes, Complete pick',
+                                      onTap: () {
+                                        Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails'));
+                                        completePickTicket();
+                                      }),
+                                ),
+                                SizedBox(height: 10),
+                                Container(
+                                  width: double.infinity,
+                                  child: ATTextButton(
+                                    buttonStyle: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all(AppColors.white),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          side: BorderSide(color: AppColors.beachSea),
+                                        ))),
+                                    buttonTextStyle: TextStyle(color: AppColors.beachSea),
+                                    isLoading: false,
+                                    buttonText: 'Go back',
+                                    onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails')),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    });
               }
             },
           ),

@@ -264,13 +264,15 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                 ),
                                                 SlidableAction(
                                                   onPressed:
-                                                      (BuildContext context) {
-                                                    Navigator.of(context).push(
+                                                      (BuildContext navContext) {
+                                                    Navigator.of(navContext).push(
                                                         PickTicketDetailsScreen
                                                             .route(
                                                                 ticketItemModel:
                                                                     state.pickTicketsItemModel?[
-                                                                        index]));
+                                                                        index])).then((dynamic value){
+                                                      context.read<PickTicketsBloc>().getPickTickets(isScreenLoading: true);
+                                                    });
                                                   },
                                                   backgroundColor:
                                                       AppColors.greyRed,
