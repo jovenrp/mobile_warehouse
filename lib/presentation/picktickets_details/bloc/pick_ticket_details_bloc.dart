@@ -18,10 +18,14 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   final PersistenceService persistenceService;
 
   Future<void> resetStates() async {
-    emit(state.copyWith(isLoading: false, isUpdateLoading: false, isCompleteTicket: false));
+    emit(state.copyWith(
+        isLoading: false, isUpdateLoading: false, isCompleteTicket: false));
   }
-  Future<List<PickTicketDetailsModel>?> getPickTicketDetails({String? pickTicketId}) async {
-    emit(state.copyWith(isLoading: true, isCompleteTicket: false)); //turn on loading indicator
+
+  Future<List<PickTicketDetailsModel>?> getPickTicketDetails(
+      {String? pickTicketId}) async {
+    emit(state.copyWith(
+        isLoading: true, isCompleteTicket: false)); //turn on loading indicator
 
     try {
       String? token = await persistenceService.dwnToken.get();
@@ -36,7 +40,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
           hasError: false));
       return response.pickTicketsResponse;
     } catch (_) {
-      emit(state.copyWith(isLoading: false, hasError: true, isCompleteTicket: false));
+      emit(state.copyWith(
+          isLoading: false, hasError: true, isCompleteTicket: false));
       print(_);
     }
   }
@@ -55,7 +60,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
           hasError: false,
           ticketDetailsResponseModel: response));
     } catch (_) {
-      emit(state.copyWith(isUpdateLoading: false, hasError: true, isCompleteTicket: false));
+      emit(state.copyWith(
+          isUpdateLoading: false, hasError: true, isCompleteTicket: false));
       print(_);
     }
   }
@@ -73,7 +79,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
           hasError: false,
           ticketDetailsResponseModel: response));
     } catch (_) {
-      emit(state.copyWith(isUpdateLoading: false, hasError: true, isCompleteTicket: false));
+      emit(state.copyWith(
+          isUpdateLoading: false, hasError: true, isCompleteTicket: false));
       print(_);
     }
   }
@@ -92,7 +99,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       emit(state.copyWith(
           isUpdateLoading: false,
           hasError: false,
-          ticketDetailsResponseModel: response, isCompleteTicket: false));
+          ticketDetailsResponseModel: response,
+          isCompleteTicket: false));
     } catch (_) {
       emit(state.copyWith(isUpdateLoading: false, hasError: true));
       print(_);
@@ -131,7 +139,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
           hasError: false,
           ticketDetailsResponseModel: response));
     } catch (_) {
-      emit(state.copyWith(isUpdateLoading: false, hasError: true, isCompleteTicket: false));
+      emit(state.copyWith(
+          isUpdateLoading: false, hasError: true, isCompleteTicket: false));
       print(_);
     }
   }

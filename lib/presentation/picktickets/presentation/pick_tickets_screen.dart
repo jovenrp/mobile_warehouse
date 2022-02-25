@@ -263,15 +263,21 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                       .assignment_ind_outlined,
                                                 ),
                                                 SlidableAction(
-                                                  onPressed:
-                                                      (BuildContext navContext) {
-                                                    Navigator.of(navContext).push(
-                                                        PickTicketDetailsScreen
+                                                  onPressed: (BuildContext
+                                                      navContext) {
+                                                    Navigator.of(navContext)
+                                                        .push(PickTicketDetailsScreen
                                                             .route(
                                                                 ticketItemModel:
                                                                     state.pickTicketsItemModel?[
-                                                                        index])).then((dynamic value){
-                                                      context.read<PickTicketsBloc>().getPickTickets(isScreenLoading: true);
+                                                                        index]))
+                                                        .then((dynamic value) {
+                                                      context
+                                                          .read<
+                                                              PickTicketsBloc>()
+                                                          .getPickTickets(
+                                                              isScreenLoading:
+                                                                  true);
                                                     });
                                                   },
                                                   backgroundColor:
