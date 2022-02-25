@@ -184,7 +184,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                   description: I18n.of(context)
                                       .pick_ticketst_description,
                                 )),
-                          )
+                          ),
+                          SizedBox(height: 60),
                         ],
                       )))));
     });

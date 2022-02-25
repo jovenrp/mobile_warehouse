@@ -40,7 +40,7 @@ class _ATMiniTextfield extends State<ATMiniTextfield> {
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
         hintStyle: TextStyle(color: AppColors.beachSea),
-        hintText: widget.hintText ?? 'Enter a text here',
+        hintText: 'Enter a text here',
         fillColor: Colors.white70,
       ),
     );

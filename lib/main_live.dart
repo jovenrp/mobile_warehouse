@@ -11,7 +11,7 @@ void main() async {
       isApiDebuggerEnabled: false,
       isUiDebuggerEnabled: false,
       isProxyEnabled: false,
-      baseContentUrl: 'actiontrak.net:80',
+      baseContentUrl: 'http://actiontrak.net:80',
     ),
   );
 }

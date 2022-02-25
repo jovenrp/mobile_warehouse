@@ -20,7 +20,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   Future<void> resetStates() async {
     emit(state.copyWith(isLoading: false, isUpdateLoading: false, isCompleteTicket: false));
   }
-  Future<void> getPickTicketDetails({String? pickTicketId}) async {
+  Future<List<PickTicketDetailsModel>?> getPickTicketDetails({String? pickTicketId}) async {
     emit(state.copyWith(isLoading: true, isCompleteTicket: false)); //turn on loading indicator
 
     try {
@@ -34,6 +34,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
           pickTicketsResponse: response.pickTicketsResponse,
           pickTicketResponse: response.pickTicketResponse,
           hasError: false));
+      return response.pickTicketsResponse;
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true, isCompleteTicket: false));
       print(_);

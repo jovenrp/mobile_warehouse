@@ -47,6 +47,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
   int currentIndex = -1;
   bool pickLimitSetting = false;
   bool isUndo = false;
+  bool isInitialized = false;
   late SnackBar submitSnackbar;
 
   @override
@@ -92,7 +93,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
               builder: (BuildContext context) {
                 return Dialog(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * .4,
+                    height: 360,
                     width: MediaQuery.of(context).size.width * .5,
                     child: Padding(
                       padding: const EdgeInsets.all(14),
@@ -251,10 +252,16 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                           );
                                         }
                                         index -= 1;
-                                        textFieldControllers.add(TextEditingController(text: state.pickTicketsResponse?[index].qtyPick));
-                                        state.pickTicketsResponse?[index].setLocation(state.pickTicketResponse?[0].location);
-                                        if (double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') > 0) {
-                                          state.pickTicketsResponse?[index].setPickedItem(state.pickTicketsResponse?[index].qtyPicked);
+                                        if (!isInitialized) {
+                                          textFieldControllers.add(TextEditingController());
+                                          state.pickTicketsResponse?[index].setLocation(state.pickTicketResponse?[0].location);
+                                          if (double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') > 0) {
+                                            state.pickTicketsResponse?[index].setPickedItem(state.pickTicketsResponse?[index].qtyPicked);
+                                            state.pickTicketsResponse?[index].setIsChecked(double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') > 0);
+                                          }
+                                          if (index >= num.parse((state.pickTicketsResponse!.length - 1).toString())) {
+                                            isInitialized = true;
+                                          }
                                         }
                                         return Slidable(
                                             key: ValueKey<int>(index),
@@ -333,10 +340,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                     ? AppColors.successGreen
                                                                     : double.parse(state.pickTicketsResponse?[index].pickedItem?.isEmpty ?? false
                                                                                 ? '0'
-                                                                                : state.pickTicketsResponse?[index].pickedItem ?? '0') <
+                                                                                : state.pickTicketsResponse?[index].pickedItem ?? '0') ==
                                                                             double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0')
-                                                                        ? AppColors.warningOrange
-                                                                        : AppColors.successGreen,
+                                                                        ? AppColors.successGreen
+                                                                        : AppColors.warningOrange,
                                                                 value: state.pickTicketsResponse?[index].isChecked ?? false,
                                                                 onChanged: (bool? value) {
                                                                   setState(() {
@@ -469,69 +476,16 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
             isLoading: state.isLoading,
             onTap: () async {
               //complete pick ticket here
-              await context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: widget.ticketItemModel?.id);
+              List<PickTicketDetailsModel>? pickDetailResponse = await completeTicketRefresh(pickTicketId: widget.ticketItemModel?.id);
 
               int openChecker = 0;
               int processedChecker = 0;
-              for (PickTicketDetailsModel item in state.pickTicketsResponse ?? <PickTicketDetailsModel>[]) {
+              for (PickTicketDetailsModel item in pickDetailResponse ?? <PickTicketDetailsModel>[]) {
+                print(item.status);
                 if (item.status?.toLowerCase() == 'processed') {
                   processedChecker++;
                 } else if (item.status?.toLowerCase() == 'open') {
                   openChecker++;
-                } else if (item.status?.toLowerCase() == 'partial') {
-                  await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height * .4,
-                            width: MediaQuery.of(context).size.width * .5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(14),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  SizedBox(height: 50),
-                                  ATText(
-                                    text: 'There are lines on this ticket that are partially picked. \n\n Complete ticket anyway?',
-                                    fontSize: 16,
-                                    weight: FontWeight.bold,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 50),
-                                  Container(
-                                    width: double.infinity,
-                                    child: ATTextButton(
-                                        isLoading: false,
-                                        buttonText: 'Yes, Complete pick',
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                          completePickTicket();
-                                        }),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Container(
-                                    width: double.infinity,
-                                    child: ATTextButton(
-                                      buttonStyle: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all(AppColors.white),
-                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8.0),
-                                            side: BorderSide(color: AppColors.beachSea),
-                                          ))),
-                                      buttonTextStyle: TextStyle(color: AppColors.beachSea),
-                                      isLoading: false,
-                                      buttonText: 'Go back',
-                                      onTap: () => Navigator.of(context).pop(),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      });
-                  break;
                 }
               }
 
@@ -541,7 +495,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                     builder: (BuildContext context) {
                       return Dialog(
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.height * .4,
+                          height: 300,
                           width: MediaQuery.of(context).size.width * .5,
                           child: Padding(
                             padding: const EdgeInsets.all(14),
@@ -561,7 +515,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                   child: ATTextButton(
                                     isLoading: false,
                                     buttonText: 'Go back',
-                                    onTap: () => Navigator.of(context).pop(),
+                                    onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails')),
                                   ),
                                 ),
                               ],
@@ -585,7 +539,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                     builder: (BuildContext context) {
                       return Dialog(
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.height * .4,
+                          height: 320,
                           width: MediaQuery.of(context).size.width * .5,
                           child: Padding(
                             padding: const EdgeInsets.all(14),
@@ -658,7 +612,15 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
 
   void _forcedRefresh({String? pickTicketId}) {
     canRefresh = true;
+    isInitialized = false;
     context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: pickTicketId);
+  }
+
+  Future<List<PickTicketDetailsModel>?> completeTicketRefresh({String? pickTicketId}) async {
+    canRefresh = true;
+    isInitialized = false;
+    List<PickTicketDetailsModel>? pickDetailResponse = await context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: pickTicketId);
+    return pickDetailResponse;
   }
 }
 
