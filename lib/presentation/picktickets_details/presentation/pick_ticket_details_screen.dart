@@ -255,7 +255,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                         if (!isInitialized) {
                                           textFieldControllers.add(TextEditingController());
                                           state.pickTicketsResponse?[index].setLocation(state.pickTicketResponse?[0].location);
-                                          if (double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') > 0) {
+                                          if (double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') > 0 || state.pickTicketsResponse?[index].status?.toLowerCase() == 'partial') {
                                             state.pickTicketsResponse?[index].setPickedItem(state.pickTicketsResponse?[index].qtyPicked);
                                             state.pickTicketsResponse?[index]
                                                 .setIsChecked(double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') > 0 || state.pickTicketsResponse?[index].status?.toLowerCase() == 'partial');
