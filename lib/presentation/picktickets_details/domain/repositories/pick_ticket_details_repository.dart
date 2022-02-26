@@ -1,5 +1,4 @@
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_ticket_details_response.dart';
-import 'package:mobile_warehouse/presentation/picktickets_details/data/models/ticket_details_response.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/ticket_details_response_model.dart';
 
 abstract class PickTicketDetailsRepository {

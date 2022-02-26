@@ -59,7 +59,7 @@ class _QRScreen extends State<QRScreen> {
                     await controller?.toggleFlash();
                     setState(() {});
                   },
-                  child: FutureBuilder(
+                  child: FutureBuilder<void>(
                     future: controller?.getFlashStatus(),
                     builder: (BuildContext context,
                         AsyncSnapshot<Object?> snapshot) {
@@ -83,7 +83,7 @@ class _QRScreen extends State<QRScreen> {
                     await controller?.flipCamera();
                     setState(() {});
                   },
-                  child: FutureBuilder(
+                  child: FutureBuilder<void>(
                     future: controller?.getCameraInfo(),
                     builder: (BuildContext context,
                         AsyncSnapshot<Object?> snapshot) {
