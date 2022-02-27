@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse/application/domain/models/application_config.dart';
 import 'package:mobile_warehouse/core/data/mixin/back_pressed_mixin.dart';
 import 'package:mobile_warehouse/core/domain/models/user_profile_model.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
@@ -20,18 +21,19 @@ import 'package:mobile_warehouse/presentation/settings/presentation/settings_scr
 import 'action_cards_widget.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key, this.userProfileModel}) : super(key: key);
+    const DashboardScreen({Key? key, this.userProfileModel, this.config}) : super(key: key);
 
   static const String routeName = '/dashboard';
   static const String screenName = 'dashboardScreen';
 
   final UserProfileModel? userProfileModel;
+  final ApplicationConfig? config;
 
   static ModalRoute<DashboardScreen> route(
-          {UserProfileModel? userProfileModel}) =>
+          {UserProfileModel? userProfileModel, ApplicationConfig? config}) =>
       MaterialPageRoute<DashboardScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => DashboardScreen(userProfileModel: userProfileModel),
+        builder: (_) => DashboardScreen(userProfileModel: userProfileModel, config: config),
       );
 
   @override
@@ -59,7 +61,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
         listener: (BuildContext context, DashboardScreenState state) {
       if (state.isSignedOut) {
         Navigator.of(context).pushReplacement(
-          LoginScreen.route(),
+          LoginScreen.route(config: widget.config),
         );
       }
     }, builder: (BuildContext context, DashboardScreenState state) {

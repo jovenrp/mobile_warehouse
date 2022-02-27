@@ -24,7 +24,9 @@ class LoginScreen extends StatefulWidget {
 
   static ModalRoute<LoginScreen> route({ApplicationConfig? config}) => MaterialPageRoute<LoginScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => LoginScreen(config: config,),
+        builder: (_) => LoginScreen(
+          config: config,
+        ),
       );
 
   @override
@@ -34,6 +36,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
   late TextEditingController usernameController;
   late TextEditingController passwordController;
+
   @override
   void initState() {
     super.initState();
@@ -45,16 +48,13 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginScreenBloc, LoginScreenState>(
-        listener: (BuildContext context, LoginScreenState state) {
+    return BlocConsumer<LoginScreenBloc, LoginScreenState>(listener: (BuildContext context, LoginScreenState state) {
       if (!state.isLoading) {
         if (!state.hasError) {
-          Navigator.of(context).pushReplacement(
-              DashboardScreen.route(userProfileModel: state.userProfileModel));
+          Navigator.of(context).pushReplacement(DashboardScreen.route(userProfileModel: state.userProfileModel, config: widget.config));
         }
       }
     }, builder: (BuildContext context, LoginScreenState state) {
-          print(widget.config?.apiUrl);
       return SafeArea(
           child: WillPopScope(
               onWillPop: () async {
@@ -88,27 +88,17 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                           children: <Widget>[
                             state.hasError
                                 ? ATText(
-                                    text:
-                                        state.loginResponseModel?.errorMessage,
+                                    text: state.loginResponseModel?.errorMessage,
                                     fontColor: AppColors.atRed,
                                     fontSize: 12,
                                   )
                                 : SizedBox(),
-                            const SizedBox(height: 8),
                             InkWell(
-                              onTap: () => context
-                                  .read<LoginScreenBloc>()
-                                  .forgotPassword(),
-                              child: Ink(
-                                child: InkWell(
-                                  onTap: () => Navigator.of(context)
-                                      .push(ForgotPasswordScreen.route()),
-                                  child: ATText(
-                                    text: I18n.of(context).forgot_password,
-                                    fontColor: AppColors.beachSea,
-                                    fontSize: 12,
-                                  ),
-                                ),
+                              onTap: () => Navigator.of(context).push(ForgotPasswordScreen.route()),
+                              child: ATText(
+                                text: I18n.of(context).forgot_password,
+                                fontColor: AppColors.beachSea,
+                                fontSize: 12,
                               ),
                             )
                           ],
@@ -120,9 +110,7 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                             isLoading: state.isLoading,
                             buttonText: I18n.of(context).sign_in,
                             onTap: () {
-                              context.read<LoginScreenBloc>().login(
-                                  usernameController.text,
-                                  passwordController.text);
+                              context.read<LoginScreenBloc>().login(usernameController.text, passwordController.text);
                             },
                           ),
                         )
@@ -138,10 +126,16 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          ATText(text: 'v${widget.config?.appVersion}', fontColor: AppColors.greyRed,),
+                          ATText(
+                            text: 'v${widget.config?.appVersion}',
+                            fontColor: AppColors.greyRed,
+                          ),
                           Visibility(
-                            visible: widget.config?.isApiDebuggerEnabled ?? false,
-                              child: ATText(text: '${widget.config?.apiUrl}', fontColor: AppColors.greyRed,))
+                              visible: widget.config?.isApiDebuggerEnabled ?? false,
+                              child: ATText(
+                                text: '${widget.config?.apiUrl}',
+                                fontColor: AppColors.greyRed,
+                              ))
                         ],
                       )
                     ],

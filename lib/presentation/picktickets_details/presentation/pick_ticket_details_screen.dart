@@ -355,7 +355,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                     if (value == true) {
                                                                       state.pickTicketsResponse?[index]
                                                                           .setPickedItem(state.pickTicketsResponse?[index].qtyPick);
-                                                                      print('TRUE ${state.pickTicketsResponse?[index].pickedItem} ${state.pickTicketsResponse?[index].qtyPick}');
 
                                                                       state.pickTicketsResponse?[index].setIsVisible(false);
                                                                       state.pickTicketsResponse?[index].setIsChecked(true);
@@ -395,15 +394,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                           child: Container(
                                                             alignment: Alignment.centerRight,
                                                             child: ATText(
-                                                              text: state.pickTicketsResponse?[index].status?.toLowerCase() == 'partial'
-                                                                  ? '${state.pickTicketsResponse?[index].pickedItem} of ${state.pickTicketsResponse?[index].qtyPick}'
-                                                                  : (state.pickTicketsResponse?[index].pickedItem == null ||
-                                                                          state.pickTicketsResponse?[index].pickedItem?.isEmpty == true)
-                                                                      ? '${state.pickTicketsResponse?[index].qtyPick}'
-                                                                      : state.pickTicketsResponse?[index].pickedItem == null ||
-                                                                              state.pickTicketsResponse?[index].pickedItem?.isEmpty == true
-                                                                          ? '${state.pickTicketsResponse?[index].qtyPick} of ${state.pickTicketsResponse?[index].qtyPick}'
-                                                                          : '${state.pickTicketsResponse?[index].pickedItem} of ${state.pickTicketsResponse?[index].qtyPick}',
+                                                              text: context.read<PickTicketDetailsBloc>().getQuantityText(state.pickTicketsResponse?[index]),
                                                               weight: FontWeight.bold,
                                                             ),
                                                           ),
@@ -718,13 +709,7 @@ class _TicketPicker extends State<TicketPicker> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           ATText(
-                            text: widget.pickTicketDetailsModel?.status?.toLowerCase() == 'partial'
-                                ? '${widget.pickTicketDetailsModel?.qtyPicked} of ${widget.pickTicketDetailsModel?.qtyPick}'
-                                : (widget.pickTicketDetailsModel?.pickedItem == null || widget.pickTicketDetailsModel?.pickedItem?.isEmpty == true)
-                                    ? '${widget.pickTicketDetailsModel?.qtyPick}'
-                                    : widget.pickTicketDetailsModel?.pickedItem == null || widget.pickTicketDetailsModel?.pickedItem?.isEmpty == true
-                                        ? '${widget.pickTicketDetailsModel?.qtyPick} of ${widget.pickTicketDetailsModel?.qtyPick}'
-                                        : '${widget.pickTicketDetailsModel?.pickedItem} of ${widget.pickTicketDetailsModel?.qtyPick}',
+                            text: context.read<PickTicketDetailsBloc>().getQuantityText(widget.pickTicketDetailsModel),
                             fontSize: 14,
                           )
                         ],
