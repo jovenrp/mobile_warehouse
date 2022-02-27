@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse/application/domain/models/application_config.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/application_logo.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/company_name.dart';
@@ -10,14 +11,16 @@ import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_state.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({Key? key, this.config}) : super(key: key);
 
   static const String routeName = '/splash';
   static const String screenName = 'splashScreen';
 
-  static ModalRoute<SplashScreen> route() => MaterialPageRoute<SplashScreen>(
+  final ApplicationConfig? config;
+
+  static ModalRoute<SplashScreen> route({ApplicationConfig? config}) => MaterialPageRoute<SplashScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => const SplashScreen(),
+        builder: (_) => SplashScreen(config: config),
       );
 
   @override
@@ -32,7 +35,7 @@ class SplashScreen extends StatelessWidget {
           );
         } else {
           Navigator.of(context).pushReplacement(
-            LoginScreen.route(),
+            LoginScreen.route(config: config),
           );
         }
       }

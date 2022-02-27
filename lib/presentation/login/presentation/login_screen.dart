@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse/application/domain/models/application_config.dart';
 import 'package:mobile_warehouse/core/data/mixin/back_pressed_mixin.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/application_logo.dart';
@@ -14,14 +15,16 @@ import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_state.dart'
 
 // This class to display the loging page
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key, this.config}) : super(key: key);
 
   static const String routeName = '/login';
   static const String screenName = 'loginScreen';
 
-  static ModalRoute<LoginScreen> route() => MaterialPageRoute<LoginScreen>(
+  final ApplicationConfig? config;
+
+  static ModalRoute<LoginScreen> route({ApplicationConfig? config}) => MaterialPageRoute<LoginScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => const LoginScreen(),
+        builder: (_) => LoginScreen(config: config,),
       );
 
   @override
@@ -51,6 +54,7 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
         }
       }
     }, builder: (BuildContext context, LoginScreenState state) {
+          print(widget.config?.apiUrl);
       return SafeArea(
           child: WillPopScope(
               onWillPop: () async {
@@ -126,17 +130,23 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                     ),
                   ),
                 ),
-                /*bottomNavigationBar: Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24),
-                  child: ATTextButton(
-                    isLoading: state.isLoading,
-                    buttonText: I18n.of(context).sign_in,
-                    onTap: () {
-                      context.read<LoginScreenBloc>().login(
-                          usernameController.text, passwordController.text);
-                    },
+                bottomNavigationBar: Padding(
+                  padding: const EdgeInsets.only(left: 24, right: 24, bottom: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ATText(text: 'v${widget.config?.appVersion}', fontColor: AppColors.greyRed,),
+                          Visibility(
+                            visible: widget.config?.isApiDebuggerEnabled ?? false,
+                              child: ATText(text: '${widget.config?.apiUrl}', fontColor: AppColors.greyRed,))
+                        ],
+                      )
+                    ],
                   ),
-                ),*/
+                ),
               )));
     });
   }

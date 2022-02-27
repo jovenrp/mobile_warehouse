@@ -52,4 +52,5 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
   }
 
   Future<void> forgotPassword() async {}
+
 }

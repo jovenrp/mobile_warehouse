@@ -173,7 +173,7 @@ class _ApplicationState extends State<Application> {
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             title: I18n.of(context).application_name,
-            home: const SplashScreen(),
+            home: SplashScreen(config: widget.config),
           ),
         ),
       ),
