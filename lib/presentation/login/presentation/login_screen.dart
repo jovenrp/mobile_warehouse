@@ -118,7 +118,7 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                     ),
                   ),
                 ),
-                bottomNavigationBar: Padding(
+                /*bottomNavigationBar: Padding(
                   padding: const EdgeInsets.only(left: 24, right: 24, bottom: 50),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -140,7 +140,7 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                       )
                     ],
                   ),
-                ),
+                ),*/
               )));
     });
   }

@@ -47,6 +47,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
   bool isUndo = false;
   bool isInitialized = false;
   late SnackBar submitSnackbar;
+  late String completeStatus;
 
   @override
   void initState() {
@@ -100,22 +101,37 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                         children: <Widget>[
                           SizedBox(height: 30),
                           ATText(
-                            text: 'Completed!',
-                            fontSize: 28,
+                            text: completeStatus == 'partial' ? 'Partial Pick Completed!' : 'Completed!',
+                            fontSize: completeStatus == 'partial' ? 20 : 28,
                             weight: FontWeight.bold,
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 10),
+                          Visibility(
+                            visible: completeStatus == 'open',
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                ATText(
+                                  text: 'No items picked.',
+                                  fontSize: 28,
+                                  weight: FontWeight.bold,
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10),
                           Container(
                             alignment: Alignment.center,
-                            child: Icon(Icons.check_circle, color: AppColors.successGreen, size: 120),
+                            child: completeStatus == 'partial' ? Icon(Icons.warning_amber_outlined, color: AppColors.warningOrange, size: 120) : Icon(Icons.check_circle, color: AppColors.successGreen, size: 120),
                           ),
                           SizedBox(height: 50),
                           Container(
                             width: double.infinity,
                             child: ATTextButton(
                               isLoading: false,
-                              buttonText: 'Start next ticket',
+                              buttonText: completeStatus == 'processed' ? 'Start next ticket' : 'Save and go back',
                               onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/pickTickets')),
                             ),
                           ),
@@ -351,8 +367,9 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                 value: state.pickTicketsResponse?[index].isChecked ?? false,
                                                                 onChanged: (bool? value) {
                                                                   setState(() {
+                                                                    context.read<PickTicketDetailsBloc>().updateCheckBox(state.pickTicketsResponse?[index], value, widget.ticketItemModel?.id);
 
-                                                                    if (value == true) {
+                                                                    /*if (value == true) {
                                                                       state.pickTicketsResponse?[index]
                                                                           .setPickedItem(state.pickTicketsResponse?[index].qtyPick);
 
@@ -362,15 +379,24 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                           pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '',
                                                                           qtyPicked: state.pickTicketsResponse?[index].qtyPick ?? '');
                                                                     } else {
+                                                                      if (state.pickTicketsResponse?[index].isChecked == true && state.pickTicketsResponse?[index].status?.toLowerCase() == 'partial') {
+                                                                        state.pickTicketsResponse?[index]
+                                                                            .setPickedItem(state.pickTicketsResponse?[index].qtyPick);
 
-                                                                      state.pickTicketsResponse?[index].setPickedItem('0');
-                                                                      print('FALSE ${state.pickTicketsResponse?[index].pickedItem} ${state.pickTicketsResponse?[index].qtyPick}');
-                                                                      state.pickTicketsResponse?[index].setIsVisible(false);
-                                                                      state.pickTicketsResponse?[index].setIsChecked(false);
-                                                                      context.read<PickTicketDetailsBloc>().submitPick(
-                                                                          pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '',
-                                                                          qtyPicked: '0');
-                                                                    }
+                                                                        state.pickTicketsResponse?[index].setIsVisible(false);
+                                                                        state.pickTicketsResponse?[index].setIsChecked(true);
+                                                                        context.read<PickTicketDetailsBloc>().submitPick(
+                                                                            pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '',
+                                                                            qtyPicked: state.pickTicketsResponse?[index].qtyPick ?? '');
+                                                                      } else {
+                                                                        state.pickTicketsResponse?[index].setPickedItem('0');
+                                                                        state.pickTicketsResponse?[index].setIsVisible(false);
+                                                                        state.pickTicketsResponse?[index].setIsChecked(false);
+                                                                        context.read<PickTicketDetailsBloc>().submitPick(
+                                                                            pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '',
+                                                                            qtyPicked: '0');
+                                                                      }
+                                                                    }*/
                                                                   });
                                                                 }),
                                                           ),
@@ -492,6 +518,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
               }
 
               if (openChecker == state.pickTicketsResponse?.length) {
+                completeStatus = 'open';
                 await showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -527,6 +554,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                       );
                     });
               } else if (processedChecker == state.pickTicketsResponse?.length) {
+                completeStatus = 'processed';
                 isUndo = false;
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(submitSnackbar);
@@ -536,6 +564,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                   }
                 });
               } else {
+                completeStatus = 'partial';
                 await showDialog(
                     context: context,
                     builder: (BuildContext context) {

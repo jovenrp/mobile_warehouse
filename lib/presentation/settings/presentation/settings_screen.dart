@@ -145,6 +145,82 @@ class _SettingsScreen extends State<SettingsScreen> {
                     ),
                   ),
                 ),
+                //about section
+                SizedBox(height: 10),
+                Divider(),
+                SizedBox(height: 10),
+                Container(
+                  child: ATText(
+                    text: 'About',
+                    fontSize: 16,
+                    fontColor: AppColors.greyText,
+                    weight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.graySeven,
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(left: 8),
+                          child: ATText(
+                            text: 'Version',
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.only(right: 8),
+                          alignment: Alignment.centerRight,
+                          child: ATText(
+                            text: '1.0.0',
+                            fontSize: 16,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                    color: AppColors.graySeven,
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(left: 8),
+                          child: ATText(
+                            text: 'URL',
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.only(right: 8),
+                          alignment: Alignment.centerRight,
+                          child: ATText(
+                            text: '1.0.0',
+                            fontSize: 16,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           ),

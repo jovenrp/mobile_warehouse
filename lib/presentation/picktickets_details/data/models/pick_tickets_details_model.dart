@@ -90,7 +90,7 @@ class PickTicketDetailsModel {
   final String? partial;
 
   @JsonKey(name: 'status')
-  final String? status;
+  String? status;
 
   @JsonKey(name: 'createdTime')
   final String? createdTime;
@@ -123,5 +123,9 @@ class PickTicketDetailsModel {
 
   void setLocation(String? value) {
     location = value;
+  }
+
+  void setStatus(String? value) {
+    status = value;
   }
 }

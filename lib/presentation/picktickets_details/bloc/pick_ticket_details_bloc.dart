@@ -151,4 +151,33 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
                 ? '${pickTicket?.qtyPick} of ${pickTicket?.qtyPick}'
                 : '${pickTicket?.pickedItem} of ${pickTicket?.qtyPick}';
   }
+
+  bool updateCheckBox(PickTicketDetailsModel? pickTicket, bool? value, String? pickTicketId) {
+
+    if (value == true) {
+      pickTicket?.setPickedItem(pickTicket.qtyPick);
+      pickTicket?.setStatus('Proccessed');
+      pickTicket?.setIsVisible(false);
+      pickTicket?.setIsChecked(true);
+      submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: pickTicket?.qtyPick ?? '');
+    } else {
+      if (pickTicket?.isChecked == true && pickTicket?.status?.toLowerCase() == 'partial') {
+        //getPickTicketDetails(pickTicketId: pickTicketId);
+        pickTicket?.setPickedItem(pickTicket.qtyPick);
+        pickTicket?.setStatus('Proccessed');
+        pickTicket?.setIsVisible(false);
+        pickTicket?.setIsChecked(true);
+        submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: pickTicket?.qtyPick ?? '');
+      } else {
+        pickTicket?.setPickedItem('0');
+        pickTicket?.setStatus('Parial');
+        pickTicket?.setIsVisible(false);
+        pickTicket?.setIsChecked(false);
+        submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: '0');
+      }
+    }
+    return false;
+  }
+  
+  
 }
