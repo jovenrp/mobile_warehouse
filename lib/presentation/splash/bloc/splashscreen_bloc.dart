@@ -19,7 +19,8 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
     String loginTimestamp =
         await persistenceService?.loginTimestamp.get() ?? '0';
     int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    bool isExpire = currentTimestamp < (int.parse(loginTimestamp) + 7200);
+    bool isExpire = currentTimestamp > (int.parse(loginTimestamp) + (86400 * 1000));
+
 
     Timer(const Duration(seconds: 2), () {
       emit(state.copyWith(isLoading: false));
