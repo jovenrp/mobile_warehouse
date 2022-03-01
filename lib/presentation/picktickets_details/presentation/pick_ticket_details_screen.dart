@@ -58,20 +58,20 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
     super.initState();
     context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: widget.ticketItemModel?.id).then((List<PickTicketDetailsModel>? value) {
       Future<void>.delayed(Duration(milliseconds: 500), (){
-
         int index = 0;
         for (PickTicketDetailsModel item in value ?? <PickTicketDetailsModel>[]) {
-          if (item.status?.toLowerCase() != 'open') {
+          print('${item.status?.toLowerCase()}');
+          if (item.status?.toLowerCase() != 'open' || item.status?.isEmpty == true) {
             index++;
           } else {
             break;
           }
+          itemScrollController
+              .scrollTo(
+              index: index,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeInOutCubic);
         }
-        itemScrollController
-            .scrollTo(
-            index: index,
-            duration: Duration(seconds: 1),
-            curve: Curves.easeInOutCubic);
       });
     });
     context.read<PickTicketDetailsBloc>().getSettings();
