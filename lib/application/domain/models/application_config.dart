@@ -1,3 +1,8 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'application_config.g.dart';
+
+@JsonSerializable()
 class ApplicationConfig {
   ApplicationConfig({
     required this.apiUrl,
@@ -10,6 +15,13 @@ class ApplicationConfig {
     this.appVersion,
     this.buildNumber,
   });
+
+  factory ApplicationConfig.fromJson(Map<String, dynamic> json) =>
+      _$ApplicationConfigFromJson(json);
+  Map<String, dynamic> toJson() => _$ApplicationConfigToJson(this);
+
+  static ApplicationConfig? fromJsonX(Map<String, dynamic>? json) =>
+      json == null ? null : ApplicationConfig.fromJson(json);
 
   final String apiUrl;
   final String? apiKey;

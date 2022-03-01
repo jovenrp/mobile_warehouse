@@ -18,14 +18,15 @@ class SplashScreen extends StatelessWidget {
 
   final ApplicationConfig? config;
 
-  static ModalRoute<SplashScreen> route({ApplicationConfig? config}) => MaterialPageRoute<SplashScreen>(
+  static ModalRoute<SplashScreen> route({ApplicationConfig? config}) =>
+      MaterialPageRoute<SplashScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => SplashScreen(config: config),
       );
 
   @override
   Widget build(BuildContext context) {
-    context.read<SplashScreenBloc>().loadSplashScreen();
+    context.read<SplashScreenBloc>().loadSplashScreen(config: config);
     return BlocConsumer<SplashScreenBloc, SplashScreenState>(
         listener: (BuildContext context, SplashScreenState state) {
       if (!state.isLoading) {

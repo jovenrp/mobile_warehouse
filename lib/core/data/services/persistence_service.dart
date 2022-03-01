@@ -1,3 +1,4 @@
+import 'package:mobile_warehouse/application/domain/models/application_config.dart';
 import 'package:mobile_warehouse/core/domain/interfaces/local_repository.dart';
 import 'package:mobile_warehouse/core/domain/models/persistence_value_container.dart';
 import 'package:mobile_warehouse/core/domain/models/user_profile_model.dart';
@@ -140,12 +141,12 @@ class PersistenceService {
         _securedStorage,
       );
 
-  /*ObjectValueContainer<AppConfigurationDataDto> get appConfiguration =>
-      ObjectValueContainer<AppConfigurationDataDto>(
+  ObjectValueContainer<ApplicationConfig> get appConfiguration =>
+      ObjectValueContainer<ApplicationConfig>(
         'keys.appConfiguration',
         _securedStorage,
-        AppConfigurationDataDto.fromJsonX,
-      );*/
+        ApplicationConfig.fromJsonX,
+      );
 
   Future<int> getLastRefresh() async {
     String? userId = await currentUserServiceNumber.get();

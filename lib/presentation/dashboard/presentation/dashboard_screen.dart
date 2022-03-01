@@ -21,7 +21,8 @@ import 'package:mobile_warehouse/presentation/settings/presentation/settings_scr
 import 'action_cards_widget.dart';
 
 class DashboardScreen extends StatefulWidget {
-    const DashboardScreen({Key? key, this.userProfileModel, this.config}) : super(key: key);
+  const DashboardScreen({Key? key, this.userProfileModel, this.config})
+      : super(key: key);
 
   static const String routeName = '/dashboard';
   static const String screenName = 'dashboardScreen';
@@ -33,7 +34,8 @@ class DashboardScreen extends StatefulWidget {
           {UserProfileModel? userProfileModel, ApplicationConfig? config}) =>
       MaterialPageRoute<DashboardScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => DashboardScreen(userProfileModel: userProfileModel, config: config),
+        builder: (_) =>
+            DashboardScreen(userProfileModel: userProfileModel, config: config),
       );
 
   @override

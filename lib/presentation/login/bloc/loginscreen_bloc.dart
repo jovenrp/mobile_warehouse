@@ -21,7 +21,8 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
   }
 
   Future<void> login(String username, String password) async {
-    emit(state.copyWith(isLoading: true, hasError: false)); //turn on loading indicator
+    emit(state.copyWith(
+        isLoading: true, hasError: false)); //turn on loading indicator
 
     try {
       final LoginResponseModel result = await loginRepository.login(
@@ -50,5 +51,4 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
       emit(state.copyWith(isLoading: false)); //turn off loading indicator
     }
   }
-
 }

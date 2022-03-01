@@ -22,7 +22,8 @@ class LoginScreen extends StatefulWidget {
 
   final ApplicationConfig? config;
 
-  static ModalRoute<LoginScreen> route({ApplicationConfig? config}) => MaterialPageRoute<LoginScreen>(
+  static ModalRoute<LoginScreen> route({ApplicationConfig? config}) =>
+      MaterialPageRoute<LoginScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => LoginScreen(
           config: config,
@@ -48,10 +49,12 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginScreenBloc, LoginScreenState>(listener: (BuildContext context, LoginScreenState state) {
+    return BlocConsumer<LoginScreenBloc, LoginScreenState>(
+        listener: (BuildContext context, LoginScreenState state) {
       if (!state.isLoading) {
         if (!state.hasError) {
-          Navigator.of(context).pushReplacement(DashboardScreen.route(userProfileModel: state.userProfileModel, config: widget.config));
+          Navigator.of(context).pushReplacement(DashboardScreen.route(
+              userProfileModel: state.userProfileModel, config: widget.config));
         }
       }
     }, builder: (BuildContext context, LoginScreenState state) {
@@ -88,13 +91,15 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                           children: <Widget>[
                             state.hasError
                                 ? ATText(
-                                    text: state.loginResponseModel?.errorMessage,
+                                    text:
+                                        state.loginResponseModel?.errorMessage,
                                     fontColor: AppColors.atRed,
                                     fontSize: 12,
                                   )
                                 : SizedBox(),
                             InkWell(
-                              onTap: () => Navigator.of(context).push(ForgotPasswordScreen.route()),
+                              onTap: () => Navigator.of(context)
+                                  .push(ForgotPasswordScreen.route()),
                               child: ATText(
                                 text: I18n.of(context).forgot_password,
                                 fontColor: AppColors.beachSea,
@@ -110,7 +115,9 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                             isLoading: state.isLoading,
                             buttonText: I18n.of(context).sign_in,
                             onTap: () {
-                              context.read<LoginScreenBloc>().login(usernameController.text, passwordController.text);
+                              context.read<LoginScreenBloc>().login(
+                                  usernameController.text,
+                                  passwordController.text);
                             },
                           ),
                         )

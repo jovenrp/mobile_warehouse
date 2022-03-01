@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse/application/domain/models/application_config.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/core/domain/models/user_profile_model.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_state.dart';
@@ -10,7 +11,7 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
 
   final PersistenceService? persistenceService;
 
-  void loadSplashScreen() async {
+  void loadSplashScreen({ApplicationConfig? config}) async {
     emit(state.copyWith(isLoading: true));
 
     UserProfileModel? userProfileModel =
@@ -19,8 +20,10 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
     String loginTimestamp =
         await persistenceService?.loginTimestamp.get() ?? '0';
     int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
-    bool isExpire = currentTimestamp > (int.parse(loginTimestamp) + (86400 * 1000));
+    bool isExpire =
+        currentTimestamp > (int.parse(loginTimestamp) + (86400 * 1000));
 
+    await persistenceService?.appConfiguration.set(config?.toJson());
 
     Timer(const Duration(seconds: 2), () {
       emit(state.copyWith(isLoading: false));

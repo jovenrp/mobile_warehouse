@@ -1,4 +1,3 @@
-
 import 'package:package_info/package_info.dart';
 import 'app_info.dart';
 

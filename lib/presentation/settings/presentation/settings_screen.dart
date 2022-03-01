@@ -181,7 +181,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                           padding: const EdgeInsets.only(right: 8),
                           alignment: Alignment.centerRight,
                           child: ATText(
-                            text: '1.0.0',
+                            text: state.appVersion,
                             fontSize: 16,
                           ),
                         ),
@@ -213,7 +213,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                           padding: const EdgeInsets.only(right: 8),
                           alignment: Alignment.centerRight,
                           child: ATText(
-                            text: '1.0.0',
+                            text: state.url,
                             fontSize: 16,
                           ),
                         ),
