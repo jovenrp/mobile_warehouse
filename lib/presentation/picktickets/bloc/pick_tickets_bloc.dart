@@ -21,9 +21,16 @@ class PickTicketsBloc extends Cubit<PickTicketsState> {
       final PickTicketsResponse response =
           await pickTicketsRepository.fetchPickTickets(token: token);
 
+      List<PickTicketsItemModel> sorted = response.pickTickets ?? <PickTicketsItemModel>[];
+      sorted.sort((PickTicketsItemModel? a, PickTicketsItemModel? b){
+        String aa = a?.location ?? '';
+        String bb = b?.location ?? '';
+        return aa.toLowerCase().compareTo(bb.toLowerCase());
+      });
+
       emit(state.copyWith(
           isLoading: false,
-          pickTicketsItemModel: response.pickTickets,
+          pickTicketsItemModel: sorted,
           hasError: false));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
