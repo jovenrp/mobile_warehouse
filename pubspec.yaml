@@ -60,6 +60,7 @@ dependencies:
   stream_transform: ^2.0.0
   easy_debounce: ^2.0.2+1
   qr_code_scanner: ^0.6.1
+  scrollable_positioned_list: ^0.2.3
 
   ## Testing and Development
   alice_lightweight: ^3.0.0
