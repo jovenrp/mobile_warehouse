@@ -109,7 +109,8 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                     ),
                     SizedBox(height: 20),
                     Expanded(
-                      child: Container(
+                      child: InteractiveViewer(
+                          child: Container(
                         color: AppColors.white,
                         child: SmartRefresher(
                             enablePullDown: canRefresh,
@@ -354,7 +355,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                             ],
                                           ));
                                     })),
-                      ),
+                      )),
                     )
                   ],
                 ),

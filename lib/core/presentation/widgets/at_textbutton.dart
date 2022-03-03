@@ -9,7 +9,7 @@ class ATTextButton extends StatelessWidget {
       this.buttonTextStyle,
       this.buttonStyle,
       this.onTap,
-      this.isLoading})
+      this.isLoading, this.padding})
       : super(key: key);
 
   final String? buttonText;
@@ -17,6 +17,7 @@ class ATTextButton extends StatelessWidget {
   final ButtonStyle? buttonStyle;
   final VoidCallback? onTap;
   final bool? isLoading;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class ATTextButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
               ))),
       child: Padding(
-          padding: const EdgeInsets.only(top: 3, bottom: 3),
+          padding: padding ?? const EdgeInsets.only(top: 3, bottom: 3),
           child: isLoading ?? false
               ? const ATLoadingIndicator()
               : Text(

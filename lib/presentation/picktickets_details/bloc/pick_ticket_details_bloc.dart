@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_state.dart';
@@ -18,30 +20,27 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   final PersistenceService persistenceService;
 
   Future<void> resetStates() async {
-    emit(state.copyWith(
-        isLoading: false, isUpdateLoading: false, isCompleteTicket: false));
+    emit(state.copyWith(isLoading: false, isUpdateLoading: false, isCompleteTicket: false, isOverPicked: false));
   }
 
-  Future<List<PickTicketDetailsModel>?> getPickTicketDetails(
-      {String? pickTicketId}) async {
-    emit(state.copyWith(
-        isLoading: true, isCompleteTicket: false)); //turn on loading indicator
+  Future<List<PickTicketDetailsModel>?> getPickTicketDetails({String? pickTicketId}) async {
+    emit(state.copyWith(isLoading: true, isCompleteTicket: false)); //turn on loading indicator
 
     try {
       String? token = await persistenceService.dwnToken.get();
-      final PickTicketsDetailsResponse response =
-          await pickTicketDetailsRepository.fetchPickTicketsDetails(
-              token: token, pickTicketId: pickTicketId);
+      final PickTicketsDetailsResponse response = await pickTicketDetailsRepository.fetchPickTicketsDetails(token: token, pickTicketId: pickTicketId);
 
-      emit(state.copyWith(
-          isLoading: false,
-          pickTicketsResponse: response.pickTicketsResponse,
-          pickTicketResponse: response.pickTicketResponse,
-          hasError: false));
+      List<PickTicketDetailsModel> sorted = response.pickTicketsResponse ?? <PickTicketDetailsModel>[];
+      sorted.sort((PickTicketDetailsModel? a, PickTicketDetailsModel? b) {
+        String aa = a?.locCode ?? '';
+        String bb = b?.locCode ?? '';
+        return aa.toLowerCase().compareTo(bb.toLowerCase());
+      });
+
+      emit(state.copyWith(isLoading: false, pickTicketsResponse: sorted, pickTicketResponse: response.pickTicketResponse, hasError: false));
       return response.pickTicketsResponse;
     } catch (_) {
-      emit(state.copyWith(
-          isLoading: false, hasError: true, isCompleteTicket: false));
+      emit(state.copyWith(isLoading: false, hasError: true, isCompleteTicket: false));
       print(_);
     }
   }
@@ -51,17 +50,11 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     try {
       String sessId = await persistenceService.dwnToken.get() ?? '';
 
-      final TicketDetailsResponseModel response =
-          await pickTicketDetailsRepository.beginPick(
-              pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+      final TicketDetailsResponseModel response = await pickTicketDetailsRepository.beginPick(pickTicketDetailId: pickTicketDetailId, sessId: sessId);
 
-      emit(state.copyWith(
-          isUpdateLoading: false,
-          hasError: false,
-          ticketDetailsResponseModel: response));
+      emit(state.copyWith(isUpdateLoading: false, hasError: false, ticketDetailsResponseModel: response));
     } catch (_) {
-      emit(state.copyWith(
-          isUpdateLoading: false, hasError: true, isCompleteTicket: false));
+      emit(state.copyWith(isUpdateLoading: false, hasError: true, isCompleteTicket: false));
       print(_);
     }
   }
@@ -70,39 +63,32 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(isUpdateLoading: true, isCompleteTicket: false));
     try {
       String sessId = await persistenceService.dwnToken.get() ?? '';
-      final TicketDetailsResponseModel response =
-          await pickTicketDetailsRepository.exitPick(
-              pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+      final TicketDetailsResponseModel response = await pickTicketDetailsRepository.exitPick(pickTicketDetailId: pickTicketDetailId, sessId: sessId);
 
-      emit(state.copyWith(
-          isUpdateLoading: false,
-          hasError: false,
-          ticketDetailsResponseModel: response));
+      emit(state.copyWith(isUpdateLoading: false, hasError: false, ticketDetailsResponseModel: response));
     } catch (_) {
-      emit(state.copyWith(
-          isUpdateLoading: false, hasError: true, isCompleteTicket: false));
+      emit(state.copyWith(isUpdateLoading: false, hasError: true, isCompleteTicket: false));
       print(_);
     }
   }
 
-  Future<void> submitPick(
-      {required String pickTicketDetailId, required String qtyPicked}) async {
-    emit(state.copyWith(isUpdateLoading: true, isCompleteTicket: false));
+  Future<void> submitPick({required String pickTicketDetailId, required String qtyPicked}) async {
+    emit(state.copyWith(isUpdateLoading: true, isCompleteTicket: false, dummyQuantityPicked: '', dummyPickTicketId: ''));
+
     try {
       String sessId = await persistenceService.dwnToken.get() ?? '';
       final TicketDetailsResponseModel response =
-          await pickTicketDetailsRepository.submitPick(
-              pickTicketDetailId: pickTicketDetailId,
-              qtyPicked: qtyPicked,
-              sessId: sessId);
+          await pickTicketDetailsRepository.submitPick(pickTicketDetailId: pickTicketDetailId, qtyPicked: qtyPicked, sessId: sessId);
 
       emit(state.copyWith(
           isUpdateLoading: false,
           hasError: false,
           ticketDetailsResponseModel: response,
-          isCompleteTicket: false));
+          isCompleteTicket: false,
+          dummyQuantityPicked: '',
+          dummyPickTicketId: ''));
     } catch (_) {
-      emit(state.copyWith(isUpdateLoading: false, hasError: true));
+      emit(state.copyWith(isUpdateLoading: false, hasError: true, dummyQuantityPicked: '', dummyPickTicketId: ''));
       print(_);
     }
   }
@@ -111,18 +97,11 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(isUpdateLoading: true, isCompleteTicket: false));
     try {
       String sessId = await persistenceService.dwnToken.get() ?? '';
-      final TicketDetailsResponseModel response =
-          await pickTicketDetailsRepository.completePickTicket(
-              pickTicket: pickTicket, sessId: sessId);
+      final TicketDetailsResponseModel response = await pickTicketDetailsRepository.completePickTicket(pickTicket: pickTicket, sessId: sessId);
 
-      emit(state.copyWith(
-          isUpdateLoading: false,
-          hasError: false,
-          isCompleteTicket: true,
-          ticketDetailsResponseModel: response));
+      emit(state.copyWith(isUpdateLoading: false, hasError: false, isCompleteTicket: true, ticketDetailsResponseModel: response));
     } catch (_) {
-      emit(state.copyWith(
-          isUpdateLoading: false, isCompleteTicket: false, hasError: true));
+      emit(state.copyWith(isUpdateLoading: false, isCompleteTicket: false, hasError: true));
       print(_);
     }
   }
@@ -131,103 +110,83 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(isUpdateLoading: true, isCompleteTicket: false));
     try {
       String sessId = await persistenceService.dwnToken.get() ?? '';
-      final TicketDetailsResponseModel response =
-          await pickTicketDetailsRepository.exitPickTicket(
-              pickTicket: pickTicket, sessId: sessId);
-      emit(state.copyWith(
-          isUpdateLoading: false,
-          hasError: false,
-          ticketDetailsResponseModel: response));
+      final TicketDetailsResponseModel response = await pickTicketDetailsRepository.exitPickTicket(pickTicket: pickTicket, sessId: sessId);
+      emit(state.copyWith(isUpdateLoading: false, hasError: false, ticketDetailsResponseModel: response));
     } catch (_) {
-      emit(state.copyWith(
-          isUpdateLoading: false, hasError: true, isCompleteTicket: false));
+      emit(state.copyWith(isUpdateLoading: false, hasError: true, isCompleteTicket: false));
       print(_);
     }
   }
 
   Future<void> getSettings() async {
-    bool pickLimitSetting =
-        await persistenceService.pickLimitSetting.get() ?? false;
+    bool pickLimitSetting = await persistenceService.pickLimitSetting.get() ?? false;
     emit(state.copyWith(pickLimitSetting: pickLimitSetting));
   }
 
-  Future<void> searchTicket(
-      {String? value, required String pickTicketId}) async {
+  Future<void> searchTicket({String? value, required String pickTicketId}) async {
     emit(state.copyWith(isLoading: true, isCompleteTicket: false));
     try {
       String? token = await persistenceService.dwnToken.get();
-      final PickTicketsDetailsResponse response =
-          await pickTicketDetailsRepository.fetchPickTicketsDetails(
-              token: token, pickTicketId: pickTicketId);
+      final PickTicketsDetailsResponse response = await pickTicketDetailsRepository.fetchPickTicketsDetails(token: token, pickTicketId: pickTicketId);
 
       String searchText = value?.toLowerCase() ?? '';
-      List<PickTicketDetailsModel> values =
-          response.pickTicketsResponse?.where((PickTicketDetailsModel item) {
-                String sku = item.sku?.toLowerCase() ?? '';
-                String description = item.description?.toLowerCase() ?? '';
-                String locCode = item.locCode?.toLowerCase() ?? '';
-                String status = item.status?.toLowerCase() ?? '';
-                String uom = item.uom?.toLowerCase() ?? '';
-                String qtyPicked = item.qtyPicked?.toLowerCase() ?? '';
-                String qtyPick = item.qtyPick?.toLowerCase() ?? '';
-                return sku.contains(searchText) ||
-                    description.contains((searchText)) ||
-                    status.contains((searchText)) ||
-                    uom.contains((searchText)) ||
-                    qtyPicked.contains((searchText)) ||
-                    qtyPick.contains((searchText)) ||
-                    locCode.contains(searchText);
-              }).toList() ??
-              <PickTicketDetailsModel>[];
+      List<PickTicketDetailsModel> values = response.pickTicketsResponse?.where((PickTicketDetailsModel item) {
+            String sku = item.sku?.toLowerCase() ?? '';
+            String description = item.description?.toLowerCase() ?? '';
+            String locCode = item.locCode?.toLowerCase() ?? '';
+            String status = item.status?.toLowerCase() ?? '';
+            String uom = item.uom?.toLowerCase() ?? '';
+            String qtyPicked = item.qtyPicked?.toLowerCase() ?? '';
+            String qtyPick = item.qtyPick?.toLowerCase() ?? '';
+            return sku.contains(searchText) ||
+                description.contains((searchText)) ||
+                status.contains((searchText)) ||
+                uom.contains((searchText)) ||
+                qtyPicked.contains((searchText)) ||
+                qtyPick.contains((searchText)) ||
+                locCode.contains(searchText);
+          }).toList() ??
+          <PickTicketDetailsModel>[];
 
-      print('$value ${values.length}');
-
-      emit(state.copyWith(
-          isLoading: false,
-          pickTicketsResponse:
-              value?.isEmpty == true ? response.pickTicketsResponse : values,
-          hasError: false));
+      emit(state.copyWith(isLoading: false, pickTicketsResponse: value?.isEmpty == true ? response.pickTicketsResponse : values, hasError: false));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
     }
   }
 
-  String getQuantityText(PickTicketDetailsModel? pickTicket) {
+  String getQuantityText(PickTicketDetailsModel? pickTicket, int textValue) {
     return pickTicket?.status?.toLowerCase() == 'partial'
-        ? '${pickTicket?.pickedItem} of ${pickTicket?.qtyPick}'
-        : (pickTicket?.pickedItem == null ||
-                pickTicket?.pickedItem?.isEmpty == true)
+        ? '${int.parse(pickTicket?.pickedItem ?? '0') + textValue} of ${pickTicket?.qtyPick}'
+        : (pickTicket?.pickedItem == null || pickTicket?.pickedItem?.isEmpty == true)
             ? '${pickTicket?.qtyPick}'
-            : pickTicket?.pickedItem == null ||
-                    pickTicket?.pickedItem?.isEmpty == true
+            : pickTicket?.pickedItem == null || pickTicket?.pickedItem?.isEmpty == true
                 ? '${pickTicket?.qtyPick} of ${pickTicket?.qtyPick}'
-                : '${pickTicket?.pickedItem} of ${pickTicket?.qtyPick}';
+                : '${int.parse(pickTicket?.pickedItem ?? '0') + textValue} of ${pickTicket?.qtyPick}';
   }
 
-  bool updateCheckBox(
-      PickTicketDetailsModel? pickTicket, bool? value, String? pickTicketId) {
+  bool updateCheckBox(PickTicketDetailsModel? pickTicket, bool? value, String? pickTicketId, TextEditingController controller) {
     if (value == true) {
-      pickTicket?.setPickedItem(pickTicket.qtyPick);
+      controller.text = pickTicket?.qtyPick ?? '0';
+      setQuantityPicked(pickTicket, controller);
+      //pickTicket?.setPickedItem(pickTicket.qtyPick);
       pickTicket?.setStatus('Proccessed');
       pickTicket?.setIsVisible(false);
       pickTicket?.setIsChecked(true);
-      submitPick(
-          pickTicketDetailId: pickTicket?.id ?? '',
-          qtyPicked: pickTicket?.qtyPick ?? '');
+      //submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: pickTicket?.qtyPick ?? '');
     } else {
-      if (pickTicket?.isChecked == true &&
-          pickTicket?.status?.toLowerCase() == 'partial') {
+      if (pickTicket?.isChecked == true && pickTicket?.status?.toLowerCase() == 'partial') {
         //getPickTicketDetails(pickTicketId: pickTicketId);
-        pickTicket?.setPickedItem(pickTicket.qtyPick);
+        //pickTicket?.setPickedItem(pickTicket.qtyPick);
+        controller.text = pickTicket?.qtyPick ?? '0';
+        setQuantityPicked(pickTicket, controller);
         pickTicket?.setStatus('Proccessed');
         pickTicket?.setIsVisible(false);
         pickTicket?.setIsChecked(true);
-        submitPick(
-            pickTicketDetailId: pickTicket?.id ?? '',
-            qtyPicked: pickTicket?.qtyPick ?? '');
+        //submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: pickTicket?.qtyPick ?? '');
       } else {
         pickTicket?.setPickedItem('0');
+        controller.clear();
         pickTicket?.setStatus('Parial');
         pickTicket?.setIsVisible(false);
         pickTicket?.setIsChecked(false);
@@ -235,5 +194,20 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       }
     }
     return false;
+  }
+
+  void setQuantityPicked(PickTicketDetailsModel? pickTicket, TextEditingController controller) {
+    emit(state.copyWith(isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
+    String valueItem = controller.text;
+    controller.clear();
+    pickTicket?.setIsVisible(false);
+    pickTicket?.setIsChecked(true);
+    if ((int.parse(valueItem) + int.parse(pickTicket?.pickedItem ?? '0')) > int.parse(pickTicket?.qtyPick ?? '0')) {
+      pickTicket?.setPickedItem((int.parse(valueItem) + int.parse(pickTicket.pickedItem ?? '0')).toString());
+      emit(state.copyWith(isOverPicked: true, dummyPickTicketId: pickTicket?.id, dummyQuantityPicked: valueItem));
+    } else {
+      pickTicket?.setPickedItem((int.parse(valueItem) + int.parse(pickTicket.pickedItem ?? '0')).toString());
+      submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: valueItem);
+    }
   }
 }

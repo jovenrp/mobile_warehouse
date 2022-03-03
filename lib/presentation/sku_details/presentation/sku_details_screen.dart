@@ -124,7 +124,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                           Expanded(
                             flex: 2,
                             child: ATText(
-                                text: widget.ticketItemModel?.location,
+                                text: widget.ticketItemModel?.locCode,
                                 weight: FontWeight.w700,
                                 fontSize: 12),
                           ),
