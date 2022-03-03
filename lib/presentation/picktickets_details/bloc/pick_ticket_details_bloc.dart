@@ -198,7 +198,6 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
 
   void setQuantityPicked(PickTicketDetailsModel? pickTicket, TextEditingController controller) {
     String valueItem = controller.text;
-    print('PICKEDITEM ${pickTicket?.pickedItem}');
     if (valueItem == '0') {
       pickTicket?.setStatus('Partial');
       pickTicket?.setPickedItem('0');
@@ -220,7 +219,6 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   }
 
   void cancelPickRequest(PickTicketDetailsModel? pickTicket, String? valueItem) {
-    print('valueItem ${valueItem} ${pickTicket?.pickedItem}');
     emit(state.copyWith(isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
     pickTicket?.setPickedItem((int.parse(pickTicket.pickedItem ?? '0') - int.parse(valueItem ?? '0')).toString());
   }
