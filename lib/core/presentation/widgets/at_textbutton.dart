@@ -9,7 +9,8 @@ class ATTextButton extends StatelessWidget {
       this.buttonTextStyle,
       this.buttonStyle,
       this.onTap,
-      this.isLoading, this.padding})
+      this.isLoading,
+      this.padding})
       : super(key: key);
 
   final String? buttonText;

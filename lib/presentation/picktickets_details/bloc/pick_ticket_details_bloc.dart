@@ -175,7 +175,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       pickTicket?.setIsChecked(true);
       //submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: pickTicket?.qtyPick ?? '');
     } else {
-      if (pickTicket?.isChecked == true && pickTicket?.status?.toLowerCase() == 'partial') {
+      /*if (pickTicket?.isChecked == true && pickTicket?.status?.toLowerCase() == 'partial') {
         //getPickTicketDetails(pickTicketId: pickTicketId);
         //pickTicket?.setPickedItem(pickTicket.qtyPick);
         controller.text = pickTicket?.qtyPick ?? '0';
@@ -191,23 +191,37 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
         pickTicket?.setIsVisible(false);
         pickTicket?.setIsChecked(false);
         submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: '0');
-      }
+      }*/
     }
     return false;
   }
 
   void setQuantityPicked(PickTicketDetailsModel? pickTicket, TextEditingController controller) {
-    emit(state.copyWith(isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
     String valueItem = controller.text;
-    controller.clear();
-    pickTicket?.setIsVisible(false);
+    print('PICKEDITEM ${pickTicket?.pickedItem}');
+    if (valueItem == '0') {
+      pickTicket?.setStatus('Partial');
+      pickTicket?.setPickedItem('0');
+    }
+    if (pickTicket?.pickedItem?.isEmpty == true || pickTicket?.pickedItem == null) {
+      pickTicket?.setPickedItem('0');
+    }
+    emit(state.copyWith(dummyPickTicketDetailsModel: pickTicket));
     pickTicket?.setIsChecked(true);
+    controller.clear();
     if ((int.parse(valueItem) + int.parse(pickTicket?.pickedItem ?? '0')) > int.parse(pickTicket?.qtyPick ?? '0')) {
       pickTicket?.setPickedItem((int.parse(valueItem) + int.parse(pickTicket.pickedItem ?? '0')).toString());
       emit(state.copyWith(isOverPicked: true, dummyPickTicketId: pickTicket?.id, dummyQuantityPicked: valueItem));
     } else {
+      emit(state.copyWith(isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
       pickTicket?.setPickedItem((int.parse(valueItem) + int.parse(pickTicket.pickedItem ?? '0')).toString());
       submitPick(pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: valueItem);
     }
+  }
+
+  void cancelPickRequest(PickTicketDetailsModel? pickTicket, String? valueItem) {
+    print('valueItem ${valueItem} ${pickTicket?.pickedItem}');
+    emit(state.copyWith(isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
+    pickTicket?.setPickedItem((int.parse(pickTicket.pickedItem ?? '0') - int.parse(valueItem ?? '0')).toString());
   }
 }

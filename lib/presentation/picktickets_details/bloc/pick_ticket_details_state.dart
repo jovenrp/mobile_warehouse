@@ -24,5 +24,6 @@ class PickTicketDetailsState with _$PickTicketDetailsState {
       bool? isOverPicked,
       String? dummyPickTicketId,
       String? dummyQuantityPicked,
+      PickTicketDetailsModel? dummyPickTicketDetailsModel,
       String? token}) = _PickTicketDetailsState;
 }

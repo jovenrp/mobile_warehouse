@@ -150,7 +150,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                               buttonTextStyle: TextStyle(color: AppColors.beachSea),
                               isLoading: false,
                               buttonText: 'Cancel',
-                              onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails')),
+                              onTap: () {
+                                context.read<PickTicketDetailsBloc>().cancelPickRequest(state.dummyPickTicketDetailsModel, state.dummyQuantityPicked);
+                                Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails'));
+                              },
                             ),
                           )
                         ],
@@ -702,7 +705,13 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
 }
 
 class TicketPicker extends StatefulWidget {
-  const TicketPicker({Key? key, this.pickTicketDetailsModel, this.controller, required this.onFieldSubmitted, required this.onChanged, required this.onReset})
+  const TicketPicker(
+      {Key? key,
+      this.pickTicketDetailsModel,
+      this.controller,
+      required this.onFieldSubmitted,
+      required this.onChanged,
+      required this.onReset})
       : super(key: key);
 
   final PickTicketDetailsModel? pickTicketDetailsModel;
@@ -771,10 +780,7 @@ class _TicketPicker extends State<TicketPicker> {
                                           SizedBox(height: 20),
                                           Container(
                                             width: double.infinity,
-                                            child: ATTextButton(
-                                                isLoading: false,
-                                                buttonText: 'Yes, Reset line',
-                                                onTap: widget.onReset),
+                                            child: ATTextButton(isLoading: false, buttonText: 'Yes, Reset line', onTap: widget.onReset),
                                           ),
                                           SizedBox(height: 10),
                                           Container(
