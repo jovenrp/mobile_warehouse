@@ -285,6 +285,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
               SizedBox(height: 20),
               Expanded(
                   child: InteractiveViewer(
+                    constrained: false,
                       child: Container(
                           color: AppColors.white,
                           child: SmartRefresher(
