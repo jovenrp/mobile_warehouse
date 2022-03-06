@@ -226,7 +226,16 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
         }
       }
     }, builder: (BuildContext context, PickTicketDetailsState state) {
-      return SafeArea(
+      return WillPopScope(
+          onWillPop: () async {
+            if (currentIndex != -1) {
+              await context.read<PickTicketDetailsBloc>().exitPick(pickTicketDetailId: state.pickTicketsResponse?[currentIndex].id ?? '0').then((_) => Navigator.of(context).popUntil(ModalRoute.withName('/pickTickets')));
+            } else {
+              Navigator.of(context).popUntil(ModalRoute.withName('/pickTickets'));
+            }
+            return true;
+          },
+          child: SafeArea(
           child: Scaffold(
         appBar: ATAppBar(
           title: I18n.of(context).ticket_ticket_id(widget.ticketItemModel?.num).capitalizeFirstofEach(),
@@ -250,8 +259,11 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
           ],
           onTap: () {
             //complete pick ticket here
-            //context.read<PickTicketDetailsBloc>().exitPickTicket(pickTicket: widget.ticketItemModel?.id ?? '0');
-            Navigator.of(context).popUntil(ModalRoute.withName('/pickTickets'));
+            if (currentIndex != -1) {
+              context.read<PickTicketDetailsBloc>().exitPick(pickTicketDetailId: state.pickTicketsResponse?[currentIndex].id ?? '0').then((_) => Navigator.of(context).popUntil(ModalRoute.withName('/pickTickets')));
+            } else {
+              Navigator.of(context).popUntil(ModalRoute.withName('/pickTickets'));
+            }
           },
         ),
         body: Container(
@@ -285,7 +297,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
               SizedBox(height: 20),
               Expanded(
                   child: InteractiveViewer(
-                    constrained: false,
                       child: Container(
                           color: AppColors.white,
                           child: SmartRefresher(
@@ -535,8 +546,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                             });
                                                           },
                                                           onReset: () {
-                                                            _forcedRefresh(pickTicketId: widget.ticketItemModel?.id);
-                                                            Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails'));
+                                                            context.read<PickTicketDetailsBloc>().submitPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '', qtyPicked: '-1').then((_) {
+                                                              _forcedRefresh(pickTicketId: widget.ticketItemModel?.id);
+                                                              Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails'));
+                                                            });
                                                           },
                                                         ),
                                                       ])),
@@ -671,7 +684,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
             },
           ),
         ),
-      ));
+      )));
     });
   }
 

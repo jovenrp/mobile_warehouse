@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobile_warehouse/core/domain/models/errors/actiontrak_api_error.dart';
 import 'package:mobile_warehouse/presentation/picktickets/data/models/pick_tickets_item_model.dart';
