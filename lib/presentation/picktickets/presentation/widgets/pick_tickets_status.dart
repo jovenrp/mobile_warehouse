@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 
 class PickTicketsStatusWidget extends StatelessWidget {
-  const PickTicketsStatusWidget({Key? key, this.status}) : super(key: key);
+  const PickTicketsStatusWidget({Key? key, this.status, this.turns})
+      : super(key: key);
 
   final String? status;
+  final int? turns;
+
   @override
   Widget build(BuildContext context) {
     switch (status?.toLowerCase()) {
@@ -23,25 +27,62 @@ class PickTicketsStatusWidget extends StatelessWidget {
               color: AppColors.warningOrange,
               borderRadius: BorderRadius.circular(100),
               border: Border.all(width: 1, color: AppColors.warningOrange)),
-          child: SizedBox(width: 7, height: 7),
+          child: SizedBox(
+            width: 10,
+            height: 10,
+            child: Container(
+              alignment: Alignment.center,
+              child: ATText(text: '!', fontSize: 8, fontColor: AppColors.white),
+            ),
+          ),
         );
       case 'processing':
         return Container(
           decoration: BoxDecoration(
-              color: AppColors.atYellow,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(100),
-              border: Border.all(width: 1, color: AppColors.atYellow)),
-          child: SizedBox(width: 7, height: 7),
+              border: Border.all(width: 1, color: AppColors.atLightBlue)),
+          child: RotatedBox(
+            quarterTurns: turns ?? 0,
+            child: SizedBox(
+              width: 10,
+              height: 10,
+              child: Container(
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.hourglass_bottom,
+                  color: AppColors.atLightBlue,
+                  size: 10,
+                ),
+              ),
+            ),
+          ),
         );
       case 'processed':
-        return Icon(Icons.check_circle,
-            color: AppColors.successGreen, size: 12);
+        return Container(
+          decoration: BoxDecoration(
+              color: AppColors.successGreen,
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(width: 1, color: AppColors.successGreen)),
+          child: SizedBox(
+            width: 10,
+            height: 10,
+            child: Container(
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.check,
+                color: AppColors.white,
+                size: 10,
+              ),
+            ),
+          ),
+        );
       default:
         return Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
               border: Border.all(width: 1, color: AppColors.grey)),
-          child: SizedBox(width: 7, height: 7),
+          child: SizedBox(width: 10, height: 10),
         );
     }
   }

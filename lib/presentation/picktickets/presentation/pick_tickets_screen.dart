@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,12 +37,22 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
   final RefreshController refreshController = RefreshController();
   final TextEditingController searchController = TextEditingController();
 
+  late Timer rotatingTimer;
+  int turns = 0;
   bool canRefresh = true;
 
   @override
   void initState() {
     super.initState();
     context.read<PickTicketsBloc>().getPickTickets(isScreenLoading: true);
+    rotatingTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      setState(() {
+        turns++;
+        if (turns == 4) {
+          turns = 0;
+        }
+      });
+    });
   }
 
   @override
@@ -190,10 +202,14 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                             ),
                                                             Container(
                                                               child: ATText(
-                                                                  text: I18n.of(
-                                                                          context)
-                                                                      .ticket_number
-                                                                      .toUpperCase()),
+                                                                text: I18n.of(
+                                                                        context)
+                                                                    .ticket_number
+                                                                    .toUpperCase(),
+                                                                weight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
                                                             ),
                                                             Container(
                                                               child: ATText(
@@ -201,6 +217,9 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                                         context)
                                                                     .location
                                                                     .toUpperCase(),
+                                                                weight:
+                                                                    FontWeight
+                                                                        .bold,
                                                               ),
                                                             ),
                                                             Container(
@@ -212,10 +231,14 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                                       right:
                                                                           18),
                                                               child: ATText(
-                                                                  text: I18n.of(
-                                                                          context)
-                                                                      .lines
-                                                                      .toUpperCase()),
+                                                                text: I18n.of(
+                                                                        context)
+                                                                    .lines
+                                                                    .toUpperCase(),
+                                                                weight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
                                                             )
                                                           ])
                                                         ])),
@@ -316,26 +339,31 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                       child: Container(
                                                         alignment: Alignment
                                                             .centerLeft,
-                                                        child: PickTicketsStatusWidget(
-                                                            status: state
-                                                                .pickTicketsItemModel?[
-                                                                    index]
-                                                                .status),
+                                                        child:
+                                                            PickTicketsStatusWidget(
+                                                          status: state
+                                                              .pickTicketsItemModel?[
+                                                                  index]
+                                                              .status,
+                                                          turns: turns,
+                                                        ),
                                                       ),
                                                     ),
                                                     Container(
-                                                      child: Text(state
-                                                              .pickTicketsItemModel?[
-                                                                  index]
-                                                              .num ??
-                                                          ''),
+                                                      child: ATText(
+                                                          text: state
+                                                                  .pickTicketsItemModel?[
+                                                                      index]
+                                                                  .num ??
+                                                              ''),
                                                     ),
                                                     Container(
-                                                      child: Text(state
-                                                              .pickTicketsItemModel?[
-                                                                  index]
-                                                              .location ??
-                                                          ''),
+                                                      child: ATText(
+                                                          text: state
+                                                                  .pickTicketsItemModel?[
+                                                                      index]
+                                                                  .location ??
+                                                              ''),
                                                     ),
                                                     Padding(
                                                       padding:
@@ -344,11 +372,12 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                       child: Container(
                                                         alignment: Alignment
                                                             .centerRight,
-                                                        child: Text(state
-                                                                .pickTicketsItemModel?[
-                                                                    index]
-                                                                .numLines ??
-                                                            ''),
+                                                        child: ATText(
+                                                            text: state
+                                                                    .pickTicketsItemModel?[
+                                                                        index]
+                                                                    .numLines ??
+                                                                ''),
                                                       ),
                                                     ),
                                                   ]),
@@ -366,6 +395,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
   @override
   void dispose() {
     super.dispose();
+    rotatingTimer.cancel();
   }
 
   void _forcedRefresh() {

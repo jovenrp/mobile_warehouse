@@ -29,6 +29,7 @@ class AppColors {
   static const Color atDarkYellow = Color(0xFFA19A12);
   static const Color atBrown = Color(0xFFA15600);
   static const Color atOrange = Color(0xFFED9126);
+  static const Color atLightBlue = Color(0xFF64B5F6);
 
   //Custom Colors
   static const Color primaryColor = Color(0xFFD5305F);

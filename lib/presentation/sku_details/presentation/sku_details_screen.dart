@@ -90,7 +90,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                           Expanded(
                             flex: 2,
                             child: ATText(
-                              text: I18n.of(context).location.toUpperCase(),
+                              text: I18n.of(context).loc_code.toUpperCase(),
                               weight: FontWeight.w700,
                               fontSize: 12,
                               fontColor: AppColors.greyText,
