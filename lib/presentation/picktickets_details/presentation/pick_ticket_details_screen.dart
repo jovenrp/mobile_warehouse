@@ -112,16 +112,28 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
               builder: (BuildContext context) {
                 return Dialog(
                   child: SizedBox(
-                    height: 280,
+                    height: 300,
                     child: Padding(
                       padding: const EdgeInsets.all(14),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          SizedBox(height: 30),
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            size: 70,
+                            color: AppColors.warningOrange,
+                          ),
+                          SizedBox(height: 10),
                           ATText(
-                            text: 'This will over pick the quantity, do you want to continue?',
-                            fontSize: 20,
+                            text: 'Do you want to continue?',
+                            fontSize: 16,
+                            textAlign: TextAlign.center,
+                            weight: FontWeight.bold,
+                          ),
+                          SizedBox(height: 10),
+                          ATText(
+                            text: 'This will overpick the item.',
+                            fontSize: 16,
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 20),
@@ -173,42 +185,34 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
               builder: (BuildContext context) {
                 return Dialog(
                   child: SizedBox(
-                    height: 360,
+                    height: 290,
                     child: Padding(
                       padding: const EdgeInsets.all(14),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          SizedBox(height: 30),
-                          ATText(
-                            text: completeStatus == 'partial' ? 'Partial Pick Completed!' : 'Completed!',
-                            fontSize: completeStatus == 'partial' ? 20 : 28,
-                            weight: FontWeight.bold,
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 10),
-                          Visibility(
-                            visible: completeStatus == 'open',
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                ATText(
-                                  text: 'No items picked.',
-                                  fontSize: 28,
-                                  weight: FontWeight.bold,
-                                  textAlign: TextAlign.center,
-                                )
-                              ],
-                            ),
-                          ),
                           SizedBox(height: 10),
                           Container(
                             alignment: Alignment.center,
                             child: completeStatus == 'partial'
-                                ? Icon(Icons.warning_amber_outlined, color: AppColors.warningOrange, size: 120)
-                                : Icon(Icons.check_circle, color: AppColors.successGreen, size: 120),
+                                ? Icon(Icons.warning_amber_rounded, color: AppColors.warningOrange, size: 80)
+                                : Icon(Icons.check_circle, color: AppColors.successGreen, size: 80),
                           ),
-                          SizedBox(height: 50),
+                          SizedBox(height: 10),
+                          ATText(
+                            text: completeStatus == 'partial' ? 'Partial Pick Completed!' : 'Completed!',
+                            fontSize: completeStatus == 'partial' ? 20 : 20,
+                            weight: FontWeight.bold,
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 15),
+                          ATText(
+                            text: completeStatus == 'partial' ? 'Ticket #${widget.ticketItemModel?.num} is now partially complete.' : 'Ticket #${widget.ticketItemModel?.num} is now complete.',
+                            fontSize: completeStatus == 'partial' ? 16 : 16,
+                            textAlign: TextAlign.center,
+                          ),
+
+                          SizedBox(height: 30),
                           Container(
                             width: double.infinity,
                             child: ATTextButton(
@@ -595,14 +599,26 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                SizedBox(height: 50),
+                                SizedBox(height: 10),
+                                Icon(
+                                  Icons.library_add_check_outlined,
+                                  size: 70,
+                                  color: AppColors.warningOrange,
+                                ),
+                                SizedBox(height: 10),
                                 ATText(
-                                  text: 'No lines on this ticket have been picked.\n\nPick some items before completing a ticket.',
+                                  text: 'No lines on this ticket have been picked.',
                                   fontSize: 16,
                                   weight: FontWeight.bold,
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(height: 50),
+                                SizedBox(height: 10),
+                                ATText(
+                                  text: 'Pick some items before completing a ticket.',
+                                  fontSize: 16,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 40),
                                 Container(
                                   width: double.infinity,
                                   child: ATTextButton(
@@ -634,20 +650,31 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                     builder: (BuildContext context) {
                       return Dialog(
                         child: SizedBox(
-                          height: 320,
+                          height: 340,
                           child: Padding(
                             padding: const EdgeInsets.all(14),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                SizedBox(height: 50),
+                                Icon(
+                                  Icons.warning_amber_rounded,
+                                  color: AppColors.warningOrange,
+                                  size: 70,
+                                ),
+                                SizedBox(height: 10),
                                 ATText(
-                                  text: 'There are lines on this ticket that are partially picked. \n\n Complete ticket anyway?',
+                                  text: 'There are lines on this ticket that are partially picked.',
                                   fontSize: 16,
                                   weight: FontWeight.bold,
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(height: 50),
+                                SizedBox(height: 20),
+                                ATText(
+                                  text: 'Complete ticket anyway?',
+                                  fontSize: 16,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 30),
                                 Container(
                                   width: double.infinity,
                                   child: ATTextButton(
@@ -772,20 +799,25 @@ class _TicketPicker extends State<TicketPicker> {
                               builder: (BuildContext context) {
                                 return Dialog(
                                   child: SizedBox(
-                                    height: 300,
+                                    height: 330,
                                     child: Padding(
                                       padding: const EdgeInsets.all(14),
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: <Widget>[
-                                          SizedBox(height: 30),
+                                          Icon(
+                                            Icons.warning_amber_rounded,
+                                            size: 70,
+                                            color: AppColors.warningOrange,
+                                          ),
+                                          SizedBox(height: 10),
                                           ATText(
                                             text: 'This will reset this line to untouched.',
                                             fontSize: 20,
                                             weight: FontWeight.bold,
                                             textAlign: TextAlign.center,
                                           ),
-                                          SizedBox(height: 20),
+                                          SizedBox(height: 10),
                                           ATText(
                                             text: 'Are you sure you want to continue?',
                                             fontSize: 16,
