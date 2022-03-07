@@ -149,7 +149,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                   Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails'));
                                 }),
                           ),
-                          SizedBox(height: 10),
                           Container(
                             width: double.infinity,
                             child: ATTextButton(
@@ -650,7 +649,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                     builder: (BuildContext context) {
                       return Dialog(
                         child: SizedBox(
-                          height: 340,
+                          height: 330,
                           child: Padding(
                             padding: const EdgeInsets.all(14),
                             child: Column(
@@ -685,7 +684,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                         completePickTicket();
                                       }),
                                 ),
-                                SizedBox(height: 10),
                                 Container(
                                   width: double.infinity,
                                   child: ATTextButton(
@@ -812,14 +810,14 @@ class _TicketPicker extends State<TicketPicker> {
                                           ),
                                           SizedBox(height: 10),
                                           ATText(
-                                            text: 'This will reset this line to untouched.',
-                                            fontSize: 20,
+                                            text: 'Are you sure you want to continue?',
+                                            fontSize: 18,
                                             weight: FontWeight.bold,
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(height: 10),
                                           ATText(
-                                            text: 'Are you sure you want to continue?',
+                                            text: 'This will reset this line to untouched.',
                                             fontSize: 16,
                                             textAlign: TextAlign.center,
                                           ),
@@ -828,7 +826,6 @@ class _TicketPicker extends State<TicketPicker> {
                                             width: double.infinity,
                                             child: ATTextButton(isLoading: false, buttonText: 'Yes, Reset line', onTap: widget.onReset),
                                           ),
-                                          SizedBox(height: 10),
                                           Container(
                                             width: double.infinity,
                                             child: ATTextButton(
