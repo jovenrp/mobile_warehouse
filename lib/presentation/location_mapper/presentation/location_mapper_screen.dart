@@ -4,6 +4,7 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/utils/picker_alpha.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_dropwdown.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
@@ -33,6 +34,12 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
   final RefreshController refreshController = RefreshController();
 
   bool canRefresh = true;
+  String _currentSelectedValue = '';
+  final List<String> _currencies = <String>[
+    '',
+    'Food',
+    'Transport',
+  ];
 
   @override
   void initState() {
@@ -67,6 +74,20 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                         SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: ATDropdown(
+                            hintText: 'Parent location',
+                            itemList: _currencies,
+                            selectedItem: _currentSelectedValue,
+                            onChange: (String? newValue) {
+                              setState(() {
+                                _currentSelectedValue = newValue ?? '';
+                              });
+                            },
+                          )
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
                           child: ATSearchfield(
                               hintText:
                                   '${I18n.of(context).search} by location serial no.',
@@ -88,7 +109,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                         SizedBox(height: 20),
                         Container(
                           color: AppColors.beachSea,
-                          height: 100,
+                          height: 130,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -109,7 +130,24 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                   child: WheelPickerByLetters(
                                     title: 'Shelf',
                                     index: 100,
-                                  ))
+                                  )),
+                              Container(
+                                padding: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  color: AppColors.beachSea,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(5),
+                                      topRight: Radius.circular(5),
+                                      bottomLeft: Radius.circular(5),
+                                      bottomRight: Radius.circular(5)),
+                                  border: Border.all(color: AppColors.white, width: 2)
+                                ),
+                                child: Icon(
+                                  Icons.search,
+                                  size: 30,
+                                  color: AppColors.white,
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -146,9 +184,17 @@ class WheelPicker extends StatelessWidget {
           fontSize: 24,
           weight: FontWeight.bold,
         )),
+        RotatedBox(
+          quarterTurns: 3,
+          child: Icon(
+            Icons.play_arrow,
+            size: 30,
+            color: AppColors.white,
+          ),
+        ),
         Container(
           width: 100,
-          height: 50,
+          height: 25,
           child: ListWheelScrollView.useDelegate(
               itemExtent: 50,
               perspective: 0.005,
@@ -159,11 +205,19 @@ class WheelPicker extends StatelessWidget {
                   childCount: index,
                   builder: (BuildContext context, int index) {
                     return Container(
-                      alignment: Alignment.bottomCenter,
+                      alignment: Alignment.center,
                       child: PickerAlpha(index: index.toString()),
                     );
                   })),
-        )
+        ),
+        RotatedBox(
+          quarterTurns: 1,
+          child: Icon(
+            Icons.play_arrow,
+            size: 30,
+            color: AppColors.white,
+          ),
+        ),
       ],
     );
   }
@@ -215,9 +269,17 @@ class WheelPickerByLetters extends StatelessWidget {
           fontSize: 24,
           weight: FontWeight.bold,
         )),
+        RotatedBox(
+          quarterTurns: 3,
+          child: Icon(
+            Icons.play_arrow,
+            size: 30,
+            color: AppColors.white,
+          ),
+        ),
         Container(
           width: 100,
-          height: 50,
+          height: 25,
           child: ListWheelScrollView.useDelegate(
               itemExtent: 50,
               perspective: 0.005,
@@ -228,12 +290,21 @@ class WheelPickerByLetters extends StatelessWidget {
                   childCount: alphabet.length,
                   builder: (BuildContext context, int index) {
                     return Container(
-                      alignment: Alignment.bottomCenter,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(0),
                       child:
                           PickerAlpha(index: alphabet[index], isAlphabet: true),
                     );
                   })),
-        )
+        ),
+        RotatedBox(
+          quarterTurns: 1,
+          child: Icon(
+            Icons.play_arrow,
+            size: 30,
+            color: AppColors.white,
+          ),
+        ),
       ],
     );
   }
