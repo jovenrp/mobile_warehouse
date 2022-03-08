@@ -216,14 +216,14 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
 
   String getQuantityText(PickTicketDetailsModel? pickTicket, int textValue) {
     return pickTicket?.status?.toLowerCase() == 'partial'
-        ? '${int.parse(pickTicket?.pickedItem ?? '0') + textValue} of ${pickTicket?.qtyPick}'
+        ? '${(double.parse(pickTicket?.pickedItem ?? '0') + textValue).toStringAsFixed(0)} of ${pickTicket?.qtyPick}'
         : (pickTicket?.pickedItem == null ||
                 pickTicket?.pickedItem?.isEmpty == true)
             ? '${pickTicket?.qtyPick}'
             : pickTicket?.pickedItem == null ||
                     pickTicket?.pickedItem?.isEmpty == true
                 ? '${pickTicket?.qtyPick} of ${pickTicket?.qtyPick}'
-                : '${int.parse(pickTicket?.pickedItem ?? '0') + textValue} of ${pickTicket?.qtyPick}';
+                : '${(double.parse(pickTicket?.pickedItem ?? '0') + textValue).toStringAsFixed(0)} of ${pickTicket?.qtyPick}';
   }
 
   bool updateCheckBox(PickTicketDetailsModel? pickTicket, bool? value,
@@ -272,10 +272,10 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(dummyPickTicketDetailsModel: pickTicket));
     pickTicket?.setIsChecked(true);
     controller.clear();
-    if ((int.parse(valueItem) + int.parse(pickTicket?.pickedItem ?? '0')) >
-        int.parse(pickTicket?.qtyPick ?? '0')) {
+    if ((double.parse(valueItem) + double.parse(pickTicket?.pickedItem ?? '0')) >
+        double.parse(pickTicket?.qtyPick ?? '0')) {
       pickTicket?.setPickedItem(
-          (int.parse(valueItem) + int.parse(pickTicket.pickedItem ?? '0'))
+          (double.parse(valueItem) + double.parse(pickTicket.pickedItem ?? '0'))
               .toString());
       emit(state.copyWith(
           isOverPicked: true,
@@ -285,7 +285,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       emit(state.copyWith(
           isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
       pickTicket?.setPickedItem(
-          (int.parse(valueItem) + int.parse(pickTicket.pickedItem ?? '0'))
+          (double.parse(valueItem) + double.parse(pickTicket.pickedItem ?? '0'))
               .toString());
       submitPick(
           pickTicketDetailId: pickTicket?.id ?? '', qtyPicked: valueItem);
@@ -297,7 +297,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(
         isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
     pickTicket?.setPickedItem(
-        (int.parse(pickTicket.pickedItem ?? '0') - int.parse(valueItem ?? '0'))
+        (double.parse(pickTicket.pickedItem ?? '0') - double.parse(valueItem ?? '0'))
             .toString());
   }
 }
