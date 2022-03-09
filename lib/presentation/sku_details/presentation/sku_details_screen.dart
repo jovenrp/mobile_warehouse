@@ -51,6 +51,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
     return BlocConsumer<SkuDetailsBloc, SkuDetailsState>(
         listener: (BuildContext context, SkuDetailsState state) {},
         builder: (BuildContext context, SkuDetailsState state) {
+          print(widget.ticketItemModel?.status);
           return SafeArea(
             child: Scaffold(
                 appBar: ATAppBar(
@@ -67,10 +68,23 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      ATText(
-                          text: widget.ticketItemModel?.location,
-                          weight: FontWeight.w700,
-                          fontSize: 24),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ATText(
+                              text: widget.ticketItemModel?.location,
+                              weight: FontWeight.w700,
+                              fontSize: 24),
+                          Visibility(
+                            visible: widget.ticketItemModel?.status?.toLowerCase() != 'open' && widget.ticketItemModel?.status?.toLowerCase() != '',
+                            child: Icon(
+                              Icons.check_circle,
+                              color: widget.ticketItemModel?.status?.toLowerCase() == 'processed' ? AppColors.successGreen : AppColors.warningOrange,
+                              size: 25,
+                          ))
+                        ],
+                      ),
                       SizedBox(height: 6),
                       ATText(
                           text: widget.ticketItemModel?.description,
