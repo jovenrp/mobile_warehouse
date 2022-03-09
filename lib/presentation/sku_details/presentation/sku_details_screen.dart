@@ -80,7 +80,9 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
               ),
               onTap: () => Navigator.of(context).pop(),
             ),
-            body: Padding(
+            body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+                child: Padding(
               padding: const EdgeInsets.only(left: 18, right: 18, top: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,7 +305,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                   )
                 ],
               ),
-            ),
+            )),
             bottomNavigationBar: Padding(
               padding: const EdgeInsets.only(left: 36, right: 36, bottom: 20),
               child: Row(
