@@ -377,20 +377,26 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                           ? AppColors.white
                                                           : AppColors
                                                               .lightBlue),
-                                                  children:<Widget>[
+                                                  children: <Widget>[
                                                     SizedBox(),
                                                     SizedBox(),
-                                                    state.pickTicketsItemModel?[index].status?.toLowerCase() == 'processing' ? Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10,
-                                                              bottom: 15),
-                                                      child: ATText(
-                                                        text:
-                                                            'processing by some user',
-                                                        fontSize: 12,
-                                                      ),
-                                                    ) : SizedBox(),
+                                                    state.pickTicketsItemModel?[index]
+                                                                .status
+                                                                ?.toLowerCase() ==
+                                                            'processing'
+                                                        ? Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 10,
+                                                                    bottom: 15),
+                                                            child: ATText(
+                                                              text:
+                                                                  'processing by some user',
+                                                              fontSize: 12,
+                                                            ),
+                                                          )
+                                                        : SizedBox(),
                                                     SizedBox(),
                                                   ]),
                                             ],

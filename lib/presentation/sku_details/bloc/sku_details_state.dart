@@ -14,5 +14,9 @@ class SkuDetailsState with _$SkuDetailsState {
       String? errorMessage,
       @Default(false) bool didFinish,
       PickTicketDetailsModel? pickTicketDetailsModel,
+      bool? pickLimitSetting,
+      bool? isOverPicked,
+      String? dummyPickTicketId,
+      String? dummyQuantityPicked,
       String? token}) = _SkuDetailsState;
 }

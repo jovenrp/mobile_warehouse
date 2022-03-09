@@ -13,6 +13,6 @@ class SkuDetailsBloc extends Cubit<SkuDetailsState> {
   final PersistenceService persistenceService;
 
   Future<void> getPickTicketDetails({String? pickTicketId}) async {
-    emit(state.copyWith(isLoading: true)); //turn
+  emit(state.copyWith(isLoading: true)); //turn
   }
 }
