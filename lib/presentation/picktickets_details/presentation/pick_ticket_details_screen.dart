@@ -541,7 +541,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                         context) {},
                                                                 backgroundColor:
                                                                     AppColors
-                                                                        .semiGrey,
+                                                                        .atWarningRed,
                                                                 foregroundColor:
                                                                     AppColors
                                                                         .white,

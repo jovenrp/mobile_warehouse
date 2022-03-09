@@ -41,7 +41,7 @@ class PickTicketsStatusWidget extends StatelessWidget {
           decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(100),
-              border: Border.all(width: 1, color: AppColors.atLightBlue)),
+              border: Border.all(width: 1, color: AppColors.atDarkYellow)),
           child: RotatedBox(
             quarterTurns: turns ?? 0,
             child: SizedBox(
@@ -51,7 +51,7 @@ class PickTicketsStatusWidget extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Icon(
                   Icons.hourglass_bottom,
-                  color: AppColors.atLightBlue,
+                  color: AppColors.gomoYellow,
                   size: 10,
                 ),
               ),

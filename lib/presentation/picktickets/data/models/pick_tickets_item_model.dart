@@ -10,6 +10,7 @@ class PickTicketsItemModel {
     this.location,
     this.numLines,
     this.num,
+    this.user,
   });
 
   factory PickTicketsItemModel.fromJson(Map<String, dynamic> json) =>
@@ -30,4 +31,7 @@ class PickTicketsItemModel {
 
   @JsonKey(name: 'numLines')
   final String? numLines;
+
+  @JsonKey(name: 'user')
+  final String? user;
 }

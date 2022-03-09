@@ -270,21 +270,11 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                   onPressed:
                                                       (BuildContext context) {},
                                                   backgroundColor:
-                                                      AppColors.semiGrey,
+                                                      AppColors.atWarningRed,
                                                   foregroundColor:
                                                       AppColors.white,
                                                   icon:
                                                       Icons.cancel_presentation,
-                                                ),
-                                                SlidableAction(
-                                                  onPressed:
-                                                      (BuildContext context) {},
-                                                  backgroundColor:
-                                                      AppColors.grey,
-                                                  foregroundColor:
-                                                      AppColors.white,
-                                                  icon: Icons
-                                                      .assignment_ind_outlined,
                                                 ),
                                                 SlidableAction(
                                                   onPressed: (BuildContext
@@ -380,6 +370,28 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                                 ''),
                                                       ),
                                                     ),
+                                                  ]),
+                                              TableRow(
+                                                  decoration: BoxDecoration(
+                                                      color: (index % 2) == 0
+                                                          ? AppColors.white
+                                                          : AppColors
+                                                              .lightBlue),
+                                                  children:<Widget>[
+                                                    SizedBox(),
+                                                    SizedBox(),
+                                                    state.pickTicketsItemModel?[index].status?.toLowerCase() == 'processing' ? Container(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 10,
+                                                              bottom: 15),
+                                                      child: ATText(
+                                                        text:
+                                                            'processing by some user',
+                                                        fontSize: 12,
+                                                      ),
+                                                    ) : SizedBox(),
+                                                    SizedBox(),
                                                   ]),
                                             ],
                                           ));

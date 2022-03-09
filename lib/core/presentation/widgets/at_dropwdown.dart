@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 
 class ATDropdown extends StatefulWidget {
-  const ATDropdown({Key? key, this.selectedItem, this.itemList, this.onChange, this.hintText}) : super(key: key);
+  const ATDropdown(
+      {Key? key,
+      this.selectedItem,
+      this.itemList,
+      this.onChange,
+      this.hintText})
+      : super(key: key);
 
   final String? hintText;
   final String? selectedItem;
@@ -33,12 +39,15 @@ class _ATDropdown extends State<ATDropdown> {
             fillColor: Colors.white,
             isDense: true,
             contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
           isEmpty: widget.selectedItem == '',
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              icon: Icon(Icons.arrow_drop_down, color: AppColors.beachSea,),
+              icon: Icon(
+                Icons.arrow_drop_down,
+                color: AppColors.beachSea,
+              ),
               value: widget.selectedItem,
               isDense: true,
               onChanged: widget.onChange,

@@ -272,7 +272,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     emit(state.copyWith(dummyPickTicketDetailsModel: pickTicket));
     pickTicket?.setIsChecked(true);
     controller.clear();
-    if ((double.parse(valueItem) + double.parse(pickTicket?.pickedItem ?? '0')) >
+    if ((double.parse(valueItem) +
+            double.parse(pickTicket?.pickedItem ?? '0')) >
         double.parse(pickTicket?.qtyPick ?? '0')) {
       pickTicket?.setPickedItem(
           (double.parse(valueItem) + double.parse(pickTicket.pickedItem ?? '0'))
@@ -296,8 +297,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       PickTicketDetailsModel? pickTicket, String? valueItem) {
     emit(state.copyWith(
         isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
-    pickTicket?.setPickedItem(
-        (double.parse(pickTicket.pickedItem ?? '0') - double.parse(valueItem ?? '0'))
-            .toString());
+    pickTicket?.setPickedItem((double.parse(pickTicket.pickedItem ?? '0') -
+            double.parse(valueItem ?? '0'))
+        .toString());
   }
 }

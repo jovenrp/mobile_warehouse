@@ -73,39 +73,17 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                       children: <Widget>[
                         SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATDropdown(
-                            hintText: 'Parent location',
-                            itemList: _currencies,
-                            selectedItem: _currentSelectedValue,
-                            onChange: (String? newValue) {
-                              setState(() {
-                                _currentSelectedValue = newValue ?? '';
-                              });
-                            },
-                          )
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
-                              hintText:
-                                  '${I18n.of(context).search} by location serial no.',
-                              isScanner: true,
-                              onPressed: () =>
-                                  Navigator.of(context).push(QRScreen.route()),
-                              onChanged: (String value) {}),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
-                              hintText: '${I18n.of(context).search} by SKU',
-                              isScanner: true,
-                              onPressed: () =>
-                                  Navigator.of(context).push(QRScreen.route()),
-                              onChanged: (String value) {}),
-                        ),
+                            padding: const EdgeInsets.only(left: 18, right: 18),
+                            child: ATDropdown(
+                              hintText: 'Parent location',
+                              itemList: _currencies,
+                              selectedItem: _currentSelectedValue,
+                              onChange: (String? newValue) {
+                                setState(() {
+                                  _currentSelectedValue = newValue ?? '';
+                                });
+                              },
+                            )),
                         SizedBox(height: 20),
                         Container(
                           color: AppColors.beachSea,
@@ -134,14 +112,14 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                               Container(
                                 padding: const EdgeInsets.all(3),
                                 decoration: BoxDecoration(
-                                  color: AppColors.beachSea,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(5),
-                                      topRight: Radius.circular(5),
-                                      bottomLeft: Radius.circular(5),
-                                      bottomRight: Radius.circular(5)),
-                                  border: Border.all(color: AppColors.white, width: 2)
-                                ),
+                                    color: AppColors.beachSea,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(5),
+                                        topRight: Radius.circular(5),
+                                        bottomLeft: Radius.circular(5),
+                                        bottomRight: Radius.circular(5)),
+                                    border: Border.all(
+                                        color: AppColors.white, width: 2)),
                                 child: Icon(
                                   Icons.search,
                                   size: 30,
@@ -151,6 +129,27 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                             ],
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: ATSearchfield(
+                              hintText:
+                                  '${I18n.of(context).search} by location serial no.',
+                              isScanner: true,
+                              onPressed: () =>
+                                  Navigator.of(context).push(QRScreen.route()),
+                              onChanged: (String value) {}),
+                        ),
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: ATSearchfield(
+                              hintText: '${I18n.of(context).search} by SKU',
+                              isScanner: true,
+                              onPressed: () =>
+                                  Navigator.of(context).push(QRScreen.route()),
+                              onChanged: (String value) {}),
+                        ),
+                        SizedBox(height: 20),
                         Expanded(
                           child: Container(
                             color: AppColors.white,
