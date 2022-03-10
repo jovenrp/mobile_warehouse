@@ -298,6 +298,11 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                                   context.read<PickTicketDetailsBloc>().setQuantityPicked(widget.ticketItemModel, controller);
                                 }
                               }),
+                              iconPressed: () => setState(() {
+                                if (controller.text.isNotEmpty == true) {
+                                  controller.clear();
+                                }
+                              }),
                             ),
                           )
                       ])
