@@ -9,7 +9,8 @@ class ATMiniTextfield extends StatefulWidget {
       this.qtyPick,
       this.onChanged,
       this.autoFocus,
-      this.onFieldSubmitted})
+      this.onFieldSubmitted,
+      this.iconPressed})
       : super(key: key);
 
   final String? hintText;
@@ -18,6 +19,7 @@ class ATMiniTextfield extends StatefulWidget {
   final bool? autoFocus;
   final Function(String?)? onChanged;
   final Function(String?)? onFieldSubmitted;
+  final VoidCallback? iconPressed;
 
   @override
   _ATMiniTextfield createState() => _ATMiniTextfield();
@@ -35,14 +37,21 @@ class _ATMiniTextfield extends State<ATMiniTextfield> {
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(2.0),
+          borderRadius: BorderRadius.circular(5.0),
         ),
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
         hintStyle: TextStyle(color: AppColors.beachSea),
-        hintText: 'Enter a text here',
         fillColor: Colors.white70,
-      ),
+        suffixIcon: IconButton(
+          icon: Icon(
+              Icons.clear,
+              color: Theme.of(context).primaryColorDark,
+            size: 20,
+          ),
+        onPressed: widget.iconPressed),
+        ),
+
     );
   }
 }

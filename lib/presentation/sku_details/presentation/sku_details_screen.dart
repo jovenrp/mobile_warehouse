@@ -252,7 +252,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -265,7 +265,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                           ),
                           SizedBox(height: 10),
                           Container(
-                            width: 80,
+                            width: 100,
                             child: ATMiniTextfield(
                               textEditingController: controller,
                               onChanged: (String? value) {
@@ -302,7 +302,39 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                           )
                       ])
                     ],
-                  )
+                  ),
+
+                  SizedBox(height: 30),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 6,
+                        child: ATText(
+                          text: 'NOTE',
+                          weight: FontWeight.w700,
+                          fontSize: 12,
+                          fontColor: AppColors.greyText,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 6,
+                        child: widget.ticketItemModel?.note?.isNotEmpty == true ? ATText(
+                            text:
+                            '${widget.ticketItemModel?.note}',
+                            weight: FontWeight.w700,
+                            fontSize: 12) : ATText(
+                            text:
+                            'No additional notes.',
+                            weight: FontWeight.w700,
+                            fontSize: 12),
+                      )
+                    ],
+                  ),
+
                 ],
               ),
             )),

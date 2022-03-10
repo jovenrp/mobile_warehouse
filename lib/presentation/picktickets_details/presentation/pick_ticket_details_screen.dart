@@ -567,7 +567,14 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                   Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails'));
                                                                 });
                                                               },
+                                                              iconPressed: () => setState(() {
+                                                                if (textFieldControllers[index].text.isNotEmpty == true) {
+                                                                  context.read<PickTicketDetailsBloc>().cancelPickRequest(state.pickTicketsResponse?[index], textFieldControllers[index].text);
+                                                                  textFieldControllers[index].clear();
+                                                                }
+                                                              }),
                                                             ),
+
                                                           ])),
                                                     ));
                                               })
@@ -758,7 +765,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
 
 class TicketPicker extends StatefulWidget {
   const TicketPicker(
-      {Key? key, this.pickTicketDetailsModel, this.controller, required this.onFieldSubmitted, required this.onChanged, required this.onReset})
+      {Key? key, this.pickTicketDetailsModel, this.controller, required this.onFieldSubmitted, required this.onChanged, required this.onReset, required this.iconPressed})
       : super(key: key);
 
   final PickTicketDetailsModel? pickTicketDetailsModel;
@@ -766,6 +773,7 @@ class TicketPicker extends StatefulWidget {
   final Function(String?) onFieldSubmitted;
   final Function(String?) onChanged;
   final VoidCallback onReset;
+  final VoidCallback iconPressed;
 
   @override
   _TicketPicker createState() => _TicketPicker();
@@ -948,7 +956,7 @@ class _TicketPicker extends State<TicketPicker> {
                       ),
                       SizedBox(height: 10),
                       Container(
-                        width: 80,
+                        width: 100,
                         child: ATMiniTextfield(
                           qtyPick: widget.pickTicketDetailsModel?.qtyPick,
                           textEditingController: widget.controller,
@@ -956,6 +964,7 @@ class _TicketPicker extends State<TicketPicker> {
                           autoFocus: true,
                           hintText: widget.pickTicketDetailsModel?.qtyPick,
                           onFieldSubmitted: widget.onFieldSubmitted,
+                          iconPressed: widget.iconPressed,
                         ),
                       )
                     ],

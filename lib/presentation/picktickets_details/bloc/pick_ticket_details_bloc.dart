@@ -223,7 +223,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
   }
 
   void cancelPickRequest(PickTicketDetailsModel? pickTicket, String? valueItem) {
-    emit(state.copyWith(isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
     pickTicket?.setPickedItem((double.parse(pickTicket.pickedItem ?? '0') - double.parse(valueItem ?? '0')).toString());
+    emit(state.copyWith(isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
   }
 }
