@@ -102,6 +102,23 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
         pickLimitSetting = state.pickLimitSetting ?? false;
+
+        print('IS INIT $isInitialized');
+        int index = 0;
+        for (PickTicketDetailsModel item in state.pickTicketsResponse ?? <PickTicketDetailsModel>[]) {
+          if (!isInitialized) {
+            textFieldControllers.add(TextEditingController());
+            item.setLocation(state.pickTicketResponse?[0].location);
+            if (double.parse(item.qtyPicked ?? '0') > 0) {
+              item.setPickedItem(item.qtyPicked);
+              item.setIsChecked(double.parse(item.qtyPicked ?? '0') > 0 || item.status?.toLowerCase() == 'partial');
+            }
+            if (index >= int.parse((state.pickTicketsResponse!.length - 1).toString())) {
+              isInitialized = true;
+            }
+            index++;
+          }
+        }
       }
 
       if (!state.isLoading) {
@@ -376,19 +393,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                   );
                                                 }
                                                 index -= 1;
-                                                if (!isInitialized) {
-                                                  textFieldControllers.add(TextEditingController());
-                                                  state.pickTicketsResponse?[index].setLocation(state.pickTicketResponse?[0].location);
-                                                  if (double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') > 0) {
-                                                    state.pickTicketsResponse?[index].setPickedItem(state.pickTicketsResponse?[index].qtyPicked);
-                                                    state.pickTicketsResponse?[index].setIsChecked(
-                                                        double.parse(state.pickTicketsResponse?[index].qtyPicked ?? '0') > 0 ||
-                                                            state.pickTicketsResponse?[index].status?.toLowerCase() == 'partial');
-                                                  }
-                                                  if (index >= num.parse((state.pickTicketsResponse!.length - 1).toString())) {
-                                                    isInitialized = true;
-                                                  }
-                                                }
                                                 return Slidable(
                                                     key: ValueKey<int>(index),
                                                     startActionPane: ActionPane(
@@ -550,14 +554,11 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                                       }
                                                                     }
-                                                                  } else {
-                                                                    state.pickTicketsResponse?[index].setIsChecked(false);
-                                                                    state.pickTicketsResponse?[index].setPickedItem(textFieldControllers[index].text);
                                                                   }
                                                                 });
                                                               },
-                                                              onReset: () {
-                                                                context
+                                                              onReset: () async {
+                                                                await context
                                                                     .read<PickTicketDetailsBloc>()
                                                                     .submitPick(
                                                                         pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '',
@@ -569,12 +570,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                               },
                                                               iconPressed: () => setState(() {
                                                                 if (textFieldControllers[index].text.isNotEmpty == true) {
-                                                                  context.read<PickTicketDetailsBloc>().cancelPickRequest(state.pickTicketsResponse?[index], textFieldControllers[index].text);
                                                                   textFieldControllers[index].clear();
                                                                 }
                                                               }),
                                                             ),
-
                                                           ])),
                                                     ));
                                               })
@@ -749,10 +748,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
     super.dispose();
   }
 
-  void _forcedRefresh({String? pickTicketId}) {
+  void _forcedRefresh({String? pickTicketId}) async {
+    await context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: pickTicketId);
     canRefresh = true;
     isInitialized = false;
-    context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: pickTicketId);
   }
 
   Future<List<PickTicketDetailsModel>?> completeTicketRefresh({String? pickTicketId}) async {
@@ -765,7 +764,13 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
 
 class TicketPicker extends StatefulWidget {
   const TicketPicker(
-      {Key? key, this.pickTicketDetailsModel, this.controller, required this.onFieldSubmitted, required this.onChanged, required this.onReset, required this.iconPressed})
+      {Key? key,
+      this.pickTicketDetailsModel,
+      this.controller,
+      required this.onFieldSubmitted,
+      required this.onChanged,
+      required this.onReset,
+      required this.iconPressed})
       : super(key: key);
 
   final PickTicketDetailsModel? pickTicketDetailsModel;

@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_mini_textfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
+import 'package:mobile_warehouse/presentation/picktickets/presentation/widgets/pick_tickets_status.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_state.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
@@ -47,10 +50,21 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
   TextEditingController controller = TextEditingController();
 
   bool pickLimitSetting = false;
+  int turns = 0;
+
+  late Timer rotatingTimer;
 
   @override
   void initState() {
     super.initState();
+    rotatingTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      setState(() {
+        turns++;
+        if (turns == 4) {
+          turns = 0;
+        }
+      });
+    });
   }
 
   @override
@@ -96,12 +110,16 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                           weight: FontWeight.w700,
                           fontSize: 24),
                       Visibility(
-                          visible: widget.ticketItemModel?.status
+                          visible: (widget.ticketItemModel?.status
                                       ?.toLowerCase() !=
                                   'open' &&
                               widget.ticketItemModel?.status?.toLowerCase() !=
-                                  '',
-                          child: Icon(
+                                  ''),
+                          child: (widget.ticketItemModel?.status
+                              ?.toLowerCase() !=
+                              'open' &&
+                              widget.ticketItemModel?.status?.toLowerCase() !=
+                                  '') && widget.ticketItemModel?.status?.toLowerCase() != 'processing' ? Icon(
                             Icons.check_circle,
                             color:
                                 widget.ticketItemModel?.status?.toLowerCase() ==
@@ -109,7 +127,11 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                                     ? AppColors.successGreen
                                     : AppColors.warningOrange,
                             size: 25,
-                          ))
+                          ) : PickTicketsStatusWidget(
+                            status: widget.ticketItemModel?.status,
+                            turns: turns,
+                            size: 25,
+                          )),
                     ],
                   ),
                   SizedBox(height: 6),
@@ -284,10 +306,6 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                                             .showSnackBar(snackBar);
                                       }
                                     }
-                                  } else {
-                                    widget.ticketItemModel?.setIsChecked(false);
-                                    widget.ticketItemModel
-                                        ?.setPickedItem(controller.text);
                                   }
                                 });
                               },
@@ -409,5 +427,6 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
   @override
   void dispose() {
     super.dispose();
+    rotatingTimer.cancel();
   }
 }

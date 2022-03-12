@@ -3,11 +3,12 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 
 class PickTicketsStatusWidget extends StatelessWidget {
-  const PickTicketsStatusWidget({Key? key, this.status, this.turns})
+  const PickTicketsStatusWidget({Key? key, this.status, this.turns, this.size})
       : super(key: key);
 
   final String? status;
   final int? turns;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +46,14 @@ class PickTicketsStatusWidget extends StatelessWidget {
           child: RotatedBox(
             quarterTurns: turns ?? 0,
             child: SizedBox(
-              width: 10,
-              height: 10,
+              width: size ?? 10,
+              height: size ?? 10,
               child: Container(
                 alignment: Alignment.center,
                 child: Icon(
                   Icons.hourglass_bottom,
                   color: AppColors.gomoYellow,
-                  size: 10,
+                  size: size ?? 10,
                 ),
               ),
             ),
