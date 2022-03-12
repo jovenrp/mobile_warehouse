@@ -806,8 +806,26 @@ class _TicketPicker extends State<TicketPicker> {
           child: Column(
             children: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: IntrinsicHeight(
+                      child: Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          color: AppColors.atRed,
+                          borderRadius: BorderRadius.all(Radius.circular(3.0)),
+                        ),
+                        alignment: Alignment.centerRight,
+                        child: Icon(
+                          Icons.close_fullscreen,
+                          size: 25,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Ink(
