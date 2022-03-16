@@ -44,14 +44,13 @@ class _ATMiniTextfield extends State<ATMiniTextfield> {
         hintStyle: TextStyle(color: AppColors.beachSea),
         fillColor: Colors.white70,
         suffixIcon: IconButton(
-          icon: Icon(
+            icon: Icon(
               Icons.clear,
               color: Theme.of(context).primaryColorDark,
-            size: 20,
-          ),
-        onPressed: widget.iconPressed),
-        ),
-
+              size: 20,
+            ),
+            onPressed: widget.iconPressed),
+      ),
     );
   }
 }

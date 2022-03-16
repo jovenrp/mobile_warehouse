@@ -47,6 +47,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
   bool pickLimitSetting = false;
   bool isUndo = false;
   bool isInitialized = false;
+  bool _isVisible = true;
   late SnackBar submitSnackbar;
   String completeStatus = '';
 
@@ -103,7 +104,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
         refreshController.refreshCompleted();
         pickLimitSetting = state.pickLimitSetting ?? false;
 
-        print('IS INIT $isInitialized');
         int index = 0;
         for (PickTicketDetailsModel item in state.pickTicketsResponse ?? <PickTicketDetailsModel>[]) {
           if (!isInitialized) {
@@ -272,14 +272,41 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                 state.isUpdateLoading
                     ? Container(
                         padding: const EdgeInsets.only(top: 20, bottom: 20, right: 18),
-                        width: 30,
+                        width: 35,
                         child: ATLoadingIndicator(
                           strokeWidth: 3.0,
                           width: 10,
                           height: 10,
                         ),
                       )
-                    : SizedBox()
+                    : Ink(
+                        child: InkWell(
+                          onTap: () => setState(() {
+                            _isVisible = !_isVisible;
+                            for (PickTicketDetailsModel item in state.pickTicketsResponse ?? <PickTicketDetailsModel>[]) {
+                              if (item.isChecked == true) {
+                                item.setIsFiltered(true);
+                              } else {
+                                item.setIsFiltered(false);
+                              }
+                            }
+                          }),
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 16),
+                            child: _isVisible
+                                ? Icon(
+                                    Icons.library_add_check_outlined,
+                                    size: 25,
+                                    color: AppColors.white,
+                                  )
+                                : Icon(
+                                    Icons.library_add_check_sharp,
+                                    size: 25,
+                                    color: AppColors.white,
+                                  ),
+                          ),
+                        ),
+                      )
               ],
               onTap: () {
                 //complete pick ticket here
@@ -393,189 +420,192 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                   );
                                                 }
                                                 index -= 1;
-                                                return Slidable(
-                                                    key: ValueKey<int>(index),
-                                                    startActionPane: ActionPane(
-                                                        // A motion is a widget used to control how the pane animates.
-                                                        motion: const ScrollMotion(),
-                                                        children: <Widget>[
-                                                          SlidableAction(
-                                                            onPressed: (BuildContext context) {},
-                                                            backgroundColor: AppColors.atWarningRed,
-                                                            foregroundColor: AppColors.white,
-                                                            icon: Icons.cancel_presentation,
-                                                          ),
-                                                          SlidableAction(
-                                                            onPressed: (BuildContext context) {
-                                                              Navigator.of(context).push(SkuDetailsScreen.route(
-                                                                  ticketItemModel: state.pickTicketsResponse?[index],
-                                                                  ticketList: state.pickTicketsResponse,
-                                                                  currentIndex: index));
-                                                            },
-                                                            backgroundColor: AppColors.greyRed,
-                                                            foregroundColor: AppColors.white,
-                                                            icon: Icons.list_alt,
-                                                          ),
-                                                        ]),
-                                                    child: Container(
-                                                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                                                      child: GestureDetector(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              if (state.pickTicketsResponse?[index].isVisible == false) {
-                                                                //set previous open to close
-                                                                if (currentIndex != -1) {
-                                                                  state.pickTicketsResponse?[currentIndex].setIsVisible(false);
-                                                                  if (state.pickTicketsResponse?[index].pickedItem == null) {
-                                                                    context.read<PickTicketDetailsBloc>().exitPick(
-                                                                        pickTicketDetailId: state.pickTicketsResponse?[currentIndex].id ?? '');
-                                                                  }
-                                                                }
-                                                                currentIndex = index;
-                                                                state.pickTicketsResponse?[index].setIsVisible(true);
-                                                                context
-                                                                    .read<PickTicketDetailsBloc>()
-                                                                    .beginPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '');
-                                                              } else {
-                                                                state.pickTicketsResponse?[index].setIsVisible(false);
-                                                                context
-                                                                    .read<PickTicketDetailsBloc>()
-                                                                    .exitPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '');
-                                                              }
-                                                              state.pickTicketsResponse?[index]
-                                                                  .setIsVisible(state.pickTicketsResponse?[index].isVisible ?? false);
-                                                            });
-                                                          },
-                                                          child: Column(children: <Widget>[
-                                                            Row(
-                                                              children: <Widget>[
-                                                                Expanded(
-                                                                  flex: 1,
-                                                                  child: SizedBox(
-                                                                    width: 24,
-                                                                    child: Checkbox(
-                                                                        visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                                                                        activeColor: state.pickTicketsResponse?[index].pickedItem == null
-                                                                            ? AppColors.successGreen
-                                                                            : double.parse(
-                                                                                        state.pickTicketsResponse?[index].pickedItem?.isEmpty ?? false
-                                                                                            ? '0'
-                                                                                            : state.pickTicketsResponse?[index].pickedItem ?? '0') ==
-                                                                                    double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0')
-                                                                                ? AppColors.successGreen
-                                                                                : AppColors.warningOrange,
-                                                                        value: state.pickTicketsResponse?[index].isChecked ?? false,
-                                                                        onChanged: (bool? value) {
-                                                                          context.read<PickTicketDetailsBloc>().updateCheckBox(
-                                                                              state.pickTicketsResponse?[index],
-                                                                              value,
-                                                                              widget.ticketItemModel?.id,
-                                                                              textFieldControllers[index]);
-                                                                        }),
-                                                                  ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 2,
-                                                                  child: ATText(
-                                                                    text: state.pickTicketsResponse?[index].locCode,
-                                                                    weight: FontWeight.bold,
-                                                                  ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 2,
-                                                                  child: ATText(
-                                                                    text: state.pickTicketsResponse?[index].sku,
-                                                                    weight: FontWeight.bold,
-                                                                  ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 2,
-                                                                  child: Container(
-                                                                    alignment: Alignment.centerRight,
-                                                                    child: ATText(
-                                                                      text: context.read<PickTicketDetailsBloc>().getQuantityText(
-                                                                          state.pickTicketsResponse?[index],
-                                                                          int.parse(textFieldControllers[index].text.isEmpty == true
-                                                                              ? '0'
-                                                                              : textFieldControllers[index].text)),
-                                                                      weight: FontWeight.bold,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(width: 18)
-                                                              ],
-                                                            ),
-                                                            Row(
-                                                              children: <Widget>[
-                                                                Expanded(
-                                                                  flex: 1,
-                                                                  child: SizedBox(),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 4,
-                                                                  child: ATText(
-                                                                    text: state.pickTicketsResponse?[index].description,
-                                                                    fontSize: 12,
-                                                                  ),
-                                                                ),
-                                                                Expanded(
-                                                                  flex: 2,
-                                                                  child: Container(
-                                                                    alignment: Alignment.centerRight,
-                                                                    child: ATText(
-                                                                      text:
-                                                                          '${state.pickTicketsResponse?[index].uom} ${state.pickTicketsResponse?[index].unitQty}',
-                                                                      fontSize: 12,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                SizedBox(width: 18)
-                                                              ],
-                                                            ),
-                                                            SizedBox(height: 5),
-                                                            TicketPicker(
-                                                              pickTicketDetailsModel: state.pickTicketsResponse?[index],
-                                                              controller: textFieldControllers[index],
-                                                              onFieldSubmitted: (String? value) => setState(() {
-                                                                if (value?.isNotEmpty == true) {
-                                                                  context.read<PickTicketDetailsBloc>().setQuantityPicked(
-                                                                      state.pickTicketsResponse?[index], textFieldControllers[index]);
-                                                                }
-                                                              }),
-                                                              onChanged: (String? text) {
+                                                return Visibility(
+                                                    visible: _isVisible || state.pickTicketsResponse?[index].isFiltered == false,
+                                                    child: Slidable(
+                                                        key: ValueKey<int>(index),
+                                                        startActionPane: ActionPane(
+                                                            // A motion is a widget used to control how the pane animates.
+                                                            motion: const ScrollMotion(),
+                                                            children: <Widget>[
+                                                              SlidableAction(
+                                                                onPressed: (BuildContext context) {},
+                                                                backgroundColor: AppColors.atWarningRed,
+                                                                foregroundColor: AppColors.white,
+                                                                icon: Icons.cancel_presentation,
+                                                              ),
+                                                              SlidableAction(
+                                                                onPressed: (BuildContext context) {
+                                                                  Navigator.of(context).push(SkuDetailsScreen.route(
+                                                                      ticketItemModel: state.pickTicketsResponse?[index],
+                                                                      ticketList: state.pickTicketsResponse,
+                                                                      currentIndex: index));
+                                                                },
+                                                                backgroundColor: AppColors.greyRed,
+                                                                foregroundColor: AppColors.white,
+                                                                icon: Icons.list_alt,
+                                                              ),
+                                                            ]),
+                                                        child: Container(
+                                                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                                          child: GestureDetector(
+                                                              onTap: () {
                                                                 setState(() {
-                                                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                                                  if (textFieldControllers[index].text.isNotEmpty == true) {
-                                                                    if (!pickLimitSetting) {
-                                                                      if (double.parse(textFieldControllers[index].text) >
-                                                                          double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0')) {
-                                                                        textFieldControllers[index].clear();
-                                                                        state.pickTicketsResponse?[index].setIsChecked(false);
-                                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                                  if (state.pickTicketsResponse?[index].isVisible == false) {
+                                                                    //set previous open to close
+                                                                    if (currentIndex != -1) {
+                                                                      state.pickTicketsResponse?[currentIndex].setIsVisible(false);
+                                                                      if (state.pickTicketsResponse?[index].pickedItem == null) {
+                                                                        context.read<PickTicketDetailsBloc>().exitPick(
+                                                                            pickTicketDetailId: state.pickTicketsResponse?[currentIndex].id ?? '');
                                                                       }
                                                                     }
+                                                                    currentIndex = index;
+                                                                    state.pickTicketsResponse?[index].setIsVisible(true);
+                                                                    context
+                                                                        .read<PickTicketDetailsBloc>()
+                                                                        .beginPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '');
+                                                                  } else {
+                                                                    state.pickTicketsResponse?[index].setIsVisible(false);
+                                                                    context
+                                                                        .read<PickTicketDetailsBloc>()
+                                                                        .exitPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '');
                                                                   }
+                                                                  state.pickTicketsResponse?[index]
+                                                                      .setIsVisible(state.pickTicketsResponse?[index].isVisible ?? false);
                                                                 });
                                                               },
-                                                              onReset: () async {
-                                                                await context
-                                                                    .read<PickTicketDetailsBloc>()
-                                                                    .submitPick(
-                                                                        pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '',
-                                                                        qtyPicked: '-1')
-                                                                    .then((_) {
-                                                                  _forcedRefresh(pickTicketId: widget.ticketItemModel?.id);
-                                                                  Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails'));
-                                                                });
-                                                              },
-                                                              iconPressed: () => setState(() {
-                                                                if (textFieldControllers[index].text.isNotEmpty == true) {
-                                                                  textFieldControllers[index].clear();
-                                                                }
-                                                              }),
-                                                            ),
-                                                          ])),
-                                                    ));
+                                                              child: Column(children: <Widget>[
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                      flex: 1,
+                                                                      child: SizedBox(
+                                                                        width: 24,
+                                                                        child: Checkbox(
+                                                                            visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                                                                            activeColor: state.pickTicketsResponse?[index].pickedItem == null
+                                                                                ? AppColors.successGreen
+                                                                                : double.parse(state.pickTicketsResponse?[index].pickedItem
+                                                                                                    ?.isEmpty ??
+                                                                                                false
+                                                                                            ? '0'
+                                                                                            : state.pickTicketsResponse?[index].pickedItem ?? '0') ==
+                                                                                        double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0')
+                                                                                    ? AppColors.successGreen
+                                                                                    : AppColors.warningOrange,
+                                                                            value: state.pickTicketsResponse?[index].isChecked ?? false,
+                                                                            onChanged: (bool? value) {
+                                                                              context.read<PickTicketDetailsBloc>().updateCheckBox(
+                                                                                  state.pickTicketsResponse?[index],
+                                                                                  value,
+                                                                                  widget.ticketItemModel?.id,
+                                                                                  textFieldControllers[index]);
+                                                                            }),
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      flex: 2,
+                                                                      child: ATText(
+                                                                        text: state.pickTicketsResponse?[index].locCode,
+                                                                        weight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      flex: 2,
+                                                                      child: ATText(
+                                                                        text: state.pickTicketsResponse?[index].sku,
+                                                                        weight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      flex: 2,
+                                                                      child: Container(
+                                                                        alignment: Alignment.centerRight,
+                                                                        child: ATText(
+                                                                          text: context.read<PickTicketDetailsBloc>().getQuantityText(
+                                                                              state.pickTicketsResponse?[index],
+                                                                              int.parse(textFieldControllers[index].text.isEmpty == true
+                                                                                  ? '0'
+                                                                                  : textFieldControllers[index].text)),
+                                                                          weight: FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(width: 18)
+                                                                  ],
+                                                                ),
+                                                                Row(
+                                                                  children: <Widget>[
+                                                                    Expanded(
+                                                                      flex: 1,
+                                                                      child: SizedBox(),
+                                                                    ),
+                                                                    Expanded(
+                                                                      flex: 4,
+                                                                      child: ATText(
+                                                                        text: state.pickTicketsResponse?[index].description,
+                                                                        fontSize: 12,
+                                                                      ),
+                                                                    ),
+                                                                    Expanded(
+                                                                      flex: 2,
+                                                                      child: Container(
+                                                                        alignment: Alignment.centerRight,
+                                                                        child: ATText(
+                                                                          text:
+                                                                              '${state.pickTicketsResponse?[index].uom} ${state.pickTicketsResponse?[index].unitQty}',
+                                                                          fontSize: 12,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(width: 18)
+                                                                  ],
+                                                                ),
+                                                                SizedBox(height: 5),
+                                                                TicketPicker(
+                                                                  pickTicketDetailsModel: state.pickTicketsResponse?[index],
+                                                                  controller: textFieldControllers[index],
+                                                                  onFieldSubmitted: (String? value) => setState(() {
+                                                                    if (value?.isNotEmpty == true) {
+                                                                      context.read<PickTicketDetailsBloc>().setQuantityPicked(
+                                                                          state.pickTicketsResponse?[index], textFieldControllers[index]);
+                                                                    }
+                                                                  }),
+                                                                  onChanged: (String? text) {
+                                                                    setState(() {
+                                                                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                      if (textFieldControllers[index].text.isNotEmpty == true) {
+                                                                        if (!pickLimitSetting) {
+                                                                          if (double.parse(textFieldControllers[index].text) >
+                                                                              double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0')) {
+                                                                            textFieldControllers[index].clear();
+                                                                            state.pickTicketsResponse?[index].setIsChecked(false);
+                                                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    });
+                                                                  },
+                                                                  onReset: () async {
+                                                                    await context
+                                                                        .read<PickTicketDetailsBloc>()
+                                                                        .submitPick(
+                                                                            pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '',
+                                                                            qtyPicked: '-1')
+                                                                        .then((_) {
+                                                                      _forcedRefresh(pickTicketId: widget.ticketItemModel?.id);
+                                                                      Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails'));
+                                                                    });
+                                                                  },
+                                                                  iconPressed: () => setState(() {
+                                                                    if (textFieldControllers[index].text.isNotEmpty == true) {
+                                                                      textFieldControllers[index].clear();
+                                                                    }
+                                                                  }),
+                                                                ),
+                                                              ])),
+                                                        )));
                                               })
                                           : Container(
                                               alignment: Alignment.topCenter,
@@ -751,11 +781,13 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
   void _forcedRefresh({String? pickTicketId}) async {
     await context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: pickTicketId);
     canRefresh = true;
+    _isVisible = true;
     isInitialized = false;
   }
 
   Future<List<PickTicketDetailsModel>?> completeTicketRefresh({String? pickTicketId}) async {
     canRefresh = true;
+    _isVisible = true;
     isInitialized = false;
     List<PickTicketDetailsModel>? pickDetailResponse = await context.read<PickTicketDetailsBloc>().getPickTicketDetails(pickTicketId: pickTicketId);
     return pickDetailResponse;

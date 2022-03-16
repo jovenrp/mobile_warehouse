@@ -27,6 +27,7 @@ class PickTicketDetailsModel {
     this.createdTime,
     this.modifiedTime,
     this.isChecked = false,
+    this.isFiltered = false,
     this.isVisible = false,
     this.pickedItem,
   });
@@ -101,6 +102,9 @@ class PickTicketDetailsModel {
   @JsonKey(name: 'isChecked', defaultValue: false)
   bool? isChecked;
 
+  @JsonKey(name: 'isFiltered', defaultValue: false)
+  bool? isFiltered;
+
   @JsonKey(name: 'isVisible', defaultValue: false)
   bool? isVisible;
 
@@ -110,6 +114,11 @@ class PickTicketDetailsModel {
   bool setIsChecked(bool value) {
     isChecked = value;
     return isChecked ?? false;
+  }
+
+  bool setIsFiltered(bool value) {
+    isFiltered = value;
+    return isFiltered ?? false;
   }
 
   bool setIsVisible(bool value) {
