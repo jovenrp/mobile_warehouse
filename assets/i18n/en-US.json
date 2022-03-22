@@ -31,7 +31,7 @@
   "stock_count" : "Stock count",
   "stock_count_description" : "A short description of stock count",
   "pick_tickets" : "Pick tickets",
-  "location" : "Location",
+  "location" : "Destination",
   "sku" : "SKU",
   "sku_id" : "SKU #{sku}",
   "quantity" : "Quantity",

@@ -7,7 +7,7 @@ class PickTicketsItemModel {
   const PickTicketsItemModel({
     this.status,
     this.id,
-    this.location,
+    this.destination,
     this.numLines,
     this.num,
     this.user,
@@ -26,8 +26,8 @@ class PickTicketsItemModel {
   @JsonKey(name: 'num')
   final String? num;
 
-  @JsonKey(name: 'location')
-  final String? location;
+  @JsonKey(name: 'destination')
+  final String? destination;
 
   @JsonKey(name: 'numLines')
   final String? numLines;

@@ -24,8 +24,8 @@ class PickTicketsBloc extends Cubit<PickTicketsState> {
       List<PickTicketsItemModel> sorted =
           response.pickTickets ?? <PickTicketsItemModel>[];
       sorted.sort((PickTicketsItemModel? a, PickTicketsItemModel? b) {
-        String aa = a?.location ?? '';
-        String bb = b?.location ?? '';
+        String aa = a?.destination ?? '';
+        String bb = b?.destination ?? '';
         return aa.toLowerCase().compareTo(bb.toLowerCase());
       });
 
@@ -35,6 +35,32 @@ class PickTicketsBloc extends Cubit<PickTicketsState> {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
     }
+  }
+
+  Future<void> sortPickTicket({List<PickTicketsItemModel>? pickTicket, String? column, required bool sortBy}) async {
+    List<PickTicketsItemModel> sorted = pickTicket ?? <PickTicketsItemModel>[];
+    sorted.sort((PickTicketsItemModel? a, PickTicketsItemModel? b) {
+      switch(column) {
+        case 'ticketNumber':
+          String aa = a?.num ?? '';
+          String bb = b?.num ?? '';
+          return sortBy ? bb.toLowerCase().compareTo(aa.toLowerCase()) : aa.toLowerCase().compareTo(bb.toLowerCase());
+        case 'destination':
+          String aa = a?.destination ?? '';
+          String bb = b?.destination ?? '';
+          return sortBy ? bb.toLowerCase().compareTo(aa.toLowerCase()) : aa.toLowerCase().compareTo(bb.toLowerCase());
+        case 'numLines':
+          String aa = a?.numLines ?? '';
+          String bb = b?.numLines ?? '';
+          return sortBy ? bb.toLowerCase().compareTo(aa.toLowerCase()) : aa.toLowerCase().compareTo(bb.toLowerCase());
+        default:
+          String aa = a?.status ?? '';
+          String bb = b?.status ?? '';
+          return sortBy ? bb.toLowerCase().compareTo(aa.toLowerCase()) : aa.toLowerCase().compareTo(bb.toLowerCase());
+      }
+    });
+    emit(state.copyWith(
+        isLoading: false, pickTicketsItemModel: sorted, hasError: false));
   }
 
   Future<void> searchTicket({String? value}) async {
@@ -49,7 +75,7 @@ class PickTicketsBloc extends Cubit<PickTicketsState> {
           response.pickTickets?.where((PickTicketsItemModel item) {
                 String ticketId = item.num?.toLowerCase() ?? '';
                 String status = item.status?.toLowerCase() ?? '';
-                String location = item.location?.toLowerCase() ?? '';
+                String location = item.destination?.toLowerCase() ?? '';
                 return ticketId.contains(searchText) ||
                     status.contains((searchText)) ||
                     location.contains(searchText);
