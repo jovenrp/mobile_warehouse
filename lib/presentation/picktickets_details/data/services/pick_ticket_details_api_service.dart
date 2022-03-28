@@ -8,20 +8,21 @@ abstract class PickTicketDetailsApiService {
   factory PickTicketDetailsApiService(Dio dio, {String baseUrl}) =
       _PickTicketDetailsApiService;
 
-  @POST('/mobile(getPickTicket)?useHdrs=true&sessId={token}&id={pickTicketId}')
+  @POST(
+      '/mobile(getPickTicket)?useHdrs=true&sessId={token}&data={pickTicketId}')
   Future<dynamic> fetchPickTicketsDetails(
       @Path('token') String? token, @Path('pickTicketId') String? pickTicketId,
       {@Path('headers') String? headers});
 
   @POST(
-      '/mobile(beginPick)?useHdrs=true&sessId={sessId}&pickTicketDetailId={pickTicketDetailId}')
+      '/mobile(beginPick)?useHdrs=true&sessId={sessId}&data={pickTicketDetailId}')
   Future<dynamic> beginPick(
       {@Path('headers') String? headers,
       @Path('sessId') String? sessId,
       @Path('pickTicketDetailId') String? pickTicketDetailId});
 
   @POST(
-      '/mobile(submitPick)?useHdrs=true&sessId={sessId}&pickTicketDetailId={pickTicketDetailId}&qtyPicked={qtyPicked}')
+      '/mobile(submitPick)?useHdrs=true&sessId={sessId}&data={pickTicketDetailId}')
   Future<dynamic> submitPick({
     @Path('headers') String? headers,
     @Path('sessId') String? sessId,
@@ -30,14 +31,14 @@ abstract class PickTicketDetailsApiService {
   });
 
   @POST(
-      '/mobile(exitPick)?useHdrs=true&sessId={sessId}&pickTicketDetailId={pickTicketDetailId}')
+      '/mobile(exitPick)?useHdrs=true&sessId={sessId}&data={pickTicketDetailId}')
   Future<dynamic> exitPick(
       {@Path('headers') String? headers,
       @Path('sessId') String? sessId,
       @Path('pickTicketDetailId') String? pickTicketDetailId});
 
   @POST(
-      '/mobile(completePickTicket)?useHdrs=true&sessId={sessId}&pickTicketId={pickTicketId}')
+      '/mobile(completePickTicket)?useHdrs=true&sessId={sessId}&data={pickTicketId}')
   Future<dynamic> completePickTicket(
       {@Path('headers') String? headers,
       @Path('sessId') String? sessId,

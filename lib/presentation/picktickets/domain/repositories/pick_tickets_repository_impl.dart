@@ -20,6 +20,8 @@ class PickTicketsRepositoryImpl implements PickTicketsRepository {
       final PickTicketsResponse response =
           PickTicketsResponse.fromJson(jsonDecode(result));
 
+      print(response);
+
       return response;
     } catch (_) {
       logger.e(_.toString());

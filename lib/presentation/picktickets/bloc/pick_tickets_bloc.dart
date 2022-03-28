@@ -37,26 +37,37 @@ class PickTicketsBloc extends Cubit<PickTicketsState> {
     }
   }
 
-  Future<void> sortPickTicket({List<PickTicketsItemModel>? pickTicket, String? column, required bool sortBy}) async {
+  Future<void> sortPickTicket(
+      {List<PickTicketsItemModel>? pickTicket,
+      String? column,
+      required bool sortBy}) async {
     List<PickTicketsItemModel> sorted = pickTicket ?? <PickTicketsItemModel>[];
     sorted.sort((PickTicketsItemModel? a, PickTicketsItemModel? b) {
-      switch(column) {
+      switch (column) {
         case 'ticketNumber':
           String aa = a?.num ?? '';
           String bb = b?.num ?? '';
-          return sortBy ? bb.toLowerCase().compareTo(aa.toLowerCase()) : aa.toLowerCase().compareTo(bb.toLowerCase());
+          return sortBy
+              ? bb.toLowerCase().compareTo(aa.toLowerCase())
+              : aa.toLowerCase().compareTo(bb.toLowerCase());
         case 'destination':
           String aa = a?.destination ?? '';
           String bb = b?.destination ?? '';
-          return sortBy ? bb.toLowerCase().compareTo(aa.toLowerCase()) : aa.toLowerCase().compareTo(bb.toLowerCase());
+          return sortBy
+              ? bb.toLowerCase().compareTo(aa.toLowerCase())
+              : aa.toLowerCase().compareTo(bb.toLowerCase());
         case 'numLines':
           String aa = a?.numLines ?? '';
           String bb = b?.numLines ?? '';
-          return sortBy ? bb.toLowerCase().compareTo(aa.toLowerCase()) : aa.toLowerCase().compareTo(bb.toLowerCase());
+          return sortBy
+              ? bb.toLowerCase().compareTo(aa.toLowerCase())
+              : aa.toLowerCase().compareTo(bb.toLowerCase());
         default:
           String aa = a?.status ?? '';
           String bb = b?.status ?? '';
-          return sortBy ? bb.toLowerCase().compareTo(aa.toLowerCase()) : aa.toLowerCase().compareTo(bb.toLowerCase());
+          return sortBy
+              ? bb.toLowerCase().compareTo(aa.toLowerCase())
+              : aa.toLowerCase().compareTo(bb.toLowerCase());
       }
     });
     emit(state.copyWith(

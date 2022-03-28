@@ -171,9 +171,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                                 child: InkWell(
                                                               onTap: () {
                                                                 context.read<PickTicketsBloc>().sortPickTicket(
-                                                                    pickTicket: state.pickTicketsItemModel,
-                                                                    column: 'status',
-                                                                    sortBy: isStatusSort);
+                                                                    pickTicket: state.pickTicketsItemModel, column: 'status', sortBy: isStatusSort);
                                                                 setState(() {
                                                                   isStatusSort = !isStatusSort;
                                                                 });

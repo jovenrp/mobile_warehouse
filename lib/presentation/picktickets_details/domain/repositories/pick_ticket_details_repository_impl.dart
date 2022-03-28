@@ -15,8 +15,8 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
   Future<PickTicketsDetailsResponse> fetchPickTicketsDetails(
       {String? token, String? pickTicketId}) async {
     try {
-      final String result =
-          await _apiService.fetchPickTicketsDetails(token, pickTicketId);
+      final String result = await _apiService.fetchPickTicketsDetails(
+          token, '|keys:id=$pickTicketId');
 
       final PickTicketsDetailsResponse response =
           PickTicketsDetailsResponse.fromJson(jsonDecode(result));
@@ -33,7 +33,8 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
       {required String pickTicketDetailId, required String sessId}) async {
     try {
       final String result = await _apiService.beginPick(
-          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+          pickTicketDetailId: '|keys:pickTicketDetailId=$pickTicketDetailId',
+          sessId: sessId);
 
       final TicketDetailsResponseModel response =
           TicketDetailsResponseModel.fromJson(jsonDecode(result));
@@ -51,8 +52,9 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
       required String sessId}) async {
     try {
       final String result = await _apiService.submitPick(
-          pickTicketDetailId: pickTicketDetailId,
-          qtyPicked: qtyPicked,
+          pickTicketDetailId:
+              '|keys:pickTicketDetailId=$pickTicketDetailId|vals:qtyPicked=$qtyPicked',
+          qtyPicked: '|vals:qtyPicked=$qtyPicked',
           sessId: sessId);
       final TicketDetailsResponseModel response =
           TicketDetailsResponseModel.fromJson(jsonDecode(result));
@@ -67,7 +69,7 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
       {required String pickTicketDetailId, required String sessId}) async {
     try {
       final String result = await _apiService.exitPick(
-          pickTicketDetailId: pickTicketDetailId, sessId: sessId);
+          pickTicketDetailId: '|keys:id=$pickTicketDetailId', sessId: sessId);
       final TicketDetailsResponseModel response =
           TicketDetailsResponseModel.fromJson(jsonDecode(result));
       return response;
@@ -81,7 +83,7 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
       {required String pickTicket, required String sessId}) async {
     try {
       final String result = await _apiService.completePickTicket(
-          pickTicketId: pickTicket, sessId: sessId);
+          pickTicketId: '|keys:id=$pickTicket', sessId: sessId);
 
       final TicketDetailsResponseModel response =
           TicketDetailsResponseModel.fromJson(jsonDecode(result));
