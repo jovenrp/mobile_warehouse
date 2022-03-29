@@ -71,7 +71,6 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: 10),
                         Padding(
                             padding: const EdgeInsets.only(left: 18, right: 18),
                             child: ATDropdown(

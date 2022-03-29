@@ -8,7 +8,7 @@ class AppColors {
   static const Color black = Color(0xFF000000);
 
   //Custom Colors for ActionTRAK
-  static const Color beachSea = Color(0xff27A9E0);
+  static const Color beachSea = Color(0xff1A3B8B);
   static const Color atRed = Color(0xFFD20E56);
   static const Color atBrightRed = Color(0xFFFF0000);
   static const Color atDark = Color(0xFF114B63);
@@ -17,6 +17,7 @@ class AppColors {
   static const Color warningOrange = Color(0xFFF0821D);
   static const Color successGreen = Color(0xFF2A941B);
   static const Color lightBlue = Color(0xFFF1F7FF);
+  static const Color greyIcon = Color(0xFF363B47);
   static const Color greyText = Color(0xFF9D9EA3);
   static const Color semiDarkText = Color(0xFF5E616B);
   static const Color greyBorder = Color(0xFF363B47);

@@ -94,7 +94,6 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 18, right: 18),
                       child: ATSearchfield(
@@ -287,7 +286,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                   decoration: BoxDecoration(color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue),
                                                   children: <Widget>[
                                                     Padding(
-                                                      padding: const EdgeInsets.only(left: 18, top: 15, bottom: 15),
+                                                      padding: const EdgeInsets.only(left: 18, top: 20, bottom: 20),
                                                       child: Container(
                                                         alignment: Alignment.centerLeft,
                                                         child: PickTicketsStatusWidget(

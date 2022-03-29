@@ -323,7 +323,6 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
             body: Container(
                 color: AppColors.beachSea,
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                  SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.only(left: 18, right: 18),
                     child: ATSearchfield(
@@ -477,7 +476,8 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                     width: 24,
                                                                     child: Checkbox(
                                                                         visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                                                                        activeColor: state.pickTicketsResponse?[index].status?.toLowerCase() == 'processed'
+                                                                        activeColor: state.pickTicketsResponse?[index].status?.toLowerCase() ==
+                                                                                'processed'
                                                                             ? AppColors.successGreen
                                                                             : double.parse(
                                                                                         state.pickTicketsResponse?[index].pickedItem?.isEmpty ?? false
@@ -814,11 +814,10 @@ class _TicketPicker extends State<TicketPicker> {
     return Visibility(
         visible: widget.pickTicketDetailsModel?.isVisible ?? false,
         child: Container(
-          padding: const EdgeInsets.only(left: 18, right: 18, top: 15, bottom: 30),
+          padding: const EdgeInsets.only(left: 18, right: 18, top: 15, bottom: 15),
           decoration: BoxDecoration(
               color: AppColors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(2), topRight: Radius.circular(2), bottomLeft: Radius.circular(2), bottomRight: Radius.circular(2)),
+              borderRadius: BorderRadius.all(Radius.circular(2)),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -829,108 +828,6 @@ class _TicketPicker extends State<TicketPicker> {
               ]),
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: IntrinsicHeight(
-                      child: Container(
-                        padding: const EdgeInsets.all(3),
-                        decoration: BoxDecoration(
-                          color: AppColors.atRed,
-                          borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                        ),
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.close_fullscreen,
-                          size: 25,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Ink(
-                      child: InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  child: SizedBox(
-                                    height: 330,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(14),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.warning_amber_rounded,
-                                            size: 70,
-                                            color: AppColors.warningOrange,
-                                          ),
-                                          SizedBox(height: 10),
-                                          ATText(
-                                            text: I18n.of(context).are_you_sure_you_want_to_continue,
-                                            fontSize: 18,
-                                            weight: FontWeight.bold,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(height: 10),
-                                          ATText(
-                                            text: I18n.of(context).this_will_reset_to_untouched,
-                                            fontSize: 16,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(height: 20),
-                                          Container(
-                                            width: double.infinity,
-                                            child: ATTextButton(isLoading: false, buttonText: I18n.of(context).yes_reset_line, onTap: widget.onReset),
-                                          ),
-                                          Container(
-                                            width: double.infinity,
-                                            child: ATTextButton(
-                                              buttonStyle: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all(AppColors.white),
-                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                    side: BorderSide(color: AppColors.beachSea),
-                                                  ))),
-                                              buttonTextStyle: TextStyle(color: AppColors.beachSea),
-                                              isLoading: false,
-                                              buttonText: I18n.of(context).cancel,
-                                              onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails')),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              });
-                        },
-                        child: IntrinsicHeight(
-                          child: Container(
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              color: AppColors.atRed,
-                              borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                            ),
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.restart_alt,
-                              size: 25,
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -1003,7 +900,7 @@ class _TicketPicker extends State<TicketPicker> {
                       ),
                       SizedBox(height: 10),
                       Container(
-                        width: 100,
+                        width: 130,
                         child: ATMiniTextfield(
                           qtyPick: widget.pickTicketDetailsModel?.qtyPick,
                           textEditingController: widget.controller,
@@ -1016,6 +913,101 @@ class _TicketPicker extends State<TicketPicker> {
                       )
                     ],
                   ),
+                ],
+              ),
+              SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 0),
+                    child: IntrinsicHeight(
+                      child: Container(
+                        padding: const EdgeInsets.all(0),
+                        alignment: Alignment.centerRight,
+                        child: Icon(
+                          Icons.close_fullscreen,
+                          size: 30,
+                          color: AppColors.greyIcon,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 0),
+                    child: Ink(
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  child: SizedBox(
+                                    height: 330,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(14),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.warning_amber_rounded,
+                                            size: 70,
+                                            color: AppColors.warningOrange,
+                                          ),
+                                          SizedBox(height: 10),
+                                          ATText(
+                                            text: I18n.of(context).are_you_sure_you_want_to_continue,
+                                            fontSize: 18,
+                                            weight: FontWeight.bold,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 10),
+                                          ATText(
+                                            text: I18n.of(context).this_will_reset_to_untouched,
+                                            fontSize: 16,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 20),
+                                          Container(
+                                            width: double.infinity,
+                                            child: ATTextButton(isLoading: false, buttonText: I18n.of(context).yes_reset_line, onTap: widget.onReset),
+                                          ),
+                                          Container(
+                                            width: double.infinity,
+                                            child: ATTextButton(
+                                              buttonStyle: ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all(AppColors.white),
+                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(8.0),
+                                                    side: BorderSide(color: AppColors.beachSea),
+                                                  ))),
+                                              buttonTextStyle: TextStyle(color: AppColors.beachSea),
+                                              isLoading: false,
+                                              buttonText: I18n.of(context).cancel,
+                                              onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/pickTicketDetails')),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
+                        child: IntrinsicHeight(
+                          child: Container(
+                            padding: const EdgeInsets.all(0),
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              Icons.restart_alt,
+                              size: 30,
+                              color: AppColors.greyIcon,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               )
             ],
