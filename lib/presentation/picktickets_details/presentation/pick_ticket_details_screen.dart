@@ -348,6 +348,41 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                         }),
                   ),
                   SizedBox(height: 20),
+                  state.isLoading ? SizedBox() : Container(
+                    color: AppColors.greyRow,
+                    padding: const EdgeInsets.only(top: 15, bottom: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(flex: 1, child: SizedBox()),
+                        Expanded(
+                            flex: 2,
+                            child: ATText(
+                              fontColor: AppColors.greyHeader,
+                              text: I18n.of(context).loc_code.toUpperCase(),
+                              weight: FontWeight.bold,
+                            )),
+                        Expanded(
+                            flex: 2,
+                            child: ATText(
+                              fontColor: AppColors.greyHeader,
+                              text: I18n.of(context).sku.toUpperCase(),
+                              weight: FontWeight.bold,
+                            )),
+                        Expanded(
+                            flex: 2,
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: ATText(
+                                fontColor: AppColors.greyHeader,
+                                text: I18n.of(context).quantity.toUpperCase(),
+                                weight: FontWeight.bold,
+                              ),
+                            )),
+                        SizedBox(width: 18)
+                      ],
+                    ),
+                  ),
                   Expanded(
                       child: Container(
                           color: AppColors.white,
@@ -385,37 +420,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                           itemCount: (state.pickTicketsResponse?.length ?? 0) + 1,
                                           itemBuilder: (BuildContext context, int index) {
                                             if (index == 0) {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(top: 15, bottom: 10),
-                                                child: Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Expanded(flex: 1, child: SizedBox()),
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: ATText(
-                                                          text: I18n.of(context).loc_code.toUpperCase(),
-                                                          weight: FontWeight.bold,
-                                                        )),
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: ATText(
-                                                          text: I18n.of(context).sku.toUpperCase(),
-                                                          weight: FontWeight.bold,
-                                                        )),
-                                                    Expanded(
-                                                        flex: 2,
-                                                        child: Container(
-                                                          alignment: Alignment.centerRight,
-                                                          child: ATText(
-                                                            text: I18n.of(context).quantity.toUpperCase(),
-                                                            weight: FontWeight.bold,
-                                                          ),
-                                                        )),
-                                                    SizedBox(width: 18)
-                                                  ],
-                                                ),
-                                              );
+                                              return SizedBox();
                                             }
                                             index -= 1;
                                             return Visibility(
@@ -439,6 +444,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                           ),
                                                         ]),
                                                     child: Container(
+                                                      color: AppColors.backgroundColor,
                                                       padding: const EdgeInsets.only(top: 5, bottom: 5),
                                                       child: GestureDetector(
                                                           onTap: () {
@@ -562,6 +568,28 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                 if (value?.isNotEmpty == true) {
                                                                   context.read<PickTicketDetailsBloc>().setQuantityPicked(
                                                                       state.pickTicketsResponse?[index], textFieldControllers[index]);
+                                                                  if (state.pickTicketsResponse?[index].isVisible == false) {
+                                                                    //set previous open to close
+                                                                    if (currentIndex != -1) {
+                                                                      state.pickTicketsResponse?[currentIndex].setIsVisible(false);
+                                                                      if (state.pickTicketsResponse?[index].pickedItem == null) {
+                                                                        context.read<PickTicketDetailsBloc>().exitPick(
+                                                                            pickTicketDetailId: state.pickTicketsResponse?[currentIndex].id ?? '');
+                                                                      }
+                                                                    }
+                                                                    currentIndex = index;
+                                                                    state.pickTicketsResponse?[index].setIsVisible(true);
+                                                                    context
+                                                                        .read<PickTicketDetailsBloc>()
+                                                                        .beginPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '');
+                                                                  } else {
+                                                                    state.pickTicketsResponse?[index].setIsVisible(false);
+                                                                    context
+                                                                        .read<PickTicketDetailsBloc>()
+                                                                        .exitPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '');
+                                                                  }
+                                                                  state.pickTicketsResponse?[index]
+                                                                      .setIsVisible(state.pickTicketsResponse?[index].isVisible ?? false);
                                                                 }
                                                               }),
                                                               onChanged: (String? text) {
@@ -926,8 +954,8 @@ class _TicketPicker extends State<TicketPicker> {
                         padding: const EdgeInsets.all(0),
                         alignment: Alignment.centerRight,
                         child: Icon(
-                          Icons.close_fullscreen,
-                          size: 30,
+                          Icons.close,
+                          size: 25,
                           color: AppColors.greyIcon,
                         ),
                       ),
@@ -1000,7 +1028,7 @@ class _TicketPicker extends State<TicketPicker> {
                             alignment: Alignment.centerRight,
                             child: Icon(
                               Icons.restart_alt,
-                              size: 30,
+                              size: 25,
                               color: AppColors.greyIcon,
                             ),
                           ),

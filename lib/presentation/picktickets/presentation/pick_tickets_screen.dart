@@ -115,6 +115,111 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                           }),
                     ),
                     SizedBox(height: 20),
+                    state.isLoading ? SizedBox() : Container(
+                        color: AppColors.greyRow,
+                        padding: const EdgeInsets.only(top: 0, bottom: 10),
+                        child: Column(
+                          children: <Widget>[
+                            Visibility(
+                                visible: state.pickTicketsItemModel?.isNotEmpty == true,
+                                child: Table(
+                                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                                    columnWidths: const <int, TableColumnWidth>{
+                                      0: FixedColumnWidth(38),
+                                      1: FixedColumnWidth(70),
+                                      2: FlexColumnWidth(),
+                                      3: FixedColumnWidth(70),
+                                    },
+                                    children: <TableRow>[
+                                      TableRow(children: <Widget>[
+                                        Ink(
+                                            child: InkWell(
+                                              onTap: () {
+                                                context.read<PickTicketsBloc>().sortPickTicket(
+                                                    pickTicket: state.pickTicketsItemModel, column: 'status', sortBy: isStatusSort);
+                                                setState(() {
+                                                  isStatusSort = !isStatusSort;
+                                                });
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(left: 18, top: 20, bottom: 5),
+                                                child: SizedBox(),
+                                              ),
+                                            )),
+                                        Ink(
+                                          child: InkWell(
+                                            onTap: () {
+                                              context.read<PickTicketsBloc>().sortPickTicket(
+                                                  pickTicket: state.pickTicketsItemModel,
+                                                  column: 'ticketNumber',
+                                                  sortBy: isTicketNumberSort);
+                                              setState(() {
+                                                isTicketNumberSort = !isTicketNumberSort;
+                                              });
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.only(top: 20, bottom: 5),
+                                              child: ATText(
+                                                fontColor: AppColors.greyHeader,
+                                                text: I18n.of(context).ticket_number.toUpperCase(),
+                                                weight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Ink(
+                                          child: InkWell(
+                                            onTap: () {
+                                              context.read<PickTicketsBloc>().sortPickTicket(
+                                                  pickTicket: state.pickTicketsItemModel,
+                                                  column: 'destination',
+                                                  sortBy: isDestinationSort);
+                                              setState(() {
+                                                isDestinationSort = !isDestinationSort;
+                                              });
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.only(top: 20, bottom: 5),
+                                              child: ATText(
+                                                fontColor: AppColors.greyHeader,
+                                                text: I18n.of(context).location.toUpperCase(),
+                                                weight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Ink(
+                                          child: InkWell(
+                                            onTap: () {
+                                              context.read<PickTicketsBloc>().sortPickTicket(
+                                                  pickTicket: state.pickTicketsItemModel,
+                                                  column: 'numLines',
+                                                  sortBy: isNumLineSort);
+                                              setState(() {
+                                                isNumLineSort = !isNumLineSort;
+                                              });
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.centerRight,
+                                              padding: const EdgeInsets.only(right: 18, top: 20, bottom: 5),
+                                              child: ATText(
+                                                fontColor: AppColors.greyHeader,
+                                                text: I18n.of(context).lines.toUpperCase(),
+                                                weight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ])
+                                    ])),
+                            Visibility(
+                                visible: state.pickTicketsItemModel?.isEmpty == true,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 30),
+                                  child: ATText(text: I18n.of(context).oops_item_returned_0_results),
+                                ))
+                          ],
+                        )),
                     Expanded(
                       child: InteractiveViewer(
                           child: Container(
@@ -150,107 +255,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                     itemCount: (state.pickTicketsItemModel?.length ?? 0) + 1,
                                     itemBuilder: (BuildContext context, int index) {
                                       if (index == 0) {
-                                        return Padding(
-                                            padding: const EdgeInsets.only(top: 0, bottom: 10),
-                                            child: Column(
-                                              children: <Widget>[
-                                                Visibility(
-                                                    visible: state.pickTicketsItemModel?.isNotEmpty == true,
-                                                    child: Table(
-                                                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                                                        columnWidths: const <int, TableColumnWidth>{
-                                                          0: FixedColumnWidth(38),
-                                                          1: FixedColumnWidth(70),
-                                                          2: FlexColumnWidth(),
-                                                          3: FixedColumnWidth(70),
-                                                        },
-                                                        children: <TableRow>[
-                                                          TableRow(children: <Widget>[
-                                                            Ink(
-                                                                child: InkWell(
-                                                              onTap: () {
-                                                                context.read<PickTicketsBloc>().sortPickTicket(
-                                                                    pickTicket: state.pickTicketsItemModel, column: 'status', sortBy: isStatusSort);
-                                                                setState(() {
-                                                                  isStatusSort = !isStatusSort;
-                                                                });
-                                                              },
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.only(left: 18, top: 20, bottom: 5),
-                                                                child: SizedBox(),
-                                                              ),
-                                                            )),
-                                                            Ink(
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  context.read<PickTicketsBloc>().sortPickTicket(
-                                                                      pickTicket: state.pickTicketsItemModel,
-                                                                      column: 'ticketNumber',
-                                                                      sortBy: isTicketNumberSort);
-                                                                  setState(() {
-                                                                    isTicketNumberSort = !isTicketNumberSort;
-                                                                  });
-                                                                },
-                                                                child: Container(
-                                                                  padding: const EdgeInsets.only(top: 20, bottom: 5),
-                                                                  child: ATText(
-                                                                    text: I18n.of(context).ticket_number.toUpperCase(),
-                                                                    weight: FontWeight.bold,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Ink(
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  context.read<PickTicketsBloc>().sortPickTicket(
-                                                                      pickTicket: state.pickTicketsItemModel,
-                                                                      column: 'destination',
-                                                                      sortBy: isDestinationSort);
-                                                                  setState(() {
-                                                                    isDestinationSort = !isDestinationSort;
-                                                                  });
-                                                                },
-                                                                child: Container(
-                                                                  padding: const EdgeInsets.only(top: 20, bottom: 5),
-                                                                  child: ATText(
-                                                                    text: I18n.of(context).location.toUpperCase(),
-                                                                    weight: FontWeight.bold,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Ink(
-                                                              child: InkWell(
-                                                                onTap: () {
-                                                                  context.read<PickTicketsBloc>().sortPickTicket(
-                                                                      pickTicket: state.pickTicketsItemModel,
-                                                                      column: 'numLines',
-                                                                      sortBy: isNumLineSort);
-                                                                  setState(() {
-                                                                    isNumLineSort = !isNumLineSort;
-                                                                  });
-                                                                },
-                                                                child: Container(
-                                                                  alignment: Alignment.centerRight,
-                                                                  padding: const EdgeInsets.only(right: 18, top: 20, bottom: 5),
-                                                                  child: ATText(
-                                                                    text: I18n.of(context).lines.toUpperCase(),
-                                                                    weight: FontWeight.bold,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          ])
-                                                        ])),
-                                                Visibility(
-                                                    visible: state.pickTicketsItemModel?.isEmpty == true,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.only(top: 30),
-                                                      child: ATText(text: I18n.of(context).oops_item_returned_0_results),
-                                                    ))
-                                              ],
-                                            ));
+                                        return SizedBox();
                                       }
                                       index -= 1;
                                       return Slidable(
