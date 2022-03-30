@@ -212,13 +212,16 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                         )
                                       ])
                                     ])),
-                            Visibility(
-                                visible: state.pickTicketsItemModel?.isEmpty == true,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 30),
-                                  child: ATText(text: I18n.of(context).oops_item_returned_0_results),
-                                ))
                           ],
+                        )),
+                    Visibility(
+                        visible: state.pickTicketsItemModel?.isEmpty == true,
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          color: AppColors.white,
+                          padding: const EdgeInsets.only(top: 30),
+                          child: ATText(text: I18n.of(context).oops_item_returned_0_results),
                         )),
                     Expanded(
                       child: InteractiveViewer(

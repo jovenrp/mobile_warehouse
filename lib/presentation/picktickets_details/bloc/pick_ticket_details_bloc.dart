@@ -120,8 +120,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
 
   Future<void> getSettings() async {
     bool pickLimitSetting = await persistenceService.pickLimitSetting.get() ?? false;
-    emit(state.copyWith(pickLimitSetting: pickLimitSetting, isLoading: false));
-    print('AAAAAAA');
+    emit(state.copyWith(pickLimitSetting: pickLimitSetting));
   }
 
   Future<void> searchTicket({String? value, required String pickTicketId}) async {
@@ -156,12 +155,12 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
     }
   }
 
-  String getQuantityText(PickTicketDetailsModel? pickTicket, int textValue) {
+  String getQuantityText(PickTicketDetailsModel? pickTicket, String textValue) {
     return (pickTicket?.pickedItem == null || pickTicket?.pickedItem?.isEmpty == true)
         ? '${pickTicket?.qtyPick}'
         : pickTicket?.pickedItem == null || pickTicket?.pickedItem?.isEmpty == true
             ? '${pickTicket?.qtyPick} of ${pickTicket?.qtyPick}'
-            : '${(double.parse(pickTicket?.pickedItem ?? '0') + textValue).toStringAsFixed(0)} of ${pickTicket?.qtyPick}';
+            : '${(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toStringAsFixed(0)} of ${pickTicket?.qtyPick}';
   }
 
   bool updateCheckBox(PickTicketDetailsModel? pickTicket, bool? value, String? pickTicketId, TextEditingController controller) {

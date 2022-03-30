@@ -523,9 +523,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                     child: ATText(
                                                                       text: context.read<PickTicketDetailsBloc>().getQuantityText(
                                                                           state.pickTicketsResponse?[index],
-                                                                          int.parse(textFieldControllers[index].text.isEmpty == true
-                                                                              ? '0'
-                                                                              : textFieldControllers[index].text)),
+                                                                          textFieldControllers[index].text),
                                                                       weight: FontWeight.bold,
                                                                     ),
                                                                   ),
@@ -906,7 +904,7 @@ class _TicketPicker extends State<TicketPicker> {
                         children: <Widget>[
                           ATText(
                             text: context.read<PickTicketDetailsBloc>().getQuantityText(widget.pickTicketDetailsModel,
-                                int.parse(widget.controller?.text.isEmpty == true ? '0' : widget.controller?.text ?? '0')),
+                                widget.controller?.text ?? '0'),
                             fontSize: 14,
                           )
                         ],
