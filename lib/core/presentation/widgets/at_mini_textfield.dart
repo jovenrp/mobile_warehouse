@@ -33,9 +33,7 @@ class _ATMiniTextfield extends State<ATMiniTextfield> {
       key: widget.key,
       onFieldSubmitted: widget.onFieldSubmitted,
       autofocus: widget.autoFocus ?? false,
-      style: TextStyle(
-          fontWeight: FontWeight.bold
-      ),
+      style: TextStyle(fontWeight: FontWeight.bold),
       keyboardType: TextInputType.number,
       onChanged: widget.onChanged,
       decoration: InputDecoration(

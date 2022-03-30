@@ -14,7 +14,12 @@ import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pi
 import 'package:mobile_warehouse/generated/i18n.dart';
 
 class SkuDetailsScreen extends StatefulWidget {
-  const SkuDetailsScreen({Key? key, this.ticketItemModel, this.ticketList, required this.currentIndex}) : super(key: key);
+  const SkuDetailsScreen(
+      {Key? key,
+      this.ticketItemModel,
+      this.ticketList,
+      required this.currentIndex})
+      : super(key: key);
 
   final PickTicketDetailsModel? ticketItemModel;
   final List<PickTicketDetailsModel>? ticketList;
@@ -24,10 +29,15 @@ class SkuDetailsScreen extends StatefulWidget {
   static const String screenName = 'pickTicketDetailsScreen';
 
   static ModalRoute<SkuDetailsScreen> route(
-          {PickTicketDetailsModel? ticketItemModel, List<PickTicketDetailsModel>? ticketList, required int currentIndex}) =>
+          {PickTicketDetailsModel? ticketItemModel,
+          List<PickTicketDetailsModel>? ticketList,
+          required int currentIndex}) =>
       MaterialPageRoute<SkuDetailsScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => SkuDetailsScreen(ticketItemModel: ticketItemModel, ticketList: ticketList, currentIndex: currentIndex),
+        builder: (_) => SkuDetailsScreen(
+            ticketItemModel: ticketItemModel,
+            ticketList: ticketList,
+            currentIndex: currentIndex),
       );
 
   @override
@@ -65,85 +75,106 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
       ),
       duration: Duration(seconds: 1),
     );
-    return BlocConsumer<PickTicketDetailsBloc, PickTicketDetailsState>(listener: (BuildContext context, PickTicketDetailsState state) {
-    }, builder: (BuildContext context, PickTicketDetailsState state) {
-      pickLimitSetting = state.pickLimitSetting ?? false;
-      return SafeArea(
-        child: Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            appBar: ATAppBar(
-              title: I18n.of(context).sku_id(widget.ticketItemModel?.sku),
-              icon: Icon(
-                Icons.arrow_back_sharp,
-                color: AppColors.white,
-                size: 24.0,
-              ),
-              onTap: () => Navigator.of(context).pop(),
-            ),
-            body: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18, right: 18, top: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocConsumer<PickTicketDetailsBloc, PickTicketDetailsState>(
+        listener: (BuildContext context, PickTicketDetailsState state) {},
+        builder: (BuildContext context, PickTicketDetailsState state) {
+          pickLimitSetting = state.pickLimitSetting ?? false;
+          return SafeArea(
+            child: Scaffold(
+                backgroundColor: AppColors.backgroundColor,
+                appBar: ATAppBar(
+                  title: I18n.of(context).sku_id(widget.ticketItemModel?.sku),
+                  icon: Icon(
+                    Icons.arrow_back_sharp,
+                    color: AppColors.white,
+                    size: 24.0,
+                  ),
+                  onTap: () => Navigator.of(context).pop(),
+                ),
+                body: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 18, right: 18, top: 20),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          ATText(text: widget.ticketItemModel?.location, weight: FontWeight.w700, fontSize: 24),
-                          Visibility(
-                              visible:
-                                  (widget.ticketItemModel?.status?.toLowerCase() != 'open' && widget.ticketItemModel?.status?.toLowerCase() != ''),
-                              child:
-                                  (widget.ticketItemModel?.status?.toLowerCase() != 'open' && widget.ticketItemModel?.status?.toLowerCase() != '') &&
-                                          widget.ticketItemModel?.status?.toLowerCase() != 'processing'
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              ATText(
+                                  text: widget.ticketItemModel?.location,
+                                  weight: FontWeight.w700,
+                                  fontSize: 24),
+                              Visibility(
+                                  visible: (widget.ticketItemModel?.status
+                                              ?.toLowerCase() !=
+                                          'open' &&
+                                      widget.ticketItemModel?.status
+                                              ?.toLowerCase() !=
+                                          ''),
+                                  child: (widget.ticketItemModel?.status
+                                                      ?.toLowerCase() !=
+                                                  'open' &&
+                                              widget.ticketItemModel?.status
+                                                      ?.toLowerCase() !=
+                                                  '') &&
+                                          widget.ticketItemModel?.status
+                                                  ?.toLowerCase() !=
+                                              'processing'
                                       ? Icon(
                                           Icons.check_circle,
-                                          color: widget.ticketItemModel?.status?.toLowerCase() == 'processed'
+                                          color: widget.ticketItemModel?.status
+                                                      ?.toLowerCase() ==
+                                                  'processed'
                                               ? AppColors.successGreen
                                               : AppColors.warningOrange,
                                           size: 25,
                                         )
                                       : PickTicketsStatusWidget(
-                                          status: widget.ticketItemModel?.status,
+                                          status:
+                                              widget.ticketItemModel?.status,
                                           turns: turns,
                                           size: 25,
                                         )),
-                        ],
-                      ),
-                      SizedBox(height: 6),
-                      ATText(text: widget.ticketItemModel?.description, fontSize: 12, fontColor: AppColors.semiDarkText),
-                      Container(
-                        alignment: Alignment.center,
-                        child: Icon(
-                          Icons.broken_image,
-                          color: AppColors.greyText,
-                          size: 200,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: ATText(
-                              text: I18n.of(context).sku.toUpperCase(),
-                              weight: FontWeight.w700,
-                              fontSize: 12,
-                              fontColor: AppColors.greyText,
+                            ],
+                          ),
+                          SizedBox(height: 6),
+                          ATText(
+                              text: widget.ticketItemModel?.description,
+                              fontSize: 14,
+                              fontColor: AppColors.semiDarkText),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.broken_image,
+                              color: AppColors.greyText,
+                              size: 200,
                             ),
                           ),
-                          Expanded(
-                            flex: 4,
-                            child: ATText(
-                              text: I18n.of(context).loc_code.toUpperCase(),
-                              weight: FontWeight.w700,
-                              fontSize: 12,
-                              fontColor: AppColors.greyText,
-                            ),
-                          ),
-                          /*Expanded(
+                          SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 2,
+                                child: ATText(
+                                  text: I18n.of(context).sku.toUpperCase(),
+                                  weight: FontWeight.w700,
+                                  fontSize: 14,
+                                  fontColor: AppColors.greyText,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: ATText(
+                                  text: I18n.of(context).loc_code.toUpperCase(),
+                                  weight: FontWeight.w700,
+                                  fontSize: 14,
+                                  fontColor: AppColors.greyText,
+                                ),
+                              ),
+                              /*Expanded(
                             flex: 2,
                             child: Container(
                               alignment: Alignment.centerRight,
@@ -155,20 +186,26 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                               ),
                             ),
                           ),*/
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: ATText(text: widget.ticketItemModel?.sku, weight: FontWeight.w700, fontSize: 12),
+                            ],
                           ),
-                          Expanded(
-                            flex: 4,
-                            child: ATText(text: widget.ticketItemModel?.locCode, weight: FontWeight.w700, fontSize: 12),
-                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 2,
+                                child: ATText(
+                                    text: widget.ticketItemModel?.sku,
+                                    weight: FontWeight.w700,
+                                    fontSize: 15),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: ATText(
+                                    text: widget.ticketItemModel?.locCode,
+                                    weight: FontWeight.w700,
+                                    fontSize: 15),
+                              ),
 
-                          /*Expanded(
+                              /*Expanded(
                             flex: 2,
                             child: Container(
                               alignment: Alignment.centerRight,
@@ -178,192 +215,242 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                                   fontSize: 12),
                             ),
                           ),*/
-                        ],
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: ATText(
-                              text: I18n.of(context).unit_of_measure.toUpperCase(),
-                              weight: FontWeight.w700,
-                              fontSize: 12,
-                              fontColor: AppColors.greyText,
-                            ),
+                            ],
                           ),
-                          Expanded(
-                            flex: 2,
-                            child: ATText(
-                              text: I18n.of(context).quantity.toUpperCase(),
-                              weight: FontWeight.w700,
-                              fontSize: 12,
-                              fontColor: AppColors.greyText,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: ATText(
-                                text: I18n.of(context).picked.toUpperCase(),
-                                weight: FontWeight.w700,
-                                fontSize: 12,
-                                fontColor: AppColors.greyText,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: ATText(
-                                text: '${widget.ticketItemModel?.uom} ${widget.ticketItemModel?.unitQty}', weight: FontWeight.w700, fontSize: 12),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: ATText(text: '${widget.ticketItemModel?.qtyPick}', weight: FontWeight.w700, fontSize: 12),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: ATText(
-                                  text: '${double.parse(widget.ticketItemModel?.pickedItem ?? '0').toStringAsFixed(0)}',
+                          SizedBox(height: 15),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 2,
+                                child: ATText(
+                                  text: 'UOM',
                                   weight: FontWeight.w700,
-                                  fontSize: 12),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Column(children: <Widget>[
-                            ATText(
-                              text: I18n.of(context).quantity_picked.toUpperCase(),
-                              fontSize: 14,
-                              weight: FontWeight.bold,
-                            ),
-                            SizedBox(height: 10),
-                            Container(
-                              width: 130,
-                              child: ATMiniTextfield(
-                                textEditingController: controller,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                    if (controller.text.isNotEmpty == true) {
-                                      if (!pickLimitSetting) {
-                                        if (double.parse(controller.text) > double.parse(widget.ticketItemModel?.qtyPick ?? '0')) {
-                                          controller.clear();
-                                          widget.ticketItemModel?.setIsChecked(false);
-                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                        }
-                                      }
-                                    }
-                                  });
-                                },
-                                autoFocus: false,
-                                onFieldSubmitted: (String? value) => setState(() {
-                                  if (value?.isNotEmpty == true) {
-                                    context.read<PickTicketDetailsBloc>().setQuantityPicked(widget.ticketItemModel, controller);
-                                  }
-                                }),
-                                iconPressed: () => setState(() {
-                                  if (controller.text.isNotEmpty == true) {
-                                    controller.clear();
-                                  }
-                                }),
+                                  fontSize: 14,
+                                  fontColor: AppColors.greyText,
+                                ),
                               ),
-                            )
-                          ])
-                        ],
-                      ),
-                      SizedBox(height: 30),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 6,
-                            child: ATText(
-                              text: 'NOTE',
-                              weight: FontWeight.w700,
-                              fontSize: 12,
-                              fontColor: AppColors.greyText,
-                            ),
+                              Expanded(
+                                flex: 2,
+                                child: ATText(
+                                  text: I18n.of(context).quantity.toUpperCase(),
+                                  weight: FontWeight.w700,
+                                  fontSize: 14,
+                                  fontColor: AppColors.greyText,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: ATText(
+                                    text: I18n.of(context).picked.toUpperCase(),
+                                    weight: FontWeight.w700,
+                                    fontSize: 14,
+                                    fontColor: AppColors.greyText,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 2,
+                                child: ATText(
+                                    text:
+                                        '${widget.ticketItemModel?.uom} ${widget.ticketItemModel?.unitQty}',
+                                    weight: FontWeight.w700,
+                                    fontSize: 15),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: ATText(
+                                    text: '${widget.ticketItemModel?.qtyPick}',
+                                    weight: FontWeight.w700,
+                                    fontSize: 15),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: ATText(
+                                      text:
+                                          '${double.parse(widget.ticketItemModel?.pickedItem ?? '0').toStringAsFixed(0)}',
+                                      weight: FontWeight.w700,
+                                      fontSize: 15),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(children: <Widget>[
+                                ATText(
+                                  text: I18n.of(context)
+                                      .quantity_picked
+                                      .toUpperCase(),
+                                  fontSize: 14,
+                                  weight: FontWeight.bold,
+                                ),
+                                SizedBox(height: 10),
+                                Container(
+                                  width: 130,
+                                  child: ATMiniTextfield(
+                                    textEditingController: controller,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        if (controller.text.isNotEmpty ==
+                                            true) {
+                                          if (!pickLimitSetting) {
+                                            if (double.parse(controller.text) >
+                                                double.parse(widget
+                                                        .ticketItemModel
+                                                        ?.qtyPick ??
+                                                    '0')) {
+                                              controller.clear();
+                                              widget.ticketItemModel
+                                                  ?.setIsChecked(false);
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                            }
+                                          }
+                                        }
+                                      });
+                                    },
+                                    autoFocus: false,
+                                    onFieldSubmitted: (String? value) =>
+                                        setState(() {
+                                      if (value?.isNotEmpty == true) {
+                                        context
+                                            .read<PickTicketDetailsBloc>()
+                                            .setQuantityPicked(
+                                                widget.ticketItemModel,
+                                                controller);
+                                      }
+                                    }),
+                                    iconPressed: () => setState(() {
+                                      if (controller.text.isNotEmpty == true) {
+                                        controller.clear();
+                                      }
+                                    }),
+                                  ),
+                                )
+                              ])
+                            ],
+                          ),
+                          SizedBox(height: 30),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 6,
+                                child: ATText(
+                                  text: 'NOTE',
+                                  weight: FontWeight.w700,
+                                  fontSize: 14,
+                                  fontColor: AppColors.greyText,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 6,
+                                child: widget.ticketItemModel?.note
+                                            ?.isNotEmpty ==
+                                        true
+                                    ? ATText(
+                                        text: '${widget.ticketItemModel?.note}',
+                                        weight: FontWeight.w700,
+                                        fontSize: 13)
+                                    : ATText(
+                                        text: 'No additional notes.',
+                                        weight: FontWeight.w700,
+                                        fontSize: 13),
+                              )
+                            ],
                           ),
                         ],
                       ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            flex: 6,
-                            child: widget.ticketItemModel?.note?.isNotEmpty == true
-                                ? ATText(text: '${widget.ticketItemModel?.note}', weight: FontWeight.w700, fontSize: 12)
-                                : ATText(text: 'No additional notes.', weight: FontWeight.w700, fontSize: 12),
-                          )
-                        ],
+                    )),
+                bottomNavigationBar: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 36, right: 36, bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: widget.currentIndex > 0
+                            ? () {
+                                Navigator.of(context).pushReplacement(
+                                    SkuDetailsScreen.route(
+                                        ticketItemModel: widget.ticketList?[
+                                            widget.currentIndex - 1],
+                                        ticketList: widget.ticketList,
+                                        currentIndex: widget.currentIndex - 1));
+                              }
+                            : null,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.keyboard_arrow_left_outlined,
+                              size: 28,
+                              color: widget.currentIndex > 0
+                                  ? AppColors.black
+                                  : AppColors.greyHeader,
+                            ),
+                            ATText(
+                                text: I18n.of(context).prev,
+                                fontColor: widget.currentIndex > 0
+                                    ? AppColors.black
+                                    : AppColors.greyHeader)
+                          ],
+                        ),
                       ),
+                      ATText(
+                        text:
+                            '${widget.currentIndex + 1} ${I18n.of(context).sequence_of} ${widget.ticketList?.length}',
+                        fontColor: AppColors.semiDarkText,
+                        fontSize: 14,
+                      ),
+                      GestureDetector(
+                        onTap: widget.currentIndex + 1 <
+                                widget.ticketList!.length.toInt()
+                            ? () {
+                                Navigator.of(context).pushReplacement(
+                                    SkuDetailsScreen.route(
+                                        ticketItemModel: widget.ticketList?[
+                                            widget.currentIndex + 1],
+                                        ticketList: widget.ticketList,
+                                        currentIndex: widget.currentIndex + 1));
+                              }
+                            : null,
+                        child: Row(
+                          children: <Widget>[
+                            ATText(
+                                text: I18n.of(context).next,
+                                fontColor: widget.currentIndex + 1 <
+                                        widget.ticketList!.length.toInt()
+                                    ? AppColors.black
+                                    : AppColors.greyHeader),
+                            Icon(Icons.keyboard_arrow_right,
+                                size: 28,
+                                color: widget.currentIndex + 1 <
+                                        widget.ticketList!.length.toInt()
+                                    ? AppColors.black
+                                    : AppColors.greyHeader),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 )),
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.only(left: 36, right: 36, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: widget.currentIndex > 0
-                        ? () {
-                            Navigator.of(context).pushReplacement(SkuDetailsScreen.route(
-                                ticketItemModel: widget.ticketList?[widget.currentIndex - 1],
-                                ticketList: widget.ticketList,
-                                currentIndex: widget.currentIndex - 1));
-                          }
-                        : null,
-                    child: widget.currentIndex > 0
-                        ? Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.keyboard_arrow_left_outlined,
-                                size: 28,
-                              ),
-                              ATText(text: I18n.of(context).prev)
-                            ],
-                          )
-                        : SizedBox(),
-                  ),
-                  ATText(
-                    text: '${widget.currentIndex + 1} ${I18n.of(context).sequence_of} ${widget.ticketList?.length}',
-                    fontColor: AppColors.semiDarkText,
-                    fontSize: 12,
-                  ),
-                  GestureDetector(
-                    onTap: widget.currentIndex + 1 < widget.ticketList!.length.toInt()
-                        ? () {
-                            Navigator.of(context).pushReplacement(SkuDetailsScreen.route(
-                                ticketItemModel: widget.ticketList?[widget.currentIndex + 1],
-                                ticketList: widget.ticketList,
-                                currentIndex: widget.currentIndex + 1));
-                          }
-                        : null,
-                    child: widget.currentIndex + 1 < widget.ticketList!.length.toInt()
-                        ? Row(
-                            children: <Widget>[
-                              ATText(text: I18n.of(context).next),
-                              Icon(Icons.keyboard_arrow_right, size: 28),
-                            ],
-                          )
-                        : SizedBox(),
-                  )
-                ],
-              ),
-            )),
-      );
-    });
+          );
+        });
   }
 
   @override
