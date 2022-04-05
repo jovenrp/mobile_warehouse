@@ -12,7 +12,7 @@ void main() async {
         isUiDebuggerEnabled: true,
         isProxyEnabled: true,
         baseContentUrl: 'http://76.27.84.31:5000',
-        appVersion: '1.0.13',
-        buildNumber: '1.0.13'),
+        appVersion: '1.0.14',
+        buildNumber: '1.0.14'),
   );
 }

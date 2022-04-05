@@ -14,8 +14,9 @@ class PickTicketsRepositoryImpl implements PickTicketsRepository {
   @override
   Future<PickTicketsResponse> fetchPickTickets({String? token}) async {
     try {
-      final String result =
-          await _apiService.fetchPickTickets(token, headers: 'true');
+      final String result = await _apiService.fetchPickTickets(token,
+          headers: 'true',
+          data: '|keys:ALL|cols:id,num,status,countTicketType as type,isOpen');
 
       final PickTicketsResponse response =
           PickTicketsResponse.fromJson(jsonDecode(result));
