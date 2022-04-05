@@ -7,6 +7,8 @@ import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:mobile_warehouse/presentation/forgot_password/bloc/forgot_password_bloc.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
+import 'package:mobile_warehouse/presentation/location_mapper/data/services/location_mapper_api_service.dart';
+import 'package:mobile_warehouse/presentation/location_mapper/domain/location_mapper_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_bloc.dart';
 import 'package:mobile_warehouse/presentation/login/data/services/login_api_service.dart';
 import 'package:mobile_warehouse/presentation/login/domain/repositories/login_repository_impl.dart';
@@ -56,10 +58,6 @@ class BlocsProvider {
           create: (_) =>
               SettingsScreenBloc(persistenceService: persistenceService),
         ),
-        BlocProvider<LocationMapperBloc>(
-          create: (_) =>
-              LocationMapperBloc(persistenceService: persistenceService),
-        ),
         BlocProvider<PickTicketsBloc>(
           create: (_) => PickTicketsBloc(
               pickTicketsRepository: PickTicketsRepositoryImpl(
@@ -76,6 +74,12 @@ class BlocsProvider {
           create: (_) => SkuDetailsBloc(
               pickTicketDetailsRepository: PickTicketDetailsRepositoryImpl(
                   PickTicketDetailsApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<LocationMapperBloc>(
+          create: (_) => LocationMapperBloc(
+              locationMapperRepository: LocationMapperRepositoryImpl(
+                  LocationMapperApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
       ];

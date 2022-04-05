@@ -44,6 +44,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<LocationMapperBloc>().init();
   }
 
   @override
