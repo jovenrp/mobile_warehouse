@@ -15,6 +15,7 @@ import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/dashboard/presentation/localtion_mapper_widget.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/presentation/location_mapper_screen.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
+import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/settings/presentation/settings_screen.dart';
 
@@ -143,7 +144,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                             children: <Widget>[
                               LocationMapperWidget(
                                   onTap: () => Navigator.of(context)
-                                      .push(LocationMapperScreen.route())),
+                                      .push(ParentLocationScreen.route())),
                             ],
                           ),
                           SizedBox(height: 30),

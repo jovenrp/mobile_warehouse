@@ -12,6 +12,7 @@ import 'package:mobile_warehouse/presentation/location_mapper/domain/location_ma
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_bloc.dart';
 import 'package:mobile_warehouse/presentation/login/data/services/login_api_service.dart';
 import 'package:mobile_warehouse/presentation/login/domain/repositories/login_repository_impl.dart';
+import 'package:mobile_warehouse/presentation/parent_location/bloc/parent_location_bloc.dart';
 import 'package:mobile_warehouse/presentation/picktickets/bloc/pick_tickets_bloc.dart';
 import 'package:mobile_warehouse/presentation/picktickets/data/services/pick_tickets_api_service.dart';
 import 'package:mobile_warehouse/presentation/picktickets/domain/repositories/pick_tickets_repository_impl.dart';
@@ -78,6 +79,12 @@ class BlocsProvider {
         ),
         BlocProvider<LocationMapperBloc>(
           create: (_) => LocationMapperBloc(
+              locationMapperRepository: LocationMapperRepositoryImpl(
+                  LocationMapperApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<ParentLocationBloc>(
+          create: (_) => ParentLocationBloc(
               locationMapperRepository: LocationMapperRepositoryImpl(
                   LocationMapperApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),

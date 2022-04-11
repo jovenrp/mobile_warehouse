@@ -15,17 +15,15 @@ class LocationMapperBloc extends Cubit<LocationMapperState> {
   final LocationMapperRepository locationMapperRepository;
 
   Future<void> init() async {
-    emit(state.copyWith(
-        isLoading: true, hasError: false, errorMessage: ''));
+    emit(state.copyWith(isLoading: true, hasError: false, errorMessage: ''));
 
     try {
       final String result = await locationMapperRepository.getDropDown();
       print(result);
-      emit(state.copyWith(
-          isLoading: false,
-          hasError: false)); //t
+      emit(state.copyWith(isLoading: false, hasError: false)); //t
     } on DioError catch (_) {
-      emit(state.copyWith(isLoading: false, hasError: true, errorMessage: 'error'));
+      emit(state.copyWith(
+          isLoading: false, hasError: true, errorMessage: 'error'));
     }
   }
 }
