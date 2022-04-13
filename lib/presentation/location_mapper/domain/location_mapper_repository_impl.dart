@@ -19,7 +19,7 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       String? token, String? parentId) async {
     try {
       final String result = await _apiService.getContainerChildren(token,
-          headers: 'true', data: '|keys:parentId=$parentId');
+          headers: 'true', data: '|keys:id=$parentId');
 
       final ParentLocationModel response =
           ParentLocationModel.fromJson(jsonDecode(result));
@@ -36,7 +36,7 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       String? token, String? parentId) async {
     try {
       final String result = await _apiService.getContainerParent(token,
-          headers: 'true', data: '|keys:containerId=$parentId');
+          headers: 'true', data: '|keys:id=$parentId');
 
       final ParentLocationModel response =
           ParentLocationModel.fromJson(jsonDecode(result));

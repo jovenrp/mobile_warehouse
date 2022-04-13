@@ -4,7 +4,8 @@ part 'container_model.g.dart';
 
 @JsonSerializable()
 class ContainerModel {
-  const ContainerModel({this.id, this.parentId, this.num, this.code});
+  const ContainerModel(
+      {this.id, this.parentId, this.num, this.code, this.name, this.isRoot});
 
   factory ContainerModel.fromJson(Map<String, dynamic> json) =>
       _$ContainerModelFromJson(json);
@@ -21,4 +22,10 @@ class ContainerModel {
 
   @JsonKey(name: 'code')
   final String? code;
+
+  @JsonKey(name: 'name')
+  final String? name;
+
+  @JsonKey(name: 'isRoot')
+  final String? isRoot;
 }

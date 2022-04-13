@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 
 class ATTextfield extends StatefulWidget {
   const ATTextfield(
@@ -34,7 +35,8 @@ class _ATTextfield extends State<ATTextfield> {
               const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           hintStyle: TextStyle(color: Colors.grey[800]),
           hintText: widget.hintText ?? 'Enter a text here',
-          fillColor: Colors.white70,
+          fillColor: AppColors.white,
+          filled: true,
           suffixIcon: IconButton(
             icon: widget.isPasswordField
                 ? Icon(

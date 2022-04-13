@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/domain/location_mapper_repository.dart';
 import 'package:mobile_warehouse/presentation/parent_location/bloc/parent_location_state.dart';
+import 'package:mobile_warehouse/presentation/parent_location/data/models/container_model.dart';
 import 'package:mobile_warehouse/presentation/parent_location/data/models/parent_location_model.dart';
 
 class ParentLocationBloc extends Cubit<ParentLocationState> {
@@ -14,8 +15,7 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
   final PersistenceService persistenceService;
   final LocationMapperRepository locationMapperRepository;
 
-  Future<void> getContainerChild(String? parentId, String? status) async {
-    print('parent location init');
+  Future<void> getContainerChild(String? parentId, String? status, ContainerModel? containerModel) async {
     emit(state.copyWith(isLoading: true, hasError: false, errorMessage: ''));
 
     try {
@@ -30,12 +30,13 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
             await locationMapperRepository.getContainerParent(token, parentId);
       }
 
-      print(result.container);
+      ContainerModel? originalContainerModel = containerModel;
+      print(containerModel?.code);
       emit(state.copyWith(
           isLoading: false,
           hasError: false,
           parentLocationModel: result,
-          containerModel: result.container)); //t
+          containerModel: result.container?.isNotEmpty == true ? result.container : <ContainerModel>[originalContainerModel ?? ContainerModel()]));
     } on DioError catch (_) {
       emit(state.copyWith(
           isLoading: false, hasError: true, errorMessage: 'error'));

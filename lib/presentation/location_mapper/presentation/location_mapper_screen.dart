@@ -7,23 +7,30 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_dropwdown.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_textfield.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_state.dart';
 
 import 'package:mobile_warehouse/generated/i18n.dart';
+import 'package:mobile_warehouse/presentation/parent_location/data/models/container_model.dart';
+import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/qr/presentation/qr_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class LocationMapperScreen extends StatefulWidget {
-  const LocationMapperScreen({Key? key}) : super(key: key);
+  const LocationMapperScreen({Key? key, this.container}) : super(key: key);
 
   static const String routeName = '/locationMapper';
   static const String screenName = 'locationMapperScreen';
 
-  static ModalRoute<LocationMapperScreen> route() =>
+  final ContainerModel? container;
+
+  static ModalRoute<LocationMapperScreen> route({ContainerModel? container}) =>
       MaterialPageRoute<LocationMapperScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => const LocationMapperScreen(),
+        builder: (_) => LocationMapperScreen(
+          container: container,
+        ),
       );
 
   @override
@@ -34,17 +41,14 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
   final RefreshController refreshController = RefreshController();
 
   bool canRefresh = true;
-  String _currentSelectedValue = '';
-  final List<String> _currencies = <String>[
-    '',
-    'Food',
-    'Transport',
-  ];
+  final TextEditingController parentLocationController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    context.read<LocationMapperBloc>().init();
+    //context.read<LocationMapperBloc>().init();
+    print(widget.container?.code);
+    parentLocationController.text = widget.container?.code ?? '';
   }
 
   @override
@@ -64,7 +68,8 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                   color: AppColors.white,
                   size: 24.0,
                 ),
-                onTap: () => Navigator.of(context).pop(),
+                onTap: () => Navigator.of(context)
+                    .push(ParentLocationScreen.route()),
               ),
               body: Container(
                   color: AppColors.beachSea,
@@ -72,17 +77,10 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Padding(
+                        Container(
                             padding: const EdgeInsets.only(left: 18, right: 18),
-                            child: ATDropdown(
-                              hintText: 'Parent location',
-                              itemList: _currencies,
-                              selectedItem: _currentSelectedValue,
-                              onChange: (String? newValue) {
-                                setState(() {
-                                  _currentSelectedValue = newValue ?? '';
-                                });
-                              },
+                            child: ATTextfield(
+                              textEditingController: parentLocationController,
                             )),
                         SizedBox(height: 20),
                         Container(
