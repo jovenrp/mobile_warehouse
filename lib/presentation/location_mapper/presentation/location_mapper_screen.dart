@@ -4,10 +4,8 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/utils/picker_alpha.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
-import 'package:mobile_warehouse/core/presentation/widgets/at_dropwdown.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
-import 'package:mobile_warehouse/core/presentation/widgets/at_textfield.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_state.dart';
 
@@ -62,14 +60,17 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
       return SafeArea(
           child: Scaffold(
               appBar: ATAppBar(
-                title: I18n.of(context).location_mapper.capitalizeFirstofEach(),
+                title: widget.container?.code?.capitalizeFirstofEach(),
                 icon: Icon(
                   Icons.arrow_back_sharp,
                   color: AppColors.white,
                   size: 24.0,
                 ),
-                onTap: () => Navigator.of(context)
-                    .push(ParentLocationScreen.route()),
+                onTap: () => /*Navigator.of(context)
+                    .push(ParentLocationScreen.route(navigation: 'pop', parentId: widget.container?.parentId)*/
+                Navigator.of(context)
+                    .push(ParentLocationScreen.route()
+                ),
               ),
               body: Container(
                   color: AppColors.beachSea,
@@ -77,12 +78,6 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-                            padding: const EdgeInsets.only(left: 18, right: 18),
-                            child: ATTextfield(
-                              textEditingController: parentLocationController,
-                            )),
-                        SizedBox(height: 20),
                         Container(
                           color: AppColors.beachSea,
                           height: 130,

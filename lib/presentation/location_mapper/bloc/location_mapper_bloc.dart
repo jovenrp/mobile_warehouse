@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_state.dart';
-import 'package:mobile_warehouse/presentation/location_mapper/data/services/location_mapper_api_service.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/domain/location_mapper_repository.dart';
 
 class LocationMapperBloc extends Cubit<LocationMapperState> {

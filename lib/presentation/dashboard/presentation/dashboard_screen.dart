@@ -13,7 +13,6 @@ import 'package:mobile_warehouse/presentation/dashboard/bloc/dashboardscreen_sta
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/dashboard/presentation/localtion_mapper_widget.dart';
-import 'package:mobile_warehouse/presentation/location_mapper/presentation/location_mapper_screen.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';

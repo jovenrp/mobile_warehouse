@@ -135,11 +135,21 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: <Widget>[
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                                                      child: ATText(
-                                                        text: state.containerModel?[index].code,
-                                                        fontSize: 16,
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Ink(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            Navigator.of(context).pushReplacement(LocationMapperScreen.route(container: state.containerModel?[index]));
+                                                          },
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(top: 20, bottom: 20),
+                                                            child: ATText(
+                                                              text: state.containerModel?[index].code,
+                                                              fontSize: 16,
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                     InkWell(
