@@ -497,7 +497,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                    if (index == 0) {
+                                                if (index == 0) {
                                                   return SizedBox();
                                                 }
                                                 index -= 1;

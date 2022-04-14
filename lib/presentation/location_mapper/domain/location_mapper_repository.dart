@@ -5,6 +5,10 @@ abstract class LocationMapperRepository {
 
   Future<ParentLocationModel> getContainerChildren(
       String? token, String? parentId);
+
   Future<ParentLocationModel> getContainerParent(
       String? token, String? parentId);
+
+  Future<String> createLocation(
+      {String? token, String? parentId, String? name, String? code});
 }

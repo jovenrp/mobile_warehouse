@@ -39,7 +39,8 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
   final RefreshController refreshController = RefreshController();
 
   bool canRefresh = true;
-  final TextEditingController parentLocationController = TextEditingController();
+  final TextEditingController parentLocationController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -66,11 +67,11 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                   color: AppColors.white,
                   size: 24.0,
                 ),
-                onTap: () => /*Navigator.of(context)
+                onTap:
+                    () => /*Navigator.of(context)
                     .push(ParentLocationScreen.route(navigation: 'pop', parentId: widget.container?.parentId)*/
-                Navigator.of(context)
-                    .push(ParentLocationScreen.route()
-                ),
+                        Navigator.of(context)
+                            .push(ParentLocationScreen.route()),
               ),
               body: Container(
                   color: AppColors.beachSea,
@@ -78,7 +79,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Container(
+                        /*Container(
                           color: AppColors.beachSea,
                           height: 130,
                           child: Row(
@@ -121,7 +122,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                               )
                             ],
                           ),
-                        ),
+                        ),*/
                         Padding(
                           padding: const EdgeInsets.only(left: 18, right: 18),
                           child: ATSearchfield(

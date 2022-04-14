@@ -47,4 +47,22 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return ParentLocationModel();
     }
   }
+
+  @override
+  Future<String> createLocation(
+      {String? token, String? parentId, String? name, String? code}) async {
+    try {
+      final String result = await _apiService.createLocation(token,
+          headers: 'true',
+          data: '|vals:parentId=$parentId^name=$name^code=$code');
+
+      print(result);
+      /*final String response =
+      ParentLocationModel.fromJson(jsonDecode(result));*/
+      return '';
+    } catch (_) {
+      logger.e(_.toString());
+      return '';
+    }
+  }
 }
