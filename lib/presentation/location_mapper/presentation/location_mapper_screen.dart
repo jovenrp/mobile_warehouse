@@ -45,7 +45,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
   @override
   void initState() {
     super.initState();
-    //context.read<LocationMapperBloc>().init();
+    context.read<LocationMapperBloc>().getContainerSkus(id: widget.container?.id);
     print(widget.container?.code);
     parentLocationController.text = widget.container?.code ?? '';
   }

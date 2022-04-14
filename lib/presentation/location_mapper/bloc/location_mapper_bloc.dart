@@ -13,11 +13,12 @@ class LocationMapperBloc extends Cubit<LocationMapperState> {
   final PersistenceService persistenceService;
   final LocationMapperRepository locationMapperRepository;
 
-  Future<void> init() async {
+  Future<void> getContainerSkus({String? id}) async {
     emit(state.copyWith(isLoading: true, hasError: false, errorMessage: ''));
 
     try {
-      final String result = await locationMapperRepository.getDropDown();
+      String? token = await persistenceService.dwnToken.get();
+      final String result = await locationMapperRepository.getContainerSkus(token: token, parentId: id);
       print(result);
       emit(state.copyWith(isLoading: false, hasError: false)); //t
     } on DioError catch (_) {

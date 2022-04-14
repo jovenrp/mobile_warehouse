@@ -12,11 +12,15 @@ abstract class LocationMapperApiService {
   Future<dynamic> getContainerChildren(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
 
-  @POST('/mobile(getContainerParent)?useHdrs=true&sessId={token}&data={data}')
+  @POST('/mobile(getContainer)?useHdrs=true&sessId={token}&data={data}')
   Future<dynamic> getContainerParent(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
 
   @POST('/mobile(createLocation)?useHdrs=true&sessId={token}&data={data}')
   Future<dynamic> createLocation(@Path('token') String? token,
+      {@Path('headers') String? headers, @Path('data') String? data});
+
+  @POST('/mobile(getContainerSkus)?useHdrs=true&sessId={token}&data={data}')
+  Future<dynamic> getContainerSkus(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
 }

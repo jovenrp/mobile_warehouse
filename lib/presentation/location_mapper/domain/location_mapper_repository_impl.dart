@@ -57,6 +57,20 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
           data: '|vals:parentId=$parentId^name=$name^code=$code');
 
       print(result);
+      return '';
+    } catch (_) {
+      logger.e(_.toString());
+      return '';
+    }
+  }
+
+  @override
+  Future<String> getContainerSkus({String? token, String? parentId}) async {
+    try {
+      final String result = await _apiService.getContainerSkus(token,
+          headers: 'true', data: '|data:id=$parentId');
+
+      print(result);
       /*final String response =
       ParentLocationModel.fromJson(jsonDecode(result));*/
       return '';

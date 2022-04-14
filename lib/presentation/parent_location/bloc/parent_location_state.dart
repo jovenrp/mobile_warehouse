@@ -14,6 +14,7 @@ class ParentLocationState with _$ParentLocationState {
       String? errorMessage,
       ParentLocationModel? parentLocationModel,
       List<ContainerModel>? containerModel,
+      List<ContainerModel>? parentContainerModel,
       @Default(false) bool didFinish,
       String? token}) = _ParentLocationState;
 }

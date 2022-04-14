@@ -11,4 +11,6 @@ abstract class LocationMapperRepository {
 
   Future<String> createLocation(
       {String? token, String? parentId, String? name, String? code});
+
+  Future<String> getContainerSkus({String? token, String? parentId});
 }
