@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/utils/picker_alpha.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
@@ -23,8 +25,7 @@ class LocationMapperScreen extends StatefulWidget {
 
   final ContainerModel? container;
 
-  static ModalRoute<LocationMapperScreen> route({ContainerModel? container}) =>
-      MaterialPageRoute<LocationMapperScreen>(
+  static ModalRoute<LocationMapperScreen> route({ContainerModel? container}) => MaterialPageRoute<LocationMapperScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => LocationMapperScreen(
           container: container,
@@ -39,21 +40,18 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
   final RefreshController refreshController = RefreshController();
 
   bool canRefresh = true;
-  final TextEditingController parentLocationController =
-      TextEditingController();
+  final TextEditingController parentLocationController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     context.read<LocationMapperBloc>().getContainerSkus(id: widget.container?.id);
-    print(widget.container?.code);
     parentLocationController.text = widget.container?.code ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LocationMapperBloc, LocationMapperState>(
-        listener: (BuildContext context, LocationMapperState state) {
+    return BlocConsumer<LocationMapperBloc, LocationMapperState>(listener: (BuildContext context, LocationMapperState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
       }
@@ -67,19 +65,12 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                   color: AppColors.white,
                   size: 24.0,
                 ),
-                onTap:
-                    () => /*Navigator.of(context)
-                    .push(ParentLocationScreen.route(navigation: 'pop', parentId: widget.container?.parentId)*/
-                        Navigator.of(context)
-                            .push(ParentLocationScreen.route()),
+                onTap: () => Navigator.of(context).push(ParentLocationScreen.route(navigation: 'pop', parentId: widget.container?.parentId)),
               ),
               body: Container(
                   color: AppColors.beachSea,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        /*Container(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+                    /*Container(
                           color: AppColors.beachSea,
                           height: 130,
                           child: Row(
@@ -123,33 +114,100 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                             ],
                           ),
                         ),*/
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
-                              hintText:
-                                  '${I18n.of(context).search} by location serial no.',
-                              isScanner: true,
-                              onPressed: () =>
-                                  Navigator.of(context).push(QRScreen.route()),
-                              onChanged: (String value) {}),
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
-                              hintText: '${I18n.of(context).search} by SKU',
-                              isScanner: true,
-                              onPressed: () =>
-                                  Navigator.of(context).push(QRScreen.route()),
-                              onChanged: (String value) {}),
-                        ),
-                        SizedBox(height: 20),
-                        Expanded(
-                          child: Container(
-                            color: AppColors.white,
-                          ),
-                        )
-                      ]))));
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, right: 18),
+                      child: ATSearchfield(
+                          hintText: 'Assign serial number',
+                          isScanner: true,
+                          onPressed: () => Navigator.of(context).push(QRScreen.route()),
+                          onChanged: (String value) {}),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, right: 18),
+                      child: ATSearchfield(
+                          hintText: 'Add Item / SKU',
+                          isScanner: true,
+                          onFieldSubmitted: (String? value) => setState(() {
+                                if (value?.isNotEmpty == true) {
+                                  context.read<LocationMapperBloc>().addSku(id: widget.container?.id, skuId: value);
+                                }
+                              }),
+                          onPressed: () => Navigator.of(context).push(QRScreen.route()),
+                          onChanged: (String value) {}),
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: !state.isLoading
+                          ? state.skus?.isNotEmpty == true
+                              ? Container(
+                                  color: AppColors.white,
+                                  child: ListView.builder(
+                                      itemCount: (state.skus?.length ?? 0),
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Slidable(
+                                            key: ValueKey<int>(index),
+                                            endActionPane: ActionPane(motion: const ScrollMotion(), children: <Widget>[
+                                              SlidableAction(
+                                                onPressed: (BuildContext navContext) {
+                                                  context
+                                                      .read<LocationMapperBloc>()
+                                                      .removeSku(id: widget.container?.id, skuId: state.skus?[index].sku);
+                                                },
+                                                backgroundColor: AppColors.mnpEditRed,
+                                                foregroundColor: AppColors.white,
+                                                icon: Icons.delete_forever_outlined,
+                                              ),
+                                            ]),
+                                            child: Container(
+                                              color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue,
+                                              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: ATText(text: state.skus?[index].sku, fontSize: 16, fontColor: AppColors.black),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 4,
+                                                    child: ATText(text: state.skus?[index].name, fontSize: 16, fontColor: AppColors.black),
+                                                  ),
+                                                ],
+                                              ),
+                                            ));
+                                      }),
+                                )
+                              : Container(
+                                  color: AppColors.white,
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 30),
+                                    child: ATText(text: I18n.of(context).oops_item_returned_0_results),
+                                  ),
+                                )
+                          : Container(
+                              color: AppColors.white,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(height: 50),
+                                  Container(
+                                    child: ATLoadingIndicator(
+                                      strokeWidth: 3.0,
+                                      width: 30,
+                                      height: 30,
+                                      color: AppColors.beachSea,
+                                    ),
+                                  ),
+                                  Container(
+                                      alignment: Alignment.topCenter,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
+                                      ))
+                                ],
+                              )),
+                    )
+                  ]))));
     });
   }
 
@@ -160,8 +218,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 }
 
 class WheelPicker extends StatelessWidget {
-  const WheelPicker({Key? key, this.title, required this.index})
-      : super(key: key);
+  const WheelPicker({Key? key, this.title, required this.index}) : super(key: key);
 
   final String? title;
   final int index;
@@ -217,8 +274,7 @@ class WheelPicker extends StatelessWidget {
 }
 
 class WheelPickerByLetters extends StatelessWidget {
-  WheelPickerByLetters({Key? key, this.title, required this.index})
-      : super(key: key);
+  WheelPickerByLetters({Key? key, this.title, required this.index}) : super(key: key);
 
   final String? title;
   final int index;
@@ -285,8 +341,7 @@ class WheelPickerByLetters extends StatelessWidget {
                     return Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(0),
-                      child:
-                          PickerAlpha(index: alphabet[index], isAlphabet: true),
+                      child: PickerAlpha(index: alphabet[index], isAlphabet: true),
                     );
                   })),
         ),

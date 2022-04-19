@@ -23,4 +23,12 @@ abstract class LocationMapperApiService {
   @POST('/mobile(getContainerSkus)?useHdrs=true&sessId={token}&data={data}')
   Future<dynamic> getContainerSkus(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
+
+  @POST('/mobile(removeContainerSku)?useHdrs=true&sessId={token}&data={data}')
+  Future<dynamic> removeSku(@Path('token') String? token,
+      {@Path('headers') String? headers, @Path('data') String? data});
+
+  @POST('/mobile(addContainerSku)?useHdrs=true&sessId={token}&data={data}')
+  Future<dynamic> addContainerSku(@Path('token') String? token,
+      {@Path('headers') String? headers, @Path('data') String? data});
 }

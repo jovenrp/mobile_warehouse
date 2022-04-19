@@ -15,7 +15,7 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
   final PersistenceService persistenceService;
   final LocationMapperRepository locationMapperRepository;
 
-  Future<List<ContainerModel>?> getContainerChild(
+  Future<ParentLocationModel> getContainerChild(
       String? parentId, String? status, ContainerModel? containerModel) async {
     emit(state.copyWith(isLoading: true, hasError: false, errorMessage: ''));
 
@@ -29,9 +29,9 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
             token, parentId);
       } else {
         result =
-        await locationMapperRepository.getContainerParent(token, parentId);
-        parent =
-        await locationMapperRepository.getContainerParent(token, result.container?[0].parentId);
+            await locationMapperRepository.getContainerParent(token, parentId);
+        parent = await locationMapperRepository.getContainerParent(
+            token, result.container?[0].parentId);
       }
 
       ContainerModel? originalContainerModel = containerModel;
@@ -43,11 +43,11 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
           containerModel: result.container?.isNotEmpty == true
               ? result.container
               : <ContainerModel>[originalContainerModel ?? ContainerModel()]));
-      return result.container;
+      return result;
     } on DioError catch (_) {
       emit(state.copyWith(
           isLoading: false, hasError: true, errorMessage: 'error'));
-      return <ContainerModel>[];
+      return ParentLocationModel();
     }
   }
 

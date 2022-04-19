@@ -8,6 +8,7 @@ class ATSearchfield extends StatefulWidget {
       this.textEditingController,
       this.onPressed,
       this.onChanged,
+      this.onFieldSubmitted,
       this.isScanner = false})
       : super(key: key);
 
@@ -15,6 +16,7 @@ class ATSearchfield extends StatefulWidget {
   final TextEditingController? textEditingController;
   final VoidCallback? onPressed;
   final ValueChanged<String>? onChanged;
+  final Function(String?)? onFieldSubmitted;
   final bool? isScanner;
 
   @override
@@ -28,6 +30,7 @@ class _ATSearchfield extends State<ATSearchfield> {
       controller: widget.textEditingController,
       key: widget.key,
       onChanged: widget.onChanged ?? (String value) {},
+      onFieldSubmitted: widget.onFieldSubmitted,
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),

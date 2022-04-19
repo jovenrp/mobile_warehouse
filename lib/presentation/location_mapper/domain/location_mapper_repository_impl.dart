@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:mobile_warehouse/application/application.dart';
+import 'package:mobile_warehouse/presentation/location_mapper/data/models/sku_response.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/data/services/location_mapper_api_service.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/domain/location_mapper_repository.dart';
 import 'package:mobile_warehouse/presentation/parent_location/data/models/parent_location_model.dart';
@@ -9,6 +10,7 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
   LocationMapperRepositoryImpl(this._apiService);
 
   final LocationMapperApiService _apiService;
+
   @override
   Future<String> getDropDown() async {
     return 'asidlnkas';
@@ -65,18 +67,49 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
   }
 
   @override
-  Future<String> getContainerSkus({String? token, String? parentId}) async {
+  Future<SkuResponse> getContainerSkus(
+      {String? token, String? parentId}) async {
     try {
       final String result = await _apiService.getContainerSkus(token,
-          headers: 'true', data: '|data:id=$parentId');
+          headers: 'true', data: '|keys:id=$parentId');
 
       print(result);
-      /*final String response =
-      ParentLocationModel.fromJson(jsonDecode(result));*/
-      return '';
+      final SkuResponse response = SkuResponse.fromJson(jsonDecode(result));
+      return response;
     } catch (_) {
       logger.e(_.toString());
-      return '';
+      return SkuResponse();
+    }
+  }
+
+  @override
+  Future<SkuResponse> removeSku(
+      {String? token, String? id, String? skuId}) async {
+    try {
+      final String result = await _apiService.removeSku(token,
+          headers: 'true', data: '|keys:containerId=$id^skuNum=$skuId');
+
+      print(result);
+      final SkuResponse response = SkuResponse.fromJson(jsonDecode(result));
+      return response;
+    } catch (_) {
+      logger.e(_.toString());
+      return SkuResponse();
+    }
+  }
+
+  @override
+  Future<SkuResponse> addSku({String? token, String? id, String? skuId}) async {
+    try {
+      final String result = await _apiService.addContainerSku(token,
+          headers: 'true', data: '|keys:containerId=$id|vals:skuNum=$skuId');
+
+      print(result);
+      final SkuResponse response = SkuResponse.fromJson(jsonDecode(result));
+      return response;
+    } catch (_) {
+      logger.e(_.toString());
+      return SkuResponse();
     }
   }
 }
