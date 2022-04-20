@@ -8,6 +8,7 @@ class PickTicketDetailsModel {
     this.id,
     this.pickTicketId,
     this.lineNum,
+    this.num,
     this.seq,
     this.itemId,
     this.sku,
@@ -44,6 +45,9 @@ class PickTicketDetailsModel {
 
   @JsonKey(name: 'lineNum')
   final String? lineNum;
+
+  @JsonKey(name: 'num')
+  final String? num;
 
   @JsonKey(name: 'seq')
   final String? seq;
