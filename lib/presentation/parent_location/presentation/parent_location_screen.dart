@@ -388,71 +388,73 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
         height: 400,
         child: Padding(
           padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 10),
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.add_box_rounded,
-                    size: 40,
-                    color: AppColors.successGreen,
-                  ),
-                  SizedBox(width: 10),
-                  Flexible(
-                      child: ATText(
-                          text:
-                              'Fill up the field to create a new child for ${containerModel?.name?.isNotEmpty == true ? '${containerModel?.name}' : containerModel?.code}'))
-                  //: 'Fill up the field to create a new child for '))
-                ],
-              ),
-              SizedBox(height: 20),
-              Visibility(
-                  visible: isError,
-                  child: ATText(
-                    text: 'Please enter a value in either name or code',
-                    fontSize: 12,
-                    fontColor: AppColors.atWarningRed,
-                  )),
-              SizedBox(height: 10),
-              ATTextfield(
-                hintText: 'Enter Name',
-                textEditingController: name,
-              ),
-              SizedBox(height: 10),
-              ATTextfield(
-                hintText: 'Enter Code',
-                textEditingController: code,
-              ),
-              SizedBox(height: 10),
-              ATTextfield(
-                hintText: 'Enter Serial No.',
-                textEditingController: serial,
-              ),
-              SizedBox(height: 40),
-              Container(
-                width: double.infinity,
-                child: ATTextButton(
-                  isLoading: false,
-                  buttonText: 'Add child',
-                  onTap: () {
-                    setState(() {
-                      if (name.text.isNotEmpty || code.text.isNotEmpty) {
-                        isDialogueError = false;
-                        context.read<ParentLocationBloc>().createLocation(
-                            parentId: containerModel?.parentId,
-                            name: name.text,
-                            code: code.text);
-                      } else {
-                        isDialogueError = true;
-                      }
-                      print(isDialogueError);
-                    });
-                  },
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.add_box_rounded,
+                      size: 40,
+                      color: AppColors.successGreen,
+                    ),
+                    SizedBox(width: 10),
+                    Flexible(
+                        child: ATText(
+                            text:
+                            'Fill up the field to create a new child for ${containerModel?.name?.isNotEmpty == true ? '${containerModel?.name}' : containerModel?.code}'))
+                    //: 'Fill up the field to create a new child for '))
+                  ],
                 ),
-              ),
-            ],
+                SizedBox(height: 20),
+                Visibility(
+                    visible: isError,
+                    child: ATText(
+                      text: 'Please enter a value in either name or code',
+                      fontSize: 12,
+                      fontColor: AppColors.atWarningRed,
+                    )),
+                SizedBox(height: 10),
+                ATTextfield(
+                  hintText: 'Enter Name',
+                  textEditingController: name,
+                ),
+                SizedBox(height: 10),
+                ATTextfield(
+                  hintText: 'Enter Code',
+                  textEditingController: code,
+                ),
+                SizedBox(height: 10),
+                ATTextfield(
+                  hintText: 'Enter Serial No.',
+                  textEditingController: serial,
+                ),
+                SizedBox(height: 40),
+                Container(
+                  width: double.infinity,
+                  child: ATTextButton(
+                    isLoading: false,
+                    buttonText: 'Add child',
+                    onTap: () {
+                      setState(() {
+                        if (name.text.isNotEmpty || code.text.isNotEmpty) {
+                          isDialogueError = false;
+                          context.read<ParentLocationBloc>().createLocation(
+                              parentId: containerModel?.parentId,
+                              name: name.text,
+                              code: code.text);
+                        } else {
+                          isDialogueError = true;
+                        }
+                        print(isDialogueError);
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
