@@ -6,7 +6,7 @@ part 'parent_location_model.g.dart';
 
 @JsonSerializable()
 class ParentLocationModel {
-  const ParentLocationModel({this.error, this.message, this.container});
+  ParentLocationModel({this.error, this.message, this.container});
 
   factory ParentLocationModel.fromJson(Map<String, dynamic> json) =>
       _$ParentLocationModelFromJson(json);
@@ -16,8 +16,12 @@ class ParentLocationModel {
   final bool? error;
 
   @JsonKey(name: 'message')
-  final String? message;
+  String? message;
 
   @JsonKey(name: 'container')
   final List<ContainerModel>? container;
+
+  void setMessage(String value) {
+    message = value;
+  }
 }

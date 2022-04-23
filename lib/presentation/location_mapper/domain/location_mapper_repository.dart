@@ -16,4 +16,6 @@ abstract class LocationMapperRepository {
   Future<SkuResponse> getContainerSkus({String? token, String? parentId});
   Future<SkuResponse> removeSku({String? token, String? id, String? skuId});
   Future<SkuResponse> addSku({String? token, String? id, String? skuId});
+  Future<ParentLocationModel> updateContainer(
+      {String? token, String? id, String? code, String? serial});
 }

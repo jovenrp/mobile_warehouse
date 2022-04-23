@@ -404,7 +404,7 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                     Flexible(
                         child: ATText(
                             text:
-                            'Fill up the field to create a new child for ${containerModel?.name?.isNotEmpty == true ? '${containerModel?.name}' : containerModel?.code}'))
+                                'Fill up the field to create a new child for ${containerModel?.name?.isNotEmpty == true ? '${containerModel?.name}' : containerModel?.code}'))
                     //: 'Fill up the field to create a new child for '))
                   ],
                 ),

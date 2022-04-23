@@ -9,9 +9,11 @@ part 'location_mapper_state.freezed.dart';
 class LocationMapperState with _$LocationMapperState {
   factory LocationMapperState(
       {@Default(false) bool isLoading,
+      @Default(false) bool isUpdateContainerLoading,
       @Default(false) bool hasError,
       ActionTRAKApiErrorCode? errorCode,
       String? errorMessage,
+      String? updateContainerMessage,
       SkuResponse? skuResponse,
       List<SkuModel>? skus,
       @Default(false) bool didFinish,

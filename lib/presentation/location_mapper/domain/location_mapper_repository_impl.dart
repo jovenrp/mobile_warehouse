@@ -112,4 +112,20 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return SkuResponse();
     }
   }
+
+  @override
+  Future<ParentLocationModel> updateContainer(
+      {String? token, String? id, String? code, String? serial}) async {
+    try {
+      final String result = await _apiService.updateContainer(token,
+          headers: 'true', data: '|keys:id=$id|vals:num=$serial^code=$code');
+
+      print(result);
+      final ParentLocationModel response = ParentLocationModel.fromJson(jsonDecode(result));
+      return response;
+    } catch (_) {
+      logger.e(_.toString());
+      return ParentLocationModel();
+    }
+  }
 }

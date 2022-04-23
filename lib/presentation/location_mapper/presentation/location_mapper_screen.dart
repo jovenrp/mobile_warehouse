@@ -13,6 +13,7 @@ import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapp
 
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/parent_location/data/models/container_model.dart';
+import 'package:mobile_warehouse/presentation/parent_location/data/models/parent_location_model.dart';
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/qr/presentation/qr_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -25,8 +26,7 @@ class LocationMapperScreen extends StatefulWidget {
 
   final ContainerModel? container;
 
-  static ModalRoute<LocationMapperScreen> route({ContainerModel? container}) =>
-      MaterialPageRoute<LocationMapperScreen>(
+  static ModalRoute<LocationMapperScreen> route({ContainerModel? container}) => MaterialPageRoute<LocationMapperScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => LocationMapperScreen(
           container: container,
@@ -41,22 +41,19 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
   final RefreshController refreshController = RefreshController();
 
   bool canRefresh = true;
-  final TextEditingController parentLocationController =
-      TextEditingController();
+  bool isSerialEdit = true;
+  final TextEditingController skuController = TextEditingController();
+  final TextEditingController serialController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    context
-        .read<LocationMapperBloc>()
-        .getContainerSkus(id: widget.container?.id);
-    parentLocationController.text = widget.container?.code ?? '';
+    context.read<LocationMapperBloc>().getContainerSkus(id: widget.container?.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LocationMapperBloc, LocationMapperState>(
-        listener: (BuildContext context, LocationMapperState state) {
+    return BlocConsumer<LocationMapperBloc, LocationMapperState>(listener: (BuildContext context, LocationMapperState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
       }
@@ -70,18 +67,25 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                   color: AppColors.white,
                   size: 24.0,
                 ),
-                onTap: () => Navigator.of(context).push(
-                    ParentLocationScreen.route(
-                        navigation: 'pop',
-                        parentId: widget.container?.parentId)),
+                onTap: () => Navigator.of(context).push(ParentLocationScreen.route(navigation: 'pop', parentId: widget.container?.parentId)),
+                actions: <Widget>[
+                  state.isUpdateContainerLoading
+                      ? Container(
+                          padding: const EdgeInsets.only(top: 20, bottom: 20, right: 18),
+                          width: 35,
+                          child: ATLoadingIndicator(
+                            strokeWidth: 3.0,
+                            width: 10,
+                            height: 10,
+                          ),
+                        )
+                      : SizedBox()
+                ],
               ),
               body: Container(
                   color: AppColors.beachSea,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        /*Container(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+                    /*Container(
                           color: AppColors.beachSea,
                           height: 130,
                           child: Row(
@@ -125,145 +129,130 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                             ],
                           ),
                         ),*/
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
-                              hintText: 'Assign serial number',
-                              isScanner: true,
-                              onPressed: () =>
-                                  Navigator.of(context).push(QRScreen.route()),
-                              onChanged: (String value) {}),
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
-                              hintText: 'Add Item / SKU',
-                              isScanner: true,
-                              onFieldSubmitted: (String? value) => setState(() {
-                                    if (value?.isNotEmpty == true) {
-                                      context.read<LocationMapperBloc>().addSku(
-                                          id: widget.container?.id,
-                                          skuId: value);
-                                    }
-                                  }),
-                              onPressed: () =>
-                                  Navigator.of(context).push(QRScreen.route()),
-                              onChanged: (String value) {}),
-                        ),
-                        SizedBox(height: 20),
-                        Expanded(
-                          child: !state.isLoading
-                              ? state.skus?.isNotEmpty == true
-                                  ? Container(
-                                      color: AppColors.white,
-                                      child: ListView.builder(
-                                          itemCount: (state.skus?.length ?? 0),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return Slidable(
-                                                key: ValueKey<int>(index),
-                                                endActionPane: ActionPane(
-                                                    motion:
-                                                        const ScrollMotion(),
-                                                    children: <Widget>[
-                                                      SlidableAction(
-                                                        onPressed: (BuildContext
-                                                            navContext) {
-                                                          context
-                                                              .read<
-                                                                  LocationMapperBloc>()
-                                                              .removeSku(
-                                                                  id: widget
-                                                                      .container
-                                                                      ?.id,
-                                                                  skuId: state
-                                                                      .skus?[
-                                                                          index]
-                                                                      .sku);
-                                                        },
-                                                        backgroundColor:
-                                                            AppColors
-                                                                .mnpEditRed,
-                                                        foregroundColor:
-                                                            AppColors.white,
-                                                        icon: Icons
-                                                            .delete_forever_outlined,
-                                                      ),
-                                                    ]),
-                                                child: Container(
-                                                  color: (index % 2) == 0
-                                                      ? AppColors.white
-                                                      : AppColors.lightBlue,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20,
-                                                          right: 20,
-                                                          bottom: 15,
-                                                          top: 15),
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Expanded(
-                                                        flex: 2,
-                                                        child: ATText(
-                                                            text: state
-                                                                .skus?[index]
-                                                                .sku,
-                                                            fontSize: 16,
-                                                            fontColor: AppColors
-                                                                .black),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 4,
-                                                        child: ATText(
-                                                            text: state
-                                                                .skus?[index]
-                                                                .name,
-                                                            fontSize: 16,
-                                                            fontColor: AppColors
-                                                                .black),
-                                                      ),
-                                                    ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, right: 18),
+                      child: ATSearchfield(
+                        textEditingController: serialController,
+                        hintText: 'Assign serial number',
+                        isScanner: true,
+                        onPressed: () => Navigator.of(context).push(QRScreen.route()).then((_) => () {
+                              setState(() {
+                                serialController.text = 'asd';
+                                print(serialController.text);
+                              });
+                            }),
+                        onChanged: (String value) {},
+                        onFieldSubmitted: (String? value) => setState(() {
+                          if (value?.isNotEmpty == true) {
+                            context
+                                .read<LocationMapperBloc>()
+                                .updateContainer(id: widget.container?.id, code: widget.container?.code, serial: value)
+                                .then((ParentLocationModel parentLocationModel) => setState(() {
+                                      SnackBar snackBar = SnackBar(
+                                        content: ATText(
+                                          text: parentLocationModel.message,
+                                          fontColor: AppColors.white,
+                                        ),
+                                        duration: Duration(seconds: 2),
+                                      );
+                                      if (parentLocationModel.error == false) {
+                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      }
+                                    }));
+                            serialController.clear();
+                          }
+                        }),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, right: 18),
+                      child: ATSearchfield(
+                        textEditingController: skuController,
+                        hintText: 'Add Item / SKU',
+                        isScanner: true,
+                        onFieldSubmitted: (String? value) => setState(() {
+                              if (value?.isNotEmpty == true) {
+                                context.read<LocationMapperBloc>().addSku(id: widget.container?.id, skuId: value);
+                                skuController.clear();
+                              }
+                            }),
+                        onPressed: () => Navigator.of(context).push(QRScreen.route()),
+                        onChanged: (String value) {}),
+                    ),
+                    SizedBox(height: 20),
+                    Expanded(
+                      child: !state.isLoading
+                          ? state.skus?.isNotEmpty == true
+                              ? Container(
+                                  color: AppColors.white,
+                                  child: ListView.builder(
+                                      itemCount: (state.skus?.length ?? 0),
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Slidable(
+                                            key: ValueKey<int>(index),
+                                            endActionPane: ActionPane(motion: const ScrollMotion(), children: <Widget>[
+                                              SlidableAction(
+                                                onPressed: (BuildContext navContext) {
+                                                  context
+                                                      .read<LocationMapperBloc>()
+                                                      .removeSku(id: widget.container?.id, skuId: state.skus?[index].sku);
+                                                },
+                                                backgroundColor: AppColors.mnpEditRed,
+                                                foregroundColor: AppColors.white,
+                                                icon: Icons.delete_forever_outlined,
+                                              ),
+                                            ]),
+                                            child: Container(
+                                              color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue,
+                                              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: ATText(text: state.skus?[index].sku, fontSize: 16, fontColor: AppColors.black),
                                                   ),
-                                                ));
-                                          }),
-                                    )
-                                  : Container(
-                                      color: AppColors.white,
-                                      alignment: Alignment.topCenter,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 30),
-                                        child: ATText(
-                                            text: I18n.of(context)
-                                                .oops_item_returned_0_results),
-                                      ),
-                                    )
+                                                  Expanded(
+                                                    flex: 4,
+                                                    child: ATText(text: state.skus?[index].name, fontSize: 16, fontColor: AppColors.black),
+                                                  ),
+                                                ],
+                                              ),
+                                            ));
+                                      }),
+                                )
                               : Container(
                                   color: AppColors.white,
-                                  child: Column(
-                                    children: <Widget>[
-                                      SizedBox(height: 50),
-                                      Container(
-                                        child: ATLoadingIndicator(
-                                          strokeWidth: 3.0,
-                                          width: 30,
-                                          height: 30,
-                                          color: AppColors.beachSea,
-                                        ),
-                                      ),
-                                      Container(
-                                          alignment: Alignment.topCenter,
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 10),
-                                            child: ATText(
-                                                text: I18n.of(context)
-                                                    .please_wait_while_data_is_loaded),
-                                          ))
-                                    ],
-                                  )),
-                        )
-                      ]))));
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 30),
+                                    child: ATText(text: I18n.of(context).oops_item_returned_0_results),
+                                  ),
+                                )
+                          : Container(
+                              color: AppColors.white,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(height: 50),
+                                  Container(
+                                    child: ATLoadingIndicator(
+                                      strokeWidth: 3.0,
+                                      width: 30,
+                                      height: 30,
+                                      color: AppColors.beachSea,
+                                    ),
+                                  ),
+                                  Container(
+                                      alignment: Alignment.topCenter,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
+                                      ))
+                                ],
+                              )),
+                    )
+                  ]))));
     });
   }
 
@@ -274,8 +263,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 }
 
 class WheelPicker extends StatelessWidget {
-  const WheelPicker({Key? key, this.title, required this.index})
-      : super(key: key);
+  const WheelPicker({Key? key, this.title, required this.index}) : super(key: key);
 
   final String? title;
   final int index;
@@ -331,8 +319,7 @@ class WheelPicker extends StatelessWidget {
 }
 
 class WheelPickerByLetters extends StatelessWidget {
-  WheelPickerByLetters({Key? key, this.title, required this.index})
-      : super(key: key);
+  WheelPickerByLetters({Key? key, this.title, required this.index}) : super(key: key);
 
   final String? title;
   final int index;
@@ -399,8 +386,7 @@ class WheelPickerByLetters extends StatelessWidget {
                     return Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(0),
-                      child:
-                          PickerAlpha(index: alphabet[index], isAlphabet: true),
+                      child: PickerAlpha(index: alphabet[index], isAlphabet: true),
                     );
                   })),
         ),
