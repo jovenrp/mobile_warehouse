@@ -186,6 +186,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
       List<PickTicketDetailsModel> values =
           response.pickTicketsResponse?.where((PickTicketDetailsModel item) {
                 String sku = item.sku?.toLowerCase() ?? '';
+                String num = item.num?.toLowerCase() ?? '';
                 String description = item.description?.toLowerCase() ?? '';
                 String locCode = item.locCode?.toLowerCase() ?? '';
                 String status = item.status?.toLowerCase() ?? '';
@@ -198,6 +199,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
                     uom.contains((searchText)) ||
                     qtyPicked.contains((searchText)) ||
                     qtyPick.contains((searchText)) ||
+                    num.contains((searchText)) ||
                     locCode.contains(searchText);
               }).toList() ??
               <PickTicketDetailsModel>[];

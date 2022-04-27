@@ -302,9 +302,9 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
           child: SafeArea(
               child: Scaffold(
             appBar: ATAppBar(
-              title: I18n.of(context)
-                  .ticket_ticket_id(widget.ticketItemModel?.num)
-                  .capitalizeFirstofEach(),
+              title:
+                  '${widget.ticketItemModel?.num} - ${widget.ticketItemModel?.destination}'
+                      .capitalizeFirstofEach(),
               icon: Icon(
                 Icons.arrow_back_sharp,
                 color: AppColors.white,

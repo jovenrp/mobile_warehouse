@@ -79,14 +79,19 @@ class LocationMapperBloc extends Cubit<LocationMapperState> {
 
     try {
       String? token = await persistenceService.dwnToken.get();
-      final ParentLocationModel result = await locationMapperRepository.updateContainer(
-          token: token, id: id, code: code, serial: serial);
+      final ParentLocationModel result = await locationMapperRepository
+          .updateContainer(token: token, id: id, code: code, serial: serial);
       String message = '';
       if (result.message?.toLowerCase() == 'success') {
-        message = result.container?.first.name?.isNotEmpty == true ? '${result.container?.first.name} now has serial ${result.container?.first.num}' : '${result.container?.first.code} now has serial ${result.container?.first.num}';
+        message = result.container?.first.name?.isNotEmpty == true
+            ? '${result.container?.first.name} now has serial ${result.container?.first.num}'
+            : '${result.container?.first.code} now has serial ${result.container?.first.num}';
         result.message = message;
       }
-      emit(state.copyWith(isUpdateContainerLoading: false, hasError: false, updateContainerMessage: message));
+      emit(state.copyWith(
+          isUpdateContainerLoading: false,
+          hasError: false,
+          updateContainerMessage: message));
       return result;
     } on DioError catch (_) {
       emit(state.copyWith(

@@ -51,18 +51,19 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
   }
 
   @override
-  Future<String> createLocation(
-      {String? token, String? parentId, String? name, String? code}) async {
+  Future<ParentLocationModel> createContainer(
+      {String? token, String? parentId, String? name, String? code, String? num}) async {
     try {
-      final String result = await _apiService.createLocation(token,
+      final String result = await _apiService.createContainer(token,
           headers: 'true',
-          data: '|vals:parentId=$parentId^name=$name^code=$code');
+          data: '|vals:parentId=$parentId^name=$name^code=$code^num=$num');
 
-      print(result);
-      return '';
+      final ParentLocationModel response =
+      ParentLocationModel.fromJson(jsonDecode(result));
+      return response;
     } catch (_) {
       logger.e(_.toString());
-      return '';
+      return ParentLocationModel(error: true, message: _.toString());
     }
   }
 
@@ -121,7 +122,8 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
           headers: 'true', data: '|keys:id=$id|vals:num=$serial^code=$code');
 
       print(result);
-      final ParentLocationModel response = ParentLocationModel.fromJson(jsonDecode(result));
+      final ParentLocationModel response =
+          ParentLocationModel.fromJson(jsonDecode(result));
       return response;
     } catch (_) {
       logger.e(_.toString());

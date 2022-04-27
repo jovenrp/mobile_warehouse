@@ -81,13 +81,17 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
     }
   }
 
-  Future<void> createLocation(
-      {String? parentId, String? name, String? code}) async {
+  Future<void> createContainer(
+      {String? parentId, String? name, String? code, String? num, ContainerModel? containerModel}) async {
     emit(state.copyWith(isLoading: true));
     try {
       String? token = await persistenceService.dwnToken.get();
-      String result = await locationMapperRepository.createLocation(
-          token: token, parentId: parentId, name: name, code: code);
+      ParentLocationModel parentLocationModel = await locationMapperRepository.createContainer(
+          token: token, parentId: parentId, name: name, code: code, num: num);
+
+      if (parentLocationModel.error == false) {
+        await getContainerChild(parentId, 'children', containerModel);
+      }
     } on DioError catch (_) {
       emit(state.copyWith(
           isLoading: false, hasError: true, errorMessage: 'error'));

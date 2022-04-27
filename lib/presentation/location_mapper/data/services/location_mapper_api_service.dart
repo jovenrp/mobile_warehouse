@@ -16,8 +16,8 @@ abstract class LocationMapperApiService {
   Future<dynamic> getContainerParent(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
 
-  @POST('/mobile(createLocation)?useHdrs=true&sessId={token}&data={data}')
-  Future<dynamic> createLocation(@Path('token') String? token,
+  @POST('/mobile(createContainer)?useHdrs=true&sessId={token}&data={data}')
+  Future<dynamic> createContainer(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
 
   @POST('/mobile(getContainerSkus)?useHdrs=true&sessId={token}&data={data}')
