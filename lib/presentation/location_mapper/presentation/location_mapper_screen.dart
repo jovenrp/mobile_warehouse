@@ -19,20 +19,22 @@ import 'package:mobile_warehouse/presentation/qr/presentation/qr_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class LocationMapperScreen extends StatefulWidget {
-  const LocationMapperScreen({Key? key, this.container, this.containerList}) : super(key: key);
+  const LocationMapperScreen({Key? key, this.container, this.containerList, this.currentIndex}) : super(key: key);
 
   static const String routeName = '/locationMapper';
   static const String screenName = 'locationMapperScreen';
 
   final ContainerModel? container;
   final List<ContainerModel>? containerList;
+  final int? currentIndex;
 
-  static ModalRoute<LocationMapperScreen> route({ContainerModel? container, List<ContainerModel>? containerList}) =>
+  static ModalRoute<LocationMapperScreen> route({ContainerModel? container, List<ContainerModel>? containerList, int? currentIndex}) =>
       MaterialPageRoute<LocationMapperScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => LocationMapperScreen(
           container: container,
           containerList: containerList,
+          currentIndex: currentIndex,
         ),
       );
 
@@ -45,6 +47,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 
   bool canRefresh = true;
   bool isSerialEdit = true;
+  int index = 0;
   final TextEditingController skuController = TextEditingController();
   final TextEditingController serialController = TextEditingController();
   final FocusNode skuNode = FocusNode();
@@ -56,6 +59,19 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
     context
         .read<LocationMapperBloc>()
         .getContainerSkus(id: widget.container?.id);
+    if (widget.container?.num?.isNotEmpty == true) {
+      serialController.text = widget.container?.num ?? '';
+      skuNode.requestFocus();
+    } else {
+      serialNode.requestFocus();
+    }
+
+    index = widget.currentIndex ?? 0;
+    if (index >= int.parse(widget.containerList?.length.toString() ?? '0') - 1) {
+      index = 0;
+    } else {
+      index++;
+    }
   }
 
   @override
@@ -69,7 +85,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
       return SafeArea(
           child: Scaffold(
               appBar: ATAppBar(
-                title: widget.container?.code?.capitalizeFirstofEach(),
+                title: widget.container?.name?.isNotEmpty == true ? widget.container?.name?.capitalizeFirstofEach() : widget.container?.code?.capitalizeFirstofEach(),
                 icon: Icon(
                   Icons.arrow_back_sharp,
                   color: AppColors.white,
@@ -205,6 +221,9 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                           id: widget.container?.id,
                                           skuId: value);
                                       skuController.clear();
+                                      skuNode.requestFocus();
+                                    } else {
+                                      Navigator.of(context).pushReplacement(LocationMapperScreen.route(container: widget.containerList?[index], containerList: widget.containerList, currentIndex: index));
                                     }
                                   }),
                               onPressed: () =>

@@ -18,7 +18,7 @@ import 'package:mobile_warehouse/presentation/parent_location/data/models/contai
 import 'package:mobile_warehouse/presentation/parent_location/data/models/parent_location_model.dart';
 
 class ParentLocationScreen extends StatefulWidget {
-  const ParentLocationScreen({Key? key, this.parentId, this.navigation, this.parentName, this.container}) : super(key: key);
+  const ParentLocationScreen({Key? key, this.parentId, this.navigation, this.parentName, this.container, this.childrenContainer, this.currentIndex}) : super(key: key);
 
   static const String routeName = '/parentLocation';
   static const String screenName = 'parentLocationScreen';
@@ -26,9 +26,11 @@ class ParentLocationScreen extends StatefulWidget {
   final String? parentId;
   final String? navigation;
   final String? parentName;
+  final int? currentIndex;
   final ContainerModel? container;
+  final List<ContainerModel>? childrenContainer;
 
-  static ModalRoute<ParentLocationScreen> route({String? parentId, String? navigation, String? parentName, ContainerModel? container}) =>
+  static ModalRoute<ParentLocationScreen> route({String? parentId, String? navigation, String? parentName, ContainerModel? container, List<ContainerModel>? childrenContainer, int? currentIndex}) =>
       MaterialPageRoute<ParentLocationScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => ParentLocationScreen(
@@ -36,6 +38,8 @@ class ParentLocationScreen extends StatefulWidget {
           navigation: navigation,
           parentName: parentName,
           container: container,
+          childrenContainer: childrenContainer,
+          currentIndex: currentIndex,
         ),
       );
 
@@ -51,6 +55,7 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
   ContainerModel? parentModel;
 
   List<ContainerModel>? parentContainer = <ContainerModel>[];
+  List<ContainerModel>? childrenContainer = <ContainerModel>[];
 
   final TextEditingController searchController = TextEditingController();
 
@@ -80,7 +85,7 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
           .then((ParentLocationModel parentLocation) {
         if (parentLocation.message == 'NoData' && !isNavigated) {
           isNavigated = true;
-          Navigator.of(context).pushReplacement(LocationMapperScreen.route(container: widget.container));
+          Navigator.of(context).pushReplacement(LocationMapperScreen.route(container: widget.container, containerList: widget.childrenContainer, currentIndex: widget.currentIndex));
         }
       });
       parentName = widget.parentName;
@@ -99,6 +104,7 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
       }
     }, builder: (BuildContext context, ParentLocationState state) {
       parentContainer = state.parentContainerModel;
+      childrenContainer = state.containerModel;
       rootName = state.parentContainerModel?.isNotEmpty == true ? state.parentContainerModel?.first.code : '';
       return SafeArea(
           child: Scaffold(
@@ -117,7 +123,9 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                   parentId: (int.parse(state.containerModel?[0].parentId ?? '')).toString(),
                   navigation: 'pop',
                   parentName: state.containerModel?[0].code,
-                  container: state.containerModel?[0]));
+                  container: state.containerModel?[0],
+                  childrenContainer: state.containerModel,
+              ));
             }
           },
         ),
@@ -215,7 +223,7 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                                                     child: InkWell(
                                                       onTap: () {
                                                         Navigator.of(context)
-                                                            .pushReplacement(LocationMapperScreen.route(container: state.containerModel?[index]));
+                                                            .pushReplacement(LocationMapperScreen.route(container: state.containerModel?[index], containerList: state.containerModel, currentIndex: index));
                                                       },
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -248,7 +256,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                                                           parentId: state.containerModel?[index].id,
                                                           navigation: 'push',
                                                           parentName: state.containerModel?[index].code,
-                                                          container: state.containerModel?[index]));
+                                                          container: state.containerModel?[index],
+                                                          childrenContainer: childrenContainer, currentIndex: index));
                                                     },
                                                     child: Container(
                                                       padding: const EdgeInsets.only(left: 40),
@@ -290,10 +299,9 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return StatefulBuilder(builder: (BuildContext context, StateSetter states) {
-                                    print('${widget.container?.code} ${widget.container?.parentId}');
                                     return widget.navigation == 'push'
                                         ? addChild(widget.container, isDialogueError, states, parentName)
-                                        : addChild(parentModel, isDialogueError, states, parentName);
+                                        : addChild(parentContainer?.first, isDialogueError, states, parentName);
                                   });
                                 }).then((_) {
                               isDialogueError = false;

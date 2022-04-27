@@ -32,6 +32,7 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
             await locationMapperRepository.getContainerParent(token, parentId);
         parent = await locationMapperRepository.getContainerParent(
             token, result.container?[0].parentId);
+        emit(state.copyWith(parentContainerModel: parent.container ?? <ContainerModel>[]));
       }
 
       ContainerModel? originalContainerModel = containerModel;
@@ -39,7 +40,6 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
           isLoading: false,
           hasError: false,
           parentLocationModel: result,
-          parentContainerModel: parent.container ?? <ContainerModel>[],
           containerModel: result.container?.isNotEmpty == true
               ? result.container
               : <ContainerModel>[originalContainerModel ?? ContainerModel()]));
