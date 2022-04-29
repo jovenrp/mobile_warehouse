@@ -10,7 +10,9 @@ class ATSearchfield extends StatefulWidget {
       this.onPressed,
       this.onChanged,
       this.onFieldSubmitted,
-      this.isScanner = false})
+      this.isScanner = false,
+      this.isReadOnly = false,
+      })
       : super(key: key);
 
   final String? hintText;
@@ -19,6 +21,7 @@ class ATSearchfield extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final Function(String?)? onFieldSubmitted;
   final bool? isScanner;
+  final bool? isReadOnly;
   final FocusNode? focusNode;
 
   @override
@@ -31,6 +34,7 @@ class _ATSearchfield extends State<ATSearchfield> {
     return TextFormField(
       controller: widget.textEditingController,
       key: widget.key,
+      readOnly: widget.isReadOnly ?? false,
       focusNode: widget.focusNode,
       onChanged: widget.onChanged ?? (String value) {},
       onFieldSubmitted: widget.onFieldSubmitted,

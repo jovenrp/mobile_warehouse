@@ -47,6 +47,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 
   bool canRefresh = true;
   bool isSerialEdit = true;
+  bool isReadOnly = false;
   int index = 0;
   final TextEditingController skuController = TextEditingController();
   final TextEditingController serialController = TextEditingController();
@@ -61,6 +62,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
         .getContainerSkus(id: widget.container?.id);
     if (widget.container?.num?.isNotEmpty == true) {
       serialController.text = widget.container?.num ?? '';
+      isReadOnly = true;
       skuNode.requestFocus();
     } else {
       serialNode.requestFocus();
@@ -166,6 +168,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                             textEditingController: serialController,
                             hintText: 'Assign serial number',
                             focusNode: serialNode,
+                            isReadOnly: isReadOnly,
                             isScanner: true,
                             onPressed: () => Navigator.of(context)
                                 .push(QRScreen.route())

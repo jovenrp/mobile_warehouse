@@ -12,7 +12,7 @@ void main() async {
         isUiDebuggerEnabled: true,
         isProxyEnabled: true,
         baseContentUrl: 'http://svn.zeropoint.com:5000',
-        appVersion: '1.0.16',
-        buildNumber: '1.0.16'),
+        appVersion: '1.0.17',
+        buildNumber: '1.0.17'),
   );
 }
