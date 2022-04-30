@@ -162,9 +162,31 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                             ],
                           ),
                         ),*/
+                        Visibility(
+                          visible: isReadOnly,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: ATText(text: '*Serial is in read-only, swipe right to alter the value.', fontColor: AppColors.warningOrange,),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: ATSearchfield(
+                          child: Slidable(
+                            key: ValueKey<int>(index),
+                            startActionPane: ActionPane(
+                              // A motion is a widget used to control how the pane animates.
+                                motion: const ScrollMotion(),
+                                children: <Widget>[
+                                  SlidableAction(
+                                    onPressed: (BuildContext context) => setState(() {
+                                      isReadOnly = false;
+                                      serialNode.requestFocus();
+                                    }),
+                                    backgroundColor: AppColors.greyRed,
+                                    foregroundColor: AppColors.white,
+                                    icon: Icons.edit,
+                                  ),
+                                ]), child: ATSearchfield(
                             textEditingController: serialController,
                             hintText: 'Assign serial number',
                             focusNode: serialNode,
@@ -190,6 +212,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                     .then((ParentLocationModel
                                             parentLocationModel) =>
                                         setState(() {
+                                          isReadOnly = true;
                                           SnackBar snackBar = SnackBar(
                                             content: ATText(
                                               text: parentLocationModel.message,
@@ -208,14 +231,14 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                 skuNode.requestFocus();
                               }
                             }),
-                          ),
+                          )),
                         ),
                         SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.only(left: 18, right: 18),
                           child: ATSearchfield(
                               textEditingController: skuController,
-                              hintText: 'Add Item / SKU',
+                              hintText: 'SKU',
                               focusNode: skuNode,
                               isScanner: true,
                               onFieldSubmitted: (String? value) => setState(() {
