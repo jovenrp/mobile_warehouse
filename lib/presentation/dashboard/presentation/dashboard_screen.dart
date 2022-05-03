@@ -71,9 +71,11 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
           child: WillPopScope(
               onWillPop: () async {
                 if (Platform.isAndroid) {
+                  print('backedd');
                   _isDoubleBackPressed = onBackPressed(
                       context, _isDoubleBackPressed, (bool value) {
                     _isDoubleBackPressed = value;
+                    print(_isDoubleBackPressed);
                   });
                   return false;
                 } else {

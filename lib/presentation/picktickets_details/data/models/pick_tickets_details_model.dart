@@ -71,10 +71,10 @@ class PickTicketDetailsModel {
   final String? unitQty;
 
   @JsonKey(name: 'qtyPick')
-  final String? qtyPick;
+  String? qtyPick;
 
   @JsonKey(name: 'qtyPicked')
-  final String? qtyPicked;
+  String? qtyPicked;
 
   @JsonKey(name: 'location')
   String? location;
@@ -132,6 +132,14 @@ class PickTicketDetailsModel {
 
   void setPickedItem(String? value) {
     pickedItem = value;
+  }
+
+  void setQtyPicked(String? value) {
+    qtyPicked = value;
+  }
+
+  void setQtyPick(String? value) {
+    qtyPick = value;
   }
 
   void setLocation(String? value) {
