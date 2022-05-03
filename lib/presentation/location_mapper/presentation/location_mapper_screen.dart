@@ -96,7 +96,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                   color: AppColors.white,
                   size: 24.0,
                 ),
-                onTap: () => Navigator.of(context).push(ParentLocationScreen.route(navigation: 'pop', parentId: widget.container?.parentId)),
+                onTap: () => Navigator.of(context).push(ParentLocationScreen.route(navigation: 'push', parentId: widget.container?.parentId)),
                 actions: <Widget>[
                   state.isUpdateContainerLoading
                       ? Container(

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_textfield.dart';
 import 'package:mobile_warehouse/presentation/settings/bloc/settings_bloc.dart';
 import 'package:mobile_warehouse/presentation/settings/bloc/settings_state.dart';
 
@@ -16,8 +18,7 @@ class SettingsScreen extends StatefulWidget {
   static const String routeName = '/settings';
   static const String screenName = 'settingsScreen';
 
-  static ModalRoute<SettingsScreen> route() =>
-      MaterialPageRoute<SettingsScreen>(
+  static ModalRoute<SettingsScreen> route() => MaterialPageRoute<SettingsScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => SettingsScreen(),
       );
@@ -28,6 +29,8 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreen extends State<SettingsScreen> {
   bool pickLimitSetting = false;
+  bool isEditApi = false;
+
   @override
   void initState() {
     super.initState();
@@ -36,8 +39,7 @@ class _SettingsScreen extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SettingsScreenBloc, SettingsScreenState>(
-        listener: (BuildContext context, SettingsScreenState state) {
+    return BlocConsumer<SettingsScreenBloc, SettingsScreenState>(listener: (BuildContext context, SettingsScreenState state) {
       if (!state.isLoading) {
         pickLimitSetting = state.pickLimitSetting ?? false;
       }
@@ -46,8 +48,7 @@ class _SettingsScreen extends State<SettingsScreen> {
           child: Scaffold(
         appBar: ATAppBar(
           title: I18n.of(context).settings.capitalizeFirstofEach(),
-          icon:
-              Icon(Icons.arrow_back_sharp, color: AppColors.white, size: 24.0),
+          icon: Icon(Icons.arrow_back_sharp, color: AppColors.white, size: 24.0),
           onTap: () => Navigator.of(context).pop(),
         ),
         body: Padding(
@@ -87,9 +88,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                             onChanged: (bool value) {
                               setState(() {
                                 pickLimitSetting = !pickLimitSetting;
-                                context
-                                    .read<SettingsScreenBloc>()
-                                    .togglePickLimitSetting(pickLimitSetting);
+                                context.read<SettingsScreenBloc>().togglePickLimitSetting(pickLimitSetting);
                               });
                             }),
                       ),
@@ -190,37 +189,78 @@ class _SettingsScreen extends State<SettingsScreen> {
                   ),
                 ),
                 SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: BoxDecoration(
-                    color: AppColors.graySeven,
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 8),
-                          child: ATText(
-                            text: 'URL',
-                            fontSize: 16,
+                Slidable(
+                    key: ValueKey<int>(0),
+                    startActionPane: ActionPane(
+                        // A motion is a widget used to control how the pane animates.
+                        motion: const ScrollMotion(),
+                        children: <Widget>[
+                          SlidableAction(
+                            onPressed: (BuildContext context) => setState(() {
+                              setState(() {
+                                if (!isEditApi) {
+                                  isEditApi = true;
+                                }
+                              });
+                            }),
+                            backgroundColor: AppColors.atWarningRed,
+                            foregroundColor: AppColors.white,
+                            icon: Icons.edit,
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(right: 8),
-                          alignment: Alignment.centerRight,
-                          child: ATText(
-                            text: state.url,
-                            fontSize: 16,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )
+                        ]),
+                    child: isEditApi
+                        ? ATTextfield(
+                            hintText: state.url,
+                            onFieldSubmitted: (String? api) {
+                              context.read<SettingsScreenBloc>().updateApi(api).then((bool isUpdated) {
+                                SnackBar snackBar = SnackBar(
+                                  content: ATText(
+                                    text: 'URL is changed. Re-login is required and App needs to restart.',
+                                    fontColor: AppColors.white,
+                                  ),
+                                  duration: Duration(seconds: 5),
+                                );
+                                setState(() {
+                                  isEditApi = false;
+                                  if (isUpdated) {
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                  }
+                                });
+                              });
+                            },
+                          )
+                        : Container(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            decoration: BoxDecoration(
+                              color: AppColors.graySeven,
+                              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: ATText(
+                                      text: 'URL',
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    alignment: Alignment.centerRight,
+                                    child: ATText(
+                                      text: state.url,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ))
               ],
             ),
           ),

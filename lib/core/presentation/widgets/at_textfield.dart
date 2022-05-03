@@ -6,11 +6,13 @@ class ATTextfield extends StatefulWidget {
       {Key? key,
       this.hintText,
       this.isPasswordField = false,
+      this.onFieldSubmitted,
       this.textEditingController})
       : super(key: key);
 
   final String? hintText;
   final bool isPasswordField;
+  final Function(String?)? onFieldSubmitted;
   final TextEditingController? textEditingController;
 
   @override
@@ -26,6 +28,7 @@ class _ATTextfield extends State<ATTextfield> {
       controller: widget.textEditingController,
       key: widget.key,
       obscureText: widget.isPasswordField ? _passwordNotVisible : false,
+      onFieldSubmitted: widget.onFieldSubmitted,
       decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),

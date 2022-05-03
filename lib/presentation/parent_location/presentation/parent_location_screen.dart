@@ -18,7 +18,8 @@ import 'package:mobile_warehouse/presentation/parent_location/data/models/contai
 import 'package:mobile_warehouse/presentation/parent_location/data/models/parent_location_model.dart';
 
 class ParentLocationScreen extends StatefulWidget {
-  const ParentLocationScreen({Key? key, this.parentId, this.navigation, this.parentName, this.container, this.childrenContainer, this.currentIndex}) : super(key: key);
+  const ParentLocationScreen({Key? key, this.parentId, this.navigation, this.parentName, this.container, this.childrenContainer, this.currentIndex})
+      : super(key: key);
 
   static const String routeName = '/parentLocation';
   static const String screenName = 'parentLocationScreen';
@@ -30,7 +31,13 @@ class ParentLocationScreen extends StatefulWidget {
   final ContainerModel? container;
   final List<ContainerModel>? childrenContainer;
 
-  static ModalRoute<ParentLocationScreen> route({String? parentId, String? navigation, String? parentName, ContainerModel? container, List<ContainerModel>? childrenContainer, int? currentIndex}) =>
+  static ModalRoute<ParentLocationScreen> route(
+          {String? parentId,
+          String? navigation,
+          String? parentName,
+          ContainerModel? container,
+          List<ContainerModel>? childrenContainer,
+          int? currentIndex}) =>
       MaterialPageRoute<ParentLocationScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => ParentLocationScreen(
@@ -85,10 +92,10 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
           .then((ParentLocationModel parentLocation) {
         if (parentLocation.message == 'NoData' && !isNavigated) {
           isNavigated = true;
-          Navigator.of(context).pushReplacement(LocationMapperScreen.route(container: widget.container, containerList: widget.childrenContainer, currentIndex: widget.currentIndex));
+          Navigator.of(context).pushReplacement(
+              LocationMapperScreen.route(container: widget.container, containerList: widget.childrenContainer, currentIndex: widget.currentIndex));
         }
       });
-      parentName = widget.parentName;
     }
   }
 
@@ -101,6 +108,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
         } else {
           parentName = 'Root';
         }
+      } else {
+        parentName = widget.parentName?.isNotEmpty == true ? widget.parentName : widget.parentId == 'Root' ? 'Root' : state.parentLocationModel?.container?.isNotEmpty == true ? state.parentLocationModel?.container?.first.code : 'Root';
       }
     }, builder: (BuildContext context, ParentLocationState state) {
       parentContainer = state.parentContainerModel;
@@ -115,16 +124,31 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
             color: AppColors.white,
             size: 24.0,
           ),
+          actions: <Widget>[
+            Ink(
+              child: InkWell(
+                onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/dashboard')),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Icon(
+                    Icons.home,
+                    color: AppColors.white,
+                    size: 25,
+                  ),
+                ),
+              ),
+            )
+          ],
           onTap: () {
             if (state.containerModel?[0].isRoot?.toLowerCase() == 'y') {
               Navigator.of(context).popUntil(ModalRoute.withName('/dashboard'));
             } else {
               Navigator.of(context).push(ParentLocationScreen.route(
-                  parentId: (int.parse(state.containerModel?[0].parentId ?? '')).toString(),
-                  navigation: 'pop',
-                  parentName: state.containerModel?[0].code,
-                  container: state.containerModel?[0],
-                  childrenContainer: state.containerModel,
+                parentId: (int.parse(state.containerModel?[0].parentId ?? '')).toString(),
+                navigation: 'pop',
+                parentName: state.containerModel?[0].code,
+                container: state.containerModel?[0],
+                childrenContainer: state.containerModel,
               ));
             }
           },
@@ -222,8 +246,10 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                                                   child: Ink(
                                                     child: InkWell(
                                                       onTap: () {
-                                                        Navigator.of(context)
-                                                            .pushReplacement(LocationMapperScreen.route(container: state.containerModel?[index], containerList: state.containerModel, currentIndex: index));
+                                                        Navigator.of(context).pushReplacement(LocationMapperScreen.route(
+                                                            container: state.containerModel?[index],
+                                                            containerList: state.containerModel,
+                                                            currentIndex: index));
                                                       },
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -257,7 +283,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                                                           navigation: 'push',
                                                           parentName: state.containerModel?[index].code,
                                                           container: state.containerModel?[index],
-                                                          childrenContainer: childrenContainer, currentIndex: index));
+                                                          childrenContainer: childrenContainer,
+                                                          currentIndex: index));
                                                     },
                                                     child: Container(
                                                       padding: const EdgeInsets.only(left: 40),
@@ -333,9 +360,7 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                       color: AppColors.successGreen,
                     ),
                     SizedBox(width: 10),
-                    Flexible(
-                        child: ATText(
-                            text: 'Adding child for $parentName'))
+                    Flexible(child: ATText(text: 'Adding child for $parentName'))
                     //: 'Fill up the field to create a new child for '))
                   ],
                 ),
@@ -372,9 +397,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                       setState(() {
                         if (name.text.isNotEmpty || code.text.isNotEmpty) {
                           isDialogueError = false;
-                          context
-                              .read<ParentLocationBloc>()
-                              .createContainer(parentId: containerModel?.id, name: name.text, num: serial.text, code: code.text, containerModel: widget.container);
+                          context.read<ParentLocationBloc>().createContainer(
+                              parentId: containerModel?.id, name: name.text, num: serial.text, code: code.text, containerModel: widget.container);
                           Navigator.of(context, rootNavigator: true).pop();
                         } else {
                           isDialogueError = true;

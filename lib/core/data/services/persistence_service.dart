@@ -75,6 +75,11 @@ class PersistenceService {
         _securedStorage,
       );
 
+  StringValueContainer get preferredApi => StringValueContainer(
+    'keys.dwnTokpreferredApien',
+    _securedStorage,
+  );
+
   StringValueContainer get deviceToken => StringValueContainer(
         'keys.deviceToken',
         _unsecuredStorage,

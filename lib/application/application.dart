@@ -60,6 +60,7 @@ class _ApplicationState extends State<Application> {
 
   late Dio _dio;
   late PersistenceService _persistenceService;
+  String currentApi = '';
   bool _showingRequiredUpdate = false;
   bool _showingServiceUnavailable = false;
   bool _loggerIsVisible = false;
@@ -95,6 +96,7 @@ class _ApplicationState extends State<Application> {
       MemoryRepository(),
     );
 
+
     _dio = _createDioInstance(
       persistenceService: _persistenceService,
       isApiLoggingEnabled: widget.config.isApiLoggingEnabled,
@@ -117,66 +119,87 @@ class _ApplicationState extends State<Application> {
     }
   }
 
+  Future<void> getCurrentApi() async {
+    String value = await _persistenceService.preferredApi.get() ?? '';
+    if (value.isNotEmpty == true) {
+      currentApi = value;
+    } else {
+      currentApi = widget.config.apiUrl;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<SingleChildWidget> repositories = RepositoriesProvider.provide(
-        dio: _dio,
-        apiUrl: widget.config.apiUrl,
-        actionTRAKApiService: _apiService.actionTRAKApiService);
+    return FutureBuilder<void>(
+      future: getCurrentApi(), // async work
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        final List<SingleChildWidget> repositories = RepositoriesProvider.provide(
+            dio: _dio,
+            apiUrl: currentApi,
+            actionTRAKApiService: _apiService.actionTRAKApiService);
 
-    final List<SingleChildWidget> blocs = BlocsProvider.provide(
-      dio: _dio,
-      apiUrl: widget.config.apiUrl,
-      persistenceService: _persistenceService,
-      appBloc: _appBloc,
-      navigatorKey: navigatorKey,
-    );
+        final List<SingleChildWidget> blocs = BlocsProvider.provide(
+          dio: _dio,
+          apiUrl: currentApi,
+          persistenceService: _persistenceService,
+          appBloc: _appBloc,
+          navigatorKey: navigatorKey,
+        );
 
-    List<SingleChildWidget> services = <SingleChildWidget>[
-      Provider<PersistenceService>.value(value: _persistenceService),
-      Provider<ApiService>.value(value: _apiService),
-    ];
+        List<SingleChildWidget> services = <SingleChildWidget>[
+          Provider<PersistenceService>.value(value: _persistenceService),
+          Provider<ApiService>.value(value: _apiService),
+        ];
 
-    List<SingleChildWidget> providers = <SingleChildWidget>[
-      ...repositories,
-      ...blocs,
-      ...services,
-    ];
+        List<SingleChildWidget> providers = <SingleChildWidget>[
+          ...repositories,
+          ...blocs,
+          ...services,
+        ];
 
-    providers.addAll(<SingleChildWidget>[
-      Provider<GlobalKey<NavigatorState>>.value(value: navigatorKey),
-      if (globalAlice != null) Provider<Alice>.value(value: globalAlice!)
-    ]);
-
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: MultiProvider(
-        providers: providers,
-        child: BlocConsumer<ApplicationBloc, ApplicationState>(
-          listener: (BuildContext context, ApplicationState state) {
-            // Handle
-          },
-          builder: (BuildContext context, __) => MaterialApp(
-            localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-              I18n.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate
-            ],
-            supportedLocales: I18n.delegate.supportedLocales,
-            localeResolutionCallback: I18n.delegate.resolution(
-              fallback: const Locale('en', 'US'),
-            ),
-            theme: themeState.theme,
-            darkTheme: themeState.themeDark,
-            themeMode: ThemeMode.dark,
-            navigatorKey: navigatorKey,
-            debugShowCheckedModeBanner: false,
-            title: I18n.of(context).application_name,
-            home: SplashScreen(config: widget.config),
-          ),
-        ),
-      ),
+        providers.addAll(<SingleChildWidget>[
+          Provider<GlobalKey<NavigatorState>>.value(value: navigatorKey),
+          if (globalAlice != null) Provider<Alice>.value(value: globalAlice!)
+        ]);
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting: return SizedBox();
+          default:
+            if (snapshot.hasError) {
+              return SizedBox();
+            } else {
+              return GestureDetector(
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: MultiProvider(
+                  providers: providers,
+                  child: BlocConsumer<ApplicationBloc, ApplicationState>(
+                    listener: (BuildContext context, ApplicationState state) {
+                      // Handle
+                    },
+                    builder: (BuildContext context, __) => MaterialApp(
+                      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+                        I18n.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate
+                      ],
+                      supportedLocales: I18n.delegate.supportedLocales,
+                      localeResolutionCallback: I18n.delegate.resolution(
+                        fallback: const Locale('en', 'US'),
+                      ),
+                      theme: themeState.theme,
+                      darkTheme: themeState.themeDark,
+                      themeMode: ThemeMode.dark,
+                      navigatorKey: navigatorKey,
+                      debugShowCheckedModeBanner: false,
+                      title: I18n.of(context).application_name,
+                      home: SplashScreen(config: widget.config),
+                    ),
+                  ),
+                ),
+              );
+            }
+        }
+      },
     );
   }
 }
