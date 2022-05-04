@@ -24,8 +24,14 @@ class QRScreen extends StatefulWidget {
   final ContainerModel? container;
   final String? scanner;
 
-  static ModalRoute<QRScreen> route({ContainerModel? container, String? scanner}) =>
-      MaterialPageRoute<QRScreen>(settings: const RouteSettings(name: routeName), builder: (_) => QRScreen(container: container, scanner: scanner,));
+  static ModalRoute<QRScreen> route(
+          {ContainerModel? container, String? scanner}) =>
+      MaterialPageRoute<QRScreen>(
+          settings: const RouteSettings(name: routeName),
+          builder: (_) => QRScreen(
+                container: container,
+                scanner: scanner,
+              ));
 
   @override
   _QRScreen createState() => _QRScreen();
@@ -69,7 +75,8 @@ class _QRScreen extends State<QRScreen> {
                         },
                         child: FutureBuilder<void>(
                           future: controller?.getFlashStatus(),
-                          builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Object?> snapshot) {
                             return snapshot.data == true
                                 ? Icon(
                                     Icons.flash_on,
@@ -92,7 +99,8 @@ class _QRScreen extends State<QRScreen> {
                         },
                         child: FutureBuilder<void>(
                           future: controller?.getCameraInfo(),
-                          builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Object?> snapshot) {
                             if (snapshot.data != null) {
                               return Icon(
                                 Icons.flip_camera_ios_outlined,
@@ -121,14 +129,23 @@ class _QRScreen extends State<QRScreen> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    double scanArea = (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 150.0 : 300.0;
+    double scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(borderColor: Colors.red, borderRadius: 10, borderLength: 30, borderWidth: 10, cutOutSize: scanArea),
-      onPermissionSet: (QRViewController ctrl, bool p) => _onPermissionSet(context, ctrl, p),
+      overlay: QrScannerOverlayShape(
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: scanArea),
+      onPermissionSet: (QRViewController ctrl, bool p) =>
+          _onPermissionSet(context, ctrl, p),
     );
   }
 
@@ -139,10 +156,13 @@ class _QRScreen extends State<QRScreen> {
 
     controller.scannedDataStream.listen((Barcode scanData) {
       result = scanData;
-      if(widget.scanner == 'serial') {
+      if (widget.scanner == 'serial') {
         context
             .read<LocationMapperBloc>()
-            .updateContainer(id: widget.container?.id, code: widget.container?.code, serial: result?.code)
+            .updateContainer(
+                id: widget.container?.id,
+                code: widget.container?.code,
+                serial: result?.code)
             .then((ParentLocationModel parentLocationModel) {
           if (!isScanned) {
             isScanned = true;

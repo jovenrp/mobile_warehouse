@@ -18,7 +18,8 @@ class SettingsScreen extends StatefulWidget {
   static const String routeName = '/settings';
   static const String screenName = 'settingsScreen';
 
-  static ModalRoute<SettingsScreen> route() => MaterialPageRoute<SettingsScreen>(
+  static ModalRoute<SettingsScreen> route() =>
+      MaterialPageRoute<SettingsScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => SettingsScreen(),
       );
@@ -39,7 +40,8 @@ class _SettingsScreen extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SettingsScreenBloc, SettingsScreenState>(listener: (BuildContext context, SettingsScreenState state) {
+    return BlocConsumer<SettingsScreenBloc, SettingsScreenState>(
+        listener: (BuildContext context, SettingsScreenState state) {
       if (!state.isLoading) {
         pickLimitSetting = state.pickLimitSetting ?? false;
       }
@@ -48,7 +50,8 @@ class _SettingsScreen extends State<SettingsScreen> {
           child: Scaffold(
         appBar: ATAppBar(
           title: I18n.of(context).settings.capitalizeFirstofEach(),
-          icon: Icon(Icons.arrow_back_sharp, color: AppColors.white, size: 24.0),
+          icon:
+              Icon(Icons.arrow_back_sharp, color: AppColors.white, size: 24.0),
           onTap: () => Navigator.of(context).pop(),
         ),
         body: Padding(
@@ -88,7 +91,9 @@ class _SettingsScreen extends State<SettingsScreen> {
                             onChanged: (bool value) {
                               setState(() {
                                 pickLimitSetting = !pickLimitSetting;
-                                context.read<SettingsScreenBloc>().togglePickLimitSetting(pickLimitSetting);
+                                context
+                                    .read<SettingsScreenBloc>()
+                                    .togglePickLimitSetting(pickLimitSetting);
                               });
                             }),
                       ),
@@ -212,29 +217,42 @@ class _SettingsScreen extends State<SettingsScreen> {
                         ? ATTextfield(
                             hintText: state.url,
                             onFieldSubmitted: (String? api) {
-                              context.read<SettingsScreenBloc>().updateApi(api).then((bool isUpdated) {
-                                SnackBar snackBar = SnackBar(
-                                  content: ATText(
-                                    text: 'URL is changed. Re-login is required and App needs to restart.',
-                                    fontColor: AppColors.white,
-                                  ),
-                                  duration: Duration(seconds: 5),
-                                );
+                              if (api?.isNotEmpty == true) {
+                                context
+                                    .read<SettingsScreenBloc>()
+                                    .updateApi(api)
+                                    .then((bool isUpdated) {
+                                  SnackBar snackBar = SnackBar(
+                                    content: ATText(
+                                      text:
+                                      'URL is changed. Re-login is required and App needs to restart.',
+                                      fontColor: AppColors.white,
+                                    ),
+                                    duration: Duration(seconds: 5),
+                                  );
+                                  setState(() {
+                                    isEditApi = false;
+                                    if (isUpdated) {
+                                      ScaffoldMessenger.of(context)
+                                          .hideCurrentSnackBar();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    }
+                                  });
+                                });
+                              } else {
                                 setState(() {
                                   isEditApi = false;
-                                  if (isUpdated) {
-                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  }
                                 });
-                              });
+                              }
                             },
                           )
                         : Container(
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             decoration: BoxDecoration(
                               color: AppColors.graySeven,
-                              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0)),
                             ),
                             child: Row(
                               children: <Widget>[

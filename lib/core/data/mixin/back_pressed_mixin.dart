@@ -17,9 +17,10 @@ mixin BackPressedMixin {
       return true;
     }
     if (!_isDoubleBackPressed) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Press back again to logout.'),
-        duration: Duration(seconds: 5)),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Press back again to logout.'),
+            duration: Duration(seconds: 5)),
       );
       isDoubleBackPressed = true;
     }

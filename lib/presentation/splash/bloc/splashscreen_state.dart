@@ -14,6 +14,7 @@ class SplashScreenState with _$SplashScreenState {
     @Default(false) bool hasError,
     ActionTRAKApiErrorCode? errorCode,
     String? errorMessage,
+    String? apiUrl,
     @Default(false) bool didFinish,
     UserProfileModel? userProfileModel,
     String? token,

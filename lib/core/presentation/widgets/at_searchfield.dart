@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 
 class ATSearchfield extends StatefulWidget {
-  const ATSearchfield(
-      {Key? key,
-      this.hintText,
-      this.focusNode,
-      this.textEditingController,
-      this.onPressed,
-      this.onChanged,
-      this.onFieldSubmitted,
-      this.isScanner = false,
-      this.isReadOnly = false,
-      })
-      : super(key: key);
+  const ATSearchfield({
+    Key? key,
+    this.hintText,
+    this.focusNode,
+    this.textEditingController,
+    this.onPressed,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.isScanner = false,
+    this.isReadOnly = false,
+  }) : super(key: key);
 
   final String? hintText;
   final TextEditingController? textEditingController;

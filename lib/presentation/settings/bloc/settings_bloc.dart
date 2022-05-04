@@ -17,7 +17,9 @@ class SettingsScreenBloc extends Cubit<SettingsScreenState> {
     ApplicationConfig? config = await persistenceService.appConfiguration.get();
     String? url = await persistenceService.preferredApi.get();
 
-    emit(state.copyWith(appVersion: config?.appVersion, url: url?.isNotEmpty == true ? url : config?.apiUrl));
+    emit(state.copyWith(
+        appVersion: config?.appVersion,
+        url: url?.isNotEmpty == true ? url : config?.apiUrl));
 
     bool pickLimitSetting =
         await persistenceService.pickLimitSetting.get() ?? false;
@@ -43,7 +45,9 @@ class SettingsScreenBloc extends Cubit<SettingsScreenState> {
     ApplicationConfig? config = await persistenceService.appConfiguration.get();
     print('${config?.apiUrl} $api');
     if (config?.apiUrl != api && api?.isNotEmpty == true) {
-      emit(state.copyWith(appVersion: config?.appVersion, url: api?.isNotEmpty == true ? api : config?.apiUrl));
+      emit(state.copyWith(
+          appVersion: config?.appVersion,
+          url: api?.isNotEmpty == true ? api : config?.apiUrl));
       return true;
     } else {
       return false;

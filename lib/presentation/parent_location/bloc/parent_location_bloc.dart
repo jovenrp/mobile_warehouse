@@ -30,14 +30,16 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
         if (result.container?.isNotEmpty == true) {
           parent = await locationMapperRepository.getContainerParent(
               token, result.container?[0].parentId);
-          emit(state.copyWith(parentContainerModel: parent.container ?? <ContainerModel>[]));
+          emit(state.copyWith(
+              parentContainerModel: parent.container ?? <ContainerModel>[]));
         }
       } else {
         result =
             await locationMapperRepository.getContainerParent(token, parentId);
         parent = await locationMapperRepository.getContainerParent(
             token, result.container?[0].parentId);
-        emit(state.copyWith(parentContainerModel: parent.container ?? <ContainerModel>[]));
+        emit(state.copyWith(
+            parentContainerModel: parent.container ?? <ContainerModel>[]));
       }
 
       ContainerModel? originalContainerModel = containerModel;
@@ -87,12 +89,21 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
   }
 
   Future<void> createContainer(
-      {String? parentId, String? name, String? code, String? num, ContainerModel? containerModel}) async {
+      {String? parentId,
+      String? name,
+      String? code,
+      String? num,
+      ContainerModel? containerModel}) async {
     emit(state.copyWith(isLoading: true));
     try {
       String? token = await persistenceService.dwnToken.get();
-      ParentLocationModel parentLocationModel = await locationMapperRepository.createContainer(
-          token: token, parentId: parentId, name: name, code: code, num: num);
+      ParentLocationModel parentLocationModel =
+          await locationMapperRepository.createContainer(
+              token: token,
+              parentId: parentId,
+              name: name,
+              code: code,
+              num: num);
 
       if (parentLocationModel.error == false) {
         await getContainerChild(parentId, 'children', containerModel);

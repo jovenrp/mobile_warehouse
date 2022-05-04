@@ -96,7 +96,6 @@ class _ApplicationState extends State<Application> {
       MemoryRepository(),
     );
 
-
     _dio = _createDioInstance(
       persistenceService: _persistenceService,
       isApiLoggingEnabled: widget.config.isApiLoggingEnabled,
@@ -133,10 +132,11 @@ class _ApplicationState extends State<Application> {
     return FutureBuilder<void>(
       future: getCurrentApi(), // async work
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        final List<SingleChildWidget> repositories = RepositoriesProvider.provide(
-            dio: _dio,
-            apiUrl: currentApi,
-            actionTRAKApiService: _apiService.actionTRAKApiService);
+        final List<SingleChildWidget> repositories =
+            RepositoriesProvider.provide(
+                dio: _dio,
+                apiUrl: currentApi,
+                actionTRAKApiService: _apiService.actionTRAKApiService);
 
         final List<SingleChildWidget> blocs = BlocsProvider.provide(
           dio: _dio,
@@ -162,7 +162,8 @@ class _ApplicationState extends State<Application> {
           if (globalAlice != null) Provider<Alice>.value(value: globalAlice!)
         ]);
         switch (snapshot.connectionState) {
-          case ConnectionState.waiting: return SizedBox();
+          case ConnectionState.waiting:
+            return SizedBox();
           default:
             if (snapshot.hasError) {
               return SizedBox();
@@ -176,7 +177,8 @@ class _ApplicationState extends State<Application> {
                       // Handle
                     },
                     builder: (BuildContext context, __) => MaterialApp(
-                      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+                      localizationsDelegates: const <
+                          LocalizationsDelegate<dynamic>>[
                         I18n.delegate,
                         GlobalMaterialLocalizations.delegate,
                         GlobalWidgetsLocalizations.delegate,

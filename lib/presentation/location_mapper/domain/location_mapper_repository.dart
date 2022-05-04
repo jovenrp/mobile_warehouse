@@ -11,7 +11,11 @@ abstract class LocationMapperRepository {
       String? token, String? parentId);
 
   Future<ParentLocationModel> createContainer(
-      {String? token, String? parentId, String? name, String? code, String? num});
+      {String? token,
+      String? parentId,
+      String? name,
+      String? code,
+      String? num});
 
   Future<SkuResponse> getContainerSkus({String? token, String? parentId});
   Future<SkuResponse> removeSku({String? token, String? id, String? skuId});

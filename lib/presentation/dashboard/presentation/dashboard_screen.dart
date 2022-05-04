@@ -144,8 +144,9 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               LocationMapperWidget(
-                                  onTap: () => Navigator.of(context)
-                                      .push(ParentLocationScreen.route(parentId: 'Root'))),
+                                  onTap: () => Navigator.of(context).push(
+                                      ParentLocationScreen.route(
+                                          parentId: 'Root'))),
                             ],
                           ),
                           SizedBox(height: 30),

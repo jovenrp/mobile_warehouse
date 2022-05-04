@@ -25,15 +25,22 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
 
     await persistenceService?.appConfiguration.set(config?.toJson());
 
+    String? currentApi = await persistenceService?.preferredApi.get();
+    if (currentApi?.isEmpty == null) {
+      currentApi = config?.apiUrl;
+    }
+    emit(state.copyWith(apiUrl: currentApi));
+
     Timer(const Duration(seconds: 2), () {
       emit(state.copyWith(isLoading: false));
       if (token == null || isExpire) {
-        emit(state.copyWith(isAlreadySignedIn: false));
+        emit(state.copyWith(isAlreadySignedIn: false, apiUrl: currentApi));
       } else {
         emit(state.copyWith(
             userProfileModel: userProfileModel,
             token: token,
-            isAlreadySignedIn: true));
+            isAlreadySignedIn: true,
+            apiUrl: currentApi));
       }
     });
   }
