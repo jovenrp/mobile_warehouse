@@ -208,7 +208,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                                 }
                               });
                             }),
-                            backgroundColor: AppColors.atWarningRed,
+                            backgroundColor: AppColors.atLightBlue,
                             foregroundColor: AppColors.white,
                             icon: Icons.edit,
                           ),

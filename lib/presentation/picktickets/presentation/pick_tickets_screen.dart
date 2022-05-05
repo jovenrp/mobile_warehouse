@@ -85,7 +85,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                           width: 30,
                           child: ATLoadingIndicator(
                             strokeWidth: 3.0,
-                            width: 10,
+                            width: 15,
                             height: 10,
                           ),
                         )

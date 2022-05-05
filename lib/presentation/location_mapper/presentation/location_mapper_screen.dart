@@ -201,7 +201,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                             isReadOnly = false;
                                             serialNode.requestFocus();
                                           }),
-                                          backgroundColor: AppColors.greyRed,
+                                          backgroundColor: AppColors.atLightBlue,
                                           foregroundColor: AppColors.white,
                                           icon: Icons.edit,
                                         ),
