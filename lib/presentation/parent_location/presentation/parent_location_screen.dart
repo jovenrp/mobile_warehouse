@@ -18,7 +18,14 @@ import 'package:mobile_warehouse/presentation/parent_location/data/models/contai
 import 'package:mobile_warehouse/presentation/parent_location/data/models/parent_location_model.dart';
 
 class ParentLocationScreen extends StatefulWidget {
-  const ParentLocationScreen({Key? key, this.parentId, this.navigation, this.parentName, this.container, this.childrenContainer, this.currentIndex})
+  const ParentLocationScreen(
+      {Key? key,
+      this.parentId,
+      this.navigation,
+      this.parentName,
+      this.container,
+      this.childrenContainer,
+      this.currentIndex})
       : super(key: key);
 
   static const String routeName = '/parentLocation';
@@ -70,7 +77,9 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
   void initState() {
     super.initState();
     if (widget.parentId == null || widget.parentId == 'root') {
-      context.read<ParentLocationBloc>().getContainerChild('root', 'children', widget.container);
+      context
+          .read<ParentLocationBloc>()
+          .getContainerChild('root', 'children', widget.container);
       parentName = 'Root';
     } else {
       changeScreen();
@@ -79,10 +88,14 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
 
   void changeScreen() async {
     if (widget.navigation == 'pop') {
-      ParentLocationModel model = await context.read<ParentLocationBloc>().getContainerChild(widget.parentId, 'parent', widget.container);
+      ParentLocationModel model = await context
+          .read<ParentLocationBloc>()
+          .getContainerChild(widget.parentId, 'parent', widget.container);
       if (model.container?.first.parentId?.isNotEmpty == true) {
-        ParentLocationModel parentLocationModel =
-            await context.read<ParentLocationBloc>().getContainerChild(model.container?.first.parentId, 'children', widget.container);
+        ParentLocationModel parentLocationModel = await context
+            .read<ParentLocationBloc>()
+            .getContainerChild(
+                model.container?.first.parentId, 'children', widget.container);
         parentModel = parentLocationModel.container?.first;
       }
     } else {
@@ -92,8 +105,10 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
           .then((ParentLocationModel parentLocation) {
         if (parentLocation.message == 'NoData' && !isNavigated) {
           isNavigated = true;
-          Navigator.of(context).pushReplacement(
-              LocationMapperScreen.route(container: widget.container, containerList: widget.childrenContainer, currentIndex: widget.currentIndex));
+          Navigator.of(context).pushReplacement(LocationMapperScreen.route(
+              container: widget.container,
+              containerList: widget.childrenContainer,
+              currentIndex: widget.currentIndex));
         }
       });
     }
@@ -101,8 +116,11 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ParentLocationBloc, ParentLocationState>(listener: (BuildContext context, ParentLocationState state) {
-      if (widget.navigation == 'pop' && state.containerModel?.isNotEmpty == true && state.parentContainerModel?.isNotEmpty == true) {
+    return BlocConsumer<ParentLocationBloc, ParentLocationState>(
+        listener: (BuildContext context, ParentLocationState state) {
+      if (widget.navigation == 'pop' &&
+          state.containerModel?.isNotEmpty == true &&
+          state.parentContainerModel?.isNotEmpty == true) {
         if (state.containerModel?.first.isRoot?.toLowerCase() == 'n') {
           parentName = state.parentContainerModel?.first.code;
         } else {
@@ -120,7 +138,9 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
     }, builder: (BuildContext context, ParentLocationState state) {
       parentContainer = state.parentContainerModel;
       childrenContainer = state.containerModel;
-      rootName = state.parentContainerModel?.isNotEmpty == true ? state.parentContainerModel?.first.code : '';
+      rootName = state.parentContainerModel?.isNotEmpty == true
+          ? state.parentContainerModel?.first.code
+          : '';
       return SafeArea(
           child: Scaffold(
         appBar: ATAppBar(
@@ -133,7 +153,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
           actions: <Widget>[
             Ink(
               child: InkWell(
-                onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/dashboard')),
+                onTap: () => Navigator.of(context)
+                    .popUntil(ModalRoute.withName('/dashboard')),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: Icon(
@@ -150,7 +171,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
               Navigator.of(context).popUntil(ModalRoute.withName('/dashboard'));
             } else {
               Navigator.of(context).push(ParentLocationScreen.route(
-                parentId: (int.parse(state.containerModel?[0].parentId ?? '')).toString(),
+                parentId: (int.parse(state.containerModel?[0].parentId ?? ''))
+                    .toString(),
                 navigation: 'pop',
                 parentName: state.containerModel?[0].code,
                 container: state.containerModel?[0],
@@ -171,14 +193,19 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                     onPressed: () {
                       if (searchController.text.isNotEmpty == true) {
                         setState(() {
-                          context.read<ParentLocationBloc>().searchCode(value: searchController.text, parentId: widget.parentId);
+                          context.read<ParentLocationBloc>().searchCode(
+                              value: searchController.text,
+                              parentId: widget.parentId);
                         });
                       }
                     },
                     onChanged: (String value) {
-                      EasyDebounce.debounce('deebouncer1', Duration(milliseconds: 700), () {
+                      EasyDebounce.debounce(
+                          'deebouncer1', Duration(milliseconds: 700), () {
                         setState(() {
-                          context.read<ParentLocationBloc>().searchCode(value: searchController.text, parentId: widget.parentId);
+                          context.read<ParentLocationBloc>().searchCode(
+                              value: searchController.text,
+                              parentId: widget.parentId);
                         });
                       });
                     }),
@@ -200,13 +227,16 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                                 alignment: Alignment.topCenter,
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 10),
-                                  child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
+                                  child: ATText(
+                                      text: I18n.of(context)
+                                          .please_wait_while_data_is_loaded),
                                 ))
                           ],
                         )
                       : state.containerModel?.isNotEmpty == true
                           ? ListView.builder(
-                              itemCount: (state.containerModel?.length ?? 0) + 1,
+                              itemCount:
+                                  (state.containerModel?.length ?? 0) + 1,
                               itemBuilder: (BuildContext context, int index) {
                                 if (index == 0) {
                                   return SizedBox();
@@ -214,83 +244,139 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                                 index -= 1;
                                 return Slidable(
                                     key: ValueKey<int>(index),
-                                    startActionPane: ActionPane(motion: const ScrollMotion(), children: <Widget>[
-                                      SlidableAction(
-                                        onPressed: (BuildContext navContext) {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-                                                  return addChild(
-                                                      state.containerModel?[index],
-                                                      isDialogueError,
-                                                      setState,
-                                                      state.containerModel?[index].name?.isNotEmpty == true
-                                                          ? '${state.containerModel?[index].name}'
-                                                          : '${state.containerModel?[index].code}');
-                                                });
-                                              }).then((_) {
-                                            isDialogueError = false;
-                                          });
-                                        },
-                                        backgroundColor: AppColors.successGreen,
-                                        foregroundColor: AppColors.white,
-                                        icon: Icons.add_circle,
-                                      ),
-                                      SlidableAction(
-                                        onPressed: (BuildContext navContext) {
-                                          Navigator.of(context).pushReplacement(LocationMapperScreen.route(
-                                              container: state.containerModel?[index],
-                                              containerList: state.containerModel,
-                                              currentIndex: index));
-                                        },
-                                        backgroundColor: AppColors.atLightBlue,
-                                        foregroundColor: AppColors.white,
-                                        icon: Icons.edit,
-                                      )
-                                    ]),
+                                    startActionPane: ActionPane(
+                                        motion: const ScrollMotion(),
+                                        children: <Widget>[
+                                          SlidableAction(
+                                            onPressed:
+                                                (BuildContext navContext) {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return StatefulBuilder(
+                                                        builder: (BuildContext
+                                                                context,
+                                                            StateSetter
+                                                                setState) {
+                                                      return addChild(
+                                                          state.containerModel?[
+                                                              index],
+                                                          isDialogueError,
+                                                          setState,
+                                                          state
+                                                                      .containerModel?[
+                                                                          index]
+                                                                      .name
+                                                                      ?.isNotEmpty ==
+                                                                  true
+                                                              ? '${state.containerModel?[index].name}'
+                                                              : '${state.containerModel?[index].code}');
+                                                    });
+                                                  }).then((_) {
+                                                isDialogueError = false;
+                                              });
+                                            },
+                                            backgroundColor:
+                                                AppColors.successGreen,
+                                            foregroundColor: AppColors.white,
+                                            icon: Icons.add_circle,
+                                          ),
+                                          SlidableAction(
+                                            onPressed:
+                                                (BuildContext navContext) {
+                                              Navigator.of(context).pushReplacement(
+                                                  LocationMapperScreen.route(
+                                                      container:
+                                                          state.containerModel?[
+                                                              index],
+                                                      containerList:
+                                                          state.containerModel,
+                                                      currentIndex: index));
+                                            },
+                                            backgroundColor:
+                                                AppColors.atLightBlue,
+                                            foregroundColor: AppColors.white,
+                                            icon: Icons.edit,
+                                          )
+                                        ]),
                                     child: Container(
-                                      padding: const EdgeInsets.only(left: 20, right: 20),
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
                                       child: Ink(
                                         child: InkWell(
                                           onTap: () {},
                                           child: Container(
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: <Widget>[
                                                 Expanded(
                                                   flex: 2,
                                                   child: Ink(
                                                     child: InkWell(
                                                       onTap: () {
-                                                        Navigator.of(context).push(ParentLocationScreen.route(
-                                                            parentId: state.containerModel?[index].id,
-                                                            navigation: 'push',
-                                                            parentName: state.containerModel?[index].code,
-                                                            container: state.containerModel?[index],
-                                                            childrenContainer: childrenContainer,
-                                                            currentIndex: index));
+                                                        Navigator.of(context).push(
+                                                            ParentLocationScreen.route(
+                                                                parentId: state
+                                                                    .containerModel?[
+                                                                        index]
+                                                                    .id,
+                                                                navigation:
+                                                                    'push',
+                                                                parentName: state
+                                                                    .containerModel?[
+                                                                        index]
+                                                                    .code,
+                                                                container: state
+                                                                        .containerModel?[
+                                                                    index],
+                                                                childrenContainer:
+                                                                    childrenContainer,
+                                                                currentIndex:
+                                                                    index));
                                                         /*Navigator.of(context).pushReplacement(LocationMapperScreen.route(
                                                             container: state.containerModel?[index],
                                                             containerList: state.containerModel,
                                                             currentIndex: index));*/
                                                       },
                                                       child: Padding(
-                                                        padding: const EdgeInsets.only(top: 20, bottom: 20),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 20,
+                                                                bottom: 20),
                                                         child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: <Widget>[
                                                             ATText(
-                                                              text: state.containerModel?[index].name?.isNotEmpty == true
+                                                              text: state
+                                                                          .containerModel?[
+                                                                              index]
+                                                                          .name
+                                                                          ?.isNotEmpty ==
+                                                                      true
                                                                   ? '${state.containerModel?[index].name}'
                                                                   : '${state.containerModel?[index].code}',
                                                               fontSize: 16,
-                                                              weight: FontWeight.bold,
+                                                              weight: FontWeight
+                                                                  .bold,
                                                             ),
                                                             Visibility(
-                                                              visible: state.containerModel?[index].num?.isNotEmpty == true,
+                                                              visible: state
+                                                                      .containerModel?[
+                                                                          index]
+                                                                      .num
+                                                                      ?.isNotEmpty ==
+                                                                  true,
                                                               child: ATText(
-                                                                text: state.containerModel?[index].num,
+                                                                text: state
+                                                                    .containerModel?[
+                                                                        index]
+                                                                    .num,
                                                                 fontSize: 14,
                                                               ),
                                                             )
@@ -332,14 +418,17 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                               alignment: Alignment.topCenter,
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 30),
-                                child: ATText(text: I18n.of(context).oops_item_returned_0_results),
+                                child: ATText(
+                                    text: I18n.of(context)
+                                        .oops_item_returned_0_results),
                               ),
                             ))
             ],
           ),
         ),
         bottomNavigationBar: state.containerModel?.isNotEmpty == true
-            ? (parentName == 'Root' || state.containerModel?[0].isRoot?.toLowerCase() == 'y')
+            ? (parentName == 'Root' ||
+                    state.containerModel?[0].isRoot?.toLowerCase() == 'y')
                 ? SizedBox()
                 : Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
@@ -349,10 +438,17 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                         onTap: () => showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return StatefulBuilder(builder: (BuildContext context, StateSetter states) {
+                                  return StatefulBuilder(builder:
+                                      (BuildContext context,
+                                          StateSetter states) {
                                     return widget.navigation == 'push'
-                                        ? addChild(widget.container, isDialogueError, states, parentName)
-                                        : addChild(parentContainer?.first, isDialogueError, states, parentName);
+                                        ? addChild(widget.container,
+                                            isDialogueError, states, parentName)
+                                        : addChild(
+                                            parentContainer?.first,
+                                            isDialogueError,
+                                            states,
+                                            parentName);
                                   });
                                 }).then((_) {
                               isDialogueError = false;
@@ -362,7 +458,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
     });
   }
 
-  Widget addChild(ContainerModel? containerModel, bool isError, StateSetter setState, String? parentName) {
+  Widget addChild(ContainerModel? containerModel, bool isError,
+      StateSetter setState, String? parentName) {
     TextEditingController name = TextEditingController();
     TextEditingController code = TextEditingController();
     TextEditingController serial = TextEditingController();
@@ -384,7 +481,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                       color: AppColors.successGreen,
                     ),
                     SizedBox(width: 10),
-                    Flexible(child: ATText(text: 'Adding child for $parentName'))
+                    Flexible(
+                        child: ATText(text: 'Adding child for $parentName'))
                     //: 'Fill up the field to create a new child for '))
                   ],
                 ),
@@ -422,7 +520,11 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                         if (name.text.isNotEmpty || code.text.isNotEmpty) {
                           isDialogueError = false;
                           context.read<ParentLocationBloc>().createContainer(
-                              parentId: containerModel?.id, name: name.text, num: serial.text, code: code.text, containerModel: widget.container);
+                              parentId: containerModel?.id,
+                              name: name.text,
+                              num: serial.text,
+                              code: code.text,
+                              containerModel: widget.container);
                           Navigator.of(context, rootNavigator: true).pop();
                         } else {
                           isDialogueError = true;

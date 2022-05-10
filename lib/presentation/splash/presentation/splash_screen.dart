@@ -73,7 +73,11 @@ class SplashScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ATText(text: state.apiUrl, fontSize: 12, fontColor: AppColors.black,)
+                ATText(
+                  text: state.apiUrl,
+                  fontSize: 12,
+                  fontColor: AppColors.black,
+                )
               ],
             )
           ],

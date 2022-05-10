@@ -22,6 +22,9 @@ import 'package:mobile_warehouse/presentation/picktickets_details/domain/reposit
 import 'package:mobile_warehouse/presentation/settings/bloc/settings_bloc.dart';
 import 'package:mobile_warehouse/presentation/sku_details/bloc/sku_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart';
+import 'package:mobile_warehouse/presentation/stock_count/bloc/stock_count_bloc.dart';
+import 'package:mobile_warehouse/presentation/stock_count/data/services/stock_counts_api_service.dart';
+import 'package:mobile_warehouse/presentation/stock_count/domain/repositories/stock_count_repository_impl.dart';
 import 'package:provider/single_child_widget.dart';
 
 class BlocsProvider {
@@ -87,6 +90,12 @@ class BlocsProvider {
           create: (_) => ParentLocationBloc(
               locationMapperRepository: LocationMapperRepositoryImpl(
                   LocationMapperApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<StockCountBloc>(
+          create: (_) => StockCountBloc(
+              stockCountRepository: StockCountRepositoryImpl(
+                  StockCountApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
       ];

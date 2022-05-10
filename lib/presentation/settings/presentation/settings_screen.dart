@@ -225,7 +225,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                                   SnackBar snackBar = SnackBar(
                                     content: ATText(
                                       text:
-                                      'URL is changed. Re-login is required and App needs to restart.',
+                                          'URL is changed. Re-login is required and App needs to restart.',
                                       fontColor: AppColors.white,
                                     ),
                                     duration: Duration(seconds: 5),

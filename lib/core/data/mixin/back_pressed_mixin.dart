@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_warehouse/core/presentation/widgets/theme_state.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:pedantic/pedantic.dart';
-
-import 'package:mobile_warehouse/generated/i18n.dart';
 
 mixin BackPressedMixin {
   bool onBackPressed(BuildContext context, bool isDoubleBackPressed,

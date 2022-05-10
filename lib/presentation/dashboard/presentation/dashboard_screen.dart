@@ -17,6 +17,7 @@ import 'package:mobile_warehouse/presentation/login/presentation/login_screen.da
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/settings/presentation/settings_screen.dart';
+import 'package:mobile_warehouse/presentation/stock_count/presentation/stock_count_screen.dart';
 
 import 'action_cards_widget.dart';
 
@@ -146,7 +147,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                               LocationMapperWidget(
                                   onTap: () => Navigator.of(context).push(
                                       ParentLocationScreen.route(
-                                          parentId: 'Root', navigation: 'pop'))),
+                                          parentId: 'Root',
+                                          navigation: 'pop'))),
                             ],
                           ),
                           SizedBox(height: 30),
@@ -166,10 +168,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                           ),
                           SizedBox(height: 14),
                           InkWell(
-                            onTap: () {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            },
+                            onTap: () => Navigator.of(context)
+                                .push(StockCountScreen.route()),
                             child: Padding(
                                 padding:
                                     const EdgeInsets.only(left: 20, right: 20),

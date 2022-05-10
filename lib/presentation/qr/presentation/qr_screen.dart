@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
-import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_state.dart';
 import 'package:mobile_warehouse/presentation/parent_location/data/models/container_model.dart';

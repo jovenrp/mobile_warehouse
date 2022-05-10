@@ -127,7 +127,71 @@ class _ApplicationState extends State<Application> {
     }
   }
 
+  //FOR DEVELOPMENT BUILD ONLY
   @override
+  Widget build(BuildContext context) {
+    final List<SingleChildWidget> repositories = RepositoriesProvider.provide(
+        dio: _dio,
+        apiUrl: widget.config.apiUrl,
+        actionTRAKApiService: _apiService.actionTRAKApiService);
+
+    final List<SingleChildWidget> blocs = BlocsProvider.provide(
+      dio: _dio,
+      apiUrl: widget.config.apiUrl,
+      persistenceService: _persistenceService,
+      appBloc: _appBloc,
+      navigatorKey: navigatorKey,
+    );
+
+    List<SingleChildWidget> services = <SingleChildWidget>[
+      Provider<PersistenceService>.value(value: _persistenceService),
+      Provider<ApiService>.value(value: _apiService),
+    ];
+
+    List<SingleChildWidget> providers = <SingleChildWidget>[
+      ...repositories,
+      ...blocs,
+      ...services,
+    ];
+
+    providers.addAll(<SingleChildWidget>[
+      Provider<GlobalKey<NavigatorState>>.value(value: navigatorKey),
+      if (globalAlice != null) Provider<Alice>.value(value: globalAlice!)
+    ]);
+
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: MultiProvider(
+        providers: providers,
+        child: BlocConsumer<ApplicationBloc, ApplicationState>(
+          listener: (BuildContext context, ApplicationState state) {
+            // Handle
+          },
+          builder: (BuildContext context, __) => MaterialApp(
+            localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+              I18n.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate
+            ],
+            supportedLocales: I18n.delegate.supportedLocales,
+            localeResolutionCallback: I18n.delegate.resolution(
+              fallback: const Locale('en', 'US'),
+            ),
+            theme: themeState.theme,
+            darkTheme: themeState.themeDark,
+            themeMode: ThemeMode.dark,
+            navigatorKey: navigatorKey,
+            debugShowCheckedModeBanner: false,
+            title: I18n.of(context).application_name,
+            home: SplashScreen(config: widget.config),
+          ),
+        ),
+      ),
+    );
+
+    //FOR DEPLOYMENT BUILD ONLY
+    /*@override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
       future: getCurrentApi(), // async work
@@ -202,7 +266,7 @@ class _ApplicationState extends State<Application> {
             }
         }
       },
-    );
+    );*/
   }
 }
 
