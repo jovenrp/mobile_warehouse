@@ -8,12 +8,13 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/stock_count/bloc/stock_count_bloc.dart';
 import 'package:mobile_warehouse/presentation/stock_count/bloc/stock_count_state.dart';
+import 'package:mobile_warehouse/presentation/stock_ticket/presentation/stock_count_ticket_screen.dart';
 
 class StockCountScreen extends StatefulWidget {
   const StockCountScreen({Key? key}) : super(key: key);
 
-  static const String routeName = '/pickTickets';
-  static const String screenName = 'pickTicketsScreen';
+  static const String routeName = '/stockCountScreen';
+  static const String screenName = 'stockCountScreen';
 
   static ModalRoute<StockCountScreen> route() => MaterialPageRoute<StockCountScreen>(
         settings: const RouteSettings(name: routeName),
@@ -30,7 +31,6 @@ class _StockCountScreen extends State<StockCountScreen> {
   @override
   void initState() {
     super.initState();
-    print('sdfsdf');
     context.read<StockCountBloc>().getStockCounts(value: '');
   }
 
@@ -79,69 +79,88 @@ class _StockCountScreen extends State<StockCountScreen> {
                         child: Container(
                             color: AppColors.white,
                             child: state.isLoading
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              SizedBox(height: 50),
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Icon(
-                                  Icons.move_to_inbox,
-                                  size: 100,
-                                  color: AppColors.grayElevent,
-                                ),
-                              ),
-                              Container(
-                                  alignment: Alignment.topCenter,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
-                                  ))
-                            ],
-                          )
-                        : ListView.builder(
-                                itemCount: (state.stockCountItemList?.length ?? 0),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Ink(
-                                    child: InkWell(
-                                      onTap: (){
-
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.only(left: 20, right: 20),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            SizedBox(height: 10),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                ATText(text: state.stockCountItemList?[index].sku, fontSize: 16, weight: FontWeight.bold,),
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: <Widget>[
-                                                    ATText(text: '${index + 1} items', fontSize: 16, weight: FontWeight.bold,),
-                                                    Icon(
-                                                      // Based on passwordVisible state choose the icon
-                                                      Icons.navigate_next,
-                                                      color: AppColors.black,
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 5),
-                                            ATText(text: state.stockCountItemList?[index].name, fontSize: 14),
-                                            ATText(text: state.stockCountItemList?[index].description, fontSize: 14),
-                                            SizedBox(height: 15),
-                                            Divider(height: 1, color: AppColors.black,)
-                                          ],
+                                ? Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: <Widget>[
+                                      SizedBox(height: 50),
+                                      Padding(
+                                        padding: const EdgeInsets.all(20),
+                                        child: Icon(
+                                          Icons.move_to_inbox,
+                                          size: 100,
+                                          color: AppColors.grayElevent,
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }))
-                    ))]),
+                                      Container(
+                                          alignment: Alignment.topCenter,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(top: 10),
+                                            child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
+                                          ))
+                                    ],
+                                  )
+                                : state.stockCountItemList?.isEmpty == true ? Container(
+                                  alignment: Alignment.topCenter,
+                                  width: double.infinity,
+                                  color: AppColors.white,
+                                  padding: const EdgeInsets.only(top: 30),
+                                  child: ATText(
+                                      text: I18n.of(context)
+                                          .oops_item_returned_0_results),
+                                ) : ListView.builder(
+                                    itemCount: (state.stockCountItemList?.length ?? 0),
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Ink(
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(StockCountTicketScreen.route(stockCountItemModel: state.stockCountItemList?[index]));
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.only(left: 20, right: 20),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                SizedBox(height: 10),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: <Widget>[
+                                                    ATText(
+                                                      text: state.stockCountItemList?[index].sku,
+                                                      fontSize: 16,
+                                                      weight: FontWeight.bold,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: <Widget>[
+                                                        ATText(
+                                                          text: '${index + 1} items',
+                                                          fontSize: 16,
+                                                          weight: FontWeight.bold,
+                                                        ),
+                                                        Icon(
+                                                          // Based on passwordVisible state choose the icon
+                                                          Icons.navigate_next,
+                                                          color: AppColors.black,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 5),
+                                                ATText(text: state.stockCountItemList?[index].name, fontSize: 14),
+                                                ATText(text: state.stockCountItemList?[index].description, fontSize: 14),
+                                                SizedBox(height: 15),
+                                                Divider(
+                                                  height: 1,
+                                                  color: AppColors.black,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }))))
+              ]),
             ),
           ));
         });

@@ -22,7 +22,7 @@ import 'package:mobile_warehouse/presentation/stock_count/presentation/stock_cou
 import 'action_cards_widget.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key, this.userProfileModel, this.config})
+  const DashboardScreen({Key? key, this.userProfileModel, this.config, this.username})
       : super(key: key);
 
   static const String routeName = '/dashboard';
@@ -30,13 +30,14 @@ class DashboardScreen extends StatefulWidget {
 
   final UserProfileModel? userProfileModel;
   final ApplicationConfig? config;
+  final String? username;
 
   static ModalRoute<DashboardScreen> route(
-          {UserProfileModel? userProfileModel, ApplicationConfig? config}) =>
+          {UserProfileModel? userProfileModel, ApplicationConfig? config, String? username}) =>
       MaterialPageRoute<DashboardScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) =>
-            DashboardScreen(userProfileModel: userProfileModel, config: config),
+            DashboardScreen(userProfileModel: userProfileModel, config: config, username: username),
       );
 
   @override
@@ -72,7 +73,6 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
           child: WillPopScope(
               onWillPop: () async {
                 if (Platform.isAndroid) {
-                  print('backedd');
                   _isDoubleBackPressed = onBackPressed(
                       context, _isDoubleBackPressed, (bool value) {
                     _isDoubleBackPressed = value;
@@ -135,7 +135,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                             padding: const EdgeInsets.only(left: 18, top: 20),
                             child: ATText(
                               text: I18n.of(context)
-                                  .hi_name(widget.userProfileModel?.username),
+                                  .hi_name(widget.userProfileModel?.username ?? widget.username),
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w400),
                             ),

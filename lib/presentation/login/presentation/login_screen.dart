@@ -54,7 +54,7 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
       if (!state.isLoading) {
         if (!state.hasError) {
           Navigator.of(context).pushReplacement(DashboardScreen.route(
-              userProfileModel: state.userProfileModel, config: widget.config));
+              userProfileModel: state.userProfileModel, config: widget.config, username: usernameController.text));
         }
       }
     }, builder: (BuildContext context, LoginScreenState state) {

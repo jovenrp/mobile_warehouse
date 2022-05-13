@@ -36,7 +36,7 @@ class _ATTextfield extends State<ATTextfield> {
           isDense: true,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          hintStyle: TextStyle(color: Colors.grey[800]),
+          hintStyle: TextStyle(color: AppColors.semiDark),
           hintText: widget.hintText ?? 'Enter a text here',
           fillColor: AppColors.white,
           filled: true,

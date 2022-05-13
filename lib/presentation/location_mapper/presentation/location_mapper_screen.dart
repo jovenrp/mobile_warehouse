@@ -19,9 +19,7 @@ import 'package:mobile_warehouse/presentation/qr/presentation/qr_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class LocationMapperScreen extends StatefulWidget {
-  const LocationMapperScreen(
-      {Key? key, this.container, this.containerList, this.currentIndex})
-      : super(key: key);
+  const LocationMapperScreen({Key? key, this.container, this.containerList, this.currentIndex}) : super(key: key);
 
   static const String routeName = '/locationMapper';
   static const String screenName = 'locationMapperScreen';
@@ -30,10 +28,7 @@ class LocationMapperScreen extends StatefulWidget {
   final List<ContainerModel>? containerList;
   final int? currentIndex;
 
-  static ModalRoute<LocationMapperScreen> route(
-          {ContainerModel? container,
-          List<ContainerModel>? containerList,
-          int? currentIndex}) =>
+  static ModalRoute<LocationMapperScreen> route({ContainerModel? container, List<ContainerModel>? containerList, int? currentIndex}) =>
       MaterialPageRoute<LocationMapperScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => LocationMapperScreen(
@@ -62,9 +57,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<LocationMapperBloc>()
-        .getContainerSkus(id: widget.container?.id);
+    context.read<LocationMapperBloc>().getContainerSkus(id: widget.container?.id);
     if (widget.container?.num?.isNotEmpty == true) {
       serialController.text = widget.container?.num ?? '';
       isReadOnly = true;
@@ -74,8 +67,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
     }
 
     index = widget.currentIndex ?? 0;
-    if (index >=
-        int.parse(widget.containerList?.length.toString() ?? '0') - 1) {
+    if (index >= int.parse(widget.containerList?.length.toString() ?? '0') - 1) {
       index = 0;
     } else {
       index++;
@@ -84,8 +76,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LocationMapperBloc, LocationMapperState>(
-        listener: (BuildContext context, LocationMapperState state) {
+    return BlocConsumer<LocationMapperBloc, LocationMapperState>(listener: (BuildContext context, LocationMapperState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
       }
@@ -105,15 +96,11 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                       color: AppColors.white,
                       size: 24.0,
                     ),
-                    onTap: () => Navigator.of(context).push(
-                        ParentLocationScreen.route(
-                            navigation: 'push',
-                            parentId: widget.container?.parentId)),
+                    onTap: () => Navigator.of(context).push(ParentLocationScreen.route(navigation: 'push', parentId: widget.container?.parentId)),
                     actions: <Widget>[
                       state.isUpdateContainerLoading
                           ? Container(
-                              padding: const EdgeInsets.only(
-                                  top: 20, bottom: 20, right: 18),
+                              padding: const EdgeInsets.only(top: 20, bottom: 20, right: 18),
                               width: 35,
                               child: ATLoadingIndicator(
                                 strokeWidth: 3.0,
@@ -126,11 +113,8 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                   ),
                   body: Container(
                       color: AppColors.beachSea,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            /*Container(
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+                        /*Container(
                           color: AppColors.beachSea,
                           height: 130,
                           child: Row(
@@ -174,312 +158,207 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                             ],
                           ),
                         ),*/
-                            Visibility(
-                              visible: isReadOnly,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 20),
-                                child: ATText(
-                                  text:
-                                      '*Serial is in read-only, swipe right to alter the value.',
-                                  fontColor: AppColors.warningOrange,
-                                ),
-                              ),
+                        Visibility(
+                          visible: isReadOnly,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: ATText(
+                              text: '*Serial is in read-only, swipe right to alter the value.',
+                              fontColor: AppColors.warningOrange,
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 18, right: 18),
-                              child: Slidable(
-                                  key: ValueKey<int>(index),
-                                  startActionPane: ActionPane(
-                                      // A motion is a widget used to control how the pane animates.
-                                      motion: const ScrollMotion(),
-                                      children: <Widget>[
-                                        SlidableAction(
-                                          onPressed: (BuildContext context) =>
-                                              setState(() {
-                                            isReadOnly = false;
-                                            serialNode.requestFocus();
-                                          }),
-                                          backgroundColor:
-                                              AppColors.atLightBlue,
-                                          foregroundColor: AppColors.white,
-                                          icon: Icons.edit,
-                                        ),
-                                      ]),
-                                  child: ATSearchfield(
-                                    textEditingController: serialController,
-                                    hintText: 'Assign serial number',
-                                    focusNode: serialNode,
-                                    isReadOnly: isReadOnly,
-                                    isScanner: true,
-                                    onPressed: isReadOnly
-                                        ? () {}
-                                        : () {
-                                            Future<void>.delayed(Duration.zero,
-                                                () async {
-                                              ParentLocationModel
-                                                  parentLocationModel =
-                                                  await Navigator.push(context,
-                                                      MaterialPageRoute(builder:
-                                                          (BuildContext
-                                                              context) {
-                                                return QRScreen(
-                                                    container: widget.container,
-                                                    scanner: 'serial');
-                                              }));
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: Slidable(
+                              key: ValueKey<int>(index),
+                              startActionPane: ActionPane(
+                                  // A motion is a widget used to control how the pane animates.
+                                  motion: const ScrollMotion(),
+                                  children: <Widget>[
+                                    SlidableAction(
+                                      onPressed: (BuildContext context) => setState(() {
+                                        isReadOnly = false;
+                                        serialNode.requestFocus();
+                                      }),
+                                      backgroundColor: AppColors.atLightBlue,
+                                      foregroundColor: AppColors.white,
+                                      icon: Icons.edit,
+                                    ),
+                                  ]),
+                              child: ATSearchfield(
+                                textEditingController: serialController,
+                                hintText: 'Assign serial number',
+                                focusNode: serialNode,
+                                isReadOnly: isReadOnly,
+                                isScanner: true,
+                                onPressed: isReadOnly
+                                    ? () {}
+                                    : () {
+                                        Future<void>.delayed(Duration.zero, () async {
+                                          ParentLocationModel parentLocationModel =
+                                              await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                            return QRScreen(container: widget.container, scanner: 'serial');
+                                          }));
+                                          SnackBar snackBar = SnackBar(
+                                            content: ATText(
+                                              text: parentLocationModel.message,
+                                              fontColor: AppColors.white,
+                                            ),
+                                            duration: Duration(seconds: 2),
+                                          );
+
+                                          if (parentLocationModel.error == false) {
+                                            setState(() {
+                                              isReadOnly = true;
+                                              serialController.text = parentLocationModel.container?.first.num ?? '';
+                                            });
+                                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                          }
+                                        });
+                                      },
+                                onChanged: (String value) {},
+                                onFieldSubmitted: (String? value) => setState(() {
+                                  if (value?.isNotEmpty == true) {
+                                    context
+                                        .read<LocationMapperBloc>()
+                                        .updateContainer(id: widget.container?.id, code: widget.container?.code, serial: value)
+                                        .then((ParentLocationModel parentLocationModel) => setState(() {
+                                              isReadOnly = true;
                                               SnackBar snackBar = SnackBar(
                                                 content: ATText(
-                                                  text: parentLocationModel
-                                                      .message,
+                                                  text: parentLocationModel.message,
                                                   fontColor: AppColors.white,
                                                 ),
                                                 duration: Duration(seconds: 2),
                                               );
-
-                                              if (parentLocationModel.error ==
-                                                  false) {
-                                                setState(() {
-                                                  isReadOnly = true;
-                                                  serialController.text =
-                                                      parentLocationModel
-                                                              .container
-                                                              ?.first
-                                                              .num ??
-                                                          '';
-                                                });
-                                                ScaffoldMessenger.of(context)
-                                                    .hideCurrentSnackBar();
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(snackBar);
+                                              if (parentLocationModel.error == false) {
+                                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                               }
-                                            });
-                                          },
-                                    onChanged: (String value) {},
-                                    onFieldSubmitted: (String? value) =>
-                                        setState(() {
-                                      if (value?.isNotEmpty == true) {
-                                        context
-                                            .read<LocationMapperBloc>()
-                                            .updateContainer(
-                                                id: widget.container?.id,
-                                                code: widget.container?.code,
-                                                serial: value)
-                                            .then((ParentLocationModel
-                                                    parentLocationModel) =>
-                                                setState(() {
-                                                  isReadOnly = true;
-                                                  SnackBar snackBar = SnackBar(
-                                                    content: ATText(
-                                                      text: parentLocationModel
-                                                          .message,
-                                                      fontColor:
-                                                          AppColors.white,
-                                                    ),
-                                                    duration:
-                                                        Duration(seconds: 2),
-                                                  );
-                                                  if (parentLocationModel
-                                                          .error ==
-                                                      false) {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .hideCurrentSnackBar();
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(snackBar);
-                                                  }
-                                                }));
-                                        skuNode.requestFocus();
-                                      }
-                                    }),
-                                  )),
-                            ),
-                            SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 18, right: 18),
-                              child: ATSearchfield(
-                                  textEditingController: skuController,
-                                  hintText: 'SKU',
-                                  focusNode: skuNode,
-                                  isScanner: true,
-                                  onFieldSubmitted: (String? value) =>
-                                      setState(() {
-                                        if (value?.isNotEmpty == true) {
-                                          context
-                                              .read<LocationMapperBloc>()
-                                              .addSku(
-                                                  id: widget.container?.id,
-                                                  skuId: value);
-                                          skuController.clear();
-                                          skuNode.requestFocus();
-                                        } else {
-                                          Navigator.of(context).pushReplacement(
-                                              LocationMapperScreen.route(
-                                                  container: widget
-                                                      .containerList?[index],
-                                                  containerList:
-                                                      widget.containerList,
-                                                  currentIndex: index));
-                                        }
-                                      }),
-                                  onPressed: () {
-                                    Future<void>.delayed(Duration.zero,
-                                        () async {
-                                      ParentLocationModel parentLocationModel =
-                                          await Navigator.push(context,
-                                              MaterialPageRoute(builder:
-                                                  (BuildContext context) {
-                                        return QRScreen(
-                                            container: widget.container,
-                                            scanner: 'sku');
-                                      }));
-                                      SnackBar snackBar = SnackBar(
-                                        content: ATText(
-                                          text: parentLocationModel.message,
-                                          fontColor: AppColors.white,
-                                        ),
-                                        duration: Duration(seconds: 2),
-                                      );
+                                            }));
+                                    skuNode.requestFocus();
+                                  }
+                                }),
+                              )),
+                        ),
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18, right: 18),
+                          child: ATSearchfield(
+                              textEditingController: skuController,
+                              hintText: 'SKU',
+                              focusNode: skuNode,
+                              isScanner: true,
+                              onFieldSubmitted: (String? value) => setState(() {
+                                    if (value?.isNotEmpty == true) {
+                                      context.read<LocationMapperBloc>().addSku(id: widget.container?.id, skuId: value);
+                                      skuController.clear();
+                                      skuNode.requestFocus();
+                                    } else {
+                                      Navigator.of(context).pushReplacement(LocationMapperScreen.route(
+                                          container: widget.containerList?[index], containerList: widget.containerList, currentIndex: index));
+                                    }
+                                  }),
+                              onPressed: () {
+                                Future<void>.delayed(Duration.zero, () async {
+                                  ParentLocationModel parentLocationModel =
+                                      await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                    return QRScreen(container: widget.container, scanner: 'sku');
+                                  }));
+                                  SnackBar snackBar = SnackBar(
+                                    content: ATText(
+                                      text: parentLocationModel.message,
+                                      fontColor: AppColors.white,
+                                    ),
+                                    duration: Duration(seconds: 2),
+                                  );
 
-                                      if (parentLocationModel.error == false) {
-                                        setState(() {
-                                          isReadOnly = true;
-                                          serialController.text =
-                                              parentLocationModel
-                                                      .container?.first.num ??
-                                                  '';
-                                        });
-                                        ScaffoldMessenger.of(context)
-                                            .hideCurrentSnackBar();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(snackBar);
-                                      }
+                                  if (parentLocationModel.error == false) {
+                                    setState(() {
+                                      isReadOnly = true;
+                                      serialController.text = parentLocationModel.container?.first.num ?? '';
                                     });
-                                  },
-                                  onChanged: (String value) {}),
-                            ),
-                            SizedBox(height: 20),
-                            Expanded(
-                              child: !state.isLoading
-                                  ? state.skus?.isNotEmpty == true
-                                      ? Container(
-                                          color: AppColors.white,
-                                          child: ListView.builder(
-                                              itemCount:
-                                                  (state.skus?.length ?? 0),
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return Slidable(
-                                                    key: ValueKey<int>(index),
-                                                    endActionPane: ActionPane(
-                                                        motion:
-                                                            const ScrollMotion(),
-                                                        children: <Widget>[
-                                                          SlidableAction(
-                                                            onPressed:
-                                                                (BuildContext
-                                                                    navContext) {
-                                                              context
-                                                                  .read<
-                                                                      LocationMapperBloc>()
-                                                                  .removeSku(
-                                                                      id: widget
-                                                                          .container
-                                                                          ?.id,
-                                                                      skuId: state
-                                                                          .skus?[
-                                                                              index]
-                                                                          .sku);
-                                                            },
-                                                            backgroundColor:
-                                                                AppColors
-                                                                    .mnpEditRed,
-                                                            foregroundColor:
-                                                                AppColors.white,
-                                                            icon: Icons
-                                                                .delete_forever_outlined,
-                                                          ),
-                                                        ]),
-                                                    child: Container(
-                                                      color: (index % 2) == 0
-                                                          ? AppColors.white
-                                                          : AppColors.lightBlue,
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20,
-                                                              right: 20,
-                                                              bottom: 15,
-                                                              top: 15),
-                                                      child: Row(
-                                                        children: <Widget>[
-                                                          Expanded(
-                                                            flex: 2,
-                                                            child: ATText(
-                                                                text: state
-                                                                    .skus?[
-                                                                        index]
-                                                                    .sku,
-                                                                fontSize: 16,
-                                                                fontColor:
-                                                                    AppColors
-                                                                        .black),
-                                                          ),
-                                                          Expanded(
-                                                            flex: 4,
-                                                            child: ATText(
-                                                                text: state
-                                                                    .skus?[
-                                                                        index]
-                                                                    .name,
-                                                                fontSize: 16,
-                                                                fontColor:
-                                                                    AppColors
-                                                                        .black),
-                                                          ),
-                                                        ],
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                  }
+                                });
+                              },
+                              onChanged: (String value) {}),
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: !state.isLoading
+                              ? state.skus?.isNotEmpty == true
+                                  ? Container(
+                                      color: AppColors.white,
+                                      child: ListView.builder(
+                                          itemCount: (state.skus?.length ?? 0),
+                                          itemBuilder: (BuildContext context, int index) {
+                                            return Slidable(
+                                                key: ValueKey<int>(index),
+                                                endActionPane: ActionPane(motion: const ScrollMotion(), children: <Widget>[
+                                                  SlidableAction(
+                                                    onPressed: (BuildContext navContext) {
+                                                      context
+                                                          .read<LocationMapperBloc>()
+                                                          .removeSku(id: widget.container?.id, skuId: state.skus?[index].sku);
+                                                    },
+                                                    backgroundColor: AppColors.mnpEditRed,
+                                                    foregroundColor: AppColors.white,
+                                                    icon: Icons.delete_forever_outlined,
+                                                  ),
+                                                ]),
+                                                child: Container(
+                                                  color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue,
+                                                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 15),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      Expanded(
+                                                        flex: 2,
+                                                        child: ATText(text: state.skus?[index].sku, fontSize: 16, fontColor: AppColors.black),
                                                       ),
-                                                    ));
-                                              }),
-                                        )
-                                      : Container(
-                                          color: AppColors.white,
-                                          alignment: Alignment.topCenter,
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 30),
-                                            child: ATText(
-                                                text: I18n.of(context)
-                                                    .oops_item_returned_0_results),
-                                          ),
-                                        )
+                                                      Expanded(
+                                                        flex: 4,
+                                                        child: ATText(text: state.skus?[index].name, fontSize: 16, fontColor: AppColors.black),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ));
+                                          }),
+                                    )
                                   : Container(
                                       color: AppColors.white,
-                                      child: Column(
-                                        children: <Widget>[
-                                          SizedBox(height: 50),
-                                          Container(
-                                            child: ATLoadingIndicator(
-                                              strokeWidth: 3.0,
-                                              width: 30,
-                                              height: 30,
-                                              color: AppColors.beachSea,
-                                            ),
-                                          ),
-                                          Container(
-                                              alignment: Alignment.topCenter,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10),
-                                                child: ATText(
-                                                    text: I18n.of(context)
-                                                        .please_wait_while_data_is_loaded),
-                                              ))
-                                        ],
-                                      )),
-                            )
-                          ])))));
+                                      alignment: Alignment.topCenter,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 30),
+                                        child: ATText(text: I18n.of(context).oops_item_returned_0_results),
+                                      ),
+                                    )
+                              : Container(
+                                  color: AppColors.white,
+                                  child: Column(
+                                    children: <Widget>[
+                                      SizedBox(height: 50),
+                                      Container(
+                                        child: ATLoadingIndicator(
+                                          strokeWidth: 3.0,
+                                          width: 30,
+                                          height: 30,
+                                          color: AppColors.beachSea,
+                                        ),
+                                      ),
+                                      Container(
+                                          alignment: Alignment.topCenter,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(top: 10),
+                                            child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
+                                          ))
+                                    ],
+                                  )),
+                        )
+                      ])))));
     });
   }
 
@@ -490,8 +369,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
 }
 
 class WheelPicker extends StatelessWidget {
-  const WheelPicker({Key? key, this.title, required this.index})
-      : super(key: key);
+  const WheelPicker({Key? key, this.title, required this.index}) : super(key: key);
 
   final String? title;
   final int index;
@@ -547,8 +425,7 @@ class WheelPicker extends StatelessWidget {
 }
 
 class WheelPickerByLetters extends StatelessWidget {
-  WheelPickerByLetters({Key? key, this.title, required this.index})
-      : super(key: key);
+  WheelPickerByLetters({Key? key, this.title, required this.index}) : super(key: key);
 
   final String? title;
   final int index;
@@ -615,8 +492,7 @@ class WheelPickerByLetters extends StatelessWidget {
                     return Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(0),
-                      child:
-                          PickerAlpha(index: alphabet[index], isAlphabet: true),
+                      child: PickerAlpha(index: alphabet[index], isAlphabet: true),
                     );
                   })),
         ),
