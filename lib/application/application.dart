@@ -190,8 +190,8 @@ class _ApplicationState extends State<Application> {
       ),
     );*/
 
-    //FOR DEPLOYMENT BUILD ONLY
-    @override
+  //FOR DEPLOYMENT BUILD ONLY
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
       future: getCurrentApi(), // async work

@@ -64,4 +64,19 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
       emit(state.copyWith(isLoading: false)); //turn off loading indicator
     }
   }
+
+  Future<bool> updateApi(String? api) async {
+    await persistenceService.preferredApi.set(api);
+
+    ApplicationConfig? config = await persistenceService.appConfiguration.get();
+    print('${config?.apiUrl} $api');
+    if (config?.apiUrl != api && api?.isNotEmpty == true) {
+      emit(state.copyWith(
+          appVersion: config?.appVersion,
+          url: api?.isNotEmpty == true ? api : config?.apiUrl));
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

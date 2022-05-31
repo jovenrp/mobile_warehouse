@@ -13,6 +13,8 @@ class LoginScreenState with _$LoginScreenState {
       ActionTRAKApiErrorCode? errorCode,
       String? errorMessage,
       String? apiUrl,
+      String? appVersion,
+      String? url,
       @Default(false) bool isLoggedIn,
       @Default(false) bool didFinish,
       LoginResponseModel? loginResponseModel,
