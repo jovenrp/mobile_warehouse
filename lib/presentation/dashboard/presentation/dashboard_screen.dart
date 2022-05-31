@@ -22,7 +22,8 @@ import 'package:mobile_warehouse/presentation/stock_count/presentation/stock_cou
 import 'action_cards_widget.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key, this.userProfileModel, this.config, this.username})
+  const DashboardScreen(
+      {Key? key, this.userProfileModel, this.config, this.username})
       : super(key: key);
 
   static const String routeName = '/dashboard';
@@ -33,11 +34,15 @@ class DashboardScreen extends StatefulWidget {
   final String? username;
 
   static ModalRoute<DashboardScreen> route(
-          {UserProfileModel? userProfileModel, ApplicationConfig? config, String? username}) =>
+          {UserProfileModel? userProfileModel,
+          ApplicationConfig? config,
+          String? username}) =>
       MaterialPageRoute<DashboardScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) =>
-            DashboardScreen(userProfileModel: userProfileModel, config: config, username: username),
+        builder: (_) => DashboardScreen(
+            userProfileModel: userProfileModel,
+            config: config,
+            username: username),
       );
 
   @override
@@ -95,8 +100,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                     actions: <Widget>[
                       Ink(
                         child: InkWell(
-                          onTap: () => Navigator.of(context)
-                              .push(SettingsScreen.route()),
+                          onTap: () => Navigator.of(context).push(
+                              SettingsScreen.route(config: widget.config)),
                           child: Padding(
                             padding: const EdgeInsets.only(left: 18, right: 18),
                             child: Icon(
@@ -134,8 +139,9 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                           Padding(
                             padding: const EdgeInsets.only(left: 18, top: 20),
                             child: ATText(
-                              text: I18n.of(context)
-                                  .hi_name(widget.userProfileModel?.username ?? widget.username),
+                              text: I18n.of(context).hi_name(
+                                  widget.userProfileModel?.username ??
+                                      widget.username),
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w400),
                             ),

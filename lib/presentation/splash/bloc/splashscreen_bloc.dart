@@ -33,7 +33,9 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
 
     Timer(const Duration(seconds: 2), () {
       emit(state.copyWith(isLoading: false));
-      if (token == null || isExpire) {
+      print(token);
+      print(isExpire);
+      if (token == null || isExpire == false) {
         emit(state.copyWith(isAlreadySignedIn: false, apiUrl: currentApi));
       } else {
         emit(state.copyWith(

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse/application/domain/models/application_config.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/core/domain/models/user_profile_model.dart';
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_state.dart';
@@ -16,8 +17,18 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
   final PersistenceService persistenceService;
 
   Future<void> init() async {
+    String? currentApi = await persistenceService.preferredApi.get();
+    ApplicationConfig? config = await persistenceService.appConfiguration.get();
+    if (currentApi?.isEmpty == null) {
+      currentApi = config?.apiUrl;
+    }
+
     emit(state.copyWith(
-        isLoading: false, hasError: false, errorMessage: '')); //t
+        isLoading: false,
+        hasError: false,
+        errorMessage: '',
+        isLoggedIn: false,
+        apiUrl: currentApi)); //t
   }
 
   Future<void> login(String username, String password) async {
@@ -42,7 +53,9 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
         await persistenceService.loginTimestamp
             .set(DateTime.now().millisecondsSinceEpoch.toString());
         emit(state.copyWith(
-            loginResponseModel: result, userProfileModel: userProfileModel));
+            loginResponseModel: result,
+            userProfileModel: userProfileModel,
+            isLoggedIn: true));
       } else {
         //should be error as token should not be null
         emit(state.copyWith(loginResponseModel: result)); //

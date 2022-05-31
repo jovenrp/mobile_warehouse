@@ -52,9 +52,11 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
     return BlocConsumer<LoginScreenBloc, LoginScreenState>(
         listener: (BuildContext context, LoginScreenState state) {
       if (!state.isLoading) {
-        if (!state.hasError) {
+        if (state.isLoggedIn) {
           Navigator.of(context).pushReplacement(DashboardScreen.route(
-              userProfileModel: state.userProfileModel, config: widget.config, username: usernameController.text));
+              userProfileModel: state.userProfileModel,
+              config: widget.config,
+              username: usernameController.text));
         }
       }
     }, builder: (BuildContext context, LoginScreenState state) {
@@ -125,8 +127,9 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                     ),
                   ),
                 ),
-                /*bottomNavigationBar: Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24, bottom: 50),
+                bottomNavigationBar: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 24, right: 24, bottom: 50),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -136,18 +139,21 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                           ATText(
                             text: 'v${widget.config?.appVersion}',
                             fontColor: AppColors.greyRed,
+                            fontSize: 12,
                           ),
                           Visibility(
-                              visible: widget.config?.isApiDebuggerEnabled ?? false,
+                              visible:
+                                  widget.config?.isApiDebuggerEnabled ?? false,
                               child: ATText(
-                                text: '${widget.config?.apiUrl}',
+                                text: '${state.apiUrl}',
                                 fontColor: AppColors.greyRed,
+                                fontSize: 12,
                               ))
                         ],
                       )
                     ],
                   ),
-                ),*/
+                ),
               )));
     });
   }

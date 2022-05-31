@@ -2,26 +2,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:mobile_warehouse/application/domain/models/application_config.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_textbutton.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_textfield.dart';
+import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 import 'package:mobile_warehouse/presentation/settings/bloc/settings_bloc.dart';
 import 'package:mobile_warehouse/presentation/settings/bloc/settings_state.dart';
 
 import 'package:mobile_warehouse/generated/i18n.dart';
+import 'package:mobile_warehouse/presentation/splash/presentation/splash_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({Key? key, this.config}) : super(key: key);
 
   static const String routeName = '/settings';
   static const String screenName = 'settingsScreen';
 
-  static ModalRoute<SettingsScreen> route() =>
+  final ApplicationConfig? config;
+
+  static ModalRoute<SettingsScreen> route({ApplicationConfig? config}) =>
       MaterialPageRoute<SettingsScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => SettingsScreen(),
+        builder: (_) => SettingsScreen(config: config),
       );
 
   @override
@@ -44,6 +50,13 @@ class _SettingsScreen extends State<SettingsScreen> {
         listener: (BuildContext context, SettingsScreenState state) {
       if (!state.isLoading) {
         pickLimitSetting = state.pickLimitSetting ?? false;
+      }
+
+      print(state.isSignedOut);
+      if (state.isSignedOut == true) {
+        Navigator.of(context).pushReplacement(
+          SplashScreen.route(config: widget.config),
+        );
       }
     }, builder: (BuildContext context, SettingsScreenState state) {
       return SafeArea(
@@ -216,30 +229,135 @@ class _SettingsScreen extends State<SettingsScreen> {
                     child: isEditApi
                         ? ATTextfield(
                             hintText: state.url,
-                            onFieldSubmitted: (String? api) {
+                            onFieldSubmitted: (String? api) async {
                               if (api?.isNotEmpty == true) {
-                                context
-                                    .read<SettingsScreenBloc>()
-                                    .updateApi(api)
-                                    .then((bool isUpdated) {
-                                  SnackBar snackBar = SnackBar(
-                                    content: ATText(
-                                      text:
-                                          'URL is changed. Re-login is required and App needs to restart.',
-                                      fontColor: AppColors.white,
-                                    ),
-                                    duration: Duration(seconds: 5),
-                                  );
-                                  setState(() {
-                                    isEditApi = false;
-                                    if (isUpdated) {
-                                      ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
-                                    }
-                                  });
-                                });
+                                await showDialog(
+                                    context: context,
+                                    builder: (BuildContext dialogContext) {
+                                      return Dialog(
+                                        child: SizedBox(
+                                          height: 320,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(14),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.warning_amber_rounded,
+                                                  color:
+                                                      AppColors.warningOrange,
+                                                  size: 50,
+                                                ),
+                                                SizedBox(height: 10),
+                                                ATText(
+                                                  text:
+                                                      'Server will be changed.',
+                                                  fontSize: 16,
+                                                  weight: FontWeight.bold,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                SizedBox(height: 20),
+                                                ATText(
+                                                  text:
+                                                      'You will be forced logout for changes to take effect.',
+                                                  fontSize: 16,
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                SizedBox(height: 30),
+                                                Container(
+                                                  width: double.infinity,
+                                                  child: ATTextButton(
+                                                      isLoading: false,
+                                                      buttonText: 'Save',
+                                                      onTap: () {
+                                                        context
+                                                            .read<
+                                                                SettingsScreenBloc>()
+                                                            .updateApi(api)
+                                                            .then((bool
+                                                                isUpdated) {
+                                                          Navigator.of(
+                                                                  dialogContext)
+                                                              .pop();
+                                                          SnackBar snackBar =
+                                                              SnackBar(
+                                                            content:
+                                                                WillPopScope(
+                                                              onWillPop:
+                                                                  () async {
+                                                                return false;
+                                                              },
+                                                              child: ATText(
+                                                                text:
+                                                                    'URL is changed. Re-login is required and App needs to restart.',
+                                                                fontColor:
+                                                                    AppColors
+                                                                        .white,
+                                                              ),
+                                                            ),
+                                                            duration: Duration(
+                                                                seconds: 2),
+                                                          );
+                                                          setState(() {
+                                                            isEditApi = false;
+                                                            if (isUpdated) {
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .hideCurrentSnackBar();
+                                                              ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                  .showSnackBar(
+                                                                      snackBar)
+                                                                  .closed
+                                                                  .then((_) {
+                                                                context
+                                                                    .read<
+                                                                        SettingsScreenBloc>()
+                                                                    .logout();
+                                                              });
+                                                            }
+                                                          });
+                                                        });
+                                                      }),
+                                                ),
+                                                Container(
+                                                  width: double.infinity,
+                                                  child: ATTextButton(
+                                                    buttonStyle: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(AppColors
+                                                                    .white),
+                                                        shape: MaterialStateProperty.all<
+                                                                RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                          side: BorderSide(
+                                                              color: AppColors
+                                                                  .beachSea),
+                                                        ))),
+                                                    buttonTextStyle: TextStyle(
+                                                        color:
+                                                            AppColors.beachSea),
+                                                    isLoading: false,
+                                                    buttonText:
+                                                        I18n.of(context).cancel,
+                                                    onTap: () => Navigator.of(
+                                                            dialogContext)
+                                                        .pop(),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    });
                               } else {
                                 setState(() {
                                   isEditApi = false;

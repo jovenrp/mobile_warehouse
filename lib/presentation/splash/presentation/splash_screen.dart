@@ -31,7 +31,7 @@ class SplashScreen extends StatelessWidget {
     return BlocConsumer<SplashScreenBloc, SplashScreenState>(
         listener: (BuildContext context, SplashScreenState state) {
       if (!state.isLoading) {
-        if (state.isAlreadySignedIn) {
+        if (state.isAlreadySignedIn == true) {
           Navigator.of(context).pushReplacement(
             DashboardScreen.route(userProfileModel: state.userProfileModel),
           );

@@ -11,6 +11,7 @@ class SettingsScreenState with _$SettingsScreenState {
       ActionTRAKApiErrorCode? errorCode,
       String? errorMessage,
       bool? pickLimitSetting,
+      @Default(false) bool isSignedOut,
       String? appVersion,
       String? url,
       @Default(false) bool didFinish}) = _SettingsScreenState;

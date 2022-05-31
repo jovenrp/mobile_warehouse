@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse/application/application.dart';
 import 'package:mobile_warehouse/application/domain/models/application_config.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/settings/bloc/settings_state.dart';
@@ -12,7 +13,7 @@ class SettingsScreenBloc extends Cubit<SettingsScreenState> {
   final PersistenceService persistenceService;
 
   Future<void> checkSettings() async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true, isSignedOut: false));
 
     ApplicationConfig? config = await persistenceService.appConfiguration.get();
     String? url = await persistenceService.preferredApi.get();
@@ -50,6 +51,25 @@ class SettingsScreenBloc extends Cubit<SettingsScreenState> {
           url: api?.isNotEmpty == true ? api : config?.apiUrl));
       return true;
     } else {
+      return false;
+    }
+  }
+
+  Future<bool> logout() async {
+    emit(state.copyWith(isLoading: true));
+
+    try {
+      await persistenceService.logout();
+      String? token = await persistenceService.dwnToken.get();
+      if (token == null) {
+        emit(state.copyWith(isSignedOut: true));
+        return true;
+      }
+      emit(state.copyWith(isLoading: false));
+      return false;
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+      logger.e(_);
       return false;
     }
   }
