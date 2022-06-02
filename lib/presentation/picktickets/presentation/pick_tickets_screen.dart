@@ -455,7 +455,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                                                                     bottom: 15),
                                                             child: ATText(
                                                               text:
-                                                                  'processing by some user',
+                                                                  'processing by ${state.pickTicketsItemModel?[index].fullName}',
                                                               fontSize: 13,
                                                             ),
                                                           )

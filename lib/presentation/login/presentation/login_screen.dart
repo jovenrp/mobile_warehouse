@@ -23,7 +23,8 @@ class LoginScreen extends StatefulWidget {
 
   final ApplicationConfig? config;
 
-  static ModalRoute<LoginScreen> route({ApplicationConfig? config}) => MaterialPageRoute<LoginScreen>(
+  static ModalRoute<LoginScreen> route({ApplicationConfig? config}) =>
+      MaterialPageRoute<LoginScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => LoginScreen(
           config: config,
@@ -50,11 +51,14 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginScreenBloc, LoginScreenState>(listener: (BuildContext context, LoginScreenState state) {
+    return BlocConsumer<LoginScreenBloc, LoginScreenState>(
+        listener: (BuildContext context, LoginScreenState state) {
       if (!state.isLoading) {
         if (state.isLoggedIn) {
-          Navigator.of(context).pushReplacement(
-              DashboardScreen.route(userProfileModel: state.userProfileModel, config: widget.config, username: usernameController.text));
+          Navigator.of(context).pushReplacement(DashboardScreen.route(
+              userProfileModel: state.userProfileModel,
+              config: widget.config,
+              username: usernameController.text));
         }
       }
     }, builder: (BuildContext context, LoginScreenState state) {
@@ -91,13 +95,15 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                           children: <Widget>[
                             state.hasError
                                 ? ATText(
-                                    text: state.loginResponseModel?.errorMessage,
+                                    text:
+                                        state.loginResponseModel?.errorMessage,
                                     fontColor: AppColors.atRed,
                                     fontSize: 12,
                                   )
                                 : SizedBox(),
                             InkWell(
-                              onTap: () => Navigator.of(context).push(ForgotPasswordScreen.route()),
+                              onTap: () => Navigator.of(context)
+                                  .push(ForgotPasswordScreen.route()),
                               child: ATText(
                                 text: I18n.of(context).forgot_password,
                                 fontColor: AppColors.beachSea,
@@ -113,7 +119,9 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                             isLoading: state.isLoading,
                             buttonText: I18n.of(context).sign_in,
                             onTap: () {
-                              context.read<LoginScreenBloc>().login(usernameController.text, passwordController.text);
+                              context.read<LoginScreenBloc>().login(
+                                  usernameController.text,
+                                  passwordController.text);
                             },
                           ),
                         ),
@@ -144,77 +152,131 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                                       if (api?.isNotEmpty == true) {
                                         await showDialog(
                                             context: context,
-                                            builder: (BuildContext dialogContext) {
+                                            builder:
+                                                (BuildContext dialogContext) {
                                               return Dialog(
                                                 child: SizedBox(
                                                   height: 320,
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(14),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            14),
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
                                                       children: <Widget>[
                                                         Icon(
-                                                          Icons.warning_amber_rounded,
-                                                          color: AppColors.warningOrange,
+                                                          Icons
+                                                              .warning_amber_rounded,
+                                                          color: AppColors
+                                                              .warningOrange,
                                                           size: 50,
                                                         ),
                                                         SizedBox(height: 10),
                                                         ATText(
-                                                          text: 'Server will be changed.',
+                                                          text:
+                                                              'Server will be changed.',
                                                           fontSize: 16,
-                                                          weight: FontWeight.bold,
-                                                          textAlign: TextAlign.center,
+                                                          weight:
+                                                              FontWeight.bold,
+                                                          textAlign:
+                                                              TextAlign.center,
                                                         ),
                                                         SizedBox(height: 20),
                                                         ATText(
-                                                          text: 'App needs to restart for changes to take effect.',
+                                                          text:
+                                                              'App needs to restart for changes to take effect.',
                                                           fontSize: 16,
-                                                          textAlign: TextAlign.center,
+                                                          textAlign:
+                                                              TextAlign.center,
                                                         ),
                                                         SizedBox(height: 30),
                                                         Container(
-                                                          width: double.infinity,
+                                                          width:
+                                                              double.infinity,
                                                           child: ATTextButton(
                                                               isLoading: false,
-                                                              buttonText: 'Save',
+                                                              buttonText:
+                                                                  'Save',
                                                               onTap: () {
-                                                                context.read<LoginScreenBloc>().updateApi(api).then((bool isUpdated) {
-                                                                  Navigator.of(dialogContext).pop();
-                                                                  SnackBar snackBar = SnackBar(
-                                                                    content: WillPopScope(
-                                                                      onWillPop: () async {
+                                                                context
+                                                                    .read<
+                                                                        LoginScreenBloc>()
+                                                                    .updateApi(
+                                                                        api)
+                                                                    .then((bool
+                                                                        isUpdated) {
+                                                                  Navigator.of(
+                                                                          dialogContext)
+                                                                      .pop();
+                                                                  SnackBar
+                                                                      snackBar =
+                                                                      SnackBar(
+                                                                    content:
+                                                                        WillPopScope(
+                                                                      onWillPop:
+                                                                          () async {
                                                                         return false;
                                                                       },
-                                                                      child: ATText(
-                                                                        text: 'URL is changed. App needs to restart for changes to take effect.',
-                                                                        fontColor: AppColors.white,
+                                                                      child:
+                                                                          ATText(
+                                                                        text:
+                                                                            'URL is changed. App needs to restart for changes to take effect.',
+                                                                        fontColor:
+                                                                            AppColors.white,
                                                                       ),
                                                                     ),
-                                                                    duration: Duration(seconds: 2),
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            2),
                                                                   );
                                                                   setState(() {
-                                                                    isEditApi = false;
+                                                                    isEditApi =
+                                                                        false;
                                                                     if (isUpdated) {
-                                                                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                                      ScaffoldMessenger.of(
+                                                                              context)
+                                                                          .hideCurrentSnackBar();
+                                                                      ScaffoldMessenger.of(
+                                                                              context)
+                                                                          .showSnackBar(
+                                                                              snackBar);
                                                                     }
                                                                   });
                                                                 });
                                                               }),
                                                         ),
                                                         Container(
-                                                          width: double.infinity,
+                                                          width:
+                                                              double.infinity,
                                                           child: ATTextButton(
-                                                            buttonStyle: ButtonStyle(
-                                                                backgroundColor: MaterialStateProperty.all(AppColors.white),
-                                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(8.0),
-                                                                  side: BorderSide(color: AppColors.beachSea),
-                                                                ))),
-                                                            buttonTextStyle: TextStyle(color: AppColors.beachSea),
+                                                            buttonStyle:
+                                                                ButtonStyle(
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(AppColors
+                                                                            .white),
+                                                                    shape: MaterialStateProperty.all<
+                                                                            RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              8.0),
+                                                                      side: BorderSide(
+                                                                          color:
+                                                                              AppColors.beachSea),
+                                                                    ))),
+                                                            buttonTextStyle: TextStyle(
+                                                                color: AppColors
+                                                                    .beachSea),
                                                             isLoading: false,
-                                                            buttonText: I18n.of(context).cancel,
-                                                            onTap: () => Navigator.of(dialogContext).pop(),
+                                                            buttonText:
+                                                                I18n.of(context)
+                                                                    .cancel,
+                                                            onTap: () =>
+                                                                Navigator.of(
+                                                                        dialogContext)
+                                                                    .pop(),
                                                           ),
                                                         )
                                                       ],
@@ -231,7 +293,9 @@ class _LoginScreen extends State<LoginScreen> with BackPressedMixin {
                                     },
                                   )
                                 : Visibility(
-                                    visible: widget.config?.isApiDebuggerEnabled ?? false,
+                                    visible:
+                                        widget.config?.isApiDebuggerEnabled ??
+                                            false,
                                     child: Align(
                                       alignment: Alignment.center,
                                       child: ATText(
