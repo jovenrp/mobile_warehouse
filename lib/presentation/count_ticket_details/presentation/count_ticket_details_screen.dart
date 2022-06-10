@@ -67,7 +67,7 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
           return SafeArea(
               child: Scaffold(
             appBar: ATAppBar(
-              title: 'Count Tickets',
+              title: 'Ticket #${widget.countTicketsModel?.num}',
               icon: Icon(
                 Icons.arrow_back_sharp,
                 color: AppColors.white,
