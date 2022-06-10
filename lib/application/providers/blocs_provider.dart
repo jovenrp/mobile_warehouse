@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/application/domain/bloc/application_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_bloc.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_details/data/services/count_ticket_details_api_service.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_details/domain/repositories/count_ticket_details_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/count_tickets/bloc/count_tickets_bloc.dart';
 import 'package:mobile_warehouse/presentation/count_tickets/data/services/count_tickets_api_service.dart';
 import 'package:mobile_warehouse/presentation/count_tickets/domain/repositories/count_tickets_repository_impl.dart';
@@ -96,6 +99,12 @@ class BlocsProvider {
           create: (_) => CountTicketsBloc(
               countTicketsRepository: CountTicketsRepositoryImpl(
                   CountTicketsApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<CountTicketDetailsBloc>(
+          create: (_) => CountTicketDetailsBloc(
+              countTicketDetailsRepository: CountTicketDetailsRepositoryImpl(
+                  CountTicketDetailsApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
       ];

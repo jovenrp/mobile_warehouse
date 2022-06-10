@@ -10,41 +10,45 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
-import 'package:mobile_warehouse/presentation/count_ticket_details/presentation/count_ticket_details_screen.dart';
-import 'package:mobile_warehouse/presentation/count_tickets/bloc/count_tickets_bloc.dart';
-import 'package:mobile_warehouse/presentation/count_tickets/bloc/count_tickets_state.dart';
-import 'package:mobile_warehouse/generated/i18n.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_bloc.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_state.dart';
+import 'package:mobile_warehouse/presentation/count_tickets/data/models/count_tickets_model.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/widgets/pick_tickets_status.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:mobile_warehouse/generated/i18n.dart';
 
-class CountTicketsScreen extends StatefulWidget {
-  const CountTicketsScreen({Key? key}) : super(key: key);
+class CountTicketDetailsScreen extends StatefulWidget {
+  const CountTicketDetailsScreen({Key? key, this.countTicketsModel})
+      : super(key: key);
 
-  static const String routeName = '/countTickets';
-  static const String screenName = 'countTicketsScreen';
+  final CountTicketsModel? countTicketsModel;
 
-  static ModalRoute<CountTicketsScreen> route() =>
-      MaterialPageRoute<CountTicketsScreen>(
+  static const String routeName = '/countTicketDetails';
+  static const String screenName = 'countTicketDetailsScreen';
+
+  static ModalRoute<CountTicketDetailsScreen> route(
+          {CountTicketsModel? countTicketsModel}) =>
+      MaterialPageRoute<CountTicketDetailsScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => const CountTicketsScreen(),
+        builder: (_) =>
+            CountTicketDetailsScreen(countTicketsModel: countTicketsModel),
       );
 
   @override
-  _CountTicketsScreen createState() => _CountTicketsScreen();
+  _CountTicketDetailsScreen createState() => _CountTicketDetailsScreen();
 }
 
-class _CountTicketsScreen extends State<CountTicketsScreen> {
-  final RefreshController refreshController = RefreshController();
+class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
   final TextEditingController searchController = TextEditingController();
 
-  bool canRefresh = true;
   late Timer rotatingTimer;
   int turns = 0;
 
   @override
   void initState() {
     super.initState();
-    context.read<CountTicketsBloc>().getCountTickets();
+    context
+        .read<CountTicketDetailsBloc>()
+        .getCountTicketDetails(id: widget.countTicketsModel?.id);
     rotatingTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
       setState(() {
         turns++;
@@ -57,13 +61,9 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CountTicketsBloc, CountTicketsState>(
-        listener: (BuildContext context, CountTicketsState state) {
-          if (!state.isLoading) {
-            refreshController.refreshCompleted();
-          }
-        },
-        builder: (BuildContext context, CountTicketsState state) {
+    return BlocConsumer<CountTicketDetailsBloc, CountTicketDetailsState>(
+        listener: (BuildContext context, CountTicketDetailsState state) {},
+        builder: (BuildContext context, CountTicketDetailsState state) {
           return SafeArea(
               child: Scaffold(
             appBar: ATAppBar(
@@ -94,33 +94,33 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Padding(
+                      /*Padding(
                         padding: const EdgeInsets.only(left: 18, right: 18),
                         child: ATSearchfield(
                             textEditingController: searchController,
                             hintText: I18n.of(context).search,
                             onPressed: () {
-                              /*if (searchController.text.isNotEmpty == true) {
+                              *//*if (searchController.text.isNotEmpty == true) {
                                 setState(() {
                                   context
                                       .read<PickTicketsBloc>()
                                       .searchTicket(value: searchController.text);
                                 });
-                              }*/
+                              }*//*
                             },
                             onChanged: (String value) {
                               EasyDebounce.debounce(
                                   'deebouncer1', Duration(milliseconds: 700),
                                   () {
-                                /*setState(() {
+                                *//*setState(() {
                                   context
                                       .read<PickTicketsBloc>()
                                       .searchTicket(value: searchController.text);
-                                });*/
+                                });*//*
                               });
                             }),
-                      ),
-                      SizedBox(height: 20),
+                      ),*/
+                      //SizedBox(height: 20),
                       state.isLoading
                           ? SizedBox()
                           : Container(
@@ -130,7 +130,8 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                               child: Column(
                                 children: <Widget>[
                                   Visibility(
-                                      visible: state.countTickets?.isNotEmpty ==
+                                      visible: state.countTicketDetailsModel
+                                              ?.isNotEmpty ==
                                           true,
                                       child: Table(
                                           defaultVerticalAlignment:
@@ -269,7 +270,8 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                 ],
                               )),
                       Visibility(
-                          visible: state.countTickets?.isEmpty == true,
+                          visible:
+                              state.countTicketDetailsModel?.isEmpty == true && state.isLoading != true,
                           child: Container(
                             alignment: Alignment.center,
                             width: double.infinity,
@@ -283,144 +285,138 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                         child: InteractiveViewer(
                             child: Container(
                           color: AppColors.white,
-                          child: SmartRefresher(
-                              enablePullDown: canRefresh,
-                              onRefresh: _forcedRefresh,
-                              controller: refreshController,
-                              header: WaterDropMaterialHeader(
-                                backgroundColor: AppColors.beachSea,
-                              ),
-                              child: state.isLoading
-                                  ? Column(
-                                      children: <Widget>[
-                                        SizedBox(height: 50),
-                                        Padding(
-                                          padding: const EdgeInsets.all(20),
-                                          child: Icon(
-                                            Icons.move_to_inbox,
-                                            size: 100,
-                                            color: AppColors.grayElevent,
-                                          ),
-                                        ),
-                                        Container(
-                                            alignment: Alignment.topCenter,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10),
-                                              child: ATText(
-                                                  text: I18n.of(context)
-                                                      .please_wait_while_data_is_loaded),
-                                            ))
-                                      ],
-                                    )
-                                  : ListView.builder(
-                                      itemCount:
-                                          (state.countTickets?.length ?? 0) + 1,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        if (index == 0) {
-                                          return SizedBox();
-                                        }
-                                        index -= 1;
-                                        return Slidable(
-                                            key: ValueKey<int>(index),
-                                            startActionPane: ActionPane(
-                                                // A motion is a widget used to control how the pane animates.
-                                                // A motion is a widget used to control how the pane animates.
-                                                motion: const ScrollMotion(),
+                          child: state.isLoading
+                              ? Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 50),
+                                    Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Icon(
+                                        Icons.move_to_inbox,
+                                        size: 100,
+                                        color: AppColors.grayElevent,
+                                      ),
+                                    ),
+                                    Container(
+                                        alignment: Alignment.topCenter,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: ATText(
+                                              text: I18n.of(context)
+                                                  .please_wait_while_data_is_loaded),
+                                        ))
+                                  ],
+                                )
+                              : ListView.builder(
+                                  itemCount:
+                                      (state.countTicketDetailsModel?.length ??
+                                              0) +
+                                          1,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    if (index == 0) {
+                                      return SizedBox();
+                                    }
+                                    index -= 1;
+                                    return Slidable(
+                                        key: ValueKey<int>(index),
+                                        startActionPane: ActionPane(
+                                            // A motion is a widget used to control how the pane animates.
+                                            // A motion is a widget used to control how the pane animates.
+                                            motion: const ScrollMotion(),
+                                            children: <Widget>[
+                                              SlidableAction(
+                                                onPressed:
+                                                    (BuildContext navContext) {
+                                                  /*Navigator.of(navContext)
+                                                      .push(PickTicketDetailsScreen.route(ticketItemModel: state.pickTicketsItemModel?[index]))
+                                                      .then((dynamic value) {
+                                                    context.read<PickTicketsBloc>().getPickTickets(isScreenLoading: true);
+                                                  });*/
+                                                },
+                                                backgroundColor:
+                                                    AppColors.greyRed,
+                                                foregroundColor:
+                                                    AppColors.white,
+                                                icon: Icons.list_alt,
+                                              ),
+                                            ]),
+                                        child: Table(
+                                          defaultVerticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          columnWidths: const <int,
+                                              TableColumnWidth>{
+                                            0: FixedColumnWidth(40),
+                                            1: FixedColumnWidth(70),
+                                            2: FlexColumnWidth(),
+                                            3: FixedColumnWidth(70),
+                                          },
+                                          children: <TableRow>[
+                                            TableRow(
+                                                decoration: BoxDecoration(
+                                                    color: (index % 2) == 0
+                                                        ? AppColors.white
+                                                        : AppColors.lightBlue),
                                                 children: <Widget>[
-                                                  SlidableAction(
-                                                    onPressed: (BuildContext
-                                                        navContext) {
-                                                      Navigator.of(navContext)
-                                                      .push(CountTicketDetailsScreen.route(countTicketsModel: state.countTickets?[index]));
-                                                    },
-                                                    backgroundColor:
-                                                        AppColors.greyRed,
-                                                    foregroundColor:
-                                                        AppColors.white,
-                                                    icon: Icons.list_alt,
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 18,
+                                                            top: 20,
+                                                            bottom: 20),
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child:
+                                                          PickTicketsStatusWidget(
+                                                        status: state
+                                                            .countTicketDetailsModel?[
+                                                                index]
+                                                            .status,
+                                                        turns: turns,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: ATText(
+                                                      text: state
+                                                              .countTicketDetailsModel?[
+                                                                  index]
+                                                              .containerCode ??
+                                                          '',
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: ATText(
+                                                      text: state
+                                                              .countTicketDetailsModel?[
+                                                                  index]
+                                                              .countedBy ??
+                                                          '',
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 18),
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: ATText(
+                                                        text: state
+                                                                .countTicketDetailsModel?[
+                                                                    index]
+                                                                .qty ??
+                                                            '',
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ]),
-                                            child: Table(
-                                              defaultVerticalAlignment:
-                                                  TableCellVerticalAlignment
-                                                      .middle,
-                                              columnWidths: const <int,
-                                                  TableColumnWidth>{
-                                                0: FixedColumnWidth(40),
-                                                1: FixedColumnWidth(70),
-                                                2: FlexColumnWidth(),
-                                                3: FixedColumnWidth(70),
-                                              },
-                                              children: <TableRow>[
-                                                TableRow(
-                                                    decoration: BoxDecoration(
-                                                        color: (index % 2) == 0
-                                                            ? AppColors.white
-                                                            : AppColors
-                                                                .lightBlue),
-                                                    children: <Widget>[
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 18,
-                                                                top: 20,
-                                                                bottom: 20),
-                                                        child: Container(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child:
-                                                              PickTicketsStatusWidget(
-                                                            status: state
-                                                                .countTickets?[
-                                                                    index]
-                                                                .status,
-                                                            turns: turns,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        child: ATText(
-                                                          text: state
-                                                                  .countTickets?[
-                                                                      index]
-                                                                  .num ??
-                                                              '',
-                                                          fontSize: 15,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        child: ATText(
-                                                          text: state
-                                                                  .countTickets?[
-                                                                      index]
-                                                                  .type ??
-                                                              '',
-                                                          fontSize: 15,
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 18),
-                                                        child: Container(
-                                                          alignment: Alignment
-                                                              .centerRight,
-                                                          child: ATText(
-                                                            text: state
-                                                                    .countTickets?[
-                                                                        index]
-                                                                    .num ??
-                                                                '',
-                                                            fontSize: 15,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ]),
-                                                /*TableRow(
+                                            /*TableRow(
                                                 decoration: BoxDecoration(color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue),
                                                 children: <Widget>[
                                                   SizedBox(),
@@ -436,19 +432,14 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                       : SizedBox(),
                                                   SizedBox(),
                                                 ]),*/
-                                              ],
-                                            ));
-                                      })),
+                                          ],
+                                        ));
+                                  }),
                         )),
                       )
                     ])),
           ));
         });
-  }
-
-  void _forcedRefresh() {
-    canRefresh = true;
-    context.read<CountTicketsBloc>().getCountTickets();
   }
 
   @override
