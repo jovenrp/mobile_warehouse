@@ -9,6 +9,7 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_dialog.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
+import 'package:mobile_warehouse/presentation/count_tickets/presentation/count_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashboardscreen_state.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
@@ -17,7 +18,6 @@ import 'package:mobile_warehouse/presentation/login/presentation/login_screen.da
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/settings/presentation/settings_screen.dart';
-import 'package:mobile_warehouse/presentation/stock_count/presentation/stock_count_screen.dart';
 
 import 'action_cards_widget.dart';
 
@@ -175,7 +175,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                           SizedBox(height: 14),
                           InkWell(
                             onTap: () => Navigator.of(context)
-                                .push(StockCountScreen.route()),
+                                .push(CountTicketsScreen.route()),
                             child: Padding(
                                 padding:
                                     const EdgeInsets.only(left: 20, right: 20),

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/application/domain/bloc/application_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
+import 'package:mobile_warehouse/presentation/count_tickets/bloc/count_tickets_bloc.dart';
+import 'package:mobile_warehouse/presentation/count_tickets/data/services/count_tickets_api_service.dart';
+import 'package:mobile_warehouse/presentation/count_tickets/domain/repositories/count_tickets_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:mobile_warehouse/presentation/forgot_password/bloc/forgot_password_bloc.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
@@ -22,10 +25,6 @@ import 'package:mobile_warehouse/presentation/picktickets_details/domain/reposit
 import 'package:mobile_warehouse/presentation/settings/bloc/settings_bloc.dart';
 import 'package:mobile_warehouse/presentation/sku_details/bloc/sku_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart';
-import 'package:mobile_warehouse/presentation/stock_count/bloc/stock_count_bloc.dart';
-import 'package:mobile_warehouse/presentation/stock_count/data/services/stock_counts_api_service.dart';
-import 'package:mobile_warehouse/presentation/stock_count/domain/repositories/stock_count_repository_impl.dart';
-import 'package:mobile_warehouse/presentation/stock_ticket/bloc/stock_count_ticket_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 
 class BlocsProvider {
@@ -93,16 +92,10 @@ class BlocsProvider {
                   LocationMapperApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
-        BlocProvider<StockCountBloc>(
-          create: (_) => StockCountBloc(
-              stockCountRepository: StockCountRepositoryImpl(
-                  StockCountApiService(dio, baseUrl: apiUrl)),
-              persistenceService: persistenceService),
-        ),
-        BlocProvider<StockCountTicketBloc>(
-          create: (_) => StockCountTicketBloc(
-              stockCountRepository: StockCountRepositoryImpl(
-                  StockCountApiService(dio, baseUrl: apiUrl)),
+        BlocProvider<CountTicketsBloc>(
+          create: (_) => CountTicketsBloc(
+              countTicketsRepository: CountTicketsRepositoryImpl(
+                  CountTicketsApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
       ];
