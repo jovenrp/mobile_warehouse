@@ -22,6 +22,9 @@ class PickTicketsStatusWidget extends StatelessWidget {
       case 'closed':
         return Icon(Icons.check_circle,
             color: AppColors.successGreen, size: 12);
+      case 'counted':
+        return Icon(Icons.check_circle,
+            color: AppColors.successGreen, size: 12);
       case 'partial':
         return Container(
           decoration: BoxDecoration(

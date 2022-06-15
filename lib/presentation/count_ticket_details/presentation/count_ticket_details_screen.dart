@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,10 +7,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
-import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_state.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_skus/presentation/count_ticket_skus_screen.dart';
 import 'package:mobile_warehouse/presentation/count_tickets/data/models/count_tickets_model.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/widgets/pick_tickets_status.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
@@ -100,23 +99,23 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                             textEditingController: searchController,
                             hintText: I18n.of(context).search,
                             onPressed: () {
-                              *//*if (searchController.text.isNotEmpty == true) {
+                              */ /*if (searchController.text.isNotEmpty == true) {
                                 setState(() {
                                   context
                                       .read<PickTicketsBloc>()
                                       .searchTicket(value: searchController.text);
                                 });
-                              }*//*
+                              }*/ /*
                             },
                             onChanged: (String value) {
                               EasyDebounce.debounce(
                                   'deebouncer1', Duration(milliseconds: 700),
                                   () {
-                                *//*setState(() {
+                                */ /*setState(() {
                                   context
                                       .read<PickTicketsBloc>()
                                       .searchTicket(value: searchController.text);
-                                });*//*
+                                });*/ /*
                               });
                             }),
                       ),*/
@@ -138,9 +137,9 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                               TableCellVerticalAlignment.middle,
                                           columnWidths: const <int,
                                               TableColumnWidth>{
-                                            0: FixedColumnWidth(38),
-                                            1: FixedColumnWidth(70),
-                                            2: FlexColumnWidth(),
+                                            0: FixedColumnWidth(70),
+                                            2: FixedColumnWidth(70),
+                                            1: FlexColumnWidth(),
                                             3: FixedColumnWidth(70),
                                           },
                                           children: <TableRow>[
@@ -192,8 +191,7 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                     child: ATText(
                                                       fontColor:
                                                           AppColors.greyHeader,
-                                                      text: I18n.of(context)
-                                                          .ticket_number
+                                                      text: 'Location'
                                                           .toUpperCase(),
                                                       weight: FontWeight.bold,
                                                     ),
@@ -223,8 +221,7 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                     child: ATText(
                                                       fontColor:
                                                           AppColors.greyHeader,
-                                                      text:
-                                                          'Name'.toUpperCase(),
+                                                      text: '',
                                                       weight: FontWeight.bold,
                                                     ),
                                                   ),
@@ -271,7 +268,8 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                               )),
                       Visibility(
                           visible:
-                              state.countTicketDetailsModel?.isEmpty == true && state.isLoading != true,
+                              state.countTicketDetailsModel?.isEmpty == true &&
+                                  state.isLoading != true,
                           child: Container(
                             alignment: Alignment.center,
                             width: double.infinity,
@@ -329,11 +327,11 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                               SlidableAction(
                                                 onPressed:
                                                     (BuildContext navContext) {
-                                                  /*Navigator.of(navContext)
-                                                      .push(PickTicketDetailsScreen.route(ticketItemModel: state.pickTicketsItemModel?[index]))
-                                                      .then((dynamic value) {
-                                                    context.read<PickTicketsBloc>().getPickTickets(isScreenLoading: true);
-                                                  });*/
+                                                  Navigator.of(navContext).push(
+                                                      CountTicketSkusScreen.route(
+                                                          countTicketDetails:
+                                                              state.countTicketDetailsModel?[
+                                                                  index]));
                                                 },
                                                 backgroundColor:
                                                     AppColors.greyRed,
@@ -347,9 +345,9 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                               TableCellVerticalAlignment.middle,
                                           columnWidths: const <int,
                                               TableColumnWidth>{
-                                            0: FixedColumnWidth(40),
-                                            1: FixedColumnWidth(70),
-                                            2: FlexColumnWidth(),
+                                            0: FixedColumnWidth(70),
+                                            1: FlexColumnWidth(),
+                                            2: FixedColumnWidth(70),
                                             3: FixedColumnWidth(70),
                                           },
                                           children: <TableRow>[
@@ -390,11 +388,7 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                   ),
                                                   Container(
                                                     child: ATText(
-                                                      text: state
-                                                              .countTicketDetailsModel?[
-                                                                  index]
-                                                              .countedBy ??
-                                                          '',
+                                                      text: '',
                                                       fontSize: 15,
                                                     ),
                                                   ),
@@ -416,22 +410,33 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                     ),
                                                   ),
                                                 ]),
-                                            /*TableRow(
-                                                decoration: BoxDecoration(color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue),
+                                            TableRow(
+                                                decoration: BoxDecoration(
+                                                    color: (index % 2) == 0
+                                                        ? AppColors.white
+                                                        : AppColors.lightBlue),
                                                 children: <Widget>[
                                                   SizedBox(),
-                                                  SizedBox(),
-                                                  state.pickTicketsItemModel?[index].status?.toLowerCase() == 'processing'
+                                                  state.countTicketDetailsModel?[index]
+                                                              .status
+                                                              ?.toLowerCase() ==
+                                                          'processing'
                                                       ? Container(
-                                                          padding: const EdgeInsets.only(left: 10, bottom: 15),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 10,
+                                                                  bottom: 15),
                                                           child: ATText(
-                                                            text: 'processing by ${state.pickTicketsItemModel?[index].fullName}',
+                                                            text:
+                                                                'Counting by ${state.countTicketDetailsModel?[index].fullName}',
                                                             fontSize: 13,
                                                           ),
                                                         )
                                                       : SizedBox(),
                                                   SizedBox(),
-                                                ]),*/
+                                                  SizedBox(),
+                                                ]),
                                           ],
                                         ));
                                   }),

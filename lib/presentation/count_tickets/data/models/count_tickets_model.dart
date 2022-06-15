@@ -14,7 +14,7 @@ class CountTicketsModel {
     this.notes,
     this.isHold,
     this.createdById,
-    this.createdBy,
+    this.fullName,
   });
 
   factory CountTicketsModel.fromJson(Map<String, dynamic> json) =>
@@ -48,6 +48,6 @@ class CountTicketsModel {
   @JsonKey(name: 'createdById')
   final String? createdById;
 
-  @JsonKey(name: 'createdBy')
-  final String? createdBy;
+  @JsonKey(name: 'fullName')
+  final String? fullName;
 }

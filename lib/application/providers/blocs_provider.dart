@@ -7,6 +7,9 @@ import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/data/services/count_ticket_details_api_service.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/domain/repositories/count_ticket_details_repository_impl.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_skus/bloc/count_ticket_skus_bloc.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_skus/data/services/count_ticket_skus_api_service.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_skus/domain/repositories/count_ticket_skus_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/count_tickets/bloc/count_tickets_bloc.dart';
 import 'package:mobile_warehouse/presentation/count_tickets/data/services/count_tickets_api_service.dart';
 import 'package:mobile_warehouse/presentation/count_tickets/domain/repositories/count_tickets_repository_impl.dart';
@@ -105,6 +108,12 @@ class BlocsProvider {
           create: (_) => CountTicketDetailsBloc(
               countTicketDetailsRepository: CountTicketDetailsRepositoryImpl(
                   CountTicketDetailsApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<CountTicketSkusBloc>(
+          create: (_) => CountTicketSkusBloc(
+              countTicketSkusRepository: CountTicketSkusRepositoryImpl(
+                  CountTicketSkusApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
       ];

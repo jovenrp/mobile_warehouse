@@ -9,7 +9,8 @@ class CountTicketDetailsModel {
     this.itemId,
     this.itemNum,
     this.userId,
-    this.countedBy,
+    this.fullName,
+    this.pickedById,
     this.containerId,
     this.containerCode,
     this.sku,
@@ -17,6 +18,7 @@ class CountTicketDetailsModel {
     this.uom,
     this.notes,
     this.status,
+    this.destination,
   });
 
   factory CountTicketDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -35,8 +37,8 @@ class CountTicketDetailsModel {
   @JsonKey(name: 'userId')
   final String? userId;
 
-  @JsonKey(name: 'countedBy')
-  final String? countedBy;
+  @JsonKey(name: 'fullName')
+  final String? fullName;
 
   @JsonKey(name: 'containerId')
   final String? containerId;
@@ -58,4 +60,10 @@ class CountTicketDetailsModel {
 
   @JsonKey(name: 'status')
   final String? status;
+
+  @JsonKey(name: 'destination')
+  final String? destination;
+
+  @JsonKey(name: 'pickedById')
+  final String? pickedById;
 }
