@@ -3,4 +3,8 @@ import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/c
 abstract class CountTicketSkusRepository {
   Future<CountTicketDetailsReponse> getCountTicketSkus(
       {String? token, String? id});
+
+  Future<CountTicketDetailsReponse> beginCount({String? token, String? id});
+
+  Future<CountTicketDetailsReponse> exitCount({String? token, String? id});
 }

@@ -13,22 +13,40 @@ class CountTicketSkusBloc extends Cubit<CountTicketSkusState> {
   final CountTicketSkusRepository countTicketSkusRepository;
   final PersistenceService persistenceService;
 
-  Future<void> getCountTicketDetails({String? id}) async {
-    emit(state.copyWith(isLoading: true)); //turn on loading indicator
+  Future<void> beginCount({String? id}) async {
     try {
       String? token = await persistenceService.dwnToken.get();
-      final CountTicketDetailsReponse response = await countTicketSkusRepository
-          .getCountTicketSkus(token: token, id: id);
+      final CountTicketDetailsReponse response =
+          await countTicketSkusRepository.beginCount(token: token, id: id);
 
-      print(response);
       emit(state.copyWith(
           isLoading: false,
           hasError: false,
           response: response,
-          countTicketDetailsModel: response.countTicketDetails));
+          countTicketDetailModel: response.countTicketDetail));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
+    }
+  }
+
+  Future<CountTicketDetailsReponse> exitCount({String? id}) async {
+    try {
+      String? token = await persistenceService.dwnToken.get();
+      final CountTicketDetailsReponse response =
+          await countTicketSkusRepository.exitCount(token: token, id: id);
+
+      emit(state.copyWith(
+          isLoading: false,
+          hasError: false,
+          response: response,
+          countTicketDetailModel: response.countTicketDetail));
+      return response;
+    } catch (_) {
+      emit(state.copyWith(isLoading: false, hasError: true));
+      print(_);
+      return CountTicketDetailsReponse(
+          error: true, message: 'error on count ticket details response');
     }
   }
 }

@@ -40,6 +40,14 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
   final FocusNode countNode = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+    context
+        .read<CountTicketSkusBloc>()
+        .beginCount(id: widget.countTicketDetails?.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<CountTicketSkusBloc, CountTicketSkusState>(
         listener: (BuildContext context, CountTicketSkusState state) {},
@@ -53,7 +61,12 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
                 color: AppColors.white,
                 size: 24.0,
               ),
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () {
+                context
+                    .read<CountTicketSkusBloc>()
+                    .exitCount(id: widget.countTicketDetails?.id)
+                    .then((_) => Navigator.of(context).pop());
+              },
               actions: <Widget>[
                 state.isLoading
                     ? Container(
