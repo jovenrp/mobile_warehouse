@@ -8,6 +8,7 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_textbutton.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_state.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_skus/presentation/count_ticket_skus_screen.dart';
@@ -129,9 +130,9 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                               child: Column(
                                 children: <Widget>[
                                   Visibility(
-                                      visible: state.countTicketDetailsModel
-                                              ?.isNotEmpty ==
-                                          true,
+                                      visible:
+                                          state.countTicketSkus?.isNotEmpty ==
+                                              true,
                                       child: Table(
                                           defaultVerticalAlignment:
                                               TableCellVerticalAlignment.middle,
@@ -267,9 +268,8 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                 ],
                               )),
                       Visibility(
-                          visible:
-                              state.countTicketDetailsModel?.isEmpty == true &&
-                                  state.isLoading != true,
+                          visible: state.countTicketSkus?.isEmpty == true &&
+                              state.isLoading != true,
                           child: Container(
                             alignment: Alignment.center,
                             width: double.infinity,
@@ -308,9 +308,7 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                 )
                               : ListView.builder(
                                   itemCount:
-                                      (state.countTicketDetailsModel?.length ??
-                                              0) +
-                                          1,
+                                      (state.countTicketSkus?.length ?? 0) + 1,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     if (index == 0) {
@@ -329,8 +327,8 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                     (BuildContext navContext) {
                                                   Navigator.of(navContext).push(
                                                       CountTicketSkusScreen.route(
-                                                          countTicketDetails:
-                                                              state.countTicketDetailsModel?[
+                                                          countTicketSkusModel:
+                                                              state.countTicketSkus?[
                                                                   index]));
                                                 },
                                                 backgroundColor:
@@ -368,10 +366,8 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                           Alignment.centerLeft,
                                                       child:
                                                           PickTicketsStatusWidget(
-                                                        status: state
-                                                            .countTicketDetailsModel?[
-                                                                index]
-                                                            .status,
+                                                        status:
+                                                            'processing', //state.countTicketDetailsModel?[index].status,
                                                         turns: turns,
                                                       ),
                                                     ),
@@ -379,9 +375,9 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                   Container(
                                                     child: ATText(
                                                       text: state
-                                                              .countTicketDetailsModel?[
+                                                              .countTicketSkus?[
                                                                   index]
-                                                              .containerCode ??
+                                                              .containerId ??
                                                           '',
                                                       fontSize: 15,
                                                     ),
@@ -401,9 +397,9 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                           Alignment.centerRight,
                                                       child: ATText(
                                                         text: state
-                                                                .countTicketDetailsModel?[
+                                                                .countTicketSkus?[
                                                                     index]
-                                                                .qty ??
+                                                                .numSkus ??
                                                             '',
                                                         fontSize: 15,
                                                       ),
@@ -417,10 +413,7 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                         : AppColors.lightBlue),
                                                 children: <Widget>[
                                                   SizedBox(),
-                                                  state.countTicketDetailsModel?[index]
-                                                              .status
-                                                              ?.toLowerCase() ==
-                                                          'processing'
+                                                  true //state.countTicketDetailsModel?[index].status?.toLowerCase() == 'processing'
                                                       ? Container(
                                                           padding:
                                                               const EdgeInsets
@@ -429,7 +422,7 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                                                                   bottom: 15),
                                                           child: ATText(
                                                             text:
-                                                                'Counting by ${state.countTicketDetailsModel?[index].fullName}',
+                                                                'Counting by ${state.countTicketSkus?[index].countedBy}',
                                                             fontSize: 13,
                                                           ),
                                                         )
@@ -443,6 +436,14 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                         )),
                       )
                     ])),
+                  bottomNavigationBar: Padding(
+                      padding: const EdgeInsets.only(top: 5, left: 16, right: 16, bottom: 5),
+                      child: ATTextButton(
+                          buttonText: 'Complete Count',
+                          isLoading: state.isLoading,
+                          onTap: () async {}
+                      )
+                  )
           ));
         });
   }

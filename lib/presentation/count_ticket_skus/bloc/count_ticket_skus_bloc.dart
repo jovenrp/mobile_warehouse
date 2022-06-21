@@ -14,16 +14,12 @@ class CountTicketSkusBloc extends Cubit<CountTicketSkusState> {
   final PersistenceService persistenceService;
 
   Future<void> beginCount({String? id}) async {
+    emit(state.copyWith(isLoading: true, hasError: false));
     try {
       String? token = await persistenceService.dwnToken.get();
-      final CountTicketDetailsReponse response =
-          await countTicketSkusRepository.beginCount(token: token, id: id);
+      final CountTicketDetailsReponse response = await countTicketSkusRepository.beginCount(token: token, id: id);
 
-      emit(state.copyWith(
-          isLoading: false,
-          hasError: false,
-          response: response,
-          countTicketDetailModel: response.countTicketDetail));
+      emit(state.copyWith(isLoading: false, hasError: false, response: response, countTicketDetailModel: response.countTicketDetail));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
@@ -31,22 +27,17 @@ class CountTicketSkusBloc extends Cubit<CountTicketSkusState> {
   }
 
   Future<CountTicketDetailsReponse> exitCount({String? id}) async {
+    emit(state.copyWith(isLoading: true, hasError: false));
     try {
       String? token = await persistenceService.dwnToken.get();
-      final CountTicketDetailsReponse response =
-          await countTicketSkusRepository.exitCount(token: token, id: id);
+      final CountTicketDetailsReponse response = await countTicketSkusRepository.exitCount(token: token, id: id);
 
-      emit(state.copyWith(
-          isLoading: false,
-          hasError: false,
-          response: response,
-          countTicketDetailModel: response.countTicketDetail));
+      emit(state.copyWith(isLoading: false, hasError: false, response: response, countTicketDetailModel: response.countTicketDetail));
       return response;
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
-      return CountTicketDetailsReponse(
-          error: true, message: 'error on count ticket details response');
+      return CountTicketDetailsReponse(error: true, message: 'error on count ticket details response');
     }
   }
 }

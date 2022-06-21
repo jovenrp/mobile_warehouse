@@ -7,26 +7,24 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_textbutton.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
-import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/count_ticket_details_model.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/count_ticket_skus_model.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_skus/bloc/count_ticket_skus_bloc.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_skus/bloc/count_ticket_skus_state.dart';
+import 'package:mobile_warehouse/presentation/qr/presentation/qr_screen.dart';
 
 class CountTicketSkusScreen extends StatefulWidget {
-  const CountTicketSkusScreen({Key? key, this.countTicketDetails})
-      : super(key: key);
+  const CountTicketSkusScreen({Key? key, this.countTicketSkusModel}) : super(key: key);
 
   static const String routeName = '/countTicketsSkus';
   static const String screenName = 'countTicketsSkusScreen';
 
-  final CountTicketDetailsModel? countTicketDetails;
+  final CountTicketSkusModel? countTicketSkusModel;
 
-  static ModalRoute<CountTicketSkusScreen> route(
-          {CountTicketDetailsModel? countTicketDetails}) =>
-      MaterialPageRoute<CountTicketSkusScreen>(
+  static ModalRoute<CountTicketSkusScreen> route({CountTicketSkusModel? countTicketSkusModel}) => MaterialPageRoute<CountTicketSkusScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) =>
-            CountTicketSkusScreen(countTicketDetails: countTicketDetails),
+        builder: (_) => CountTicketSkusScreen(countTicketSkusModel: countTicketSkusModel),
       );
 
   @override
@@ -42,9 +40,7 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<CountTicketSkusBloc>()
-        .beginCount(id: widget.countTicketDetails?.id);
+    context.read<CountTicketSkusBloc>().beginCount(id: widget.countTicketSkusModel?.id);
   }
 
   @override
@@ -55,24 +51,20 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
           return SafeArea(
               child: Scaffold(
             appBar: ATAppBar(
-              title: 'Counting ${widget.countTicketDetails?.containerCode}',
+              title: 'Counting ${widget.countTicketSkusModel?.containerId}',
               icon: Icon(
                 Icons.arrow_back_sharp,
                 color: AppColors.white,
                 size: 24.0,
               ),
               onTap: () {
-                context
-                    .read<CountTicketSkusBloc>()
-                    .exitCount(id: widget.countTicketDetails?.id)
-                    .then((_) => Navigator.of(context).pop());
+                context.read<CountTicketSkusBloc>().exitCount(id: widget.countTicketSkusModel?.id).then((_) => Navigator.of(context).pop());
               },
               actions: <Widget>[
                 state.isLoading
                     ? Container(
-                        padding: const EdgeInsets.only(
-                            top: 20, bottom: 20, right: 18),
-                        width: 30,
+                        padding: const EdgeInsets.only(top: 20, bottom: 20, right: 18),
+                        width: 35,
                         child: ATLoadingIndicator(
                           strokeWidth: 3.0,
                           width: 15,
@@ -84,14 +76,60 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
             ),
             body: Container(
                 color: AppColors.beachSea,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, right: 18),
+                    child: ATSearchfield(
+                        textEditingController: skuController,
+                        focusNode: skuNode,
+                        isScanner: true,
+                        hintText: I18n.of(context).search,
+                        onPressed: () {
+                          Future<void>.delayed(Duration.zero, () async {
+                            await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                              return QRScreen(scanner: 'serial');
+                            }));
+                            /*ParentLocationModel parentLocationModel =
+                                await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                              return QRScreen(container: widget.container, scanner: 'serial');
+                            }));
+                            SnackBar snackBar = SnackBar(
+                              content: ATText(
+                                text: parentLocationModel.message,
+                                fontColor: AppColors.white,
+                              ),
+                              duration: Duration(seconds: 2),
+                            );
+
+                            if (parentLocationModel.error == false) {
+                              setState(() {
+                                isReadOnly = true;
+                                serialController.text = parentLocationModel.container?.first.num ?? '';
+                              });
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            }*/
+                          });
+                        },
+                        onChanged: (String value) {
+                          EasyDebounce.debounce('deebouncer1', Duration(milliseconds: 700), () {
+                            /*setState(() {
+                                  context
+                                      .read<PickTicketsBloc>()
+                                      .searchTicket(value: searchController.text);
+                                });*/
+                          });
+                        }),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
                     children: <Widget>[
-                      Padding(
+                      Expanded(
+                          child: Padding(
                         padding: const EdgeInsets.only(left: 18, right: 18),
                         child: ATSearchfield(
-                            textEditingController: skuController,
-                            focusNode: skuNode,
+                            textEditingController: countController,
+                            focusNode: countNode,
                             hintText: I18n.of(context).search,
                             onPressed: () {
                               /*if (searchController.text.isNotEmpty == true) {
@@ -103,9 +141,7 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
                               }*/
                             },
                             onChanged: (String value) {
-                              EasyDebounce.debounce(
-                                  'deebouncer1', Duration(milliseconds: 700),
-                                  () {
+                              EasyDebounce.debounce('deebouncer1', Duration(milliseconds: 700), () {
                                 /*setState(() {
                                   context
                                       .read<PickTicketsBloc>()
@@ -113,55 +149,19 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
                                 });*/
                               });
                             }),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.only(left: 18, right: 18),
-                            child: ATSearchfield(
-                                textEditingController: countController,
-                                focusNode: countNode,
-                                hintText: I18n.of(context).search,
-                                onPressed: () {
-                                  /*if (searchController.text.isNotEmpty == true) {
-                                setState(() {
-                                  context
-                                      .read<PickTicketsBloc>()
-                                      .searchTicket(value: searchController.text);
-                                });
-                              }*/
-                                },
-                                onChanged: (String value) {
-                                  EasyDebounce.debounce('deebouncer1',
-                                      Duration(milliseconds: 700), () {
-                                    /*setState(() {
-                                  context
-                                      .read<PickTicketsBloc>()
-                                      .searchTicket(value: searchController.text);
-                                });*/
-                                  });
-                                }),
-                          )),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                ATText(
-                                    text: 'On Hand: ',
-                                    fontSize: 16,
-                                    fontColor: AppColors.white),
-                                ATText(
-                                    text: '100',
-                                    fontSize: 16,
-                                    fontColor: AppColors.white),
-                              ],
-                            ),
-                          )
-                        ],
+                      )),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            ATText(text: 'On Hand: ', fontSize: 16, fontColor: AppColors.white),
+                            ATText(text: '100', fontSize: 16, fontColor: AppColors.white),
+                          ],
+                        ),
                       )
-                    ])),
+                    ],
+                  )
+                ])),
           ));
         });
   }

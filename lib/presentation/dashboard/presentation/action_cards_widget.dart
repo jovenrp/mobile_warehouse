@@ -26,7 +26,7 @@ class ActionCardsWidget extends StatelessWidget {
         border: Border.all(
           color: AppColors.beachSea,
         ),
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

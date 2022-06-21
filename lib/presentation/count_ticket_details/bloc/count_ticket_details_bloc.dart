@@ -26,7 +26,7 @@ class CountTicketDetailsBloc extends Cubit<CountTicketDetailsState> {
           isLoading: false,
           hasError: false,
           response: response,
-          countTicketDetailsModel: response.countTicketDetails));
+          countTicketSkus: response.countTicketSkus));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);

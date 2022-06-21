@@ -156,6 +156,7 @@ class _QRScreen extends State<QRScreen> {
     controller.scannedDataStream.listen((Barcode scanData) {
       result = scanData;
       if (widget.scanner == 'serial') {
+        //Scanned Location Serial
         context
             .read<LocationMapperBloc>()
             .updateContainer(
@@ -171,6 +172,7 @@ class _QRScreen extends State<QRScreen> {
           }
         });
       } else {
+        //Scanned Location Skus
         context
             .read<LocationMapperBloc>()
             .addSku(id: widget.container?.id, skuId: result?.code)

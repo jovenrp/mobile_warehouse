@@ -15,7 +15,7 @@ class CountTicketDetailsRepositoryImpl implements CountTicketDetailsRepository {
       {String? token, String? id}) async {
     try {
       final String result =
-          await _apiService.getCountTicket(token, data: '|keys:id=$id');
+          await _apiService.getCountTicket(token, data: '|keys:ticketId=$id');
 
       final CountTicketDetailsReponse response =
           CountTicketDetailsReponse.fromJson(jsonDecode(result));
