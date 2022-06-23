@@ -8,8 +8,9 @@ abstract class CountTicketSkusApiService {
   factory CountTicketSkusApiService(Dio dio, {String baseUrl}) =
       _CountTicketSkusApiService;
 
-  @POST('/mobile(getCountTicketSkus)?useHdrs=true&sessId={token}&data={data}')
-  Future<dynamic> getCountTicketSkus(@Path('token') String? token,
+  @POST(
+      '/mobile(getCountTicketDetailSkus)?useHdrs=true&sessId={token}&data={data}')
+  Future<dynamic> getCountTicketDetailSkus(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
 
   @POST('/mobile(beginCount)?useHdrs=true&sessId={token}&data={data}')

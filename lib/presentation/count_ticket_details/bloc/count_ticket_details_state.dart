@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/count_ticket_details_model.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/count_ticket_details_response.dart';
-import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/count_ticket_skus_model.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/count_ticket_detail_summary_model.dart';
 
 part 'count_ticket_details_state.freezed.dart';
 
@@ -12,7 +12,7 @@ class CountTicketDetailsState with _$CountTicketDetailsState {
     @Default(false) bool hasError,
     String? errorMessage,
     CountTicketDetailsReponse? response,
-    List<CountTicketSkusModel>? countTicketSkus,
+    List<CountTicketDetailSummaryModel>? countTicketDetailSummaryModel,
     @Default(false) bool didFinish,
   }) = _CountTicketDetailsState;
 }

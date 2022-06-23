@@ -9,6 +9,7 @@ part 'count_ticket_skus_state.freezed.dart';
 class CountTicketSkusState with _$CountTicketSkusState {
   factory CountTicketSkusState({
     @Default(false) bool isLoading,
+    @Default(false) bool isSkuLoading,
     @Default(false) bool hasError,
     String? errorMessage,
     CountTicketDetailsReponse? response,

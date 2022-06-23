@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/count_ticket_skus_model.dart';
+import 'package:mobile_warehouse/presentation/count_ticket_details/data/models/count_ticket_detail_summary_model.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_skus/data/models/count_ticket_detail_model.dart';
 
 import 'count_ticket_details_model.dart';
@@ -13,7 +13,7 @@ class CountTicketDetailsReponse {
     this.message,
     this.countTicketDetails,
     this.countTicketDetail,
-    this.countTicketSkus,
+    this.countTicketDetailSummary,
   });
 
   factory CountTicketDetailsReponse.fromJson(Map<String, dynamic> json) =>
@@ -32,6 +32,6 @@ class CountTicketDetailsReponse {
   @JsonKey(name: 'countTicketDetail')
   final List<CountTicketDetailModel>? countTicketDetail;
 
-  @JsonKey(name: 'countTicketSkus')
-  final List<CountTicketSkusModel>? countTicketSkus;
+  @JsonKey(name: 'countTicketDetailSummary')
+  final List<CountTicketDetailSummaryModel>? countTicketDetailSummary;
 }

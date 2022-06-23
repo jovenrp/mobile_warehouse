@@ -22,7 +22,9 @@ import 'package:mobile_warehouse/presentation/settings/presentation/settings_scr
 import 'action_cards_widget.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key, this.userProfileModel, this.config, this.username}) : super(key: key);
+  const DashboardScreen(
+      {Key? key, this.userProfileModel, this.config, this.username})
+      : super(key: key);
 
   static const String routeName = '/dashboard';
   static const String screenName = 'dashboardScreen';
@@ -31,10 +33,16 @@ class DashboardScreen extends StatefulWidget {
   final ApplicationConfig? config;
   final String? username;
 
-  static ModalRoute<DashboardScreen> route({UserProfileModel? userProfileModel, ApplicationConfig? config, String? username}) =>
+  static ModalRoute<DashboardScreen> route(
+          {UserProfileModel? userProfileModel,
+          ApplicationConfig? config,
+          String? username}) =>
       MaterialPageRoute<DashboardScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => DashboardScreen(userProfileModel: userProfileModel, config: config, username: username),
+        builder: (_) => DashboardScreen(
+            userProfileModel: userProfileModel,
+            config: config,
+            username: username),
       );
 
   @override
@@ -58,7 +66,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
       ),
       duration: Duration(seconds: 1),
     );
-    return BlocConsumer<DashboardScreenBloc, DashboardScreenState>(listener: (BuildContext context, DashboardScreenState state) {
+    return BlocConsumer<DashboardScreenBloc, DashboardScreenState>(
+        listener: (BuildContext context, DashboardScreenState state) {
       if (state.isSignedOut) {
         Navigator.of(context).pushReplacement(
           LoginScreen.route(config: widget.config),
@@ -69,7 +78,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
           child: WillPopScope(
               onWillPop: () async {
                 if (Platform.isAndroid) {
-                  _isDoubleBackPressed = onBackPressed(context, _isDoubleBackPressed, (bool value) {
+                  _isDoubleBackPressed = onBackPressed(
+                      context, _isDoubleBackPressed, (bool value) {
                     _isDoubleBackPressed = value;
                     print(_isDoubleBackPressed);
                   });
@@ -90,7 +100,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                   actions: <Widget>[
                     Ink(
                       child: InkWell(
-                        onTap: () => Navigator.of(context).push(SettingsScreen.route(config: widget.config)),
+                        onTap: () => Navigator.of(context)
+                            .push(SettingsScreen.route(config: widget.config)),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 18, right: 18),
                           child: Icon(
@@ -108,10 +119,12 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                         builder: (BuildContext context) {
                           return ATDialog(
                             isLoading: state.isLoading,
-                            bodyMessage: I18n.of(context).logout_from_mobile_warehouse,
+                            bodyMessage:
+                                I18n.of(context).logout_from_mobile_warehouse,
                             positiveActionText: I18n.of(context).yes_logout,
                             negativeActionText: I18n.of(context).no_go_back,
-                            positiveAction: () => context.read<DashboardScreenBloc>().logout(),
+                            positiveAction: () =>
+                                context.read<DashboardScreenBloc>().logout(),
                             negativeAction: () => Navigator.of(context).pop(),
                           );
                         });
@@ -123,74 +136,93 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                     Padding(
                       padding: const EdgeInsets.only(left: 18, top: 20),
                       child: ATText(
-                        text: I18n.of(context).hi_name(widget.userProfileModel?.username ?? widget.username),
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                        text: I18n.of(context).hi_name(
+                            widget.userProfileModel?.username ??
+                                widget.username),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w400),
                       ),
                     ),
                     SizedBox(height: 20),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 18, right: 18, bottom: 15),
+                          padding: const EdgeInsets.only(
+                              left: 18, right: 18, bottom: 15),
                           child: GridView.count(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () => Navigator.of(context).push(PickTicketsScreen.route()),
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).pick_tickets,
-                                description: I18n.of(context).pick_ticketst_description,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => Navigator.of(context).push(ParentLocationScreen.route(parentId: 'Root', navigation: 'pop')),
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).location_mapper,
-                                description: I18n.of(context).pick_ticketst_description,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => Navigator.of(context).push(CountTicketsScreen.route()),
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).stock_count,
-                                description: I18n.of(context).stock_count_description,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              },
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).count_list,
-                                description: I18n.of(context).count_list_description,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => Navigator.of(context).push(ParentLocationScreen.route(parentId: 'Root', navigation: 'pop')),
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).location_mapper,
-                                description: I18n.of(context).pick_ticketst_description,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              },
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).count_list,
-                                description: I18n.of(context).count_list_description,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () => Navigator.of(context).push(CountTicketsScreen.route()),
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).stock_count,
-                                description: I18n.of(context).stock_count_description,
-                              ),
-                            ),
-
-                          ])),
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              children: <Widget>[
+                                InkWell(
+                                  onTap: () => Navigator.of(context)
+                                      .push(PickTicketsScreen.route()),
+                                  child: ActionCardsWidget(
+                                    title: I18n.of(context).pick_tickets,
+                                    description: I18n.of(context)
+                                        .pick_ticketst_description,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () => Navigator.of(context).push(
+                                      ParentLocationScreen.route(
+                                          parentId: 'Root', navigation: 'pop')),
+                                  child: ActionCardsWidget(
+                                    title: I18n.of(context).location_mapper,
+                                    description: I18n.of(context)
+                                        .pick_ticketst_description,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () => Navigator.of(context)
+                                      .push(CountTicketsScreen.route()),
+                                  child: ActionCardsWidget(
+                                    title: I18n.of(context).stock_count,
+                                    description: I18n.of(context)
+                                        .stock_count_description,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  },
+                                  child: ActionCardsWidget(
+                                    title: I18n.of(context).count_list,
+                                    description:
+                                        I18n.of(context).count_list_description,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () => Navigator.of(context).push(
+                                      ParentLocationScreen.route(
+                                          parentId: 'Root', navigation: 'pop')),
+                                  child: ActionCardsWidget(
+                                    title: I18n.of(context).location_mapper,
+                                    description: I18n.of(context)
+                                        .pick_ticketst_description,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  },
+                                  child: ActionCardsWidget(
+                                    title: I18n.of(context).count_list,
+                                    description:
+                                        I18n.of(context).count_list_description,
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () => Navigator.of(context)
+                                      .push(CountTicketsScreen.route()),
+                                  child: ActionCardsWidget(
+                                    title: I18n.of(context).stock_count,
+                                    description: I18n.of(context)
+                                        .stock_count_description,
+                                  ),
+                                ),
+                              ])),
                     )
                   ],
                 ),

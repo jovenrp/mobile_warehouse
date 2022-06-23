@@ -12,10 +12,20 @@ class CountTicketSkusRepositoryImpl implements CountTicketSkusRepository {
   final CountTicketSkusApiService _apiService;
 
   @override
-  Future<CountTicketDetailsReponse> getCountTicketSkus(
-      {String? token, String? id}) {
-    // TODO: implement getCountTicketSkus
-    throw UnimplementedError();
+  Future<CountTicketDetailsReponse> getCountTicketDetailSkus(
+      {String? token, String? id}) async {
+    try {
+      final String result = await _apiService.getCountTicketDetailSkus(token,
+          data: '|keys:containerId=$id');
+
+      final CountTicketDetailsReponse response =
+          CountTicketDetailsReponse.fromJson(jsonDecode(result));
+
+      return response;
+    } catch (_) {
+      logger.e(_.toString());
+      return CountTicketDetailsReponse();
+    }
   }
 
   @override
