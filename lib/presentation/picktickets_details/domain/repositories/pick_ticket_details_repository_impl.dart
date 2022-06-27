@@ -24,7 +24,8 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return PickTicketsDetailsResponse();
+      return PickTicketsDetailsResponse(
+          error: true, message: 'Fetch pick ticket details has an error.');
     }
   }
 
@@ -41,7 +42,8 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return TicketDetailsResponseModel();
+      return TicketDetailsResponseModel(
+          error: true, message: 'Begin pick ticket detail has an error.');
     }
   }
 
@@ -60,7 +62,8 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
           TicketDetailsResponseModel.fromJson(jsonDecode(result));
       return response;
     } catch (_) {
-      return TicketDetailsResponseModel();
+      return TicketDetailsResponseModel(
+          error: true, message: 'Submit pick ticket detail has an error.');
     }
   }
 
@@ -74,7 +77,8 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
           TicketDetailsResponseModel.fromJson(jsonDecode(result));
       return response;
     } catch (_) {
-      return TicketDetailsResponseModel();
+      return TicketDetailsResponseModel(
+          error: true, message: 'Exit pick ticket detail has an error.');
     }
   }
 
@@ -89,7 +93,8 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
           TicketDetailsResponseModel.fromJson(jsonDecode(result));
       return response;
     } catch (_) {
-      return TicketDetailsResponseModel();
+      return TicketDetailsResponseModel(
+          error: true, message: 'Complete pick ticket has an error.');
     }
   }
 
@@ -103,7 +108,8 @@ class PickTicketDetailsRepositoryImpl implements PickTicketDetailsRepository {
           TicketDetailsResponseModel.fromJson(jsonDecode(result));
       return response;
     } catch (_) {
-      return TicketDetailsResponseModel();
+      return TicketDetailsResponseModel(
+          error: true, message: 'Exit pick ticket has an error.');
     }
   }
 }

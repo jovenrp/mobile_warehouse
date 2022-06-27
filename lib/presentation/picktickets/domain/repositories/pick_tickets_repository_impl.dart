@@ -26,7 +26,8 @@ class PickTicketsRepositoryImpl implements PickTicketsRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return PickTicketsResponse();
+      return PickTicketsResponse(
+          error: true, message: 'Fetch pick tickets has an error.');
     }
   }
 }

@@ -10,6 +10,6 @@ abstract class CountTicketDetailsApiService {
 
   @POST(
       '/mobile(getCountTicketDetailSummary)?useHdrs=true&sessId={token}&data={data}')
-  Future<dynamic> getCountTicket(@Path('token') String? token,
+  Future<dynamic> getCountTicketDetailSummary(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
 }

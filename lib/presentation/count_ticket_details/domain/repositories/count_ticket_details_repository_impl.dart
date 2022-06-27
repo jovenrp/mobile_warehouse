@@ -14,8 +14,8 @@ class CountTicketDetailsRepositoryImpl implements CountTicketDetailsRepository {
   Future<CountTicketDetailsReponse> getCountTicketDetails(
       {String? token, String? id}) async {
     try {
-      final String result =
-          await _apiService.getCountTicket(token, data: '|keys:ticketId=$id');
+      final String result = await _apiService.getCountTicketDetailSummary(token,
+          data: '|keys:ticketId=$id');
 
       final CountTicketDetailsReponse response =
           CountTicketDetailsReponse.fromJson(jsonDecode(result));
@@ -23,7 +23,9 @@ class CountTicketDetailsRepositoryImpl implements CountTicketDetailsRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return CountTicketDetailsReponse();
+      return CountTicketDetailsReponse(
+          error: true,
+          message: 'Get count ticket detail summary has an error.');
     }
   }
 }

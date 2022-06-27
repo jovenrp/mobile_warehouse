@@ -24,7 +24,8 @@ class CountTicketSkusRepositoryImpl implements CountTicketSkusRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return CountTicketDetailsReponse();
+      return CountTicketDetailsReponse(
+          error: true, message: 'Get count ticket detail skus has an error.');
     }
   }
 
@@ -41,7 +42,8 @@ class CountTicketSkusRepositoryImpl implements CountTicketSkusRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return CountTicketDetailsReponse();
+      return CountTicketDetailsReponse(
+          error: true, message: 'Begin count ticket detail has an error.');
     }
   }
 
@@ -58,7 +60,8 @@ class CountTicketSkusRepositoryImpl implements CountTicketSkusRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return CountTicketDetailsReponse();
+      return CountTicketDetailsReponse(
+          error: true, message: 'Exit count ticket detail has an error.');
     }
   }
 }

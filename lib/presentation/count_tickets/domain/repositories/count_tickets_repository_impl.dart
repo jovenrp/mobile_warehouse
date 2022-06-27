@@ -22,7 +22,8 @@ class CountTicketsRepositoryImpl implements CountTicketsRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return CountTicketsReponse();
+      return CountTicketsReponse(
+          error: true, message: 'Get count tickets has an error.');
     }
   }
 }

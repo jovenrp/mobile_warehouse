@@ -11,8 +11,6 @@ class CountTicketDetailsReponse {
   const CountTicketDetailsReponse({
     this.error,
     this.message,
-    this.countTicketDetails,
-    this.countTicketDetail,
     this.countTicketDetailSummary,
   });
 
@@ -25,12 +23,6 @@ class CountTicketDetailsReponse {
 
   @JsonKey(name: 'message')
   final String? message;
-
-  @JsonKey(name: 'countTicketDetails')
-  final List<CountTicketDetailsModel>? countTicketDetails;
-
-  @JsonKey(name: 'countTicketDetail')
-  final List<CountTicketDetailModel>? countTicketDetail;
 
   @JsonKey(name: 'countTicketDetailSummary')
   final List<CountTicketDetailSummaryModel>? countTicketDetailSummary;

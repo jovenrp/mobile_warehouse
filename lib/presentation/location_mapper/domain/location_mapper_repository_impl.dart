@@ -29,7 +29,8 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return ParentLocationModel();
+      return ParentLocationModel(
+          error: true, message: 'Get container children has an error.');
     }
   }
 
@@ -46,7 +47,8 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return ParentLocationModel();
+      return ParentLocationModel(
+          error: true, message: 'Get container parent has an error.');
     }
   }
 
@@ -67,7 +69,8 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return ParentLocationModel(error: true, message: _.toString());
+      return ParentLocationModel(
+          error: true, message: 'Create container has an error.');
     }
   }
 
@@ -83,7 +86,8 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return SkuResponse();
+      return SkuResponse(
+          error: true, message: 'Get container skus has an error.');
     }
   }
 
@@ -99,7 +103,7 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return SkuResponse();
+      return SkuResponse(error: true, message: 'Remove sku has an error.');
     }
   }
 
@@ -114,7 +118,7 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return SkuResponse();
+      return SkuResponse(error: true, message: 'Add sku has an error.');
     }
   }
 
@@ -131,7 +135,8 @@ class LocationMapperRepositoryImpl implements LocationMapperRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return ParentLocationModel();
+      return ParentLocationModel(
+          error: true, message: 'Update container has an error.');
     }
   }
 }

@@ -24,7 +24,7 @@ class CountTicketSkusBloc extends Cubit<CountTicketSkusState> {
           isLoading: false,
           hasError: false,
           response: response,
-          countTicketDetailModel: response.countTicketDetail));
+          countTicketDetailSummary: response.countTicketDetailSummary));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
@@ -38,10 +38,7 @@ class CountTicketSkusBloc extends Cubit<CountTicketSkusState> {
       final CountTicketDetailsReponse response =
           await countTicketSkusRepository.beginCount(token: token, id: id);
 
-      emit(state.copyWith(
-          hasError: false,
-          response: response,
-          countTicketDetailModel: response.countTicketDetail));
+      emit(state.copyWith(hasError: false, response: response));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
@@ -56,10 +53,7 @@ class CountTicketSkusBloc extends Cubit<CountTicketSkusState> {
           await countTicketSkusRepository.exitCount(token: token, id: id);
 
       emit(state.copyWith(
-          isLoading: false,
-          hasError: false,
-          response: response,
-          countTicketDetailModel: response.countTicketDetail));
+          isLoading: false, hasError: false, response: response));
       return response;
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
