@@ -433,7 +433,8 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                 : Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: ATTextButton(
-                        buttonText: 'Create a child for $parentName',
+                        buttonText: I18n.of(context)
+                            .create_a_child_for_parentName(parentName),
                         isLoading: state.isLoading,
                         onTap: () => showDialog(
                                 context: context,
@@ -482,7 +483,9 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                     ),
                     SizedBox(width: 10),
                     Flexible(
-                        child: ATText(text: 'Adding child for $parentName'))
+                        child: ATText(
+                            text: I18n.of(context)
+                                .adding_child_for_parentName(parentName)))
                     //: 'Fill up the field to create a new child for '))
                   ],
                 ),
@@ -490,23 +493,24 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                 Visibility(
                     visible: isError,
                     child: ATText(
-                      text: 'Please enter a value in either name or code',
+                      text:
+                          I18n.of(context).please_enter_a_value_in_name_or_code,
                       fontSize: 12,
                       fontColor: AppColors.atWarningRed,
                     )),
                 SizedBox(height: 10),
                 ATTextfield(
-                  hintText: 'Enter Name',
+                  hintText: I18n.of(context).enter_name,
                   textEditingController: name,
                 ),
                 SizedBox(height: 10),
                 ATTextfield(
-                  hintText: 'Enter Code',
+                  hintText: I18n.of(context).enter_code,
                   textEditingController: code,
                 ),
-                SizedBox(height: 10),
+                  SizedBox(height: 10),
                 ATTextfield(
-                  hintText: 'Enter Serial No.',
+                  hintText: I18n.of(context).enter_serial_no,
                   textEditingController: serial,
                 ),
                 SizedBox(height: 40),
@@ -514,7 +518,7 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                   width: double.infinity,
                   child: ATTextButton(
                     isLoading: false,
-                    buttonText: 'Add child',
+                    buttonText: I18n.of(context).add_child,
                     onTap: () {
                       setState(() {
                         if (name.text.isNotEmpty || code.text.isNotEmpty) {

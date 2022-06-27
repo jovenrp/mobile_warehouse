@@ -61,8 +61,8 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
           return SafeArea(
               child: Scaffold(
             appBar: ATAppBar(
-              title:
-                  'Counting ${widget.countTicketDetailSummaryModel?.containerId}',
+              title: I18n.of(context).counting_location_number(
+                  widget.countTicketDetailSummaryModel?.containerId),
               icon: Icon(
                 Icons.arrow_back_sharp,
                 color: AppColors.white,
@@ -176,7 +176,7 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 ATText(
-                                    text: 'On Hand: ',
+                                    text: '${I18n.of(context).on_hand} ',
                                     fontSize: 16,
                                     fontColor: AppColors.white),
                                 ATText(

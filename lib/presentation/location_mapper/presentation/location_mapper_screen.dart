@@ -179,8 +179,8 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 20),
                                 child: ATText(
-                                  text:
-                                      '*Serial is in read-only, swipe right to alter the value.',
+                                  text: I18n.of(context)
+                                      .serial_number_required_indicator,
                                   fontColor: AppColors.warningOrange,
                                 ),
                               ),
@@ -208,7 +208,8 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                       ]),
                                   child: ATSearchfield(
                                     textEditingController: serialController,
-                                    hintText: 'Assign serial number',
+                                    hintText:
+                                        I18n.of(context).assign_serial_number,
                                     focusNode: serialNode,
                                     isReadOnly: isReadOnly,
                                     isScanner: true,
@@ -300,7 +301,7 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                   const EdgeInsets.only(left: 18, right: 18),
                               child: ATSearchfield(
                                   textEditingController: skuController,
-                                  hintText: 'SKU',
+                                  hintText: I18n.of(context).sku.toUpperCase(),
                                   focusNode: skuNode,
                                   isScanner: true,
                                   onFieldSubmitted: (String? value) =>

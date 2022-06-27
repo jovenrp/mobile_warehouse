@@ -67,7 +67,8 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
           return SafeArea(
               child: Scaffold(
                   appBar: ATAppBar(
-                    title: 'Ticket #${widget.countTicketsModel?.num}',
+                    title: I18n.of(context)
+                        .ticket_ticket_id(widget.countTicketsModel?.num),
                     icon: Icon(
                       Icons.arrow_back_sharp,
                       color: AppColors.white,
@@ -469,7 +470,7 @@ class _CountTicketDetailsScreen extends State<CountTicketDetailsScreen> {
                       padding: const EdgeInsets.only(
                           top: 5, left: 16, right: 16, bottom: 5),
                       child: ATTextButton(
-                          buttonText: 'Complete Count',
+                          buttonText: I18n.of(context).complete_count,
                           isLoading: state.isLoading,
                           onTap: () async {}))));
         });
