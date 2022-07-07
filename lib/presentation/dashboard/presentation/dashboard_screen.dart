@@ -13,7 +13,7 @@ import 'package:mobile_warehouse/presentation/count_tickets/presentation/count_t
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashboardscreen_state.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
-import 'package:mobile_warehouse/presentation/dashboard/presentation/localtion_mapper_widget.dart';
+import 'package:mobile_warehouse/presentation/item_lookup/presentation/item_lookup_screen.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
@@ -130,158 +130,98 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                         });
                   },
                 ),
-                body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 18, top: 20),
-                      child: ATText(
-                        text: I18n.of(context).hi_name(
-                            widget.userProfileModel?.username ??
-                                widget.username),
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w400),
+                body: Stack(children: <Widget>[
+                  Container(
+                      height: 180,
+                      decoration: BoxDecoration(
+                        color: AppColors.beachSea,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10)),
+                      )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18, top: 20),
+                        child: ATText(
+                          text: I18n.of(context).hi_name(
+                              widget.userProfileModel?.username ??
+                                  widget.username),
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.white),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 18, right: 18, bottom: 15),
-                          child: GridView.count(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                              children: <Widget>[
-                                InkWell(
-                                  onTap: () => Navigator.of(context)
-                                      .push(PickTicketsScreen.route()),
-                                  child: ActionCardsWidget(
-                                    title: I18n.of(context).pick_tickets,
-                                    description: I18n.of(context)
-                                        .pick_ticketst_description,
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 18, right: 18, bottom: 15),
+                            child: GridView.count(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () => Navigator.of(context)
+                                        .push(PickTicketsScreen.route()),
+                                    child: ActionCardsWidget(
+                                      title: I18n.of(context).pick_tickets,
+                                      description: I18n.of(context)
+                                          .pick_ticketst_description,
+                                      icon: Icon(Icons.edit),
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () => Navigator.of(context).push(
-                                      ParentLocationScreen.route(
-                                          parentId: 'Root', navigation: 'pop')),
-                                  child: ActionCardsWidget(
-                                    title: I18n.of(context).location_mapper,
-                                    description: I18n.of(context)
-                                        .pick_ticketst_description,
+                                  InkWell(
+                                    onTap: () => Navigator.of(context).push(
+                                        ParentLocationScreen.route(
+                                            parentId: 'Root',
+                                            navigation: 'pop')),
+                                    child: ActionCardsWidget(
+                                      title: I18n.of(context).location_mapper,
+                                      description: I18n.of(context)
+                                          .pick_ticketst_description,
+                                      icon: Icon(Icons.airplane_ticket),
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () => Navigator.of(context)
-                                      .push(CountTicketsScreen.route()),
-                                  child: ActionCardsWidget(
-                                    title: I18n.of(context).stock_count,
-                                    description: I18n.of(context)
-                                        .stock_count_description,
+                                  InkWell(
+                                    onTap: () => Navigator.of(context)
+                                        .push(CountTicketsScreen.route()),
+                                    child: ActionCardsWidget(
+                                      title: I18n.of(context).stock_count,
+                                      description: I18n.of(context)
+                                          .stock_count_description,
+                                      icon: Icon(Icons.airplane_ticket),
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  },
-                                  child: ActionCardsWidget(
-                                    title: I18n.of(context).count_list,
-                                    description:
-                                        I18n.of(context).count_list_description,
+                                  InkWell(
+                                    onTap: () => Navigator.of(context)
+                                        .push(ItemLookupScreen.route()),
+                                    child: ActionCardsWidget(
+                                      title: 'Item Lookup',
+                                      description: 'Item lookup description',
+                                      icon: Icon(Icons.airplane_ticket),
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () => Navigator.of(context).push(
-                                      ParentLocationScreen.route(
-                                          parentId: 'Root', navigation: 'pop')),
-                                  child: ActionCardsWidget(
-                                    title: I18n.of(context).location_mapper,
-                                    description: I18n.of(context)
-                                        .pick_ticketst_description,
+                                  InkWell(
+                                    onTap: () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                    },
+                                    child: ActionCardsWidget(
+                                      title: I18n.of(context).count_list,
+                                      description: I18n.of(context)
+                                          .count_list_description,
+                                      icon: Icon(Icons.airplane_ticket),
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                  },
-                                  child: ActionCardsWidget(
-                                    title: I18n.of(context).count_list,
-                                    description:
-                                        I18n.of(context).count_list_description,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () => Navigator.of(context)
-                                      .push(CountTicketsScreen.route()),
-                                  child: ActionCardsWidget(
-                                    title: I18n.of(context).stock_count,
-                                    description: I18n.of(context)
-                                        .stock_count_description,
-                                  ),
-                                ),
-                              ])),
-                    )
-                  ],
-                ),
-                /*body: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18, top: 20),
-                          child: ATText(
-                            text: I18n.of(context).hi_name(widget.userProfileModel?.username ?? widget.username),
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        SizedBox(height: 50),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            LocationMapperWidget(
-                                onTap: () => Navigator.of(context).push(ParentLocationScreen.route(parentId: 'Root', navigation: 'pop'))),
-                          ],
-                        ),
-                        SizedBox(height: 30),
-                        InkWell(
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          },
-                          child: Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20),
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).count_list,
-                                description: I18n.of(context).count_list_description,
-                              )),
-                        ),
-                        SizedBox(height: 14),
-                        InkWell(
-                          onTap: () => Navigator.of(context).push(CountTicketsScreen.route()),
-                          child: Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20),
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).stock_count,
-                                description: I18n.of(context).stock_count_description,
-                              )),
-                        ),
-                        SizedBox(height: 14),
-                        InkWell(
-                          onTap: () => Navigator.of(context).push(PickTicketsScreen.route()),
-                          child: Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 20),
-                              child: ActionCardsWidget(
-                                title: I18n.of(context).pick_tickets,
-                                description: I18n.of(context).pick_ticketst_description,
-                              )),
-                        ),
-                        SizedBox(height: 60),
-                      ],
-                    )),*/
+                                ])),
+                      )
+                    ],
+                  )
+                ]),
               )));
     });
   }

@@ -13,6 +13,11 @@ abstract class CountTicketSkusApiService {
   Future<dynamic> getCountTicketDetailSkus(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});
 
+  @POST(
+      '/mobile(getCountTicketDetailStock)?useHdrs=true&sessId={token}&data={data}')
+  Future<dynamic> getCountTicketDetailStock(@Path('token') String? token,
+      {@Path('headers') String? headers, @Path('data') String? data});
+
   @POST('/mobile(beginCount)?useHdrs=true&sessId={token}&data={data}')
   Future<dynamic> beginCount(@Path('token') String? token,
       {@Path('headers') String? headers, @Path('data') String? data});

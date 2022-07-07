@@ -3,11 +3,13 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 
 class ActionCardsWidget extends StatelessWidget {
-  const ActionCardsWidget({Key? key, this.title, this.description})
+  const ActionCardsWidget(
+      {Key? key, this.title, this.description, required this.icon})
       : super(key: key);
 
   final String? title;
   final String? description;
+  final Icon icon;
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +17,7 @@ class ActionCardsWidget extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: <Color>[
-            AppColors.semiDark,
-            AppColors.beachSea,
-          ],
-        ),
+        color: AppColors.beachSea20,
         border: Border.all(
           color: AppColors.beachSea,
         ),
@@ -43,7 +38,7 @@ class ActionCardsWidget extends StatelessWidget {
             ],
           ),
           Divider(color: AppColors.atDark),
-          ATText(text: description, fontSize: 14, fontColor: AppColors.white),
+          icon,
           SizedBox(height: 20)
         ],
       ),

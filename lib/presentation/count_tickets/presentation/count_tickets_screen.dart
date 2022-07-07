@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:easy_debounce/easy_debounce.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -250,16 +249,6 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                   ])),
                         ],
                       )),
-              Visibility(
-                  visible: state.countTickets?.isEmpty == true,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    color: AppColors.white,
-                    padding: const EdgeInsets.only(top: 30),
-                    child: ATText(
-                        text: I18n.of(context).oops_item_returned_0_results),
-                  )),
               Expanded(
                 child: InteractiveViewer(
                     child: Container(

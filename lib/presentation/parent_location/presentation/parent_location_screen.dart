@@ -508,7 +508,7 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
                   hintText: I18n.of(context).enter_code,
                   textEditingController: code,
                 ),
-                  SizedBox(height: 10),
+                SizedBox(height: 10),
                 ATTextfield(
                   hintText: I18n.of(context).enter_serial_no,
                   textEditingController: serial,

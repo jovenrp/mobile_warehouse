@@ -189,9 +189,10 @@ class _ApplicationState extends State<Application> {
         ),
       ),
     );
+  }
 
-    //FOR DEPLOYMENT BUILD ONLY
-    /*@override
+  //FOR DEPLOYMENT BUILD ONLY
+  /*@override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
       future: getCurrentApi(), // async work
@@ -266,8 +267,8 @@ class _ApplicationState extends State<Application> {
             }
         }
       },
-    );*/
-  }
+    );
+  }*/
 }
 
 extension ApplicationApiInterceptors on _ApplicationState {

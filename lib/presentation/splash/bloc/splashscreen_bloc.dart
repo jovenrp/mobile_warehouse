@@ -23,7 +23,7 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
     bool isExpire =
         currentTimestamp > (int.parse(loginTimestamp) + (43200 * 1000));
 
-    print('${currentTimestamp} ${int.parse(loginTimestamp) + (43200 * 1000)}');
+    //print('${currentTimestamp} ${int.parse(loginTimestamp) + (43200 * 1000)}');
     await persistenceService?.appConfiguration.set(config?.toJson());
 
     String? currentApi = await persistenceService?.preferredApi.get();

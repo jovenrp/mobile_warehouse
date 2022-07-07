@@ -15,6 +15,9 @@ import 'package:mobile_warehouse/presentation/count_tickets/data/services/count_
 import 'package:mobile_warehouse/presentation/count_tickets/domain/repositories/count_tickets_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:mobile_warehouse/presentation/forgot_password/bloc/forgot_password_bloc.dart';
+import 'package:mobile_warehouse/presentation/item_lookup/bloc/item_lookup_bloc.dart';
+import 'package:mobile_warehouse/presentation/item_lookup/data/services/item_lookup_api_service.dart';
+import 'package:mobile_warehouse/presentation/item_lookup/domain/item_lookup_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/bloc/location_mapper_bloc.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/data/services/location_mapper_api_service.dart';
 import 'package:mobile_warehouse/presentation/location_mapper/domain/location_mapper_repository_impl.dart';
@@ -114,6 +117,12 @@ class BlocsProvider {
           create: (_) => CountTicketSkusBloc(
               countTicketSkusRepository: CountTicketSkusRepositoryImpl(
                   CountTicketSkusApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<ItemLookupBloc>(
+          create: (_) => ItemLookupBloc(
+              itemLookupRepository: ItemLookupRepositoryImpl(
+                  ItemLookupApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
       ];
