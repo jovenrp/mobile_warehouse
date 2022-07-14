@@ -56,7 +56,7 @@ class ItemLookupBloc extends Cubit<ItemLookupState> {
     }
   }
 
-  Future<void> lookupItemAlias({String? item}) async {
+  Future<List<ItemAliasModel>?> lookupItemAlias({String? item}) async {
     emit(state.copyWith(isLoading: true)); //turn on loading indicator
     try {
       String? token = await persistenceService.dwnToken.get();
@@ -68,6 +68,7 @@ class ItemLookupBloc extends Cubit<ItemLookupState> {
           hasError: false,
           response: response,
           itemAlias: response.itemAlias));
+      return response.itemAlias;
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
@@ -81,7 +82,10 @@ class ItemLookupBloc extends Cubit<ItemLookupState> {
       final ItemLookupResponse response = await itemLookupRepository
           .lookupBarcodeStock(token: token, item: item);
 
-      emit(state.copyWith(isStockLoading: false, hasError: false, itemStock: response.itemStock));
+      emit(state.copyWith(
+          isStockLoading: false,
+          hasError: false,
+          itemStock: response.itemStock));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);
@@ -95,7 +99,8 @@ class ItemLookupBloc extends Cubit<ItemLookupState> {
       final ItemLookupResponse response =
           await itemLookupRepository.getItemTrakList(token: token, item: item);
 
-      emit(state.copyWith(isTrakLoading: false, hasError: false, itemTrak: response.itemTrak));
+      emit(state.copyWith(
+          isTrakLoading: false, hasError: false, itemTrak: response.itemTrak));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);

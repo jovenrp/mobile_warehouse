@@ -8,6 +8,7 @@ class ItemAliasModel {
     this.id,
     this.itemId,
     this.itemName,
+    this.sku,
     this.itemNum,
     this.type,
     this.code,
@@ -31,6 +32,9 @@ class ItemAliasModel {
 
   @JsonKey(name: 'itemName')
   final String? itemName;
+
+  @JsonKey(name: 'sku')
+  final String? sku;
 
   @JsonKey(name: 'type')
   final String? type;

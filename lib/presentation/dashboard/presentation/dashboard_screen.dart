@@ -171,7 +171,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                       title: I18n.of(context).pick_tickets,
                                       description: I18n.of(context)
                                           .pick_ticketst_description,
-                                      icon: Icon(Icons.edit),
+                                      icon: Icon(Icons.note,
+                                          color: AppColors.white, size: 70),
                                     ),
                                   ),
                                   InkWell(
@@ -183,7 +184,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                       title: I18n.of(context).location_mapper,
                                       description: I18n.of(context)
                                           .pick_ticketst_description,
-                                      icon: Icon(Icons.airplane_ticket),
+                                      icon: Icon(Icons.edit_location_outlined,
+                                          color: AppColors.white, size: 70),
                                     ),
                                   ),
                                   InkWell(
@@ -193,7 +195,8 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                       title: I18n.of(context).stock_count,
                                       description: I18n.of(context)
                                           .stock_count_description,
-                                      icon: Icon(Icons.airplane_ticket),
+                                      icon: Icon(Icons.move_to_inbox,
+                                          color: AppColors.white, size: 70),
                                     ),
                                   ),
                                   InkWell(
@@ -202,10 +205,11 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                     child: ActionCardsWidget(
                                       title: 'Item Lookup',
                                       description: 'Item lookup description',
-                                      icon: Icon(Icons.airplane_ticket),
+                                      icon: Icon(Icons.youtube_searched_for,
+                                          color: AppColors.white, size: 70),
                                     ),
                                   ),
-                                  InkWell(
+                                  /*InkWell(
                                     onTap: () {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(snackBar);
@@ -216,7 +220,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                           .count_list_description,
                                       icon: Icon(Icons.airplane_ticket),
                                     ),
-                                  ),
+                                  ),*/
                                 ])),
                       )
                     ],

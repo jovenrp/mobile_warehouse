@@ -19,27 +19,24 @@ class ActionCardsWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.beachSea20,
         border: Border.all(
-          color: AppColors.beachSea,
+          color: AppColors.beachSea20,
         ),
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              ATText(text: title, fontSize: 14, fontColor: AppColors.white),
-              Icon(
-                // Based on passwordVisible state choose the icon
-                Icons.double_arrow_outlined,
-                color: AppColors.white,
-              ),
-            ],
+          Center(
+            child: icon,
           ),
-          Divider(color: AppColors.atDark),
-          icon,
-          SizedBox(height: 20)
+          SizedBox(height: 20),
+          Center(
+            child: ATText(
+                text: title,
+                fontSize: 14,
+                fontColor: AppColors.white,
+                weight: FontWeight.bold),
+          ),
         ],
       ),
     );
