@@ -34,6 +34,9 @@ import 'package:mobile_warehouse/presentation/picktickets_details/domain/reposit
 import 'package:mobile_warehouse/presentation/settings/bloc/settings_bloc.dart';
 import 'package:mobile_warehouse/presentation/sku_details/bloc/sku_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart';
+import 'package:mobile_warehouse/presentation/stock_adjust/bloc/stock_adjust_bloc.dart';
+import 'package:mobile_warehouse/presentation/stock_adjust/data/services/stock_adjust_api_service.dart';
+import 'package:mobile_warehouse/presentation/stock_adjust/domain/repositories/stock_adjust_repository_impl.dart';
 import 'package:provider/single_child_widget.dart';
 
 class BlocsProvider {
@@ -121,6 +124,14 @@ class BlocsProvider {
         ),
         BlocProvider<ItemLookupBloc>(
           create: (_) => ItemLookupBloc(
+              itemLookupRepository: ItemLookupRepositoryImpl(
+                  ItemLookupApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<StockAdjustBloc>(
+          create: (_) => StockAdjustBloc(
+              stockAdjustRepository: StockAdjustRepositoryImpl(
+                  StockAdjustApiService(dio, baseUrl: apiUrl)),
               itemLookupRepository: ItemLookupRepositoryImpl(
                   ItemLookupApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),

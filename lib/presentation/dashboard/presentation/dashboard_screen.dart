@@ -18,6 +18,7 @@ import 'package:mobile_warehouse/presentation/login/presentation/login_screen.da
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/settings/presentation/settings_screen.dart';
+import 'package:mobile_warehouse/presentation/stock_adjust/presentation/stock_adjust_screen.dart';
 
 import 'action_cards_widget.dart';
 
@@ -209,18 +210,16 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                           color: AppColors.white, size: 70),
                                     ),
                                   ),
-                                  /*InkWell(
-                                    onTap: () {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
-                                    },
+                                  InkWell(
+                                    onTap: () => Navigator.of(context)
+                                        .push(StockAdjustScreen.route()),
                                     child: ActionCardsWidget(
-                                      title: I18n.of(context).count_list,
-                                      description: I18n.of(context)
-                                          .count_list_description,
-                                      icon: Icon(Icons.airplane_ticket),
+                                      title: 'Stock Actions',
+                                      description: 'Stock Actions',
+                                      icon: Icon(Icons.adjust,
+                                          color: AppColors.white, size: 70),
                                     ),
-                                  ),*/
+                                  ),
                                 ])),
                       )
                     ],
