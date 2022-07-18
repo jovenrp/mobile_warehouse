@@ -88,6 +88,8 @@
   "enter_code" : "Enter Code",
   "enter_serial_no" : "Enter Serial No.",
   "add_child" : "Add child",
+  "enter_an_alias_to_be_search" : "Enter an alias to be searched.",
+  "search_alias" : "Search alias",
   "error_messages__api_000": "Something went wrong!",
   "error_messages__api_001": "Internal server error",
   "error_messages__api_002": "Action is required",

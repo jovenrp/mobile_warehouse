@@ -3,6 +3,8 @@ import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/presentation/item_lookup/bloc/item_lookup_state.dart';
 import 'package:mobile_warehouse/presentation/item_lookup/data/models/item_alias_model.dart';
 import 'package:mobile_warehouse/presentation/item_lookup/data/models/item_lookup_response.dart';
+import 'package:mobile_warehouse/presentation/item_lookup/data/models/item_stock_model.dart';
+import 'package:mobile_warehouse/presentation/item_lookup/data/models/item_trak_model.dart';
 import 'package:mobile_warehouse/presentation/item_lookup/domain/item_lookup_repository.dart';
 
 class ItemLookupBloc extends Cubit<ItemLookupState> {
@@ -13,6 +15,15 @@ class ItemLookupBloc extends Cubit<ItemLookupState> {
 
   final ItemLookupRepository itemLookupRepository;
   final PersistenceService persistenceService;
+
+  Future<void> init() async {
+    emit(state.copyWith(
+        isInit: true,
+        isLoading: false,
+        itemAlias: <ItemAliasModel>[],
+        itemStock: <ItemStockModel>[],
+        itemTrak: <ItemTrakModel>[]));
+  }
 
   Future<void> searchItem({String? searchItem, String? value}) async {
     emit(state.copyWith(isLoading: true));
@@ -44,8 +55,6 @@ class ItemLookupBloc extends Cubit<ItemLookupState> {
               }).toList() ??
               <ItemAliasModel>[];
 
-      print(searchItem);
-      print(values.length);
       emit(state.copyWith(
           isLoading: false,
           itemAlias: searchItem?.isEmpty == true ? response.itemAlias : values,

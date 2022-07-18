@@ -4,12 +4,17 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 
 class ActionCardsWidget extends StatelessWidget {
   const ActionCardsWidget(
-      {Key? key, this.title, this.description, required this.icon})
+      {Key? key,
+      this.title,
+      this.description,
+      required this.icon,
+      this.quarterTurns = 0})
       : super(key: key);
 
   final String? title;
   final String? description;
   final Icon icon;
+  final int quarterTurns;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,10 @@ class ActionCardsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Center(
-            child: icon,
+            child: RotatedBox(
+              quarterTurns: quarterTurns,
+              child: icon,
+            ),
           ),
           SizedBox(height: 20),
           Center(

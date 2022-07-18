@@ -11,6 +11,7 @@ class ItemLookupState with _$ItemLookupState {
   factory ItemLookupState({
     @Default(false) bool isLoading,
     @Default(false) bool hasError,
+    @Default(false) bool isInit,
     @Default(false) bool isStockLoading,
     @Default(false) bool isTrakLoading,
     String? errorMessage,

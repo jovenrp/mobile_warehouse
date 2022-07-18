@@ -18,7 +18,7 @@ import 'package:mobile_warehouse/presentation/login/presentation/login_screen.da
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/settings/presentation/settings_screen.dart';
-import 'package:mobile_warehouse/presentation/stock_adjust/presentation/stock_adjust_screen.dart';
+import 'package:mobile_warehouse/presentation/stock_actions/presentation/stock_actions_screen.dart';
 
 import 'action_cards_widget.dart';
 
@@ -212,7 +212,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                   ),
                                   InkWell(
                                     onTap: () => Navigator.of(context)
-                                        .push(StockAdjustScreen.route()),
+                                        .push(StockActionsScreen.route()),
                                     child: ActionCardsWidget(
                                       title: 'Stock Actions',
                                       description: 'Stock Actions',
