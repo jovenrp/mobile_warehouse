@@ -101,8 +101,9 @@ class _CountTicketSkusScreen extends State<CountTicketSkusScreen> {
                             hintText: I18n.of(context).search,
                             onPressed: () {
                               Future<void>.delayed(Duration.zero, () async {
-                                await Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) {
+                                await Navigator.push(context,
+                                    MaterialPageRoute<Widget>(
+                                        builder: (BuildContext context) {
                                   return QRScreen(scanner: 'serial');
                                 }));
                                 /*ParentLocationModel parentLocationModel =

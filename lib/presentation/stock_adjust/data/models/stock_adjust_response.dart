@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mobile_warehouse/presentation/picktickets/data/models/pick_tickets_item_model.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_adjust_model.dart';
 
 part 'stock_adjust_response.g.dart';

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
@@ -92,7 +91,7 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                 .read<StockAdjustBloc>()
                                 .lookupBarcodeStock(
                                     item: itemAlias?.first.itemId)
-                                .then((value) => isInit = false);
+                                .then((_) => isInit = false);
                             qtyControllers = <TextEditingController>[];
                             adjustControllers = <TextEditingController>[];
                           });

@@ -218,11 +218,12 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                         : () {
                                             Future<void>.delayed(Duration.zero,
                                                 () async {
-                                              ParentLocationModel
+                                              ParentLocationModel?
                                                   parentLocationModel =
                                                   await Navigator.push(context,
-                                                      MaterialPageRoute(builder:
-                                                          (BuildContext
+                                                      MaterialPageRoute<
+                                                              ParentLocationModel>(
+                                                          builder: (BuildContext
                                                               context) {
                                                 return QRScreen(
                                                     container: widget.container,
@@ -231,19 +232,19 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                               SnackBar snackBar = SnackBar(
                                                 content: ATText(
                                                   text: parentLocationModel
-                                                      .message,
+                                                      ?.message,
                                                   fontColor: AppColors.white,
                                                 ),
                                                 duration: Duration(seconds: 2),
                                               );
 
-                                              if (parentLocationModel.error ==
+                                              if (parentLocationModel?.error ==
                                                   false) {
                                                 setState(() {
                                                   isReadOnly = true;
                                                   serialController.text =
                                                       parentLocationModel
-                                                              .container
+                                                              ?.container
                                                               ?.first
                                                               .num ??
                                                           '';
@@ -327,28 +328,30 @@ class _LocationMapperScreen extends State<LocationMapperScreen> {
                                   onPressed: () {
                                     Future<void>.delayed(Duration.zero,
                                         () async {
-                                      ParentLocationModel parentLocationModel =
+                                      ParentLocationModel? parentLocationModel =
                                           await Navigator.push(context,
-                                              MaterialPageRoute(builder:
-                                                  (BuildContext context) {
+                                              MaterialPageRoute<
+                                                      ParentLocationModel>(
+                                                  builder:
+                                                      (BuildContext context) {
                                         return QRScreen(
                                             container: widget.container,
                                             scanner: 'sku');
                                       }));
                                       SnackBar snackBar = SnackBar(
                                         content: ATText(
-                                          text: parentLocationModel.message,
+                                          text: parentLocationModel?.message,
                                           fontColor: AppColors.white,
                                         ),
                                         duration: Duration(seconds: 2),
                                       );
 
-                                      if (parentLocationModel.error == false) {
+                                      if (parentLocationModel?.error == false) {
                                         setState(() {
                                           isReadOnly = true;
                                           serialController.text =
                                               parentLocationModel
-                                                      .container?.first.num ??
+                                                      ?.container?.first.num ??
                                                   '';
                                         });
                                         ScaffoldMessenger.of(context)

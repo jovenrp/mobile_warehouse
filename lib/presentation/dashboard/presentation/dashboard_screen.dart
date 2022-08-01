@@ -13,10 +13,12 @@ import 'package:mobile_warehouse/presentation/count_tickets/presentation/count_t
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashboardscreen_state.dart';
 import 'package:mobile_warehouse/presentation/dashboard/bloc/dashbordscreeen_bloc.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
+import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/presentation/item_lookup/presentation/item_lookup_screen.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
+import 'package:mobile_warehouse/presentation/receive_tickets/presentation/receive_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/settings/presentation/settings_screen.dart';
 import 'package:mobile_warehouse/presentation/stock_actions/presentation/stock_actions_screen.dart';
 
@@ -60,13 +62,13 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
 
   @override
   Widget build(BuildContext context) {
-    SnackBar snackBar = SnackBar(
+    /*SnackBar snackBar = SnackBar(
       content: ATText(
         text: 'No function implementation yet!',
         fontColor: AppColors.white,
       ),
       duration: Duration(seconds: 1),
-    );
+    );*/
     return BlocConsumer<DashboardScreenBloc, DashboardScreenState>(
         listener: (BuildContext context, DashboardScreenState state) {
       if (state.isSignedOut) {
@@ -169,10 +171,20 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                     onTap: () => Navigator.of(context)
                                         .push(PickTicketsScreen.route()),
                                     child: ActionCardsWidget(
-                                      title: I18n.of(context).pick_tickets,
+                                      title: 'Pick',
                                       description: I18n.of(context)
                                           .pick_ticketst_description,
                                       icon: Icon(Icons.note,
+                                          color: AppColors.white, size: 70),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () => Navigator.of(context)
+                                        .push(ReceiveTicketsScreen.route()),
+                                    child: ActionCardsWidget(
+                                      title: 'Receive',
+                                      description: '',
+                                      icon: Icon(Icons.call_received,
                                           color: AppColors.white, size: 70),
                                     ),
                                   ),
@@ -182,7 +194,9 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                             parentId: 'Root',
                                             navigation: 'pop')),
                                     child: ActionCardsWidget(
-                                      title: I18n.of(context).location_mapper,
+                                      title: I18n.of(context)
+                                          .location_mapper
+                                          .capitalizeFirstofEach(),
                                       description: I18n.of(context)
                                           .pick_ticketst_description,
                                       icon: Icon(Icons.edit_location_outlined,
@@ -193,7 +207,9 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                     onTap: () => Navigator.of(context)
                                         .push(CountTicketsScreen.route()),
                                     child: ActionCardsWidget(
-                                      title: I18n.of(context).stock_count,
+                                      title: I18n.of(context)
+                                          .stock_count
+                                          .capitalizeFirstofEach(),
                                       description: I18n.of(context)
                                           .stock_count_description,
                                       icon: Icon(Icons.move_to_inbox,
