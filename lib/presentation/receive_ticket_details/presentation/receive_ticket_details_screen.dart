@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
+import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_mini_textfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
@@ -99,13 +101,16 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
           if (!isInitialized) {
             textFieldControllers.add(TextEditingController());
             //item.setLocation(state.pickTicketResponse?[0].destination);
-            if (item.qtyOrder?.isEmpty == true) {
+            if (item.qtyReceived?.isEmpty == true) {
               item.setQtyPicked('0');
             }
-            if (double.parse(item.qtyOrder ?? '0') > 0 ||
+            if (double.parse(item.qtyReceived?.isNotEmpty == true
+                        ? item.qtyReceived ?? '0'
+                        : '0') >
+                    0 ||
                 item.status?.toLowerCase() == 'partial') {
-              item.setPickedItem(item.qtyOrder);
-              item.setIsChecked(double.parse(item.qtyOrder ?? '0') > 0 ||
+              item.setPickedItem(item.qtyReceived);
+              item.setIsChecked(double.parse(item.qtyReceived ?? '0') > 0 ||
                   item.status?.toLowerCase() == 'partial');
             }
             if (index >=
@@ -114,6 +119,170 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
               isInitialized = true;
             }
             index++;
+          }
+        }
+
+        if (!state.isLoading) {
+          if (state.isOverPicked == true) {
+            context.read<ReceiveTicketDetailsBloc>().resetStates();
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    child: SizedBox(
+                      height: 300,
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.warning_amber_rounded,
+                              size: 70,
+                              color: AppColors.warningOrange,
+                            ),
+                            SizedBox(height: 10),
+                            ATText(
+                              text: I18n.of(context).do_you_want_to_continue,
+                              fontSize: 16,
+                              textAlign: TextAlign.center,
+                              weight: FontWeight.bold,
+                            ),
+                            SizedBox(height: 10),
+                            ATText(
+                              text: I18n.of(context).this_will_overpick_item,
+                              fontSize: 16,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 20),
+                            Container(
+                              width: double.infinity,
+                              child: ATTextButton(
+                                  isLoading: false,
+                                  buttonText: I18n.of(context).yes_pick_line,
+                                  onTap: () {
+                                    context
+                                        .read<ReceiveTicketDetailsBloc>()
+                                        .submitPick(
+                                            id: state.dummyPickTicketId ?? '',
+                                            containerId: state
+                                                    .dummyReceiveTicketDetailsModel
+                                                    ?.containerId ??
+                                                '0',
+                                            qtyReceived:
+                                                state.dummyQuantityPicked ??
+                                                    '');
+                                    Navigator.of(context).popUntil(
+                                        ModalRoute.withName(
+                                            '/receiveTicketDetails'));
+                                  }),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              child: ATTextButton(
+                                buttonStyle: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        AppColors.white),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      side:
+                                          BorderSide(color: AppColors.beachSea),
+                                    ))),
+                                buttonTextStyle:
+                                    TextStyle(color: AppColors.beachSea),
+                                isLoading: false,
+                                buttonText: I18n.of(context).cancel,
+                                onTap: () {
+                                  currentIndex = -1;
+                                  context
+                                      .read<ReceiveTicketDetailsBloc>()
+                                      .exitReceiveDetail(
+                                          id: state
+                                                  .dummyReceiveTicketDetailsModel
+                                                  ?.id ??
+                                              '');
+                                  context
+                                      .read<ReceiveTicketDetailsBloc>()
+                                      .cancelPickRequest(
+                                          state.dummyReceiveTicketDetailsModel,
+                                          state.dummyQuantityPicked);
+                                  Navigator.of(context).popUntil(
+                                      ModalRoute.withName(
+                                          '/receiveTicketDetails'));
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
+          }
+        }
+
+        if (!state.isUpdateLoading) {
+          if (state.isCompleteTicket) {
+            context.read<ReceiveTicketDetailsBloc>().resetStates();
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    child: SizedBox(
+                      height: 290,
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(height: 10),
+                            Container(
+                              alignment: Alignment.center,
+                              child: completeStatus == 'partial'
+                                  ? Icon(Icons.warning_amber_rounded,
+                                      color: AppColors.warningOrange, size: 80)
+                                  : Icon(Icons.check_circle,
+                                      color: AppColors.successGreen, size: 80),
+                            ),
+                            SizedBox(height: 10),
+                            ATText(
+                              text: completeStatus == 'partial'
+                                  ? I18n.of(context).partial_pick_completed
+                                  : I18n.of(context).completed_alert,
+                              fontSize: completeStatus == 'partial' ? 20 : 20,
+                              weight: FontWeight.bold,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 15),
+                            ATText(
+                              text: completeStatus == 'partial'
+                                  ? I18n.of(context)
+                                      .ticket_number_partially_complete(
+                                          widget.receiveTicketsModel?.num)
+                                  : I18n.of(context).ticket_number_complete(
+                                      widget.receiveTicketsModel?.num),
+                              fontSize: completeStatus == 'partial' ? 16 : 16,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 30),
+                            Container(
+                              width: double.infinity,
+                              child: ATTextButton(
+                                isLoading: false,
+                                buttonText: I18n.of(context).done_button,
+                                onTap: () => Navigator.of(context).popUntil(
+                                    ModalRoute.withName(
+                                        '/receiveTicketDetails')),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                });
           }
         }
       }
@@ -125,17 +294,40 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
           child: SafeArea(
             child: Scaffold(
               appBar: ATAppBar(
-                  title: 'PO${widget.receiveTicketsModel?.num}',
+                  title: 'Receiving',
                   icon: Icon(
                     Icons.arrow_back_sharp,
                     color: AppColors.white,
                     size: 24.0,
-                  )),
+                  ),
+                  actions: <Widget>[
+                    state.isLoading || state.isUpdateLoading
+                        ? Container(
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 20, right: 18),
+                            width: 35,
+                            child: ATLoadingIndicator(
+                              strokeWidth: 3.0,
+                              width: 10,
+                              height: 10,
+                            ),
+                          )
+                        : SizedBox()
+                  ]),
               body: Container(
                   color: AppColors.white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Container(
+                        color: AppColors.beachSea,
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(left: 18, bottom: 10),
+                        child: ATText(text: 'PO-${widget.receiveTicketsModel?.num} ${widget.receiveTicketsModel?.vendorName}'.capitalizeFirstofEach(), style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w700)),
+                      ),
                       Container(
                         color: AppColors.beachSea,
                         padding: const EdgeInsets.only(
@@ -316,8 +508,9 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                                               .receiveTicketDetailsModel?[currentIndex]
                                                                               .setIsVisible(false);
                                                                           //call exit pick here
-                                                                          /*context.read<ReceiveTicketDetailsBloc>().exitPick(
-                                                                                pickTicketDetailId: state.pickTicketsResponse?[currentIndex].id ?? '');*/
+                                                                          context
+                                                                              .read<ReceiveTicketDetailsBloc>()
+                                                                              .exitReceiveDetail(id: state.receiveTicketDetailsModel?[currentIndex].id ?? '');
                                                                           currentIndex =
                                                                               -1;
                                                                         }
@@ -335,9 +528,9 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                                             .receiveTicketDetailsModel?[index]
                                                                             .setIsVisible(false);
                                                                         //call exit pick here
-                                                                        /*context
-                                                                              .read<ReceiveTicketDetailsBloc>()
-                                                                              .exitPick(pickTicketDetailId: state.pickTicketsResponse?[index].id ?? '');*/
+                                                                        context
+                                                                            .read<ReceiveTicketDetailsBloc>()
+                                                                            .exitReceiveDetail(id: state.receiveTicketDetailsModel?[index].id ?? '');
                                                                         currentIndex =
                                                                             -1;
                                                                       }
@@ -360,11 +553,7 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                                                 width: 24,
                                                                                 child: Checkbox(
                                                                                     visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                                                                                    activeColor: state.receiveTicketDetailsModel?[index].status?.toLowerCase() == 'processed'
-                                                                                        ? AppColors.successGreen
-                                                                                        : double.parse(state.receiveTicketDetailsModel?[index].pickedItem?.isEmpty ?? false ? '0' : state.receiveTicketDetailsModel?[index].pickedItem ?? '0') == double.parse(state.receiveTicketDetailsModel?[index].qtyOrder ?? '0')
-                                                                                            ? AppColors.successGreen
-                                                                                            : AppColors.warningOrange,
+                                                                                    activeColor: state.receiveTicketDetailsModel?[index].isOver?.toLowerCase() == 'y' || state.receiveTicketDetailsModel?[index].isUnder?.toLowerCase() == 'y' ? AppColors.warningOrange : AppColors.successGreen,
                                                                                     value: state.receiveTicketDetailsModel?[index].isChecked ?? false,
                                                                                     onChanged: (bool? value) {
                                                                                       context.read<ReceiveTicketDetailsBloc>().updateCheckBox(state.receiveTicketDetailsModel?[index], value, widget.receiveTicketsModel?.id, textFieldControllers[index]);
@@ -442,23 +631,24 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                                               textFieldControllers[index],
                                                                           onFieldSubmitted: (String? value) =>
                                                                               setState(() {
-                                                                            /*if (value?.isNotEmpty == true) {
-                                                                                    context.read<ReceiveTicketDetailsBloc>().setQuantityPicked(state.receiveTicketDetailsModel?[index], textFieldControllers[index]);
-                                                                                    if (state.receiveTicketDetailsModel?[index].isVisible == false) {
-                                                                                      //set previous open to close
-                                                                                      if (currentIndex != -1) {
-                                                                                        state.receiveTicketDetailsModel?[currentIndex].setIsVisible(false);
-                                                                                        currentIndex = -1;
-                                                                                      }
-                                                                                      currentIndex = index;
-                                                                                      state.receiveTicketDetailsModel?[index].setIsVisible(true);
-                                                                                      context.read<ReceiveTicketDetailsBloc>().beginReceiveDetail(id: state.receiveTicketDetailsModel?[index].id ?? '');
-                                                                                    } else {
-                                                                                      currentIndex = -1;
-                                                                                      state.receiveTicketDetailsModel?[index].setIsVisible(false);
-                                                                                    }
-                                                                                    state.receiveTicketDetailsModel?[index].setIsVisible(state.receiveTicketDetailsModel?[index].isVisible ?? false);
-                                                                                  }*/
+                                                                            if (value?.isNotEmpty ==
+                                                                                true) {
+                                                                              context.read<ReceiveTicketDetailsBloc>().setQuantityPicked(state.receiveTicketDetailsModel?[index], textFieldControllers[index]);
+                                                                              if (state.receiveTicketDetailsModel?[index].isVisible == false) {
+                                                                                //set previous open to close
+                                                                                if (currentIndex != -1) {
+                                                                                  state.receiveTicketDetailsModel?[currentIndex].setIsVisible(false);
+                                                                                  currentIndex = -1;
+                                                                                }
+                                                                                currentIndex = index;
+                                                                                state.receiveTicketDetailsModel?[index].setIsVisible(true);
+                                                                                context.read<ReceiveTicketDetailsBloc>().beginReceiveDetail(id: state.receiveTicketDetailsModel?[index].id ?? '');
+                                                                              } else {
+                                                                                currentIndex = -1;
+                                                                                state.receiveTicketDetailsModel?[index].setIsVisible(false);
+                                                                              }
+                                                                              state.receiveTicketDetailsModel?[index].setIsVisible(state.receiveTicketDetailsModel?[index].isVisible ?? false);
+                                                                            }
                                                                           }),
                                                                           onChanged:
                                                                               (String? text) {
@@ -478,6 +668,10 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                                           onReset:
                                                                               () async {
                                                                             //submitPick then forcedRefresh then popUntil
+                                                                            await context.read<ReceiveTicketDetailsBloc>().submitPick(id: state.receiveTicketDetailsModel?[index].id, containerId: state.receiveTicketDetailsModel?[index].containerId ?? '', qtyReceived: '-1').then((_) {
+                                                                              _forcedRefresh(id: widget.receiveTicketsModel?.id);
+                                                                              Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails'));
+                                                                            });
                                                                           },
                                                                           iconPressed: () =>
                                                                               setState(() {
@@ -502,6 +696,181 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                             ))))
                     ],
                   )),
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: ATTextButton(
+                  buttonText: I18n.of(context).complete_ticket,
+                  isLoading: state.isLoading,
+                  onTap: () async {
+                    //complete pick ticket here
+                    List<ReceiveTicketDetailsModel>? pickDetailResponse =
+                        await completeTicketRefresh(
+                            id: widget.receiveTicketsModel?.id);
+
+                    int openChecker = 0;
+                    int processedChecker = 0;
+                    for (ReceiveTicketDetailsModel item in pickDetailResponse ??
+                        <ReceiveTicketDetailsModel>[]) {
+                      if (item.status?.toLowerCase() == 'processed') {
+                        processedChecker++;
+                      } else if (item.status?.toLowerCase() == 'open' ||
+                          item.status?.toLowerCase() == '') {
+                        openChecker++;
+                      } else if (item.isOver?.toLowerCase() == 'y' || item.isUnder?.toLowerCase() == 'y') {
+                        completeStatus = 'partial';
+                      }
+                    }
+
+                    if (openChecker ==
+                        state.receiveTicketDetailsModel?.length) {
+                      completeStatus = 'open';
+                      await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              child: SizedBox(
+                                height: 300,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      SizedBox(height: 10),
+                                      Icon(
+                                        Icons.library_add_check_outlined,
+                                        size: 70,
+                                        color: AppColors.warningOrange,
+                                      ),
+                                      SizedBox(height: 10),
+                                      ATText(
+                                        text: I18n.of(context).no_lines_picked,
+                                        fontSize: 16,
+                                        weight: FontWeight.bold,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 10),
+                                      ATText(
+                                        text: I18n.of(context)
+                                            .pick_some_items_before_completing,
+                                        fontSize: 16,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 40),
+                                      Container(
+                                        width: double.infinity,
+                                        child: ATTextButton(
+                                          isLoading: false,
+                                          buttonText: I18n.of(context).go_back,
+                                          onTap: () => Navigator.of(context)
+                                              .popUntil(ModalRoute.withName(
+                                                  '/receiveTicketDetails')),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          });
+                    } else if (processedChecker ==
+                        state.receiveTicketDetailsModel?.length) {
+                      completeStatus = 'processed';
+                      isUndo = false;
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(submitSnackbar);
+                      Future<void>.delayed(const Duration(seconds: 1), () {
+                        if (!isUndo) {
+                          context
+                              .read<ReceiveTicketDetailsBloc>()
+                              .completeReceiveTicket(
+                                  ticketId:
+                                      widget.receiveTicketsModel?.id ?? '0');
+                        }
+                      });
+                    } else {
+                      completeStatus = 'partial';
+                      await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              child: SizedBox(
+                                height: 330,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.warning_amber_rounded,
+                                        color: AppColors.warningOrange,
+                                        size: 70,
+                                      ),
+                                      SizedBox(height: 10),
+                                      ATText(
+                                        text: I18n.of(context)
+                                            .there_are_lines_partially_picked,
+                                        fontSize: 16,
+                                        weight: FontWeight.bold,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 20),
+                                      ATText(
+                                        text: I18n.of(context)
+                                            .complete_ticket_anyway,
+                                        fontSize: 16,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 30),
+                                      Container(
+                                        width: double.infinity,
+                                        child: ATTextButton(
+                                            isLoading: false,
+                                            buttonText: I18n.of(context)
+                                                .yes_complete_pick,
+                                            onTap: () {
+                                              Navigator.of(context).popUntil(
+                                                  ModalRoute.withName(
+                                                      '/receiveTicketDetails'));
+                                              completePickTicket();
+                                            }),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        child: ATTextButton(
+                                          buttonStyle: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      AppColors.white),
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                side: BorderSide(
+                                                    color: AppColors.beachSea),
+                                              ))),
+                                          buttonTextStyle: TextStyle(
+                                              color: AppColors.beachSea),
+                                          isLoading: false,
+                                          buttonText: I18n.of(context).go_back,
+                                          onTap: () => Navigator.of(context)
+                                              .popUntil(ModalRoute.withName(
+                                                  '/receiveTicketDetails')),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          });
+                    }
+                  },
+                ),
+              ),
             ),
           ));
     });
@@ -514,6 +883,29 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
     canRefresh = true;
     _isVisible = true;
     isInitialized = false;
+  }
+
+  Future<List<ReceiveTicketDetailsModel>?> completeTicketRefresh(
+      {String? id}) async {
+    canRefresh = true;
+    _isVisible = true;
+    isInitialized = false;
+    List<ReceiveTicketDetailsModel>? pickDetailResponse = await context
+        .read<ReceiveTicketDetailsBloc>()
+        .getReceiveTicketDetails(id: id);
+    return pickDetailResponse;
+  }
+
+  void completePickTicket() {
+    isUndo = false;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(submitSnackbar);
+    Future<void>.delayed(const Duration(seconds: 1), () {
+      if (!isUndo) {
+        context.read<ReceiveTicketDetailsBloc>().completeReceiveTicket(
+            ticketId: widget.receiveTicketsModel?.id ?? '0');
+      }
+    });
   }
 }
 
@@ -565,7 +957,7 @@ class _TicketPicker extends State<TicketPicker> {
                   Expanded(
                     flex: 1,
                     child: ATText(
-                      text: I18n.of(context).location.toUpperCase(),
+                      text: 'LOCATION',
                       fontSize: 12,
                       fontColor: AppColors.greyText,
                     ),
@@ -583,7 +975,7 @@ class _TicketPicker extends State<TicketPicker> {
                     child: Container(
                         alignment: Alignment.centerRight,
                         child: ATText(
-                          text: I18n.of(context).quantity_picked.toUpperCase(),
+                          text: 'QTY RCV\'D',
                           fontSize: 12,
                           fontColor: AppColors.greyText,
                         )),
@@ -633,7 +1025,7 @@ class _TicketPicker extends State<TicketPicker> {
                   Column(
                     children: <Widget>[
                       ATText(
-                        text: I18n.of(context).quantity_picked.toUpperCase(),
+                        text: 'QTY RCV\'D',
                         fontSize: 14,
                         weight: FontWeight.bold,
                       ),
@@ -742,7 +1134,7 @@ class _TicketPicker extends State<TicketPicker> {
                                                   I18n.of(context).cancel,
                                               onTap: () => Navigator.of(context)
                                                   .popUntil(ModalRoute.withName(
-                                                      '/pickTicketDetails')),
+                                                      '/receiveTicketDetails')),
                                             ),
                                           )
                                         ],

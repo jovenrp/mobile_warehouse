@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
+import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_state.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_ticket_details_response.dart';
 import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
@@ -222,7 +223,8 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
         : pickTicket?.pickedItem == null ||
                 pickTicket?.pickedItem?.isEmpty == true
             ? '${pickTicket?.qtyPick} of ${pickTicket?.qtyPick}'
-            : '${(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toStringAsFixed(0)} of ${pickTicket?.qtyPick}';
+            : '${(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toString().removeDecimalZeroFormat(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue))} of ${pickTicket?.qtyPick}';
+            //: '${(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toStringAsFixed(0)} of ${pickTicket?.qtyPick}';
   }
 
   bool updateCheckBox(PickTicketDetailsModel? pickTicket, bool? value,

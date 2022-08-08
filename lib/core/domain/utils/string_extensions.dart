@@ -31,6 +31,10 @@ extension CharExtensions on String {
     return str.split(' ').map((String text) => text.capitalize()).join(' ');
   }
 
+  String removeDecimalZeroFormat(double n) {
+    return n.toStringAsFixed(n.truncateToDouble() == n ? 0 : 1);
+  }
+
   bool equalsIgnoreCase(String compareString) {
     return (toLowerCase() == compareString.toLowerCase());
   }

@@ -313,9 +313,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
           child: SafeArea(
               child: Scaffold(
             appBar: ATAppBar(
-              title:
-                  '${widget.ticketItemModel?.num} - ${widget.ticketItemModel?.destination}'
-                      .capitalizeFirstofEach(),
+              title: 'Picking',
               icon: Icon(
                 Icons.arrow_back_sharp,
                 color: AppColors.white,
@@ -386,6 +384,13 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18, bottom: 10),
+                        child: ATText(text: '${widget.ticketItemModel?.num} - ${widget.ticketItemModel?.destination}'.capitalizeFirstofEach(), style: TextStyle(
+                            fontSize: 16,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w700)),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(left: 18, right: 18),
                         child: ATSearchfield(

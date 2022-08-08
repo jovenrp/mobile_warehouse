@@ -5,4 +5,8 @@ abstract class ReceiveTicketDetailsRepository {
       {String? token, String? id});
 
   Future<String> beginReceiveDetail({String? token, String? id});
+  Future<String> exitReceiveDetail({String? token, String? id});
+  Future<ReceiveTicketDetailsResponse> submitReceiveDetail(
+      {String? token, String? id, String? containerId, String? qtyReceived});
+  Future<String> completeReceiveTicket({String? token, String? ticketId});
 }

@@ -17,4 +17,23 @@ abstract class ReceiveTicketDetailsApiService {
       {@Path('headers') String? headers,
       @Path('sessId') String? sessId,
       @Path('data') String? data});
+
+  @POST('/mobile(exitReceiveDetail)?useHdrs=true&sessId={sessId}&data={data}')
+  Future<dynamic> exitReceiveDetail(
+      {@Path('headers') String? headers,
+      @Path('sessId') String? sessId,
+      @Path('data') String? data});
+
+  @POST('/mobile(submitReceiveDetail)?useHdrs=true&sessId={sessId}&data={data}')
+  Future<dynamic> submitReceiveDetail(
+      {@Path('headers') String? headers,
+      @Path('sessId') String? sessId,
+      @Path('data') String? data});
+
+  @POST(
+      '/mobile(completeReceiveTicket)?useHdrs=true&sessId={sessId}&data={data}')
+  Future<dynamic> completeReceiveTicket(
+      {@Path('headers') String? headers,
+      @Path('sessId') String? sessId,
+      @Path('data') String? data});
 }

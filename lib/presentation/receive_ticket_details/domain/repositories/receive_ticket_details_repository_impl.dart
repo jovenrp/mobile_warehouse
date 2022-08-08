@@ -33,7 +33,7 @@ class ReceiveTicketDetailsRepositoryImpl
   Future<String> beginReceiveDetail({String? token, String? id}) async {
     try {
       final String result = await _apiService.beginReceiveDetail(
-          data: '|keys:id=$id', sessId: token);
+          data: '|keys:detailId=$id', sessId: token);
 
       print(result);
       /*final String response =
@@ -44,6 +44,61 @@ class ReceiveTicketDetailsRepositoryImpl
       return '';
       /*return TicketDetailsResponseModel(
           error: true, message: 'Begin pick ticket detail has an error.');*/
+    }
+  }
+
+  @override
+  Future<String> exitReceiveDetail({String? token, String? id}) async {
+    try {
+      final String result = await _apiService.exitReceiveDetail(
+          data: '|keys:detailId=$id', sessId: token);
+
+      print(result);
+      /*final String response =
+      TicketDetailsResponseModel.fromJson(jsonDecode(result));*/
+      return '';
+    } catch (_) {
+      logger.e(_.toString());
+      return '';
+      /*return TicketDetailsResponseModel(
+          error: true, message: 'Begin pick ticket detail has an error.');*/
+    }
+  }
+
+  @override
+  Future<ReceiveTicketDetailsResponse> submitReceiveDetail(
+      {String? token,
+      String? id,
+      String? containerId,
+      String? qtyReceived}) async {
+    try {
+      final String result = await _apiService.submitReceiveDetail(
+          data:
+              '|keys:detailId=$id|vals:qtyReceived=$qtyReceived^containerId=$containerId',
+          sessId: token);
+      /*final TicketDetailsResponseModel response =
+      TicketDetailsResponseModel.fromJson(jsonDecode(result));*/
+      return ReceiveTicketDetailsResponse();
+    } catch (_) {
+      return ReceiveTicketDetailsResponse(
+          error: true, message: 'Submit receive details has an error.');
+      ;
+    }
+  }
+
+  @override
+  Future<String> completeReceiveTicket(
+      {String? token, String? ticketId}) async {
+    try {
+      final String result = await _apiService.completeReceiveTicket(
+          data: '|keys:ticketId=$ticketId', sessId: token);
+
+      //final String response = TicketDetailsResponseModel.fromJson(jsonDecode(result));
+      return '';
+    } catch (_) {
+      return '';
+      /*return TicketDetailsResponseModel(
+          error: true, message: 'Complete pick ticket has an error.');*/
     }
   }
 }

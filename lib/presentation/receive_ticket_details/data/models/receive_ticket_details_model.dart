@@ -81,16 +81,16 @@ class ReceiveTicketDetailsModel {
   final String? isComplete;
 
   @JsonKey(name: 'isUnder')
-  final String? isUnder;
+  String? isUnder;
 
   @JsonKey(name: 'isOver')
-  final String? isOver;
+  String? isOver;
 
   @JsonKey(name: 'qtyRcvd')
-  final String? qtyReceived;
+  String? qtyReceived;
 
   @JsonKey(name: 'qtyOrd')
-  String? qtyOrder;
+  final String? qtyOrder;
 
   @JsonKey(name: 'uom')
   final String? uom;
@@ -126,14 +126,22 @@ class ReceiveTicketDetailsModel {
   }
 
   void setPickedItem(String? value) {
-    pickedItem = value;
+    qtyReceived = value;
   }
 
   void setQtyPicked(String? value) {
-    qtyOrder = value;
+    qtyReceived = value;
   }
 
   void setStatus(String? value) {
     status = value;
+  }
+
+  void setIsOver(String? value) {
+    isOver = value;
+  }
+
+  void setIsUnder(String? value) {
+    isUnder = value;
   }
 }

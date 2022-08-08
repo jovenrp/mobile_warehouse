@@ -135,12 +135,9 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                 ),
                 body: Stack(children: <Widget>[
                   Container(
-                      height: 180,
+                      height: 90,
                       decoration: BoxDecoration(
                         color: AppColors.beachSea,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10)),
                       )),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,7 +154,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                               color: AppColors.white),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 30),
                       Expanded(
                         child: Padding(
                             padding: const EdgeInsets.only(
