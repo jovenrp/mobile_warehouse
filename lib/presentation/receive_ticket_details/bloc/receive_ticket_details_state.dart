@@ -16,6 +16,7 @@ class ReceiveTicketDetailsState with _$ReceiveTicketDetailsState {
       ReceiveTicketDetailsResponse? response,
       List<ReceiveTicketDetailsModel>? receiveTicketDetailsModel,
       String? errorMessage,
+      bool? pickLimitSetting,
       bool? isOverPicked,
       String? dummyPickTicketId,
       String? dummyQuantityPicked,

@@ -82,14 +82,27 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
                       ? Container(
                           padding: const EdgeInsets.only(
                               top: 20, bottom: 20, right: 18),
-                          width: 30,
+                          width: 35,
                           child: ATLoadingIndicator(
                             strokeWidth: 3.0,
                             width: 15,
                             height: 10,
                           ),
                         )
-                      : SizedBox()
+                      : Ink(
+                          child: InkWell(
+                            onTap: () => Navigator.of(context)
+                                .popUntil(ModalRoute.withName('/dashboard')),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 18),
+                              child: Icon(
+                                Icons.home,
+                                color: AppColors.white,
+                                size: 25,
+                              ),
+                            ),
+                          ),
+                        )
                 ],
               ),
               body: Container(

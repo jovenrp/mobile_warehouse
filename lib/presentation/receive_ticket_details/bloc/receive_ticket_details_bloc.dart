@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/application/application.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
+import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/presentation/receive_ticket_details/bloc/receive_ticket_details_state.dart';
 import 'package:mobile_warehouse/presentation/receive_ticket_details/data/models/receive_ticket_details_model.dart';
 import 'package:mobile_warehouse/presentation/receive_ticket_details/data/models/receive_ticket_details_response.dart';
@@ -184,14 +185,14 @@ class ReceiveTicketDetailsBloc extends Cubit<ReceiveTicketDetailsState> {
 
   String getQuantityText(
       ReceiveTicketDetailsModel? receiveTicketDetailsModel, String textValue) {
-
     return (receiveTicketDetailsModel?.qtyReceived == null ||
             receiveTicketDetailsModel?.qtyReceived?.isEmpty == true)
         ? '${receiveTicketDetailsModel?.qtyOrder}'
         : receiveTicketDetailsModel?.qtyReceived == null ||
                 receiveTicketDetailsModel?.qtyReceived?.isEmpty == true
             ? '${receiveTicketDetailsModel?.qtyReceived} of ${receiveTicketDetailsModel?.qtyOrder}'
-            : '${(double.parse(receiveTicketDetailsModel?.qtyReceived?.isNotEmpty == true ? receiveTicketDetailsModel?.qtyReceived ?? '0' : '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toStringAsFixed(0)} of ${receiveTicketDetailsModel?.qtyOrder}';
+            : '${(double.parse(receiveTicketDetailsModel?.qtyReceived?.isNotEmpty == true ? receiveTicketDetailsModel?.qtyReceived ?? '0' : '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toString().removeDecimalZeroFormat(double.parse(receiveTicketDetailsModel?.qtyReceived?.isNotEmpty == true ? receiveTicketDetailsModel?.qtyReceived ?? '0' : '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue))} of ${receiveTicketDetailsModel?.qtyOrder}';
+    //: '${(double.parse(receiveTicketDetailsModel?.qtyReceived?.isNotEmpty == true ? receiveTicketDetailsModel?.qtyReceived ?? '0' : '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toStringAsFixed(0)} of ${receiveTicketDetailsModel?.qtyOrder}';
   }
 
   bool updateCheckBox(ReceiveTicketDetailsModel? receiveTicketDetailsModel,
@@ -213,5 +214,11 @@ class ReceiveTicketDetailsBloc extends Cubit<ReceiveTicketDetailsState> {
         .toString());
     emit(state.copyWith(
         isOverPicked: false, dummyPickTicketId: '', dummyQuantityPicked: ''));
+  }
+
+  Future<void> getSettings() async {
+    bool pickLimitSetting =
+        await persistenceService.pickLimitSetting.get() ?? false;
+    emit(state.copyWith(pickLimitSetting: pickLimitSetting));
   }
 }

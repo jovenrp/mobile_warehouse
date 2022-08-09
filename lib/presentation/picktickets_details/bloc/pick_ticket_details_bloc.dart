@@ -224,7 +224,7 @@ class PickTicketDetailsBloc extends Cubit<PickTicketDetailsState> {
                 pickTicket?.pickedItem?.isEmpty == true
             ? '${pickTicket?.qtyPick} of ${pickTicket?.qtyPick}'
             : '${(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toString().removeDecimalZeroFormat(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue))} of ${pickTicket?.qtyPick}';
-            //: '${(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toStringAsFixed(0)} of ${pickTicket?.qtyPick}';
+    //: '${(double.parse(pickTicket?.pickedItem ?? '0') + double.parse(textValue == '' || textValue == '-' ? '0' : textValue)).toStringAsFixed(0)} of ${pickTicket?.qtyPick}';
   }
 
   bool updateCheckBox(PickTicketDetailsModel? pickTicket, bool? value,

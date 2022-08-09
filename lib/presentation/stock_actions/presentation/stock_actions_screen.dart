@@ -38,98 +38,89 @@ class _StockActionsScreen extends State<StockActionsScreen> {
                 Navigator.of(context).pop();
               },
             ),
-            body: Stack(children: <Widget>[
-              Container(
-                  height: 180,
-                  decoration: BoxDecoration(
-                    color: AppColors.beachSea,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)),
-                  )),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 18, top: 20),
-                    child: ATText(
-                      text: 'Which action would you like to do today?',
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.white),
-                    ),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(color: AppColors.beachSea),
+                  padding: const EdgeInsets.only(left: 18, top: 20, bottom: 30),
+                  child: ATText(
+                    text: 'Which action would you like to do today?',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.white),
                   ),
-                  SizedBox(height: 20),
-                  Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 18, right: 18, bottom: 15),
-                        child: GridView.count(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () => Navigator.of(context)
-                                    .push(StockAdjustScreen.route()),
-                                child: ActionCardsWidget(
-                                  title: 'Stock Adjust',
-                                  description: '',
-                                  icon: Icon(Icons.note,
-                                      color: AppColors.white, size: 70),
-                                ),
+                ),
+                SizedBox(height: 20),
+                Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 18, right: 18, bottom: 15),
+                      child: GridView.count(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () => Navigator.of(context)
+                                  .push(StockAdjustScreen.route()),
+                              child: ActionCardsWidget(
+                                title: 'Stock Adjust',
+                                description: '',
+                                icon: Icon(Icons.note,
+                                    color: AppColors.white, size: 70),
                               ),
-                              InkWell(
-                                onTap: () {},
-                                child: ActionCardsWidget(
-                                  title: 'Stock Move',
-                                  description: '',
-                                  icon: Icon(Icons.edit_location_outlined,
-                                      color: AppColors.white, size: 70),
-                                ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: ActionCardsWidget(
+                                title: 'Stock Move',
+                                description: '',
+                                icon: Icon(Icons.edit_location_outlined,
+                                    color: AppColors.white, size: 70),
                               ),
-                              InkWell(
-                                onTap: () {},
-                                child: ActionCardsWidget(
-                                  title: 'Stock Yield',
-                                  description:
-                                      I18n.of(context).stock_count_description,
-                                  icon: Icon(Icons.warning_amber_rounded,
-                                      color: AppColors.white, size: 70),
-                                  quarterTurns: 2,
-                                ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: ActionCardsWidget(
+                                title: 'Stock Yield',
+                                description:
+                                    I18n.of(context).stock_count_description,
+                                icon: Icon(Icons.warning_amber_rounded,
+                                    color: AppColors.white, size: 70),
+                                quarterTurns: 2,
                               ),
-                              InkWell(
-                                onTap: () {},
-                                child: ActionCardsWidget(
-                                  title: 'Stock Consume',
-                                  icon: Icon(Icons.data_usage,
-                                      color: AppColors.white, size: 70),
-                                ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: ActionCardsWidget(
+                                title: 'Stock Consume',
+                                icon: Icon(Icons.data_usage,
+                                    color: AppColors.white, size: 70),
                               ),
-                              InkWell(
-                                onTap: () {},
-                                child: ActionCardsWidget(
-                                  title: 'Stock Receive',
-                                  description: '',
-                                  icon: Icon(Icons.call_received,
-                                      color: AppColors.white, size: 70),
-                                ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: ActionCardsWidget(
+                                title: 'Stock Receive',
+                                description: '',
+                                icon: Icon(Icons.call_received,
+                                    color: AppColors.white, size: 70),
                               ),
-                              InkWell(
-                                onTap: () {},
-                                child: ActionCardsWidget(
-                                  title: 'Stock Ship',
-                                  description: '',
-                                  icon: Icon(Icons.local_shipping,
-                                      color: AppColors.white, size: 70),
-                                ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: ActionCardsWidget(
+                                title: 'Stock Ship',
+                                description: '',
+                                icon: Icon(Icons.local_shipping,
+                                    color: AppColors.white, size: 70),
                               ),
-                            ])),
-                  )
-                ],
-              )
-            ])));
+                            ),
+                          ])),
+                )
+              ],
+            )));
   }
 }

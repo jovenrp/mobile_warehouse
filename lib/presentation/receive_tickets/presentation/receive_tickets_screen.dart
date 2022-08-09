@@ -87,7 +87,20 @@ class _ReceiveTicketsScreen extends State<ReceiveTicketsScreen> {
                             height: 10,
                           ),
                         )
-                      : SizedBox()
+                      : Ink(
+                          child: InkWell(
+                            onTap: () => Navigator.of(context)
+                                .popUntil(ModalRoute.withName('/dashboard')),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 18),
+                              child: Icon(
+                                Icons.home,
+                                color: AppColors.white,
+                                size: 25,
+                              ),
+                            ),
+                          ),
+                        )
                 ],
               ),
               body: Container(

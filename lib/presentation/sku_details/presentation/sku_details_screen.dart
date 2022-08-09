@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
+import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_mini_textfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/widgets/pick_tickets_status.dart';
@@ -100,6 +101,33 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                                 widget.ticketItemModel?.id ?? '')
                         .then((_) => Navigator.of(context).pop());
                   },
+                  actions: <Widget>[
+                    state.isLoading || state.isUpdateLoading
+                        ? Container(
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 20, right: 18),
+                            width: 35,
+                            child: ATLoadingIndicator(
+                              strokeWidth: 3.0,
+                              width: 10,
+                              height: 10,
+                            ),
+                          )
+                        : Ink(
+                            child: InkWell(
+                              onTap: () => Navigator.of(context)
+                                  .popUntil(ModalRoute.withName('/dashboard')),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 18),
+                                child: Icon(
+                                  Icons.home,
+                                  color: AppColors.white,
+                                  size: 25,
+                                ),
+                              ),
+                            ),
+                          )
+                  ],
                 ),
                 body: SingleChildScrollView(
                     scrollDirection: Axis.vertical,

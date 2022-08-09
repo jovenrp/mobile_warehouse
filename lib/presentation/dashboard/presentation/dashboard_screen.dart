@@ -92,58 +92,56 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                 }
               },
               child: Scaffold(
-                appBar: ATAppBar(
-                  title: I18n.of(context).dashboard,
-                  icon: Icon(
-                    Icons.logout,
-                    color: AppColors.white,
-                    size: 24.0,
-                  ),
-                  rotation: 2,
-                  actions: <Widget>[
-                    Ink(
-                      child: InkWell(
-                        onTap: () => Navigator.of(context)
-                            .push(SettingsScreen.route(config: widget.config)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 18, right: 18),
-                          child: Icon(
-                            Icons.settings,
-                            color: AppColors.white,
-                            size: 25,
+                  appBar: ATAppBar(
+                    title: I18n.of(context).dashboard,
+                    icon: Icon(
+                      Icons.logout,
+                      color: AppColors.white,
+                      size: 24.0,
+                    ),
+                    rotation: 2,
+                    actions: <Widget>[
+                      Ink(
+                        child: InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              SettingsScreen.route(config: widget.config)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 18, right: 18),
+                            child: Icon(
+                              Icons.settings,
+                              color: AppColors.white,
+                              size: 25,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ATDialog(
-                            isLoading: state.isLoading,
-                            bodyMessage:
-                                I18n.of(context).logout_from_mobile_warehouse,
-                            positiveActionText: I18n.of(context).yes_logout,
-                            negativeActionText: I18n.of(context).no_go_back,
-                            positiveAction: () =>
-                                context.read<DashboardScreenBloc>().logout(),
-                            negativeAction: () => Navigator.of(context).pop(),
-                          );
-                        });
-                  },
-                ),
-                body: Stack(children: <Widget>[
-                  Container(
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: AppColors.beachSea,
-                      )),
-                  Column(
+                      )
+                    ],
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ATDialog(
+                              isLoading: state.isLoading,
+                              bodyMessage:
+                                  I18n.of(context).logout_from_mobile_warehouse,
+                              positiveActionText: I18n.of(context).yes_logout,
+                              negativeActionText: I18n.of(context).no_go_back,
+                              positiveAction: () =>
+                                  context.read<DashboardScreenBloc>().logout(),
+                              negativeAction: () => Navigator.of(context).pop(),
+                            );
+                          });
+                    },
+                  ),
+                  body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 18, top: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.beachSea,
+                        ),
+                        padding: const EdgeInsets.only(
+                            left: 18, top: 20, bottom: 30),
                         child: ATText(
                           text: I18n.of(context).hi_name(
                               widget.userProfileModel?.username ??
@@ -154,7 +152,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                               color: AppColors.white),
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 20),
                       Expanded(
                         child: Padding(
                             padding: const EdgeInsets.only(
@@ -236,9 +234,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                 ])),
                       )
                     ],
-                  )
-                ]),
-              )));
+                  ))));
     });
   }
 

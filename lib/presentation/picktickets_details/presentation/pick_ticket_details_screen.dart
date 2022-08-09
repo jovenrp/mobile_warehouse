@@ -386,10 +386,14 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(left: 18, bottom: 10),
-                        child: ATText(text: '${widget.ticketItemModel?.num} - ${widget.ticketItemModel?.destination}'.capitalizeFirstofEach(), style: TextStyle(
-                            fontSize: 16,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.w700)),
+                        child: ATText(
+                            text:
+                                '${widget.ticketItemModel?.num} - ${widget.ticketItemModel?.destination}'
+                                    .capitalizeFirstofEach(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.w700)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 18, right: 18),
@@ -725,6 +729,10 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                               (String? text) {
                                                                             setState(() {
                                                                               ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                              if (textFieldControllers[index].text == '.') {
+                                                                                textFieldControllers[index].text = '0.';
+                                                                                textFieldControllers[index].selection = TextSelection.fromPosition(TextPosition(offset: textFieldControllers[index].text.length));
+                                                                              }
                                                                               if (textFieldControllers[index].text.isNotEmpty == true) {
                                                                                 if (!pickLimitSetting) {
                                                                                   if (double.parse(textFieldControllers[index].text) > double.parse(state.pickTicketsResponse?[index].qtyPick ?? '0')) {
