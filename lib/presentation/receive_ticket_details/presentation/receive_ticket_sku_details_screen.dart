@@ -7,46 +7,36 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_mini_textfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
-import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/widgets/pick_tickets_status.dart';
-import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_bloc.dart';
-import 'package:mobile_warehouse/presentation/picktickets_details/bloc/pick_ticket_details_state.dart';
-import 'package:mobile_warehouse/presentation/picktickets_details/data/models/pick_tickets_details_model.dart';
 
 import 'package:mobile_warehouse/generated/i18n.dart';
+import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
+import 'package:mobile_warehouse/presentation/receive_ticket_details/bloc/receive_ticket_details_bloc.dart';
+import 'package:mobile_warehouse/presentation/receive_ticket_details/bloc/receive_ticket_details_state.dart';
+import 'package:mobile_warehouse/presentation/receive_ticket_details/data/models/receive_ticket_details_model.dart';
 
-class SkuDetailsScreen extends StatefulWidget {
-  const SkuDetailsScreen(
-      {Key? key,
-      this.ticketItemModel,
-      this.ticketList,
-      required this.currentIndex})
-      : super(key: key);
+class ReceieveTicketSkuDetailsScreen extends StatefulWidget {
+  const ReceieveTicketSkuDetailsScreen({Key? key, this.ticketItemModel, this.ticketList, required this.currentIndex}) : super(key: key);
 
-  final PickTicketDetailsModel? ticketItemModel;
-  final List<PickTicketDetailsModel>? ticketList;
+  final ReceiveTicketDetailsModel? ticketItemModel;
+  final List<ReceiveTicketDetailsModel>? ticketList;
   final int currentIndex;
 
-  static const String routeName = '/pickTicketDetails';
-  static const String screenName = 'pickTicketDetailsScreen';
+  static const String routeName = '/receieveTicketSkuDetails';
+  static const String screenName = 'receieveTicketSkuDetailsScreen';
 
-  static ModalRoute<SkuDetailsScreen> route(
-          {PickTicketDetailsModel? ticketItemModel,
-          List<PickTicketDetailsModel>? ticketList,
-          required int currentIndex}) =>
-      MaterialPageRoute<SkuDetailsScreen>(
+  static ModalRoute<ReceieveTicketSkuDetailsScreen> route(
+          {ReceiveTicketDetailsModel? ticketItemModel, List<ReceiveTicketDetailsModel>? ticketList, required int currentIndex}) =>
+      MaterialPageRoute<ReceieveTicketSkuDetailsScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => SkuDetailsScreen(
-            ticketItemModel: ticketItemModel,
-            ticketList: ticketList,
-            currentIndex: currentIndex),
+        builder: (_) => ReceieveTicketSkuDetailsScreen(ticketItemModel: ticketItemModel, ticketList: ticketList, currentIndex: currentIndex),
       );
 
   @override
-  _SkuDetailsScreen createState() => _SkuDetailsScreen();
+  _ReceieveTicketSkuDetailsScreen createState() => _ReceieveTicketSkuDetailsScreen();
 }
 
-class _SkuDetailsScreen extends State<SkuDetailsScreen> {
+class _ReceieveTicketSkuDetailsScreen extends State<ReceieveTicketSkuDetailsScreen> {
   TextEditingController controller = TextEditingController();
 
   bool pickLimitSetting = false;
@@ -57,10 +47,8 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<PickTicketDetailsBloc>().getSettings();
-    context
-        .read<PickTicketDetailsBloc>()
-        .beginPick(pickTicketDetailId: widget.ticketItemModel?.id ?? '');
+    context.read<ReceiveTicketDetailsBloc>().getSettings();
+    context.read<ReceiveTicketDetailsBloc>().beginReceiveDetail(id: widget.ticketItemModel?.id ?? '');
     rotatingTimer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
       setState(() {
         turns++;
@@ -80,9 +68,9 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
       ),
       duration: Duration(seconds: 1),
     );
-    return BlocConsumer<PickTicketDetailsBloc, PickTicketDetailsState>(
-        listener: (BuildContext context, PickTicketDetailsState state) {},
-        builder: (BuildContext context, PickTicketDetailsState state) {
+    return BlocConsumer<ReceiveTicketDetailsBloc, ReceiveTicketDetailsState>(
+        listener: (BuildContext context, ReceiveTicketDetailsState state) {},
+        builder: (BuildContext context, ReceiveTicketDetailsState state) {
           pickLimitSetting = state.pickLimitSetting ?? false;
           return SafeArea(
             child: Scaffold(
@@ -96,17 +84,14 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                   ),
                   onTap: () {
                     context
-                        .read<PickTicketDetailsBloc>()
-                        .exitPick(
-                            pickTicketDetailId:
-                                widget.ticketItemModel?.id ?? '')
+                        .read<ReceiveTicketDetailsBloc>()
+                        .exitReceiveDetail(id: widget.ticketItemModel?.id ?? '')
                         .then((_) => Navigator.of(context).pop());
                   },
                   actions: <Widget>[
                     state.isLoading || state.isUpdateLoading
                         ? Container(
-                            padding: const EdgeInsets.only(
-                                top: 20, bottom: 20, right: 18),
+                            padding: const EdgeInsets.only(top: 20, bottom: 20, right: 18),
                             width: 35,
                             child: ATLoadingIndicator(
                               strokeWidth: 3.0,
@@ -116,8 +101,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                           )
                         : Ink(
                             child: InkWell(
-                              onTap: () => Navigator.of(context)
-                                  .popUntil(ModalRoute.withName('/dashboard')),
+                              onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/dashboard')),
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 18),
                                 child: Icon(
@@ -133,8 +117,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                 body: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 18, right: 18, top: 20),
+                      padding: const EdgeInsets.only(left: 18, right: 18, top: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -142,48 +125,26 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              ATText(
-                                  text: widget.ticketItemModel?.location,
-                                  weight: FontWeight.w700,
-                                  fontSize: 24),
+                              ATText(text: widget.ticketItemModel?.containerCode, weight: FontWeight.w700, fontSize: 24),
                               Visibility(
-                                  visible: (widget.ticketItemModel?.status
-                                              ?.toLowerCase() !=
-                                          'open' &&
-                                      widget.ticketItemModel?.status
-                                              ?.toLowerCase() !=
-                                          ''),
-                                  child: (widget.ticketItemModel?.status
-                                                      ?.toLowerCase() !=
-                                                  'open' &&
-                                              widget.ticketItemModel?.status
-                                                      ?.toLowerCase() !=
-                                                  '') &&
-                                          widget.ticketItemModel?.status
-                                                  ?.toLowerCase() !=
-                                              'processing'
+                                  visible: (widget.ticketItemModel?.qtyReceived?.isNotEmpty == true && widget.ticketItemModel?.qtyReceived != '0'),
+                                  child: widget.ticketItemModel?.qtyReceived?.isNotEmpty == true && widget.ticketItemModel?.qtyReceived != '0'
                                       ? Icon(
                                           Icons.check_circle,
-                                          color: widget.ticketItemModel?.status
-                                                      ?.toLowerCase() ==
-                                                  'processed'
+                                          color: double.parse(widget.ticketItemModel?.qtyReceived ?? '0') == double.parse(widget.ticketItemModel?.qtyOrder ?? '0')
                                               ? AppColors.successGreen
                                               : AppColors.warningOrange,
                                           size: 25,
                                         )
                                       : PickTicketsStatusWidget(
-                                          status:
-                                              widget.ticketItemModel?.status,
+                                          status: widget.ticketItemModel?.status,
                                           turns: turns,
                                           size: 25,
                                         )),
                             ],
                           ),
                           SizedBox(height: 6),
-                          ATText(
-                              text: widget.ticketItemModel?.description,
-                              fontSize: 14,
-                              fontColor: AppColors.semiDarkText),
+                          ATText(text: widget.ticketItemModel?.itemName, fontSize: 14, fontColor: AppColors.semiDarkText),
                           Container(
                             alignment: Alignment.center,
                             child: Icon(
@@ -231,17 +192,11 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                             children: <Widget>[
                               Expanded(
                                 flex: 2,
-                                child: ATText(
-                                    text: widget.ticketItemModel?.sku,
-                                    weight: FontWeight.w700,
-                                    fontSize: 15),
+                                child: ATText(text: widget.ticketItemModel?.sku, weight: FontWeight.w700, fontSize: 15),
                               ),
                               Expanded(
                                 flex: 4,
-                                child: ATText(
-                                    text: widget.ticketItemModel?.locCode,
-                                    weight: FontWeight.w700,
-                                    fontSize: 15),
+                                child: ATText(text: widget.ticketItemModel?.containerCode, weight: FontWeight.w700, fontSize: 15),
                               ),
 
                               /*Expanded(
@@ -282,7 +237,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: ATText(
-                                    text: I18n.of(context).picked.toUpperCase(),
+                                    text: 'QTY RCV\'D',
                                     weight: FontWeight.w700,
                                     fontSize: 14,
                                     fontColor: AppColors.greyText,
@@ -296,25 +251,18 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                               Expanded(
                                 flex: 2,
                                 child: ATText(
-                                    text:
-                                        '${widget.ticketItemModel?.uom} ${widget.ticketItemModel?.unitQty}',
-                                    weight: FontWeight.w700,
-                                    fontSize: 15),
+                                    text: '${widget.ticketItemModel?.uom} ${widget.ticketItemModel?.qtyUnit}', weight: FontWeight.w700, fontSize: 15),
                               ),
                               Expanded(
                                 flex: 2,
-                                child: ATText(
-                                    text: '${widget.ticketItemModel?.qtyPick}',
-                                    weight: FontWeight.w700,
-                                    fontSize: 15),
+                                child: ATText(text: '${widget.ticketItemModel?.qtyOrder}', weight: FontWeight.w700, fontSize: 15),
                               ),
                               Expanded(
                                 flex: 2,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: ATText(
-                                      text:
-                                          '${double.parse(widget.ticketItemModel?.pickedItem ?? '0').toString().removeDecimalZeroFormat(double.parse(widget.ticketItemModel?.pickedItem ?? '0'))}',
+                                      text: '${double.parse(widget.ticketItemModel?.qtyReceived ?? '0').toString().removeDecimalZeroFormat(double.parse(widget.ticketItemModel?.qtyReceived ?? '0'))}',
                                       weight: FontWeight.w700,
                                       fontSize: 15),
                                 ),
@@ -327,9 +275,7 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                             children: <Widget>[
                               Column(children: <Widget>[
                                 ATText(
-                                  text: I18n.of(context)
-                                      .quantity_picked
-                                      .toUpperCase(),
+                                  text: 'QTY RCV\'D',
                                   fontSize: 14,
                                   weight: FontWeight.bold,
                                 ),
@@ -340,35 +286,22 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                                     textEditingController: controller,
                                     onChanged: (String? value) {
                                       setState(() {
-                                        ScaffoldMessenger.of(context)
-                                            .hideCurrentSnackBar();
-                                        if (controller.text.isNotEmpty ==
-                                            true) {
+                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                        if (controller.text.isNotEmpty == true) {
                                           if (!pickLimitSetting) {
-                                            if (double.parse(controller.text) >
-                                                double.parse(widget
-                                                        .ticketItemModel
-                                                        ?.qtyPick ??
-                                                    '0')) {
+                                            if (double.parse(controller.text) > double.parse(widget.ticketItemModel?.qtyOrder ?? '0')) {
                                               controller.clear();
-                                              widget.ticketItemModel
-                                                  ?.setIsChecked(false);
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(snackBar);
+                                              widget.ticketItemModel?.setIsChecked(false);
+                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                             }
                                           }
                                         }
                                       });
                                     },
                                     autoFocus: false,
-                                    onFieldSubmitted: (String? value) =>
-                                        setState(() {
+                                    onFieldSubmitted: (String? value) => setState(() {
                                       if (value?.isNotEmpty == true) {
-                                        context
-                                            .read<PickTicketDetailsBloc>()
-                                            .setQuantityPicked(
-                                                widget.ticketItemModel,
-                                                controller);
+                                        context.read<ReceiveTicketDetailsBloc>().setQuantityPicked(widget.ticketItemModel, controller);
                                       }
                                     }),
                                     iconPressed: () => setState(() {
@@ -395,45 +328,40 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                               ),
                             ],
                           ),
-                          Row(
+                          /*Row(
                             children: <Widget>[
                               Expanded(
                                 flex: 6,
                                 child: widget.ticketItemModel?.note
-                                            ?.isNotEmpty ==
-                                        true
+                                    ?.isNotEmpty ==
+                                    true
                                     ? ATText(
-                                        text: '${widget.ticketItemModel?.note}',
-                                        weight: FontWeight.w700,
-                                        fontSize: 13)
+                                    text: '${widget.ticketItemModel?.note}',
+                                    weight: FontWeight.w700,
+                                    fontSize: 13)
                                     : ATText(
-                                        text: 'No additional notes.',
-                                        weight: FontWeight.w700,
-                                        fontSize: 13),
+                                    text: 'No additional notes.',
+                                    weight: FontWeight.w700,
+                                    fontSize: 13),
                               )
                             ],
-                          ),
+                          ),*/
                         ],
                       ),
                     )),
                 bottomNavigationBar: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 36, right: 36, bottom: 20),
+                  padding: const EdgeInsets.only(left: 36, right: 36, bottom: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       GestureDetector(
                         onTap: widget.currentIndex > 0
                             ? () {
-                                context.read<PickTicketDetailsBloc>().exitPick(
-                                    pickTicketDetailId:
-                                        widget.ticketItemModel?.id ?? '');
-                                Navigator.of(context).pushReplacement(
-                                    SkuDetailsScreen.route(
-                                        ticketItemModel: widget.ticketList?[
-                                            widget.currentIndex - 1],
-                                        ticketList: widget.ticketList,
-                                        currentIndex: widget.currentIndex - 1));
+                                context.read<ReceiveTicketDetailsBloc>().exitReceiveDetail(id: widget.ticketItemModel?.id ?? '');
+                                Navigator.of(context).pushReplacement(ReceieveTicketSkuDetailsScreen.route(
+                                    ticketItemModel: widget.ticketList?[widget.currentIndex - 1],
+                                    ticketList: widget.ticketList,
+                                    currentIndex: widget.currentIndex - 1));
                               }
                             : null,
                         child: Row(
@@ -441,53 +369,35 @@ class _SkuDetailsScreen extends State<SkuDetailsScreen> {
                             Icon(
                               Icons.keyboard_arrow_left_outlined,
                               size: 28,
-                              color: widget.currentIndex > 0
-                                  ? AppColors.black
-                                  : AppColors.greyHeader,
+                              color: widget.currentIndex > 0 ? AppColors.black : AppColors.greyHeader,
                             ),
-                            ATText(
-                                text: I18n.of(context).prev,
-                                fontColor: widget.currentIndex > 0
-                                    ? AppColors.black
-                                    : AppColors.greyHeader)
+                            ATText(text: I18n.of(context).prev, fontColor: widget.currentIndex > 0 ? AppColors.black : AppColors.greyHeader)
                           ],
                         ),
                       ),
                       ATText(
-                        text:
-                            '${widget.currentIndex + 1} ${I18n.of(context).sequence_of} ${widget.ticketList?.length}',
+                        text: '${widget.currentIndex + 1} ${I18n.of(context).sequence_of} ${widget.ticketList?.length}',
                         fontColor: AppColors.semiDarkText,
                         fontSize: 14,
                       ),
                       GestureDetector(
-                        onTap: widget.currentIndex + 1 <
-                                widget.ticketList!.length.toInt()
+                        onTap: widget.currentIndex + 1 < widget.ticketList!.length.toInt()
                             ? () {
-                                context.read<PickTicketDetailsBloc>().exitPick(
-                                    pickTicketDetailId:
-                                        widget.ticketItemModel?.id ?? '');
-                                Navigator.of(context).pushReplacement(
-                                    SkuDetailsScreen.route(
-                                        ticketItemModel: widget.ticketList?[
-                                            widget.currentIndex + 1],
-                                        ticketList: widget.ticketList,
-                                        currentIndex: widget.currentIndex + 1));
+                                context.read<ReceiveTicketDetailsBloc>().exitReceiveDetail(id: widget.ticketItemModel?.id ?? '');
+                                Navigator.of(context).pushReplacement(ReceieveTicketSkuDetailsScreen.route(
+                                    ticketItemModel: widget.ticketList?[widget.currentIndex + 1],
+                                    ticketList: widget.ticketList,
+                                    currentIndex: widget.currentIndex + 1));
                               }
                             : null,
                         child: Row(
                           children: <Widget>[
                             ATText(
                                 text: I18n.of(context).next,
-                                fontColor: widget.currentIndex + 1 <
-                                        widget.ticketList!.length.toInt()
-                                    ? AppColors.black
-                                    : AppColors.greyHeader),
+                                fontColor: widget.currentIndex + 1 < widget.ticketList!.length.toInt() ? AppColors.black : AppColors.greyHeader),
                             Icon(Icons.keyboard_arrow_right,
                                 size: 28,
-                                color: widget.currentIndex + 1 <
-                                        widget.ticketList!.length.toInt()
-                                    ? AppColors.black
-                                    : AppColors.greyHeader),
+                                color: widget.currentIndex + 1 < widget.ticketList!.length.toInt() ? AppColors.black : AppColors.greyHeader),
                           ],
                         ),
                       )

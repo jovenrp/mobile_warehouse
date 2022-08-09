@@ -13,6 +13,7 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_textbutton.dart';
 import 'package:mobile_warehouse/presentation/receive_ticket_details/bloc/receive_ticket_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/receive_ticket_details/bloc/receive_ticket_details_state.dart';
 import 'package:mobile_warehouse/presentation/receive_ticket_details/data/models/receive_ticket_details_model.dart';
+import 'package:mobile_warehouse/presentation/receive_ticket_details/presentation/receive_ticket_sku_details_screen.dart';
 import 'package:mobile_warehouse/presentation/receive_tickets/data/models/receive_tickets_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -149,7 +150,7 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                         id: state.dummyPickTicketId ?? '',
                                         containerId: state.dummyReceiveTicketDetailsModel?.containerId ?? '0',
                                         qtyReceived: state.dummyQuantityPicked ?? '');
-                                    Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails'));
+                                    Navigator.of(context).pop();
                                   }),
                             ),
                             Container(
@@ -403,7 +404,12 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                             motion: const ScrollMotion(),
                                                             children: <Widget>[
                                                               SlidableAction(
-                                                                onPressed: (BuildContext context) {},
+                                                                onPressed: (BuildContext context) {
+                                                                  Navigator.of(context).push(ReceieveTicketSkuDetailsScreen.route(
+                                                                      ticketItemModel: state.receiveTicketDetailsModel?[index],
+                                                                      ticketList: state.receiveTicketDetailsModel,
+                                                                      currentIndex: index));
+                                                                },
                                                                 backgroundColor: AppColors.greyRed,
                                                                 foregroundColor: AppColors.white,
                                                                 icon: Icons.list_alt,
@@ -560,11 +566,11 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                                   }),
                                                                   onChanged: (String? text) {
                                                                     setState(() {
-                                                                      print('123123123 ${text}');
                                                                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                                                       if (textFieldControllers[index].text == '.') {
                                                                         textFieldControllers[index].text = '0.';
-                                                                        textFieldControllers[index].selection = TextSelection.fromPosition(TextPosition(offset: textFieldControllers[index].text.length));
+                                                                        textFieldControllers[index].selection = TextSelection.fromPosition(
+                                                                            TextPosition(offset: textFieldControllers[index].text.length));
                                                                       }
                                                                       if (textFieldControllers[index].text.isNotEmpty == true) {
                                                                         if (!pickLimitSetting) {

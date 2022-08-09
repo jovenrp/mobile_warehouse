@@ -78,7 +78,7 @@ class ReceiveTicketDetailsModel {
   final String? isLotTracked;
 
   @JsonKey(name: 'isComplete')
-  final String? isComplete;
+  String? isComplete;
 
   @JsonKey(name: 'isUnder')
   String? isUnder;
@@ -143,5 +143,9 @@ class ReceiveTicketDetailsModel {
 
   void setIsUnder(String? value) {
     isUnder = value;
+  }
+
+  void setIsComplete(String? value) {
+    isComplete = value;
   }
 }
