@@ -21,16 +21,20 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 
 class ReceiveTicketDetailsScreen extends StatefulWidget {
-  const ReceiveTicketDetailsScreen({Key? key, this.receiveTicketsModel}) : super(key: key);
+  const ReceiveTicketDetailsScreen({Key? key, this.receiveTicketsModel})
+      : super(key: key);
 
   static const String routeName = '/receiveTicketDetails';
   static const String screenName = 'receiveTicketDetailsScreen';
 
   final ReceiveTicketsModel? receiveTicketsModel;
 
-  static ModalRoute<ReceiveTicketDetailsScreen> route({ReceiveTicketsModel? receiveTicketsModel}) => MaterialPageRoute<ReceiveTicketDetailsScreen>(
+  static ModalRoute<ReceiveTicketDetailsScreen> route(
+          {ReceiveTicketsModel? receiveTicketsModel}) =>
+      MaterialPageRoute<ReceiveTicketDetailsScreen>(
         settings: const RouteSettings(name: routeName),
-        builder: (_) => ReceiveTicketDetailsScreen(receiveTicketsModel: receiveTicketsModel),
+        builder: (_) => ReceiveTicketDetailsScreen(
+            receiveTicketsModel: receiveTicketsModel),
       );
 
   @override
@@ -52,12 +56,15 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
   String completeStatus = '';
 
   final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   @override
   void initState() {
     super.initState();
-    context.read<ReceiveTicketDetailsBloc>().getReceiveTicketDetails(id: widget.receiveTicketsModel?.id);
+    context
+        .read<ReceiveTicketDetailsBloc>()
+        .getReceiveTicketDetails(id: widget.receiveTicketsModel?.id);
     context.read<ReceiveTicketDetailsBloc>().getSettings();
   }
 
@@ -83,24 +90,34 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
         },
       ),
     );
-    return BlocConsumer<ReceiveTicketDetailsBloc, ReceiveTicketDetailsState>(listener: (BuildContext context, ReceiveTicketDetailsState state) {
+    return BlocConsumer<ReceiveTicketDetailsBloc, ReceiveTicketDetailsState>(
+        listener: (BuildContext context, ReceiveTicketDetailsState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
         pickLimitSetting = state.pickLimitSetting ?? false;
 
         int index = 0;
-        for (ReceiveTicketDetailsModel item in state.receiveTicketDetailsModel ?? <ReceiveTicketDetailsModel>[]) {
+        for (ReceiveTicketDetailsModel item
+            in state.receiveTicketDetailsModel ??
+                <ReceiveTicketDetailsModel>[]) {
           if (!isInitialized) {
             textFieldControllers.add(TextEditingController());
             //item.setLocation(state.pickTicketResponse?[0].destination);
             if (item.qtyReceived?.isEmpty == true) {
               item.setQtyPicked('0');
             }
-            if (double.parse(item.qtyReceived?.isNotEmpty == true ? item.qtyReceived ?? '0' : '0') > 0 || item.status?.toLowerCase() == 'partial') {
+            if (double.parse(item.qtyReceived?.isNotEmpty == true
+                        ? item.qtyReceived ?? '0'
+                        : '0') >
+                    0 ||
+                item.status?.toLowerCase() == 'partial') {
               item.setPickedItem(item.qtyReceived);
-              item.setIsChecked(double.parse(item.qtyReceived ?? '0') > 0 || item.status?.toLowerCase() == 'partial');
+              item.setIsChecked(double.parse(item.qtyReceived ?? '0') > 0 ||
+                  item.status?.toLowerCase() == 'partial');
             }
-            if (index >= int.parse((state.receiveTicketDetailsModel!.length - 1).toString())) {
+            if (index >=
+                int.parse(
+                    (state.receiveTicketDetailsModel!.length - 1).toString())) {
               isInitialized = true;
             }
             index++;
@@ -146,10 +163,17 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                   isLoading: false,
                                   buttonText: I18n.of(context).yes_pick_line,
                                   onTap: () {
-                                    context.read<ReceiveTicketDetailsBloc>().submitPick(
-                                        id: state.dummyPickTicketId ?? '',
-                                        containerId: state.dummyReceiveTicketDetailsModel?.containerId ?? '0',
-                                        qtyReceived: state.dummyQuantityPicked ?? '');
+                                    context
+                                        .read<ReceiveTicketDetailsBloc>()
+                                        .submitPick(
+                                            id: state.dummyPickTicketId ?? '',
+                                            containerId: state
+                                                    .dummyReceiveTicketDetailsModel
+                                                    ?.containerId ??
+                                                '0',
+                                            qtyReceived:
+                                                state.dummyQuantityPicked ??
+                                                    '');
                                     Navigator.of(context).pop();
                                   }),
                             ),
@@ -157,21 +181,36 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                               width: double.infinity,
                               child: ATTextButton(
                                 buttonStyle: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(AppColors.white),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        AppColors.white),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      side: BorderSide(color: AppColors.beachSea),
+                                      side:
+                                          BorderSide(color: AppColors.beachSea),
                                     ))),
-                                buttonTextStyle: TextStyle(color: AppColors.beachSea),
+                                buttonTextStyle:
+                                    TextStyle(color: AppColors.beachSea),
                                 isLoading: false,
                                 buttonText: I18n.of(context).cancel,
                                 onTap: () {
                                   currentIndex = -1;
-                                  context.read<ReceiveTicketDetailsBloc>().exitReceiveDetail(id: state.dummyReceiveTicketDetailsModel?.id ?? '');
                                   context
                                       .read<ReceiveTicketDetailsBloc>()
-                                      .cancelPickRequest(state.dummyReceiveTicketDetailsModel, state.dummyQuantityPicked);
-                                  Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails'));
+                                      .exitReceiveDetail(
+                                          id: state
+                                                  .dummyReceiveTicketDetailsModel
+                                                  ?.id ??
+                                              '');
+                                  context
+                                      .read<ReceiveTicketDetailsBloc>()
+                                      .cancelPickRequest(
+                                          state.dummyReceiveTicketDetailsModel,
+                                          state.dummyQuantityPicked);
+                                  Navigator.of(context).popUntil(
+                                      ModalRoute.withName(
+                                          '/receiveTicketDetails'));
                                 },
                               ),
                             )
@@ -202,12 +241,16 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                             Container(
                               alignment: Alignment.center,
                               child: completeStatus == 'partial'
-                                  ? Icon(Icons.warning_amber_rounded, color: AppColors.warningOrange, size: 80)
-                                  : Icon(Icons.check_circle, color: AppColors.successGreen, size: 80),
+                                  ? Icon(Icons.warning_amber_rounded,
+                                      color: AppColors.warningOrange, size: 80)
+                                  : Icon(Icons.check_circle,
+                                      color: AppColors.successGreen, size: 80),
                             ),
                             SizedBox(height: 10),
                             ATText(
-                              text: completeStatus == 'partial' ? I18n.of(context).partial_pick_completed : I18n.of(context).completed_alert,
+                              text: completeStatus == 'partial'
+                                  ? I18n.of(context).partial_pick_completed
+                                  : I18n.of(context).completed_alert,
                               fontSize: completeStatus == 'partial' ? 20 : 20,
                               weight: FontWeight.bold,
                               textAlign: TextAlign.center,
@@ -215,8 +258,11 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                             SizedBox(height: 15),
                             ATText(
                               text: completeStatus == 'partial'
-                                  ? I18n.of(context).ticket_number_partially_complete(widget.receiveTicketsModel?.num)
-                                  : I18n.of(context).ticket_number_complete(widget.receiveTicketsModel?.num),
+                                  ? I18n.of(context)
+                                      .ticket_number_partially_complete(
+                                          widget.receiveTicketsModel?.num)
+                                  : I18n.of(context).ticket_number_complete(
+                                      widget.receiveTicketsModel?.num),
                               fontSize: completeStatus == 'partial' ? 16 : 16,
                               textAlign: TextAlign.center,
                             ),
@@ -226,7 +272,9 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                               child: ATTextButton(
                                 isLoading: false,
                                 buttonText: I18n.of(context).done_button,
-                                onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails')),
+                                onTap: () => Navigator.of(context).popUntil(
+                                    ModalRoute.withName(
+                                        '/receiveTicketDetails')),
                               ),
                             ),
                           ],
@@ -255,7 +303,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                   actions: <Widget>[
                     state.isLoading || state.isUpdateLoading
                         ? Container(
-                            padding: const EdgeInsets.only(top: 20, bottom: 20, right: 18),
+                            padding: const EdgeInsets.only(
+                                top: 20, bottom: 20, right: 18),
                             width: 35,
                             child: ATLoadingIndicator(
                               strokeWidth: 3.0,
@@ -265,7 +314,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                           )
                         : Ink(
                             child: InkWell(
-                              onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/dashboard')),
+                              onTap: () => Navigator.of(context)
+                                  .popUntil(ModalRoute.withName('/dashboard')),
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 18),
                                 child: Icon(
@@ -287,12 +337,18 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.only(left: 18, bottom: 10),
                         child: ATText(
-                            text: 'PO-${widget.receiveTicketsModel?.num} ${widget.receiveTicketsModel?.vendorName}'.capitalizeFirstofEach(),
-                            style: TextStyle(fontSize: 16, color: AppColors.white, fontWeight: FontWeight.w700)),
+                            text:
+                                'PO-${widget.receiveTicketsModel?.num} ${widget.receiveTicketsModel?.vendorName}'
+                                    .capitalizeFirstofEach(),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.w700)),
                       ),
                       Container(
                         color: AppColors.beachSea,
-                        padding: const EdgeInsets.only(left: 18, right: 18, bottom: 20),
+                        padding: const EdgeInsets.only(
+                            left: 18, right: 18, bottom: 20),
                         child: ATSearchfield(
                             hintText: I18n.of(context).search,
                             textEditingController: searchController,
@@ -300,7 +356,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                               if (searchController.text.isNotEmpty == true) {}
                             },
                             onChanged: (String value) {
-                              EasyDebounce.debounce('deebouncer1', Duration(milliseconds: 700), () {});
+                              EasyDebounce.debounce('deebouncer1',
+                                  Duration(milliseconds: 700), () {});
                             }),
                       ),
                       Visibility(
@@ -311,16 +368,20 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                             child: Column(
                               children: <Widget>[
                                 Visibility(
-                                    visible: state.receiveTicketDetailsModel?.isNotEmpty == true,
+                                    visible: state.receiveTicketDetailsModel
+                                            ?.isNotEmpty ==
+                                        true,
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Expanded(flex: 1, child: SizedBox()),
                                         Expanded(
                                             flex: 3,
                                             child: Container(
                                               alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(top: 20, bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  top: 20, bottom: 5),
                                               child: ATText(
                                                 fontColor: AppColors.greyHeader,
                                                 text: 'SKU',
@@ -331,7 +392,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                             flex: 2,
                                             child: Container(
                                               alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(top: 20, bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  top: 20, bottom: 5),
                                               child: ATText(
                                                 fontColor: AppColors.greyHeader,
                                                 text: 'LOCATION',
@@ -343,7 +405,10 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                             flex: 2,
                                             child: Container(
                                               alignment: Alignment.centerRight,
-                                              padding: const EdgeInsets.only(right: 18, top: 20, bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  right: 18,
+                                                  top: 20,
+                                                  bottom: 5),
                                               child: ATText(
                                                 fontColor: AppColors.greyHeader,
                                                 text: 'QTY RCV\'D',
@@ -360,7 +425,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                               color: AppColors.white,
                               child: SmartRefresher(
                                   enablePullDown: canRefresh,
-                                  onRefresh: () => _forcedRefresh(id: widget.receiveTicketsModel?.id),
+                                  onRefresh: () => _forcedRefresh(
+                                      id: widget.receiveTicketsModel?.id),
                                   controller: refreshController,
                                   header: WaterDropMaterialHeader(
                                     backgroundColor: AppColors.beachSea,
@@ -380,237 +446,283 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                             Container(
                                                 alignment: Alignment.topCenter,
                                                 child: Padding(
-                                                  padding: const EdgeInsets.only(top: 10),
-                                                  child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 10),
+                                                  child: ATText(
+                                                      text: I18n.of(context)
+                                                          .please_wait_while_data_is_loaded),
                                                 ))
                                           ],
                                         )
-                                      : state.receiveTicketDetailsModel?.isNotEmpty == true
+                                      : state.receiveTicketDetailsModel
+                                                  ?.isNotEmpty ==
+                                              true
                                           ? ListView.builder(
                                               //itemScrollController: itemScrollController,
                                               //itemPositionsListener: itemPositionsListener,
-                                              itemCount: (state.receiveTicketDetailsModel?.length ?? 0) + 1,
-                                              itemBuilder: (BuildContext context, int index) {
+                                              itemCount:
+                                                  (state.receiveTicketDetailsModel
+                                                              ?.length ??
+                                                          0) +
+                                                      1,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
                                                 if (index == 0) {
                                                   return SizedBox();
                                                 }
                                                 index -= 1;
                                                 return Visibility(
-                                                    visible: _isVisible || state.receiveTicketDetailsModel?[index].isFiltered == false,
+                                                    visible: _isVisible ||
+                                                        state
+                                                                .receiveTicketDetailsModel?[
+                                                                    index]
+                                                                .isFiltered ==
+                                                            false,
                                                     child: Slidable(
-                                                        key: ValueKey<int>(index),
+                                                        key: ValueKey<int>(
+                                                            index),
                                                         startActionPane: ActionPane(
                                                             // A motion is a widget used to control how the pane animates.
                                                             motion: const ScrollMotion(),
                                                             children: <Widget>[
                                                               SlidableAction(
-                                                                onPressed: (BuildContext context) {
+                                                                onPressed:
+                                                                    (BuildContext
+                                                                        context) {
                                                                   Navigator.of(context).push(ReceieveTicketSkuDetailsScreen.route(
-                                                                      ticketItemModel: state.receiveTicketDetailsModel?[index],
-                                                                      ticketList: state.receiveTicketDetailsModel,
-                                                                      currentIndex: index));
+                                                                      ticketItemModel:
+                                                                          state.receiveTicketDetailsModel?[
+                                                                              index],
+                                                                      ticketList:
+                                                                          state
+                                                                              .receiveTicketDetailsModel,
+                                                                      currentIndex:
+                                                                          index));
                                                                 },
-                                                                backgroundColor: AppColors.greyRed,
-                                                                foregroundColor: AppColors.white,
-                                                                icon: Icons.list_alt,
+                                                                backgroundColor:
+                                                                    AppColors
+                                                                        .greyRed,
+                                                                foregroundColor:
+                                                                    AppColors
+                                                                        .white,
+                                                                icon: Icons
+                                                                    .list_alt,
                                                               ),
                                                             ]),
                                                         child: Container(
-                                                          color: AppColors.backgroundColor,
-                                                          padding: const EdgeInsets.only(top: 5, bottom: 5),
-                                                          child: GestureDetector(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  if (state.receiveTicketDetailsModel?[index].isVisible == false) {
-                                                                    //set previous open to close
-                                                                    if (currentIndex != -1) {
-                                                                      state.receiveTicketDetailsModel?[currentIndex].setIsVisible(false);
-                                                                      //call exit pick here
-                                                                      context.read<ReceiveTicketDetailsBloc>().exitReceiveDetail(
-                                                                          id: state.receiveTicketDetailsModel?[currentIndex].id ?? '');
-                                                                      currentIndex = -1;
-                                                                    }
-                                                                    currentIndex = index;
-                                                                    state.receiveTicketDetailsModel?[index].setIsVisible(true);
-                                                                    //call begin pick here
-                                                                    context
-                                                                        .read<ReceiveTicketDetailsBloc>()
-                                                                        .beginReceiveDetail(id: state.receiveTicketDetailsModel?[index].id ?? '');
-                                                                  } else {
-                                                                    state.receiveTicketDetailsModel?[index].setIsVisible(false);
-                                                                    //call exit pick here
-                                                                    context
-                                                                        .read<ReceiveTicketDetailsBloc>()
-                                                                        .exitReceiveDetail(id: state.receiveTicketDetailsModel?[index].id ?? '');
-                                                                    currentIndex = -1;
-                                                                  }
-                                                                  state.receiveTicketDetailsModel?[index]
-                                                                      .setIsVisible(state.receiveTicketDetailsModel?[index].isVisible ?? false);
-                                                                });
-                                                              },
-                                                              child: Column(children: <Widget>[
-                                                                Row(
-                                                                  children: <Widget>[
-                                                                    Expanded(
-                                                                      flex: 1,
-                                                                      child: SizedBox(
-                                                                        width: 24,
-                                                                        child: Checkbox(
-                                                                            visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                                                                            activeColor: state.receiveTicketDetailsModel?[index].isOver
-                                                                                            ?.toLowerCase() ==
-                                                                                        'y' ||
-                                                                                    state.receiveTicketDetailsModel?[index].isUnder?.toLowerCase() ==
-                                                                                        'y'
-                                                                                ? AppColors.warningOrange
-                                                                                : AppColors.successGreen,
-                                                                            value: state.receiveTicketDetailsModel?[index].isChecked ?? false,
-                                                                            onChanged: (bool? value) {
-                                                                              context.read<ReceiveTicketDetailsBloc>().updateCheckBox(
-                                                                                  state.receiveTicketDetailsModel?[index],
-                                                                                  value,
-                                                                                  widget.receiveTicketsModel?.id,
-                                                                                  textFieldControllers[index]);
-                                                                            }),
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      flex: 3,
-                                                                      child: ATText(
-                                                                        text: state.receiveTicketDetailsModel?[index].sku,
-                                                                        weight: FontWeight.bold,
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      flex: 2,
-                                                                      child: ATText(
-                                                                        text: state.receiveTicketDetailsModel?[index].containerCode,
-                                                                        weight: FontWeight.bold,
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      flex: 2,
-                                                                      child: Container(
-                                                                        alignment: Alignment.centerRight,
-                                                                        child: ATText(
-                                                                          text: context.read<ReceiveTicketDetailsBloc>().getQuantityText(
-                                                                              state.receiveTicketDetailsModel?[index],
-                                                                              textFieldControllers[index].text),
-                                                                          weight: FontWeight.bold,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(width: 18)
-                                                                  ],
-                                                                ),
-                                                                Row(
-                                                                  children: <Widget>[
-                                                                    Expanded(
-                                                                      flex: 1,
-                                                                      child: SizedBox(),
-                                                                    ),
-                                                                    Expanded(
-                                                                      flex: 3,
-                                                                      child: ATText(
-                                                                        text: state.receiveTicketDetailsModel?[index].itemName,
-                                                                        fontSize: 12,
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      flex: 2,
-                                                                      child: ATText(
-                                                                        text: state.receiveTicketDetailsModel?[index].itemNum,
-                                                                        fontSize: 12,
-                                                                      ),
-                                                                    ),
-                                                                    Expanded(
-                                                                      flex: 2,
-                                                                      child: Container(
-                                                                        alignment: Alignment.centerRight,
-                                                                        child: ATText(
-                                                                          text:
-                                                                              '${state.receiveTicketDetailsModel?[index].uom} ${state.receiveTicketDetailsModel?[index].qtyUnit}',
-                                                                          fontSize: 12,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(width: 18)
-                                                                  ],
-                                                                ),
-                                                                SizedBox(height: 5),
-                                                                TicketPicker(
-                                                                  receiveTicketDetailsModel: state.receiveTicketDetailsModel?[index],
-                                                                  controller: textFieldControllers[index],
-                                                                  onFieldSubmitted: (String? value) => setState(() {
-                                                                    if (value?.isNotEmpty == true) {
-                                                                      context.read<ReceiveTicketDetailsBloc>().setQuantityPicked(
-                                                                          state.receiveTicketDetailsModel?[index], textFieldControllers[index]);
-                                                                      if (state.receiveTicketDetailsModel?[index].isVisible == false) {
+                                                          color: AppColors
+                                                              .backgroundColor,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 5,
+                                                                  bottom: 5),
+                                                          child:
+                                                              GestureDetector(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      if (state
+                                                                              .receiveTicketDetailsModel?[index]
+                                                                              .isVisible ==
+                                                                          false) {
                                                                         //set previous open to close
-                                                                        if (currentIndex != -1) {
-                                                                          state.receiveTicketDetailsModel?[currentIndex].setIsVisible(false);
-                                                                          currentIndex = -1;
+                                                                        if (currentIndex !=
+                                                                            -1) {
+                                                                          state
+                                                                              .receiveTicketDetailsModel?[currentIndex]
+                                                                              .setIsVisible(false);
+                                                                          //call exit pick here
+                                                                          context
+                                                                              .read<ReceiveTicketDetailsBloc>()
+                                                                              .exitReceiveDetail(id: state.receiveTicketDetailsModel?[currentIndex].id ?? '');
+                                                                          currentIndex =
+                                                                              -1;
                                                                         }
-                                                                        currentIndex = index;
-                                                                        state.receiveTicketDetailsModel?[index].setIsVisible(true);
+                                                                        currentIndex =
+                                                                            index;
+                                                                        state
+                                                                            .receiveTicketDetailsModel?[index]
+                                                                            .setIsVisible(true);
+                                                                        //call begin pick here
                                                                         context
                                                                             .read<ReceiveTicketDetailsBloc>()
                                                                             .beginReceiveDetail(id: state.receiveTicketDetailsModel?[index].id ?? '');
                                                                       } else {
-                                                                        currentIndex = -1;
-                                                                        state.receiveTicketDetailsModel?[index].setIsVisible(false);
+                                                                        state
+                                                                            .receiveTicketDetailsModel?[index]
+                                                                            .setIsVisible(false);
+                                                                        //call exit pick here
+                                                                        context
+                                                                            .read<ReceiveTicketDetailsBloc>()
+                                                                            .exitReceiveDetail(id: state.receiveTicketDetailsModel?[index].id ?? '');
+                                                                        currentIndex =
+                                                                            -1;
                                                                       }
-                                                                      state.receiveTicketDetailsModel?[index]
-                                                                          .setIsVisible(state.receiveTicketDetailsModel?[index].isVisible ?? false);
-                                                                    }
-                                                                  }),
-                                                                  onChanged: (String? text) {
-                                                                    setState(() {
-                                                                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                                                      if (textFieldControllers[index].text == '.') {
-                                                                        textFieldControllers[index].text = '0.';
-                                                                        textFieldControllers[index].selection = TextSelection.fromPosition(
-                                                                            TextPosition(offset: textFieldControllers[index].text.length));
-                                                                      }
-                                                                      if (textFieldControllers[index].text.isNotEmpty == true) {
-                                                                        if (!pickLimitSetting) {
-                                                                          if (double.parse(textFieldControllers[index].text) >
-                                                                              double.parse(state.receiveTicketDetailsModel?[index].qtyOrder ?? '0')) {
-                                                                            textFieldControllers[index].clear();
-                                                                            state.receiveTicketDetailsModel?[index].setIsChecked(false);
-                                                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                                                          }
-                                                                        }
-                                                                      }
+                                                                      state
+                                                                          .receiveTicketDetailsModel?[
+                                                                              index]
+                                                                          .setIsVisible(state.receiveTicketDetailsModel?[index].isVisible ??
+                                                                              false);
                                                                     });
                                                                   },
-                                                                  onReset: () async {
-                                                                    //submitPick then forcedRefresh then popUntil
-                                                                    await context
-                                                                        .read<ReceiveTicketDetailsBloc>()
-                                                                        .submitPick(
-                                                                            id: state.receiveTicketDetailsModel?[index].id,
-                                                                            containerId: state.receiveTicketDetailsModel?[index].containerId ?? '',
-                                                                            qtyReceived: '-1')
-                                                                        .then((_) {
-                                                                      _forcedRefresh(id: widget.receiveTicketsModel?.id);
-                                                                      Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails'));
-                                                                    });
-                                                                  },
-                                                                  iconPressed: () => setState(() {
-                                                                    if (textFieldControllers[index].text.isNotEmpty == true) {
-                                                                      textFieldControllers[index].clear();
-                                                                    }
-                                                                  }),
-                                                                ),
-                                                              ])),
+                                                                  child: Column(
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Row(
+                                                                          children: <
+                                                                              Widget>[
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: SizedBox(
+                                                                                width: 24,
+                                                                                child: Checkbox(
+                                                                                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                                                                                    activeColor: state.receiveTicketDetailsModel?[index].isOver?.toLowerCase() == 'y' || state.receiveTicketDetailsModel?[index].isUnder?.toLowerCase() == 'y' ? AppColors.warningOrange : AppColors.successGreen,
+                                                                                    value: state.receiveTicketDetailsModel?[index].isChecked ?? false,
+                                                                                    onChanged: (bool? value) {
+                                                                                      context.read<ReceiveTicketDetailsBloc>().updateCheckBox(state.receiveTicketDetailsModel?[index], value, widget.receiveTicketsModel?.id, textFieldControllers[index]);
+                                                                                    }),
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 3,
+                                                                              child: ATText(
+                                                                                text: state.receiveTicketDetailsModel?[index].sku,
+                                                                                weight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                              child: ATText(
+                                                                                text: state.receiveTicketDetailsModel?[index].containerCode,
+                                                                                weight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                              child: Container(
+                                                                                alignment: Alignment.centerRight,
+                                                                                child: ATText(
+                                                                                  text: context.read<ReceiveTicketDetailsBloc>().getQuantityText(state.receiveTicketDetailsModel?[index], textFieldControllers[index].text),
+                                                                                  weight: FontWeight.bold,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(width: 18)
+                                                                          ],
+                                                                        ),
+                                                                        Row(
+                                                                          children: <
+                                                                              Widget>[
+                                                                            Expanded(
+                                                                              flex: 1,
+                                                                              child: SizedBox(),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 3,
+                                                                              child: ATText(
+                                                                                text: state.receiveTicketDetailsModel?[index].itemName,
+                                                                                fontSize: 12,
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                              child: ATText(
+                                                                                text: state.receiveTicketDetailsModel?[index].itemNum,
+                                                                                fontSize: 12,
+                                                                              ),
+                                                                            ),
+                                                                            Expanded(
+                                                                              flex: 2,
+                                                                              child: Container(
+                                                                                alignment: Alignment.centerRight,
+                                                                                child: ATText(
+                                                                                  text: '${state.receiveTicketDetailsModel?[index].uom} ${state.receiveTicketDetailsModel?[index].qtyUnit}',
+                                                                                  fontSize: 12,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(width: 18)
+                                                                          ],
+                                                                        ),
+                                                                        SizedBox(
+                                                                            height:
+                                                                                5),
+                                                                        TicketPicker(
+                                                                          receiveTicketDetailsModel:
+                                                                              state.receiveTicketDetailsModel?[index],
+                                                                          controller:
+                                                                              textFieldControllers[index],
+                                                                          onFieldSubmitted: (String? value) =>
+                                                                              setState(() {
+                                                                            if (value?.isNotEmpty ==
+                                                                                true) {
+                                                                              context.read<ReceiveTicketDetailsBloc>().setQuantityPicked(state.receiveTicketDetailsModel?[index], textFieldControllers[index]);
+                                                                              if (state.receiveTicketDetailsModel?[index].isVisible == false) {
+                                                                                //set previous open to close
+                                                                                if (currentIndex != -1) {
+                                                                                  state.receiveTicketDetailsModel?[currentIndex].setIsVisible(false);
+                                                                                  currentIndex = -1;
+                                                                                }
+                                                                                currentIndex = index;
+                                                                                state.receiveTicketDetailsModel?[index].setIsVisible(true);
+                                                                                context.read<ReceiveTicketDetailsBloc>().beginReceiveDetail(id: state.receiveTicketDetailsModel?[index].id ?? '');
+                                                                              } else {
+                                                                                currentIndex = -1;
+                                                                                state.receiveTicketDetailsModel?[index].setIsVisible(false);
+                                                                              }
+                                                                              state.receiveTicketDetailsModel?[index].setIsVisible(state.receiveTicketDetailsModel?[index].isVisible ?? false);
+                                                                            }
+                                                                          }),
+                                                                          onChanged:
+                                                                              (String? text) {
+                                                                            setState(() {
+                                                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                              if (textFieldControllers[index].text == '.') {
+                                                                                textFieldControllers[index].text = '0.';
+                                                                                textFieldControllers[index].selection = TextSelection.fromPosition(TextPosition(offset: textFieldControllers[index].text.length));
+                                                                              }
+                                                                              if (textFieldControllers[index].text.isNotEmpty == true) {
+                                                                                if (!pickLimitSetting) {
+                                                                                  if (double.parse(textFieldControllers[index].text) > double.parse(state.receiveTicketDetailsModel?[index].qtyOrder ?? '0')) {
+                                                                                    textFieldControllers[index].clear();
+                                                                                    state.receiveTicketDetailsModel?[index].setIsChecked(false);
+                                                                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                                                                  }
+                                                                                }
+                                                                              }
+                                                                            });
+                                                                          },
+                                                                          onReset:
+                                                                              () async {
+                                                                            //submitPick then forcedRefresh then popUntil
+                                                                            await context.read<ReceiveTicketDetailsBloc>().submitPick(id: state.receiveTicketDetailsModel?[index].id, containerId: state.receiveTicketDetailsModel?[index].containerId ?? '', qtyReceived: '-1').then((_) {
+                                                                              _forcedRefresh(id: widget.receiveTicketsModel?.id);
+                                                                              Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails'));
+                                                                            });
+                                                                          },
+                                                                          iconPressed: () =>
+                                                                              setState(() {
+                                                                            if (textFieldControllers[index].text.isNotEmpty ==
+                                                                                true) {
+                                                                              textFieldControllers[index].clear();
+                                                                            }
+                                                                          }),
+                                                                        ),
+                                                                      ])),
                                                         )));
                                               })
                                           : Container(
                                               alignment: Alignment.topCenter,
                                               child: Padding(
-                                                padding: const EdgeInsets.only(top: 30),
-                                                child: ATText(text: I18n.of(context).oops_item_returned_0_results),
+                                                padding: const EdgeInsets.only(
+                                                    top: 30),
+                                                child: ATText(
+                                                    text: I18n.of(context)
+                                                        .oops_item_returned_0_results),
                                               ),
                                             ))))
                     ],
@@ -622,21 +734,27 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                   isLoading: state.isLoading,
                   onTap: () async {
                     //complete pick ticket here
-                    List<ReceiveTicketDetailsModel>? pickDetailResponse = await completeTicketRefresh(id: widget.receiveTicketsModel?.id);
+                    List<ReceiveTicketDetailsModel>? pickDetailResponse =
+                        await completeTicketRefresh(
+                            id: widget.receiveTicketsModel?.id);
 
                     int openChecker = 0;
                     int processedChecker = 0;
-                    for (ReceiveTicketDetailsModel item in pickDetailResponse ?? <ReceiveTicketDetailsModel>[]) {
+                    for (ReceiveTicketDetailsModel item in pickDetailResponse ??
+                        <ReceiveTicketDetailsModel>[]) {
                       if (item.status?.toLowerCase() == 'processed') {
                         processedChecker++;
-                      } else if (item.status?.toLowerCase() == 'open' || item.status?.toLowerCase() == '') {
+                      } else if (item.status?.toLowerCase() == 'open' ||
+                          item.status?.toLowerCase() == '') {
                         openChecker++;
-                      } else if (item.isOver?.toLowerCase() == 'y' || item.isUnder?.toLowerCase() == 'y') {
+                      } else if (item.isOver?.toLowerCase() == 'y' ||
+                          item.isUnder?.toLowerCase() == 'y') {
                         completeStatus = 'partial';
                       }
                     }
 
-                    if (openChecker == state.receiveTicketDetailsModel?.length) {
+                    if (openChecker ==
+                        state.receiveTicketDetailsModel?.length) {
                       completeStatus = 'open';
                       await showDialog(
                           context: context,
@@ -647,7 +765,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(14),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
                                       SizedBox(height: 10),
                                       Icon(
@@ -664,7 +783,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                       ),
                                       SizedBox(height: 10),
                                       ATText(
-                                        text: I18n.of(context).pick_some_items_before_completing,
+                                        text: I18n.of(context)
+                                            .pick_some_items_before_completing,
                                         fontSize: 16,
                                         textAlign: TextAlign.center,
                                       ),
@@ -674,7 +794,9 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                         child: ATTextButton(
                                           isLoading: false,
                                           buttonText: I18n.of(context).go_back,
-                                          onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails')),
+                                          onTap: () => Navigator.of(context)
+                                              .popUntil(ModalRoute.withName(
+                                                  '/receiveTicketDetails')),
                                         ),
                                       ),
                                     ],
@@ -683,14 +805,20 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                               ),
                             );
                           });
-                    } else if (processedChecker == state.receiveTicketDetailsModel?.length) {
+                    } else if (processedChecker ==
+                        state.receiveTicketDetailsModel?.length) {
                       completeStatus = 'processed';
                       isUndo = false;
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(submitSnackbar);
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(submitSnackbar);
                       Future<void>.delayed(const Duration(seconds: 1), () {
                         if (!isUndo) {
-                          context.read<ReceiveTicketDetailsBloc>().completeReceiveTicket(ticketId: widget.receiveTicketsModel?.id ?? '0');
+                          context
+                              .read<ReceiveTicketDetailsBloc>()
+                              .completeReceiveTicket(
+                                  ticketId:
+                                      widget.receiveTicketsModel?.id ?? '0');
                         }
                       });
                     } else {
@@ -704,7 +832,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(14),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Icon(
                                         Icons.warning_amber_rounded,
@@ -713,14 +842,16 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                       ),
                                       SizedBox(height: 10),
                                       ATText(
-                                        text: I18n.of(context).there_are_lines_partially_picked,
+                                        text: I18n.of(context)
+                                            .there_are_lines_partially_picked,
                                         fontSize: 16,
                                         weight: FontWeight.bold,
                                         textAlign: TextAlign.center,
                                       ),
                                       SizedBox(height: 20),
                                       ATText(
-                                        text: I18n.of(context).complete_ticket_anyway,
+                                        text: I18n.of(context)
+                                            .complete_ticket_anyway,
                                         fontSize: 16,
                                         textAlign: TextAlign.center,
                                       ),
@@ -729,9 +860,12 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                         width: double.infinity,
                                         child: ATTextButton(
                                             isLoading: false,
-                                            buttonText: I18n.of(context).yes_complete_pick,
+                                            buttonText: I18n.of(context)
+                                                .yes_complete_pick,
                                             onTap: () {
-                                              Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails'));
+                                              Navigator.of(context).popUntil(
+                                                  ModalRoute.withName(
+                                                      '/receiveTicketDetails'));
                                               completePickTicket();
                                             }),
                                       ),
@@ -739,15 +873,24 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                         width: double.infinity,
                                         child: ATTextButton(
                                           buttonStyle: ButtonStyle(
-                                              backgroundColor: MaterialStateProperty.all(AppColors.white),
-                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(8.0),
-                                                side: BorderSide(color: AppColors.beachSea),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      AppColors.white),
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                side: BorderSide(
+                                                    color: AppColors.beachSea),
                                               ))),
-                                          buttonTextStyle: TextStyle(color: AppColors.beachSea),
+                                          buttonTextStyle: TextStyle(
+                                              color: AppColors.beachSea),
                                           isLoading: false,
                                           buttonText: I18n.of(context).go_back,
-                                          onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails')),
+                                          onTap: () => Navigator.of(context)
+                                              .popUntil(ModalRoute.withName(
+                                                  '/receiveTicketDetails')),
                                         ),
                                       )
                                     ],
@@ -766,17 +909,22 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
   }
 
   void _forcedRefresh({String? id}) async {
-    await context.read<ReceiveTicketDetailsBloc>().getReceiveTicketDetails(id: id);
+    await context
+        .read<ReceiveTicketDetailsBloc>()
+        .getReceiveTicketDetails(id: id);
     canRefresh = true;
     _isVisible = true;
     isInitialized = false;
   }
 
-  Future<List<ReceiveTicketDetailsModel>?> completeTicketRefresh({String? id}) async {
+  Future<List<ReceiveTicketDetailsModel>?> completeTicketRefresh(
+      {String? id}) async {
     canRefresh = true;
     _isVisible = true;
     isInitialized = false;
-    List<ReceiveTicketDetailsModel>? pickDetailResponse = await context.read<ReceiveTicketDetailsBloc>().getReceiveTicketDetails(id: id);
+    List<ReceiveTicketDetailsModel>? pickDetailResponse = await context
+        .read<ReceiveTicketDetailsBloc>()
+        .getReceiveTicketDetails(id: id);
     return pickDetailResponse;
   }
 
@@ -786,7 +934,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(submitSnackbar);
     Future<void>.delayed(const Duration(seconds: 1), () {
       if (!isUndo) {
-        context.read<ReceiveTicketDetailsBloc>().completeReceiveTicket(ticketId: widget.receiveTicketsModel?.id ?? '0');
+        context.read<ReceiveTicketDetailsBloc>().completeReceiveTicket(
+            ticketId: widget.receiveTicketsModel?.id ?? '0');
       }
     });
   }
@@ -820,15 +969,19 @@ class _TicketPicker extends State<TicketPicker> {
     return Visibility(
         visible: widget.receiveTicketDetailsModel?.isVisible ?? false,
         child: Container(
-          padding: const EdgeInsets.only(left: 18, right: 18, top: 15, bottom: 15),
-          decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.all(Radius.circular(2)), boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ]),
+          padding:
+              const EdgeInsets.only(left: 18, right: 18, top: 15, bottom: 15),
+          decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.all(Radius.circular(2)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ]),
           child: Column(
             children: <Widget>[
               Row(
@@ -866,11 +1019,15 @@ class _TicketPicker extends State<TicketPicker> {
                 children: <Widget>[
                   Expanded(
                     flex: 1,
-                    child: ATText(text: widget.receiveTicketDetailsModel?.containerCode, fontSize: 14),
+                    child: ATText(
+                        text: widget.receiveTicketDetailsModel?.containerCode,
+                        fontSize: 14),
                   ),
                   Expanded(
                     flex: 1,
-                    child: ATText(text: widget.receiveTicketDetailsModel?.itemId, fontSize: 14),
+                    child: ATText(
+                        text: widget.receiveTicketDetailsModel?.itemId,
+                        fontSize: 14),
                   ),
                   Expanded(
                     flex: 1,
@@ -882,7 +1039,9 @@ class _TicketPicker extends State<TicketPicker> {
                           ATText(
                             text: context
                                 .read<ReceiveTicketDetailsBloc>()
-                                .getQuantityText(widget.receiveTicketDetailsModel, widget.controller?.text ?? '0'),
+                                .getQuantityText(
+                                    widget.receiveTicketDetailsModel,
+                                    widget.controller?.text ?? '0'),
                             fontSize: 14,
                           )
                         ],
@@ -951,7 +1110,8 @@ class _TicketPicker extends State<TicketPicker> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(14),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Icon(
                                             Icons.warning_amber_rounded,
@@ -960,35 +1120,53 @@ class _TicketPicker extends State<TicketPicker> {
                                           ),
                                           SizedBox(height: 10),
                                           ATText(
-                                            text: I18n.of(context).are_you_sure_you_want_to_continue,
+                                            text: I18n.of(context)
+                                                .are_you_sure_you_want_to_continue,
                                             fontSize: 18,
                                             weight: FontWeight.bold,
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(height: 10),
                                           ATText(
-                                            text: I18n.of(context).this_will_reset_to_untouched,
+                                            text: I18n.of(context)
+                                                .this_will_reset_to_untouched,
                                             fontSize: 16,
                                             textAlign: TextAlign.center,
                                           ),
                                           SizedBox(height: 20),
                                           Container(
                                             width: double.infinity,
-                                            child: ATTextButton(isLoading: false, buttonText: I18n.of(context).yes_reset_line, onTap: widget.onReset),
+                                            child: ATTextButton(
+                                                isLoading: false,
+                                                buttonText: I18n.of(context)
+                                                    .yes_reset_line,
+                                                onTap: widget.onReset),
                                           ),
                                           Container(
                                             width: double.infinity,
                                             child: ATTextButton(
                                               buttonStyle: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all(AppColors.white),
-                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                    side: BorderSide(color: AppColors.beachSea),
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          AppColors.white),
+                                                  shape: MaterialStateProperty
+                                                      .all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    side: BorderSide(
+                                                        color:
+                                                            AppColors.beachSea),
                                                   ))),
-                                              buttonTextStyle: TextStyle(color: AppColors.beachSea),
+                                              buttonTextStyle: TextStyle(
+                                                  color: AppColors.beachSea),
                                               isLoading: false,
-                                              buttonText: I18n.of(context).cancel,
-                                              onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/receiveTicketDetails')),
+                                              buttonText:
+                                                  I18n.of(context).cancel,
+                                              onTap: () => Navigator.of(context)
+                                                  .popUntil(ModalRoute.withName(
+                                                      '/receiveTicketDetails')),
                                             ),
                                           )
                                         ],

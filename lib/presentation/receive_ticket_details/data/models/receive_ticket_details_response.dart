@@ -21,6 +21,6 @@ class ReceiveTicketDetailsResponse {
   @JsonKey(name: 'message')
   final String? message;
 
-  @JsonKey(name: 'rcvTicketDetails')
+  @JsonKey(name: 'rcvTicketDetail')
   final List<ReceiveTicketDetailsModel>? receiveTicketDetailsModel;
 }

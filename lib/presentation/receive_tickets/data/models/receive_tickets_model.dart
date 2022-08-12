@@ -13,6 +13,8 @@ class ReceiveTicketsModel {
     this.numLines,
     this.status,
     this.poId,
+    this.isPartial,
+    this.isComplete,
     this.vendorId,
     this.vendorName,
   });
@@ -44,6 +46,12 @@ class ReceiveTicketsModel {
 
   @JsonKey(name: 'poId')
   final String? poId;
+
+  @JsonKey(name: 'isPartial')
+  final String? isPartial;
+
+  @JsonKey(name: 'isComplete')
+  final String? isComplete;
 
   @JsonKey(name: 'vendorId')
   final String? vendorId;

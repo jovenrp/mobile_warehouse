@@ -293,6 +293,10 @@ class _ReceiveTicketsScreen extends State<ReceiveTicketsScreen> {
                                                                   .receiveTicketsModel?[
                                                                       index]
                                                                   .status,
+                                                              isPartial: state
+                                                                  .receiveTicketsModel?[
+                                                                      index]
+                                                                  .isPartial,
                                                               turns: turns,
                                                             ),
                                                           ),

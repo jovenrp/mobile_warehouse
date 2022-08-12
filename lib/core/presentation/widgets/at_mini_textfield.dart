@@ -36,9 +36,7 @@ class _ATMiniTextfield extends State<ATMiniTextfield> {
       autofocus: widget.autoFocus ?? false,
       style: TextStyle(fontWeight: FontWeight.bold),
       keyboardType: TextInputType.number,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'[.\-0-9]'))
-      ],
+      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[.\-0-9]'))],
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         border: OutlineInputBorder(

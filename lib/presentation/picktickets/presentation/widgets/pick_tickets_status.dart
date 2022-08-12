@@ -3,10 +3,12 @@ import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 
 class PickTicketsStatusWidget extends StatelessWidget {
-  const PickTicketsStatusWidget({Key? key, this.status, this.turns, this.size})
+  const PickTicketsStatusWidget(
+      {Key? key, this.status, this.turns, this.size, this.isPartial})
       : super(key: key);
 
   final String? status;
+  final String? isPartial;
   final int? turns;
   final double? size;
 
@@ -63,6 +65,23 @@ class PickTicketsStatusWidget extends StatelessWidget {
           ),
         );
       case 'processed':
+        if (isPartial?.toLowerCase() == 'y') {
+          return Container(
+            decoration: BoxDecoration(
+                color: AppColors.warningOrange,
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(width: 1, color: AppColors.warningOrange)),
+            child: SizedBox(
+              width: 10,
+              height: 10,
+              child: Container(
+                alignment: Alignment.center,
+                child:
+                    ATText(text: '!', fontSize: 8, fontColor: AppColors.white),
+              ),
+            ),
+          );
+        }
         return Container(
           decoration: BoxDecoration(
               color: AppColors.successGreen,
