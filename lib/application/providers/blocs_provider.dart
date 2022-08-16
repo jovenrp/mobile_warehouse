@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_warehouse/application/domain/bloc/application_bloc.dart';
 import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
+import 'package:mobile_warehouse/presentation/container_move/bloc/container_move_bloc.dart';
+import 'package:mobile_warehouse/presentation/container_move/data/services/container_move_api_service.dart';
+import 'package:mobile_warehouse/presentation/container_move/domain/repositories/container_move_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/bloc/count_ticket_details_bloc.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/data/services/count_ticket_details_api_service.dart';
 import 'package:mobile_warehouse/presentation/count_ticket_details/domain/repositories/count_ticket_details_repository_impl.dart';
@@ -140,6 +143,12 @@ class BlocsProvider {
                   StockAdjustApiService(dio, baseUrl: apiUrl)),
               itemLookupRepository: ItemLookupRepositoryImpl(
                   ItemLookupApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<ContainerMoveBloc>(
+          create: (_) => ContainerMoveBloc(
+              containerMoveRepository: ContainerMoveRepositoryImpl(
+                  ContainerMoveApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
         BlocProvider<ReceiveTicketsBloc>(

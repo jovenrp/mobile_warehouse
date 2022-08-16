@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
+import 'package:mobile_warehouse/presentation/container_move/presentation/container_move_screen.dart';
 import 'package:mobile_warehouse/presentation/dashboard/presentation/action_cards_widget.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/presentation/stock_adjust_screen.dart';
@@ -73,7 +74,8 @@ class _StockActionsScreen extends State<StockActionsScreen> {
                               ),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () => Navigator.of(context)
+                                  .push(ContainerMoveScreen.route()),
                               child: ActionCardsWidget(
                                 title: 'Stock Move',
                                 description: '',

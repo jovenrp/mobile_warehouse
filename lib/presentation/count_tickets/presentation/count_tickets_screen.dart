@@ -134,7 +134,8 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                     0: FixedColumnWidth(38),
                                     1: FixedColumnWidth(70),
                                     2: FlexColumnWidth(),
-                                    3: FixedColumnWidth(70),
+                                    3: FlexColumnWidth(),
+                                    4: FixedColumnWidth(70),
                                   },
                                   children: <TableRow>[
                                     TableRow(children: <Widget>[
@@ -210,6 +211,33 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                             child: ATText(
                                               fontColor: AppColors.greyHeader,
                                               text: 'Name'.toUpperCase(),
+                                              weight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Ink(
+                                        child: InkWell(
+                                          onTap: () {
+                                            /*context
+                                                    .read<PickTicketsBloc>()
+                                                    .sortPickTicket(
+                                                    pickTicket: state
+                                                        .pickTicketsItemModel,
+                                                    column: 'destination',
+                                                    sortBy:
+                                                    isDestinationSort);
+                                                setState(() {
+                                                  isDestinationSort =
+                                                  !isDestinationSort;
+                                                });*/
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.only(
+                                                top: 20, bottom: 5),
+                                            child: ATText(
+                                              fontColor: AppColors.greyHeader,
+                                              text: 'Type'.toUpperCase(),
                                               weight: FontWeight.bold,
                                             ),
                                           ),
@@ -324,7 +352,8 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                             0: FixedColumnWidth(40),
                                             1: FixedColumnWidth(70),
                                             2: FlexColumnWidth(),
-                                            3: FixedColumnWidth(70),
+                                            3: FlexColumnWidth(),
+                                            4: FixedColumnWidth(70),
                                           },
                                           children: <TableRow>[
                                             TableRow(
@@ -365,25 +394,35 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                   Container(
                                                     child: ATText(
                                                       text: state
-                                                              .countTickets?[
-                                                                  index]
-                                                              .comments ??
+                                                          .countTickets?[
+                                                      index]
+                                                          .comments ??
+                                                          '',
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: ATText(
+                                                      text: state
+                                                          .countTickets?[
+                                                      index]
+                                                          .type ??
                                                           '',
                                                       fontSize: 15,
                                                     ),
                                                   ),
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.only(
-                                                            right: 18),
+                                                    const EdgeInsets.only(
+                                                        right: 18),
                                                     child: Container(
                                                       alignment:
-                                                          Alignment.centerRight,
+                                                      Alignment.centerRight,
                                                       child: ATText(
                                                         text: state
-                                                                .countTickets?[
-                                                                    index]
-                                                                .num ??
+                                                            .countTickets?[
+                                                        index]
+                                                            .num ??
                                                             '',
                                                         fontSize: 15,
                                                       ),
@@ -415,6 +454,7 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                           ),
                                                         )
                                                       : SizedBox(),
+                                                  SizedBox(),
                                                   SizedBox(),
                                                 ]),
                                           ],
