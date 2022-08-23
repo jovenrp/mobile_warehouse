@@ -8,6 +8,7 @@ class ItemStockModel {
     this.id,
     this.itemId,
     this.itemName,
+    this.sku,
     this.itemNum,
     this.stockType,
     this.qty,
@@ -34,6 +35,9 @@ class ItemStockModel {
 
   @JsonKey(name: 'itemName')
   final String? itemName;
+
+  @JsonKey(name: 'sku')
+  final String? sku;
 
   @JsonKey(name: 'stockType')
   final String? stockType;

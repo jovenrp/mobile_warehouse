@@ -32,8 +32,11 @@ class StockAdjustScreen extends StatefulWidget {
 class _StockAdjustScreen extends State<StockAdjustScreen> {
   final TextEditingController searchController = TextEditingController();
   final FocusNode searchNode = FocusNode();
+  final TextEditingController locationController = TextEditingController();
+  final FocusNode locationNode = FocusNode();
   bool isInit = false;
 
+  TextEditingController quantityControllers = TextEditingController();
   List<TextEditingController> qtyControllers = <TextEditingController>[];
   List<TextEditingController> adjustControllers = <TextEditingController>[];
 
@@ -74,6 +77,17 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 18, right: 18),
+                      child: ATSearchfield(
+                        textEditingController: locationController,
+                        focusNode: locationNode,
+                        isScanner: true,
+                        hintText: '${I18n.of(context).search} Location/Code',
+                        onFieldSubmitted: (String? value) {},
+                      ),
+                    ),
+                    SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 18, right: 18),
                       child: ATSearchfield(
@@ -122,8 +136,8 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                             .middle,
                                                     columnWidths: const <int,
                                                         TableColumnWidth>{
-                                                      0: FlexColumnWidth(100),
-                                                      1: FlexColumnWidth(100),
+                                                      0: FlexColumnWidth(2),
+                                                      1: FlexColumnWidth(1),
                                                     },
                                                     children: <TableRow>[
                                                       TableRow(children: <
@@ -140,13 +154,14 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                           child: ATText(
                                                             fontColor:
                                                                 AppColors.white,
-                                                            text:
-                                                                'LOCATION CODE',
+                                                            text: 'ITEM',
                                                             weight:
                                                                 FontWeight.bold,
                                                           ),
                                                         ),
                                                         Container(
+                                                          alignment: Alignment
+                                                              .centerRight,
                                                           color: AppColors
                                                               .greyHeader,
                                                           padding:
@@ -159,7 +174,7 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                           child: ATText(
                                                             fontColor:
                                                                 AppColors.white,
-                                                            text: 'UOM',
+                                                            text: 'ON-HAND',
                                                             weight:
                                                                 FontWeight.bold,
                                                           ),
@@ -199,20 +214,14 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                         columnWidths: const <
                                                             int,
                                                             TableColumnWidth>{
-                                                          0: FlexColumnWidth(
-                                                              100),
-                                                          1: FlexColumnWidth(
-                                                              100),
+                                                          0: FlexColumnWidth(2),
+                                                          1: FlexColumnWidth(1),
                                                         },
                                                         children: <TableRow>[
                                                           TableRow(
                                                               decoration: BoxDecoration(
-                                                                  color: index
-                                                                          .isEven
-                                                                      ? AppColors
-                                                                          .beachSeaTint40
-                                                                      : AppColors
-                                                                          .beachSeaTint20),
+                                                                  color: AppColors
+                                                                      .beachSeaTint20),
                                                               children: <
                                                                   Widget>[
                                                                 Container(
@@ -225,21 +234,18 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                                     text: state
                                                                         .itemStock?[
                                                                             index]
-                                                                        .containerCode,
+                                                                        .sku,
                                                                     fontSize:
-                                                                        18,
+                                                                        16,
                                                                     fontColor:
                                                                         AppColors
                                                                             .white,
-                                                                    weight:
-                                                                        FontWeight
-                                                                            .bold,
                                                                   ),
                                                                 ),
                                                                 Container(
                                                                   alignment:
                                                                       Alignment
-                                                                          .centerLeft,
+                                                                          .centerRight,
                                                                   padding: const EdgeInsets
                                                                           .only(
                                                                       left: 10,
@@ -251,9 +257,9 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                                       text: state
                                                                           .itemStock?[
                                                                               index]
-                                                                          .uom,
+                                                                          .qty,
                                                                       fontSize:
-                                                                          14,
+                                                                          16,
                                                                       fontColor:
                                                                           AppColors
                                                                               .white),
@@ -261,12 +267,8 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                               ]),
                                                           TableRow(
                                                               decoration: BoxDecoration(
-                                                                  color: index
-                                                                          .isEven
-                                                                      ? AppColors
-                                                                          .beachSeaTint40
-                                                                      : AppColors
-                                                                          .beachSeaTint20),
+                                                                  color: AppColors
+                                                                      .beachSeaTint20),
                                                               children: <
                                                                   Widget>[
                                                                 Container(
@@ -276,116 +278,154 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                                       bottom: 6,
                                                                       top: 6),
                                                                   child: ATText(
-                                                                      text:
-                                                                          'Quantity',
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontColor:
-                                                                          AppColors
-                                                                              .white),
-                                                                ),
-                                                                Container(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      left: 10,
-                                                                      bottom: 6,
-                                                                      top: 6,
-                                                                      right:
-                                                                          10),
-                                                                  child: Row(
-                                                                    children: <
-                                                                        Widget>[
-                                                                      ATText(
-                                                                          text:
-                                                                              'Adjust',
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontColor:
-                                                                              AppColors.white),
-                                                                      ATText(
-                                                                          text:
-                                                                              ' (minus to subtract)',
-                                                                          fontSize:
-                                                                              12,
-                                                                          style: TextStyle(
-                                                                              fontStyle: FontStyle.italic,
-                                                                              color: AppColors.white)),
-                                                                    ],
+                                                                    text: state
+                                                                        .itemStock?[
+                                                                            index]
+                                                                        .itemName,
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontColor:
+                                                                        AppColors
+                                                                            .white,
                                                                   ),
                                                                 ),
+                                                                SizedBox(),
                                                               ]),
-                                                          TableRow(
-                                                              decoration: BoxDecoration(
-                                                                  color: index
-                                                                          .isEven
-                                                                      ? AppColors
-                                                                          .beachSeaTint40
-                                                                      : AppColors
-                                                                          .beachSeaTint20),
-                                                              children: <
-                                                                  Widget>[
-                                                                Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10,
-                                                                        right:
-                                                                            10,
-                                                                        bottom:
-                                                                            10),
-                                                                    child:
-                                                                        ATTextfield(
-                                                                      hintText:
-                                                                          '0',
-                                                                      textEditingController:
-                                                                          qtyControllers[
-                                                                              index],
-                                                                      onFieldSubmitted:
-                                                                          (String?
-                                                                              value) {
-                                                                        context
-                                                                            .read<
-                                                                                StockAdjustBloc>()
-                                                                            .stockAdjust(
-                                                                                absolute: true,
-                                                                                stockId: state.itemStock?[index].id,
-                                                                                qty: value)
-                                                                            .then((List<StockAdjustModel>? stockModel) {
-                                                                          setState(
-                                                                              () {
-                                                                            qtyControllers[index].text =
-                                                                                stockModel?.first.qty ?? '0';
-                                                                          });
-                                                                        });
-                                                                      },
-                                                                    )),
-                                                                Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10,
-                                                                        right:
-                                                                            10,
-                                                                        bottom:
-                                                                            10),
-                                                                    child: ATTextfield(
-                                                                        hintText: '0',
-                                                                        textEditingController: adjustControllers[index],
-                                                                        onFieldSubmitted: (String? value) {
-                                                                          context
-                                                                              .read<StockAdjustBloc>()
-                                                                              .stockAdjust(absolute: false, stockId: state.itemStock?[index].id, qty: value)
-                                                                              .then((List<StockAdjustModel>? stockModel) {
-                                                                            setState(() {
-                                                                              qtyControllers[index].text = stockModel?.first.qty ?? '0';
-                                                                              adjustControllers[index].text = '';
-                                                                            });
-                                                                          });
-                                                                        })),
-                                                              ])
+                                                          /*TableRow(
+                                                      decoration:
+                                                          BoxDecoration(color: index.isEven ? AppColors.beachSeaTint40 : AppColors.beachSeaTint20),
+                                                      children: <Widget>[
+                                                        Container(
+                                                          padding: const EdgeInsets.only(left: 10, bottom: 6, top: 6),
+                                                          child: ATText(text: 'Quantity', fontSize: 14, fontColor: AppColors.white),
+                                                        ),
+                                                        Container(
+                                                          padding: const EdgeInsets.only(left: 10, bottom: 6, top: 6, right: 10),
+                                                          child: Row(
+                                                            children: <Widget>[
+                                                              ATText(text: 'Adjust', fontSize: 14, fontColor: AppColors.white),
+                                                              ATText(
+                                                                  text: ' (minus to subtract)',
+                                                                  fontSize: 12,
+                                                                  style: TextStyle(fontStyle: FontStyle.italic, color: AppColors.white)),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                  TableRow(
+                                                      decoration:
+                                                          BoxDecoration(color: index.isEven ? AppColors.beachSeaTint40 : AppColors.beachSeaTint20),
+                                                      children: <Widget>[
+                                                        Padding(
+                                                            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                                                            child: ATTextfield(
+                                                              hintText: '0',
+                                                              textEditingController: qtyControllers[index],
+                                                              onFieldSubmitted: (String? value) {
+                                                                context
+                                                                    .read<StockAdjustBloc>()
+                                                                    .stockAdjust(absolute: true, stockId: state.itemStock?[index].id, qty: value)
+                                                                    .then((List<StockAdjustModel>? stockModel) {
+                                                                  setState(() {
+                                                                    qtyControllers[index].text = stockModel?.first.qty ?? '0';
+                                                                  });
+                                                                });
+                                                              },
+                                                            )),
+                                                        Padding(
+                                                            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                                                            child: ATTextfield(
+                                                                hintText: '0',
+                                                                textEditingController: adjustControllers[index],
+                                                                onFieldSubmitted: (String? value) {
+                                                                  context
+                                                                      .read<StockAdjustBloc>()
+                                                                      .stockAdjust(absolute: false, stockId: state.itemStock?[index].id, qty: value)
+                                                                      .then((List<StockAdjustModel>? stockModel) {
+                                                                    setState(() {
+                                                                      qtyControllers[index].text = stockModel?.first.qty ?? '0';
+                                                                      adjustControllers[index].text = '';
+                                                                    });
+                                                                  });
+                                                                })),
+                                                      ])*/
                                                         ]);
                                                   }),
                                             ),
+                                            Visibility(
+                                                visible: state.itemStock
+                                                        ?.isNotEmpty ==
+                                                    true,
+                                                child: Table(
+                                                    defaultVerticalAlignment:
+                                                        TableCellVerticalAlignment
+                                                            .middle,
+                                                    columnWidths: const <int,
+                                                        TableColumnWidth>{
+                                                      0: FlexColumnWidth(2),
+                                                      1: FlexColumnWidth(1),
+                                                    },
+                                                    children: <TableRow>[
+                                                      TableRow(children: <
+                                                          Widget>[
+                                                        Container(
+                                                          color: AppColors
+                                                              .greyHeader,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 10,
+                                                                  top: 6,
+                                                                  bottom: 6),
+                                                          child: ATText(
+                                                            fontColor:
+                                                                AppColors.white,
+                                                            text: 'ADJUST',
+                                                            weight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          color: AppColors
+                                                              .greyHeader,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 10,
+                                                                  top: 6,
+                                                                  bottom: 6,
+                                                                  right: 10),
+                                                          child: SizedBox(
+                                                              height: 16),
+                                                        ),
+                                                      ])
+                                                    ])),
+                                            Center(
+                                              child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.4,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 10, top: 20),
+                                                  child: ATTextfield(
+                                                      hintText: '0',
+                                                      textEditingController:
+                                                          quantityControllers,
+                                                      onFieldSubmitted:
+                                                          (String? value) {
+                                                        /*context
+                                            .read<StockAdjustBloc>()
+                                            .stockAdjust(absolute: false, stockId: state.itemStock?[index].id, qty: value)
+                                            .then((List<StockAdjustModel>? stockModel) {
+                                          setState(() {
+                                            qtyControllers[index].text = stockModel?.first.qty ?? '0';
+                                            adjustControllers[index].text = '';
+                                          });
+                                        });*/
+                                                      })),
+                                            )
                                           ])
                                     : Container(
                                         color: AppColors.white,

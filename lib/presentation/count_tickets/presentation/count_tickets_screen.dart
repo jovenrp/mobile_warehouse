@@ -394,9 +394,9 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                   Container(
                                                     child: ATText(
                                                       text: state
-                                                          .countTickets?[
-                                                      index]
-                                                          .comments ??
+                                                              .countTickets?[
+                                                                  index]
+                                                              .comments ??
                                                           '',
                                                       fontSize: 15,
                                                     ),
@@ -404,25 +404,25 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                   Container(
                                                     child: ATText(
                                                       text: state
-                                                          .countTickets?[
-                                                      index]
-                                                          .type ??
+                                                              .countTickets?[
+                                                                  index]
+                                                              .type ??
                                                           '',
                                                       fontSize: 15,
                                                     ),
                                                   ),
                                                   Padding(
                                                     padding:
-                                                    const EdgeInsets.only(
-                                                        right: 18),
+                                                        const EdgeInsets.only(
+                                                            right: 18),
                                                     child: Container(
                                                       alignment:
-                                                      Alignment.centerRight,
+                                                          Alignment.centerRight,
                                                       child: ATText(
                                                         text: state
-                                                            .countTickets?[
-                                                        index]
-                                                            .num ??
+                                                                .countTickets?[
+                                                                    index]
+                                                                .num ??
                                                             '',
                                                         fontSize: 15,
                                                       ),
@@ -449,7 +449,7 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                                   bottom: 15),
                                                           child: ATText(
                                                             text:
-                                                                'processing by ${state.countTickets?[index].fullName}',
+                                                                'counting line ${state.countTickets?[index].num}',
                                                             fontSize: 13,
                                                           ),
                                                         )
