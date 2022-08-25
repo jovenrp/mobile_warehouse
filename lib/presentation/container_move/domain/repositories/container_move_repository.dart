@@ -1,4 +1,9 @@
+import 'package:mobile_warehouse/core/domain/models/container_model.dart';
+
 abstract class ContainerMoveRepository {
-  Future<String> containerMove(
-      {String? token, String? stockId, String? stockLocId});
+  Future<String> moveContainer(
+      {String? token, String? containerId, String? destContainerId});
+
+  Future<List<ContainerModel>?> searchContainer(
+      {String? token, String? containerNum});
 }

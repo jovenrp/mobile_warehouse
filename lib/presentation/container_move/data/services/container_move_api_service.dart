@@ -9,10 +9,13 @@ abstract class ContainerMoveApiService {
       _ContainerMoveApiService;
 
   @POST(
-      '/mobile(containerMoveApiService)?useHdrs=true&sessId={token}&stockId={stockId}&qty={qty}&absolute={absolute}')
-  Future<dynamic> containerMoveApiService(@Path('token') String? token,
+      '/mobile(moveContainer)?useHdrs=true&sessId={token}&containerId={containerId}&destContainerId={destContainerId}')
+  Future<dynamic> moveContainer(@Path('token') String? token,
       {@Path('headers') String? headers,
-      @Path('stockId') String? stockId,
-      @Path('qty') String? qty,
-      @Path('absolute') bool? absolute});
+      @Path('containerId') String? containerId,
+      @Path('destContainerId') String? destContainerId});
+
+  @POST('/mobile(getContainers)?useHdrs=true&sessId={token}')
+  Future<dynamic> getContainers(@Path('token') String? token,
+      {@Path('headers') String? headers});
 }
