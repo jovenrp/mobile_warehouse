@@ -46,6 +46,9 @@ import 'package:mobile_warehouse/presentation/splash/bloc/splashscreen_bloc.dart
 import 'package:mobile_warehouse/presentation/stock_adjust/bloc/stock_adjust_bloc.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/data/services/stock_adjust_api_service.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/domain/repositories/stock_adjust_repository_impl.dart';
+import 'package:mobile_warehouse/presentation/stock_move/bloc/stock_move_bloc.dart';
+import 'package:mobile_warehouse/presentation/stock_move/data/services/stock_move_api_service.dart';
+import 'package:mobile_warehouse/presentation/stock_move/domain/repositories/stock_move_repository_impl.dart';
 import 'package:provider/single_child_widget.dart';
 
 class BlocsProvider {
@@ -162,6 +165,12 @@ class BlocsProvider {
               receiveTicketDetailsRepository:
                   ReceiveTicketDetailsRepositoryImpl(
                       ReceiveTicketDetailsApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<StockMoveBloc>(
+          create: (_) => StockMoveBloc(
+              stockMoveRepository: StockMoveRepositoryImpl(
+                  StockMoveApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
       ];

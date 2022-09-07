@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_adjust_model.dart';
+import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_item_model.dart';
 
 part 'stock_adjust_response.g.dart';
 
@@ -9,6 +10,7 @@ class StockAdjustResponse {
     this.error,
     this.message,
     this.stockAdjust,
+    this.stockItems,
   });
 
   factory StockAdjustResponse.fromJson(Map<String, dynamic> json) =>
@@ -23,4 +25,7 @@ class StockAdjustResponse {
 
   @JsonKey(name: 'stockAdjust')
   final List<StockAdjustModel>? stockAdjust;
+
+  @JsonKey(name: 'stock')
+  final List<StockItemModel>? stockItems;
 }

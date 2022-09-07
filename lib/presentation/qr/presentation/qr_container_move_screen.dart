@@ -153,12 +153,9 @@ class _QRContainerMoveScreen extends State<QRContainerMoveScreen> {
       this.controller = controller;
     });
 
-    print('HERESS ${result?.code} ${result}');
-
     controller.scannedDataStream.listen((Barcode scanData) {
       if (result == null) {
         result = scanData;
-        print('WHAATDA');
         context
             .read<ContainerMoveBloc>()
             .searchContainer(

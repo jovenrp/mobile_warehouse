@@ -8,11 +8,11 @@ abstract class StockAdjustApiService {
   factory StockAdjustApiService(Dio dio, {String baseUrl}) =
       _StockAdjustApiService;
 
-  @POST(
-      '/mobile(stockAdjust)?useHdrs=true&sessId={token}&stockId={stockId}&qty={qty}&absolute={absolute}')
+  @POST('/mobile(stockLookUp)?useHdrs=true&sessId={token}&data={data}')
+  Future<dynamic> stockLookup(@Path('token') String? token,
+      {@Path('headers') String? headers, @Path('data') String? data});
+
+  @POST('/mobile(stockAdjustBySku)?useHdrs=true&sessId={token}&data={data}')
   Future<dynamic> stockAdjust(@Path('token') String? token,
-      {@Path('headers') String? headers,
-      @Path('stockId') String? stockId,
-      @Path('qty') String? qty,
-      @Path('absolute') bool? absolute});
+      {@Path('headers') String? headers, @Path('data') String? data});
 }

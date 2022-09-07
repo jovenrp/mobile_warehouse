@@ -6,6 +6,7 @@ import 'package:mobile_warehouse/presentation/container_move/presentation/contai
 import 'package:mobile_warehouse/presentation/dashboard/presentation/action_cards_widget.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/presentation/stock_adjust_screen.dart';
+import 'package:mobile_warehouse/presentation/stock_move/presentation/stock_move_screen.dart';
 
 class StockActionsScreen extends StatefulWidget {
   const StockActionsScreen({Key? key}) : super(key: key);
@@ -77,16 +78,17 @@ class _StockActionsScreen extends State<StockActionsScreen> {
                               onTap: () => Navigator.of(context)
                                   .push(ContainerMoveScreen.route()),
                               child: ActionCardsWidget(
-                                title: 'Stock Move',
+                                title: 'Container Move',
                                 description: '',
                                 icon: Icon(Icons.edit_location_outlined,
                                     color: AppColors.white, size: 70),
                               ),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () => Navigator.of(context)
+                                  .push(StockMoveScreen.route()),
                               child: ActionCardsWidget(
-                                title: 'Stock Yield',
+                                title: 'Stock Move',
                                 description:
                                     I18n.of(context).stock_count_description,
                                 icon: Icon(Icons.warning_amber_rounded,

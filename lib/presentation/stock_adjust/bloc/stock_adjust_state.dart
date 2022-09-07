@@ -5,6 +5,7 @@ import 'package:mobile_warehouse/presentation/item_lookup/data/models/item_looku
 import 'package:mobile_warehouse/presentation/item_lookup/data/models/item_stock_model.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_adjust_model.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_adjust_response.dart';
+import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_item_model.dart';
 
 part 'stock_adjust_state.freezed.dart';
 
@@ -20,8 +21,7 @@ class StockAdjustState with _$StockAdjustState {
       ItemLookupResponse? response,
       StockAdjustResponse? stockAdjustResponse,
       List<StockAdjustModel>? stockModel,
-      List<ItemAliasModel>? itemAlias,
-      List<ItemStockModel>? itemStock,
+      List<StockItemModel>? stockItems,
       @Default(false) bool didFinish,
       String? token}) = _StockAdjustState;
 }

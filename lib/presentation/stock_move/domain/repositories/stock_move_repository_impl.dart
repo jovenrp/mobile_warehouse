@@ -3,22 +3,26 @@ import 'dart:convert';
 import 'package:mobile_warehouse/application/application.dart';
 import 'package:mobile_warehouse/core/domain/models/container_model.dart';
 import 'package:mobile_warehouse/core/domain/models/container_response.dart';
-import 'package:mobile_warehouse/presentation/container_move/data/services/container_move_api_service.dart';
-import 'container_move_repository.dart';
+import 'package:mobile_warehouse/presentation/stock_move/data/services/stock_move_api_service.dart';
+import 'package:mobile_warehouse/presentation/stock_move/domain/repositories/stock_move_repository.dart';
 
-class ContainerMoveRepositoryImpl implements ContainerMoveRepository {
-  ContainerMoveRepositoryImpl(this._apiService);
+class StockMoveRepositoryImpl implements StockMoveRepository {
+  StockMoveRepositoryImpl(this._apiService);
 
-  final ContainerMoveApiService _apiService;
+  final StockMoveApiService _apiService;
 
   @override
-  Future<String> moveContainer(
-      {String? token, String? containerId, String? destContainerId}) async {
+  Future<String> stockMove(
+      {String? token,
+      String? sourceStockId,
+      String? destContainerId,
+      String? qty}) async {
     try {
-      final String result = await _apiService.moveContainer(
+      final String result = await _apiService.stockYield(
         token,
-        containerId: containerId,
+        sourceStockId: sourceStockId,
         destContainerId: destContainerId,
+        qty: qty,
       );
 
       /*final StockAdjustResponse response =

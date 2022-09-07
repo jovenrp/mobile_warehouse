@@ -58,7 +58,7 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                 Navigator.of(context).pop();
               },
               actions: <Widget>[
-                state.isLoading || state.isStockLoading
+                state.isLoading || state.isStockLoading || state.isAdjustLoading
                     ? Container(
                         padding: const EdgeInsets.only(
                             top: 20, bottom: 20, right: 18),
@@ -84,7 +84,19 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                         focusNode: locationNode,
                         isScanner: true,
                         hintText: '${I18n.of(context).search} Location/Code',
-                        onFieldSubmitted: (String? value) {},
+                        onFieldSubmitted: (String? value) {
+                          if (searchController.text.trim().isEmpty == true) {
+                            searchNode.requestFocus();
+                          } else if (locationController.text
+                                      .trim()
+                                      .isNotEmpty ==
+                                  true &&
+                              searchController.text.trim().isNotEmpty == true) {
+                            context.read<StockAdjustBloc>().stockLookUp(
+                                sku: searchController.text,
+                                locNum: locationController.text);
+                          }
+                        },
                       ),
                     ),
                     SizedBox(height: 10),
@@ -96,19 +108,23 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                         isScanner: true,
                         hintText: '${I18n.of(context).search} SKU',
                         onFieldSubmitted: (String? value) {
-                          context
-                              .read<StockAdjustBloc>()
-                              .lookupItemAlias(item: searchController.text)
-                              .then((List<ItemAliasModel>? itemAlias) {
-                            //context.read<ItemLookupBloc>().lookupBarcodeStock(item: '4611');
-                            context
-                                .read<StockAdjustBloc>()
-                                .lookupBarcodeStock(
-                                    item: itemAlias?.first.itemId)
-                                .then((_) => isInit = false);
-                            qtyControllers = <TextEditingController>[];
-                            adjustControllers = <TextEditingController>[];
-                          });
+                          if (locationController.text.trim().isEmpty == true) {
+                            locationNode.requestFocus();
+                          } else if (locationController.text
+                                      .trim()
+                                      .isNotEmpty ==
+                                  true &&
+                              searchController.text.trim().isNotEmpty == true) {
+                            context.read<StockAdjustBloc>().stockLookUp(
+                                sku: searchController.text,
+                                locNum: locationController.text);
+                          }
+                          /*context.read<StockAdjustBloc>().lookupItemAlias(item: searchController.text).then((List<ItemAliasModel>? itemAlias) {
+                        //context.read<ItemLookupBloc>().lookupBarcodeStock(item: '4611');
+                        context.read<StockAdjustBloc>().lookupBarcodeStock(item: itemAlias?.first.itemId).then((_) => isInit = false);
+                        qtyControllers = <TextEditingController>[];
+                        adjustControllers = <TextEditingController>[];
+                      });*/
                         },
                       ),
                     ),
@@ -119,7 +135,7 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                 color: AppColors.white,
                                 padding: const EdgeInsets.only(
                                     left: 0, right: 0, top: 0, bottom: 10),
-                                child: state.itemStock?.isNotEmpty == true
+                                child: state.stockItems?.isNotEmpty == true
                                     ? Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -127,7 +143,7 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                             MainAxisAlignment.start,
                                         children: <Widget>[
                                             Visibility(
-                                                visible: state.itemStock
+                                                visible: state.stockItems
                                                         ?.isNotEmpty ==
                                                     true,
                                                 child: Table(
@@ -184,7 +200,7 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                             Flexible(
                                               child: ListView.builder(
                                                   itemCount: (state
-                                                          .itemStock?.length ??
+                                                          .stockItems?.length ??
                                                       0),
                                                   shrinkWrap: true,
                                                   itemBuilder:
@@ -197,11 +213,12 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                     if (!isInit) {
                                                       qtyControllers[index]
                                                           .text = state
-                                                              .itemStock?[index]
+                                                              .stockItems?[
+                                                                  index]
                                                               .qty ??
                                                           '0';
                                                       if (index ==
-                                                          state.itemStock!
+                                                          state.stockItems!
                                                                   .length -
                                                               1) {
                                                         isInit = true;
@@ -232,7 +249,7 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                                       top: 6),
                                                                   child: ATText(
                                                                     text: state
-                                                                        .itemStock?[
+                                                                        .stockItems?[
                                                                             index]
                                                                         .sku,
                                                                     fontSize:
@@ -254,10 +271,8 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                                       right:
                                                                           10),
                                                                   child: ATText(
-                                                                      text: state
-                                                                          .itemStock?[
-                                                                              index]
-                                                                          .qty,
+                                                                      text:
+                                                                          '${state.stockItems?[index].qty} ${state.stockItems?[index].uom}',
                                                                       fontSize:
                                                                           16,
                                                                       fontColor:
@@ -279,9 +294,9 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                                       top: 6),
                                                                   child: ATText(
                                                                     text: state
-                                                                        .itemStock?[
+                                                                        .stockItems?[
                                                                             index]
-                                                                        .itemName,
+                                                                        .name,
                                                                     fontSize:
                                                                         16,
                                                                     fontColor:
@@ -291,69 +306,11 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                                 ),
                                                                 SizedBox(),
                                                               ]),
-                                                          /*TableRow(
-                                                      decoration:
-                                                          BoxDecoration(color: index.isEven ? AppColors.beachSeaTint40 : AppColors.beachSeaTint20),
-                                                      children: <Widget>[
-                                                        Container(
-                                                          padding: const EdgeInsets.only(left: 10, bottom: 6, top: 6),
-                                                          child: ATText(text: 'Quantity', fontSize: 14, fontColor: AppColors.white),
-                                                        ),
-                                                        Container(
-                                                          padding: const EdgeInsets.only(left: 10, bottom: 6, top: 6, right: 10),
-                                                          child: Row(
-                                                            children: <Widget>[
-                                                              ATText(text: 'Adjust', fontSize: 14, fontColor: AppColors.white),
-                                                              ATText(
-                                                                  text: ' (minus to subtract)',
-                                                                  fontSize: 12,
-                                                                  style: TextStyle(fontStyle: FontStyle.italic, color: AppColors.white)),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ]),
-                                                  TableRow(
-                                                      decoration:
-                                                          BoxDecoration(color: index.isEven ? AppColors.beachSeaTint40 : AppColors.beachSeaTint20),
-                                                      children: <Widget>[
-                                                        Padding(
-                                                            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                                                            child: ATTextfield(
-                                                              hintText: '0',
-                                                              textEditingController: qtyControllers[index],
-                                                              onFieldSubmitted: (String? value) {
-                                                                context
-                                                                    .read<StockAdjustBloc>()
-                                                                    .stockAdjust(absolute: true, stockId: state.itemStock?[index].id, qty: value)
-                                                                    .then((List<StockAdjustModel>? stockModel) {
-                                                                  setState(() {
-                                                                    qtyControllers[index].text = stockModel?.first.qty ?? '0';
-                                                                  });
-                                                                });
-                                                              },
-                                                            )),
-                                                        Padding(
-                                                            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                                                            child: ATTextfield(
-                                                                hintText: '0',
-                                                                textEditingController: adjustControllers[index],
-                                                                onFieldSubmitted: (String? value) {
-                                                                  context
-                                                                      .read<StockAdjustBloc>()
-                                                                      .stockAdjust(absolute: false, stockId: state.itemStock?[index].id, qty: value)
-                                                                      .then((List<StockAdjustModel>? stockModel) {
-                                                                    setState(() {
-                                                                      qtyControllers[index].text = stockModel?.first.qty ?? '0';
-                                                                      adjustControllers[index].text = '';
-                                                                    });
-                                                                  });
-                                                                })),
-                                                      ])*/
                                                         ]);
                                                   }),
                                             ),
                                             Visibility(
-                                                visible: state.itemStock
+                                                visible: state.stockItems
                                                         ?.isNotEmpty ==
                                                     true,
                                                 child: Table(
@@ -415,15 +372,28 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                           quantityControllers,
                                                       onFieldSubmitted:
                                                           (String? value) {
-                                                        /*context
-                                            .read<StockAdjustBloc>()
-                                            .stockAdjust(absolute: false, stockId: state.itemStock?[index].id, qty: value)
-                                            .then((List<StockAdjustModel>? stockModel) {
-                                          setState(() {
-                                            qtyControllers[index].text = stockModel?.first.qty ?? '0';
-                                            adjustControllers[index].text = '';
-                                          });
-                                        });*/
+                                                        context
+                                                            .read<
+                                                                StockAdjustBloc>()
+                                                            .stockAdjust(
+                                                                absolute: false,
+                                                                containerId: state
+                                                                    .stockItems
+                                                                    ?.first
+                                                                    .containerId,
+                                                                sku: state
+                                                                    .stockItems
+                                                                    ?.first
+                                                                    .sku,
+                                                                qty: value)
+                                                            .then((List<
+                                                                    StockAdjustModel>?
+                                                                stockModel) {
+                                                          /*setState(() {
+                                                    qtyControllers[index].text = stockModel?.first.qty ?? '0';
+                                                    adjustControllers[index].text = '';
+                                                  });*/
+                                                        });
                                                       })),
                                             )
                                           ])
