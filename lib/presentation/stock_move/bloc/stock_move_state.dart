@@ -9,6 +9,7 @@ class StockMoveState with _$StockMoveState {
   factory StockMoveState(
       {@Default(false) bool isLoading,
       @Default(false) bool isLoadingDestination,
+      @Default(false) bool isMovingSuccess,
       @Default(false) bool hasError,
       ActionTRAKApiErrorCode? errorCode,
       String? errorMessage,

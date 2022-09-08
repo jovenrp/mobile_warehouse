@@ -62,12 +62,11 @@ class StockMoveBloc extends Cubit<StockMoveState> {
           token: token,
           sourceStockId: containerIdFrom,
           destContainerId: containerIdTo,
+          sku: sku,
           qty: qty);
 
       emit(state.copyWith(
-        isLoading: false,
-        hasError: false,
-      ));
+          isLoading: false, hasError: false, isMovingSuccess: true));
     } catch (_) {
       emit(state.copyWith(isLoading: false, hasError: true));
       print(_);

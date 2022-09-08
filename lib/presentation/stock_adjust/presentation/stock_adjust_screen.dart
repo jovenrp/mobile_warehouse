@@ -41,6 +41,12 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
   List<TextEditingController> adjustControllers = <TextEditingController>[];
 
   @override
+  void initState() {
+    super.initState();
+    context.read<StockAdjustBloc>().init();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<StockAdjustBloc, StockAdjustState>(
         listener: (BuildContext context, StockAdjustState state) {},
@@ -119,12 +125,6 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                 sku: searchController.text,
                                 locNum: locationController.text);
                           }
-                          /*context.read<StockAdjustBloc>().lookupItemAlias(item: searchController.text).then((List<ItemAliasModel>? itemAlias) {
-                        //context.read<ItemLookupBloc>().lookupBarcodeStock(item: '4611');
-                        context.read<StockAdjustBloc>().lookupBarcodeStock(item: itemAlias?.first.itemId).then((_) => isInit = false);
-                        qtyControllers = <TextEditingController>[];
-                        adjustControllers = <TextEditingController>[];
-                      });*/
                         },
                       ),
                     ),
@@ -389,10 +389,18 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
                                                             .then((List<
                                                                     StockAdjustModel>?
                                                                 stockModel) {
-                                                          /*setState(() {
-                                                    qtyControllers[index].text = stockModel?.first.qty ?? '0';
-                                                    adjustControllers[index].text = '';
-                                                  });*/
+                                                          quantityControllers
+                                                              .clear();
+                                                          context
+                                                              .read<
+                                                                  StockAdjustBloc>()
+                                                              .stockLookUp(
+                                                                  sku:
+                                                                      searchController
+                                                                          .text,
+                                                                  locNum:
+                                                                      locationController
+                                                                          .text);
                                                         });
                                                       })),
                                             )

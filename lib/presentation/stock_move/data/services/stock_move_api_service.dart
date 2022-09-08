@@ -15,6 +15,10 @@ abstract class StockMoveApiService {
       @Path('destContainerId') String? destContainerId,
       @Path('qty') String? qty});
 
+  @POST('/mobile(stockYield)?useHdrs=true&sessId={token}&data={data}')
+  Future<dynamic> stockYieldBySku(@Path('token') String? token,
+      {@Path('headers') String? headers, @Path('data') String? data});
+
   @POST('/mobile(getContainers)?useHdrs=true&sessId={token}')
   Future<dynamic> getContainers(@Path('token') String? token,
       {@Path('headers') String? headers});

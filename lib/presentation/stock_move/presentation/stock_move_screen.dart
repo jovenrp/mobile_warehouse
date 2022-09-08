@@ -77,9 +77,10 @@ class _StockMoveScreen extends State<StockMoveScreen> {
                       }),
                   body: Container(
                     color: AppColors.white,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+                    child: SingleChildScrollView(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
                           Visibility(
                             visible: isFromEmpty,
                             child: Container(
@@ -160,13 +161,7 @@ class _StockMoveScreen extends State<StockMoveScreen> {
                                 isScanner: true,
                                 onFieldSubmitted: (String? value) {
                                   setState(() {
-                                    if (skuController.text.trim().isNotEmpty ==
-                                        true) {
-                                      qtyNode.requestFocus();
-                                      isSkuEmpty = false;
-                                    } else {
-                                      isSkuEmpty = true;
-                                    }
+                                    qtyNode.requestFocus();
                                   });
                                 }),
                           ),
@@ -246,41 +241,43 @@ class _StockMoveScreen extends State<StockMoveScreen> {
                                             .isNotEmpty ==
                                         true) {
                                       isFromEmpty = false;
-                                      if (skuController.text
+                                      if (qtyController.text
                                               .trim()
                                               .isNotEmpty ==
                                           true) {
-                                        isSkuEmpty = false;
-                                        if (qtyController.text
+                                        isQtyEmpty = false;
+                                        if (containerToController.text
                                                 .trim()
                                                 .isNotEmpty ==
                                             true) {
-                                          isQtyEmpty = false;
-                                          if (containerToController.text
-                                                  .trim()
-                                                  .isNotEmpty ==
-                                              true) {
-                                            isToEmpty = false;
-                                            //execute logic here
+                                          isToEmpty = false;
+                                          //execute logic here
+                                          context
+                                              .read<StockMoveBloc>()
+                                              .searchContainer(
+                                                  containerNum:
+                                                      containerToController.text
+                                                          .trim(),
+                                                  isDestination: true)
+                                              .then((List<ContainerModel>
+                                                  containerTo) {
                                             context
                                                 .read<StockMoveBloc>()
-                                                .searchContainer(
-                                                    containerNum:
-                                                        containerToController
-                                                            .text
-                                                            .trim(),
-                                                    isDestination: true);
-                                          } else {
-                                            isToEmpty = true;
-                                            containerToNode.requestFocus();
-                                          }
+                                                .stockMove(
+                                                    containerIdFrom: state
+                                                        .containers?.first.id,
+                                                    sku: skuController.text,
+                                                    containerIdTo:
+                                                        containerTo.first.id,
+                                                    qty: qtyController.text);
+                                          });
                                         } else {
-                                          isQtyEmpty = true;
-                                          qtyNode.requestFocus();
+                                          isToEmpty = true;
+                                          containerToNode.requestFocus();
                                         }
                                       } else {
-                                        isSkuEmpty = true;
-                                        skuNode.requestFocus();
+                                        isQtyEmpty = true;
+                                        qtyNode.requestFocus();
                                       }
                                     } else {
                                       isFromEmpty = true;
@@ -298,7 +295,166 @@ class _StockMoveScreen extends State<StockMoveScreen> {
                               });*/
                                 }),
                           ),
-                        ]),
+                          Container(
+                            child: Column(
+                              children: <Widget>[
+                                Visibility(
+                                    visible:
+                                        state.containers?.isNotEmpty == true,
+                                    child: Container(
+                                      child: Table(
+                                          defaultVerticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          columnWidths: const <int,
+                                              TableColumnWidth>{
+                                            0: FlexColumnWidth(100),
+                                            1: FlexColumnWidth(100),
+                                          },
+                                          children: <TableRow>[
+                                            TableRow(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors
+                                                        .beachSeaTint40),
+                                                children: <Widget>[
+                                                  Container(
+                                                    color: AppColors
+                                                        .beachSeaTint20,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 18,
+                                                            bottom: 18,
+                                                            top: 18),
+                                                    child: ATText(
+                                                        text: 'CONTAINER',
+                                                        fontSize: 14,
+                                                        fontColor:
+                                                            AppColors.white,
+                                                        weight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Container(
+                                                    color: AppColors
+                                                        .beachSeaTint40,
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 18,
+                                                            bottom: 6,
+                                                            top: 6),
+                                                    child: ATText(
+                                                        text: state.containers
+                                                                    ?.isNotEmpty ==
+                                                                true
+                                                            ? state.containers
+                                                                ?.first.code
+                                                            : '',
+                                                        fontSize: 14,
+                                                        fontColor:
+                                                            AppColors.white,
+                                                        weight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ])
+                                          ]),
+                                    )),
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                              visible:
+                                  state.containersDestination?.isNotEmpty ==
+                                      true,
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                child: Column(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.arrow_circle_down_sharp,
+                                      size: 40,
+                                      color: AppColors.black,
+                                    ),
+                                    ATText(
+                                      text: state.isLoading
+                                          ? 'Please wait, Stock is being moved.'
+                                          : '${state.isMovingSuccess == true ? 'Success moving stock' : 'Failed in moving stock'} to',
+                                      fontSize: 18,
+                                    )
+                                  ],
+                                ),
+                              )),
+                          Visibility(
+                              visible:
+                                  state.containersDestination?.isNotEmpty ==
+                                      true,
+                              child: Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Table(
+                                          defaultVerticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          columnWidths: const <int,
+                                              TableColumnWidth>{
+                                            0: FlexColumnWidth(100),
+                                            1: FlexColumnWidth(100),
+                                          },
+                                          children: <TableRow>[
+                                            TableRow(
+                                                decoration: BoxDecoration(
+                                                    color: AppColors
+                                                        .beachSeaTint40),
+                                                children: <Widget>[
+                                                  Container(
+                                                    color: AppColors
+                                                        .beachSeaTint20,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 18,
+                                                            bottom: 18,
+                                                            top: 18),
+                                                    child: ATText(
+                                                        text: 'DESTINATION',
+                                                        fontSize: 14,
+                                                        fontColor:
+                                                            AppColors.white,
+                                                        weight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Container(
+                                                    color: AppColors
+                                                        .beachSeaTint40,
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 18,
+                                                            bottom: 6,
+                                                            top: 6),
+                                                    child: ATText(
+                                                        text: state.containersDestination
+                                                                    ?.isNotEmpty ==
+                                                                true
+                                                            ? state
+                                                                .containersDestination
+                                                                ?.first
+                                                                .code
+                                                            : '',
+                                                        fontSize: 14,
+                                                        fontColor:
+                                                            AppColors.white,
+                                                        weight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ])
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                        ])),
                   )));
         });
   }

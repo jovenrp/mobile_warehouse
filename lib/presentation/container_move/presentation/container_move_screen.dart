@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_warehouse/core/domain/models/container_model.dart';
 import 'package:mobile_warehouse/core/domain/utils/constants/app_colors.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_appbar.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.dart';
@@ -45,7 +46,6 @@ class _ContainerMoveScreen extends State<ContainerMoveScreen> {
     return BlocConsumer<ContainerMoveBloc, ContainerMoveState>(
         listener: (BuildContext context, ContainerMoveState state) {},
         builder: (BuildContext context, ContainerMoveState state) {
-          print(state.isDestInit);
           return SafeArea(
               child: Scaffold(
                   appBar: ATAppBar(
@@ -116,7 +116,7 @@ class _ContainerMoveScreen extends State<ContainerMoveScreen> {
                                         .searchContainer(
                                             containerNum: value,
                                             isDestination: false)
-                                        .then((_) {
+                                        .then((List<ContainerModel> container) {
                                       destContainerNumNode.requestFocus();
                                     });
                                   }),
@@ -164,32 +164,20 @@ class _ContainerMoveScreen extends State<ContainerMoveScreen> {
                                       .searchContainer(
                                           containerNum: value,
                                           isDestination: true)
-                                      .then((_) {
-                                    if (containerNumController
-                                                .text.isNotEmpty ==
-                                            true &&
-                                        destContainerNumController
-                                                .text.isNotEmpty ==
-                                            true) {
-                                      context
-                                          .read<ContainerMoveBloc>()
-                                          .moveContainer(
-                                              containerNum: state.containers
-                                                          ?.isNotEmpty ==
-                                                      true
-                                                  ? state.containers?.first.id
-                                                  : '',
-                                              destinationContainer: state
-                                                          .containersDestination
-                                                          ?.isNotEmpty ==
-                                                      true
-                                                  ? state.containersDestination
-                                                      ?.first.id
-                                                  : '')
-                                          .then((_) {
-                                        containerNumNode.requestFocus();
-                                      });
-                                    }
+                                      .then((List<ContainerModel> container) {
+                                    context
+                                        .read<ContainerMoveBloc>()
+                                        .moveContainer(
+                                            containerNum:
+                                                state.containers?.isNotEmpty ==
+                                                        true
+                                                    ? state.containers?.first.id
+                                                    : '',
+                                            destinationContainer:
+                                                container.first.id)
+                                        .then((_) {
+                                      containerNumNode.requestFocus();
+                                    });
                                   });
                                 },
                               ),
@@ -277,7 +265,9 @@ class _ContainerMoveScreen extends State<ContainerMoveScreen> {
                                         color: AppColors.black,
                                       ),
                                       ATText(
-                                        text: state.isLoading ? 'Please wait, Container is being moved.' : '${state.isMovingSuccess == true ? 'Success moving container': 'Failed in moving container'} to',
+                                        text: state.isLoading
+                                            ? 'Please wait, Container is being moved.'
+                                            : '${state.isMovingSuccess == true ? 'Success moving container' : 'Failed in moving container'} to',
                                         fontSize: 18,
                                       )
                                     ],

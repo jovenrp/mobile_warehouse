@@ -4,6 +4,7 @@ import 'package:mobile_warehouse/presentation/item_lookup/domain/item_lookup_rep
 import 'package:mobile_warehouse/presentation/stock_adjust/bloc/stock_adjust_state.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_adjust_model.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_adjust_response.dart';
+import 'package:mobile_warehouse/presentation/stock_adjust/data/models/stock_item_model.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/domain/repositories/stock_adjust_repository.dart';
 
 class StockAdjustBloc extends Cubit<StockAdjustState> {
@@ -16,6 +17,16 @@ class StockAdjustBloc extends Cubit<StockAdjustState> {
   final StockAdjustRepository stockAdjustRepository;
   final ItemLookupRepository itemLookupRepository;
   final PersistenceService persistenceService;
+
+  Future<void> init() async {
+    emit(state.copyWith(
+        isLoading: false,
+        isStockLoading: false,
+        isAdjustLoading: false,
+        hasError: false,
+        stockModel: <StockAdjustModel>[],
+        stockItems: <StockItemModel>[]));
+  }
 
   Future<List<StockAdjustModel>?> stockAdjust(
       {String? containerId,

@@ -6,6 +6,7 @@ abstract class StockMoveRepository {
       {String? token,
       String? sourceStockId,
       String? destContainerId,
+      String? sku,
       String? qty});
 
   Future<List<ContainerModel>?> searchContainer(

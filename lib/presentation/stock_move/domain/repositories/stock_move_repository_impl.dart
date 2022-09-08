@@ -16,14 +16,12 @@ class StockMoveRepositoryImpl implements StockMoveRepository {
       {String? token,
       String? sourceStockId,
       String? destContainerId,
+      String? sku,
       String? qty}) async {
     try {
-      final String result = await _apiService.stockYield(
-        token,
-        sourceStockId: sourceStockId,
-        destContainerId: destContainerId,
-        qty: qty,
-      );
+      final String result = await _apiService.stockYieldBySku(token,
+          data:
+              '|keys:srcContainerId=$sourceStockId^sku=$sku|vals:docType=XO^docNum=TEST101^destContainerId=$destContainerId^qty=$qty');
 
       /*final StockAdjustResponse response =
       StockAdjustResponse.fromJson(jsonDecode(result));*/
