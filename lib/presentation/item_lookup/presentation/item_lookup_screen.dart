@@ -9,6 +9,7 @@ import 'package:mobile_warehouse/presentation/item_lookup/bloc/item_lookup_bloc.
 import 'package:mobile_warehouse/presentation/item_lookup/bloc/item_lookup_state.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/presentation/item_lookup/data/models/item_alias_model.dart';
+import 'package:mobile_warehouse/presentation/qr/presentation/qr_item_lookup_screen.dart';
 
 class ItemLookupScreen extends StatefulWidget {
   const ItemLookupScreen({Key? key}) : super(key: key);
@@ -87,6 +88,11 @@ class _ItemLookupScreen extends State<ItemLookupScreen> {
                             focusNode: searchNode,
                             isScanner: true,
                             hintText: I18n.of(context).search_alias,
+                            onPressed: () => Navigator.push(context,
+                                MaterialPageRoute<void>(
+                                    builder: (BuildContext context) {
+                                      return QRItemLookUpScreen();
+                                    })),
                             onFieldSubmitted: (String? value) {
                               alias = searchController.text;
                               context
