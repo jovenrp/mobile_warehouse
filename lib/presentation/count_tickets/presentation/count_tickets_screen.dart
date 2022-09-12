@@ -77,7 +77,7 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                 ? Container(
                     padding:
                         const EdgeInsets.only(top: 20, bottom: 20, right: 18),
-                    width: 30,
+                    width: 35,
                     child: ATLoadingIndicator(
                       strokeWidth: 3.0,
                       width: 15,

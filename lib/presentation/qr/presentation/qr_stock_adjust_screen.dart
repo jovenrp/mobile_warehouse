@@ -14,8 +14,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 
 class QRStockAdjustScreen extends StatefulWidget {
-  QRStockAdjustScreen({Key? key, this.location, this.sku})
-      : super(key: key);
+  QRStockAdjustScreen({Key? key, this.location, this.sku}) : super(key: key);
 
   final String? location;
   final String? sku;
@@ -23,13 +22,14 @@ class QRStockAdjustScreen extends StatefulWidget {
   static const String routeName = '/qrStockAdjust';
   static const String screenName = 'qrStockAdjustScreen';
 
-  static ModalRoute<QRStockAdjustScreen> route({String? location, String? sku}) =>
+  static ModalRoute<QRStockAdjustScreen> route(
+          {String? location, String? sku}) =>
       MaterialPageRoute<QRStockAdjustScreen>(
           settings: const RouteSettings(name: routeName),
           builder: (_) => QRStockAdjustScreen(
-            location: location,
-            sku: sku,
-          ));
+                location: location,
+                sku: sku,
+              ));
 
   @override
   _QRStockAdjustScreen createState() => _QRStockAdjustScreen();
@@ -156,7 +156,9 @@ class _QRStockAdjustScreen extends State<QRStockAdjustScreen> {
       if (result == null) {
         result = scanData;
         if (widget.location?.trim().isNotEmpty == true) {
-          context.read<StockAdjustBloc>().stockLookUp(locNum: widget.location, sku: result?.code)
+          context
+              .read<StockAdjustBloc>()
+              .stockLookUp(locNum: widget.location, sku: result?.code)
               .then((_) {
             isScanned = true;
             Future<void>.delayed(Duration.zero, () {
@@ -165,7 +167,9 @@ class _QRStockAdjustScreen extends State<QRStockAdjustScreen> {
             });
           });
         } else if (widget.sku?.trim().isNotEmpty == true) {
-          context.read<StockAdjustBloc>().stockLookUp(locNum: result?.code, sku: widget.sku)
+          context
+              .read<StockAdjustBloc>()
+              .stockLookUp(locNum: result?.code, sku: widget.sku)
               .then((_) {
             isScanned = true;
             Future<void>.delayed(Duration.zero, () {

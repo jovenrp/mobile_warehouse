@@ -91,8 +91,8 @@ class _ItemLookupScreen extends State<ItemLookupScreen> {
                             onPressed: () => Navigator.push(context,
                                 MaterialPageRoute<void>(
                                     builder: (BuildContext context) {
-                                      return QRItemLookUpScreen();
-                                    })),
+                              return QRItemLookUpScreen();
+                            })),
                             onFieldSubmitted: (String? value) {
                               alias = searchController.text;
                               context

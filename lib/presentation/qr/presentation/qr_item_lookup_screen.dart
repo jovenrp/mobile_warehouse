@@ -13,8 +13,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
 
 class QRItemLookUpScreen extends StatefulWidget {
-  QRItemLookUpScreen({Key? key})
-      : super(key: key);
+  QRItemLookUpScreen({Key? key}) : super(key: key);
 
   static const String routeName = '/qrItemLookUp';
   static const String screenName = 'qrItemLookUpScreen';
@@ -150,13 +149,11 @@ class _QRItemLookUpScreen extends State<QRItemLookUpScreen> {
         result = scanData;
         context
             .read<ItemLookupBloc>()
-            .lookupItemAlias(
-                item: result?.code)
+            .lookupItemAlias(item: result?.code)
             .then((_) {
           isScanned = true;
           Future<void>.delayed(Duration.zero, () {
-            Navigator.of(context)
-                .popUntil(ModalRoute.withName('/itemLookup'));
+            Navigator.of(context).popUntil(ModalRoute.withName('/itemLookup'));
           });
         });
       }
