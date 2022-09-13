@@ -22,7 +22,8 @@ class ShipTicketsScreen extends StatefulWidget {
   static const String routeName = '/shipTickets';
   static const String screenName = 'shipTicketsScreen';
 
-  static ModalRoute<ShipTicketsScreen> route() => MaterialPageRoute<ShipTicketsScreen>(
+  static ModalRoute<ShipTicketsScreen> route() =>
+      MaterialPageRoute<ShipTicketsScreen>(
         settings: const RouteSettings(name: routeName),
         builder: (_) => const ShipTicketsScreen(),
       );
@@ -55,7 +56,8 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ShipTicketsBloc, ShipTicketsState>(listener: (BuildContext context, ShipTicketsState state) {
+    return BlocConsumer<ShipTicketsBloc, ShipTicketsState>(
+        listener: (BuildContext context, ShipTicketsState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
       }
@@ -75,7 +77,8 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                 actions: <Widget>[
                   state.isLoading
                       ? Container(
-                          padding: const EdgeInsets.only(top: 20, bottom: 20, right: 18),
+                          padding: const EdgeInsets.only(
+                              top: 20, bottom: 20, right: 18),
                           width: 35,
                           child: ATLoadingIndicator(
                             strokeWidth: 3.0,
@@ -85,7 +88,8 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                         )
                       : Ink(
                           child: InkWell(
-                            onTap: () => Navigator.of(context).popUntil(ModalRoute.withName('/dashboard')),
+                            onTap: () => Navigator.of(context)
+                                .popUntil(ModalRoute.withName('/dashboard')),
                             child: Padding(
                               padding: const EdgeInsets.only(right: 18),
                               child: Icon(
@@ -105,28 +109,36 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                   children: <Widget>[
                     Container(
                       color: AppColors.beachSea,
-                      padding: const EdgeInsets.only(left: 18, right: 18, bottom: 20),
+                      padding: const EdgeInsets.only(
+                          left: 18, right: 18, bottom: 20),
                       child: ATSearchfield(
                           textEditingController: searchController,
                           hintText: I18n.of(context).search,
                           onFieldSubmitted: (String? value) {
                             if (searchController.text.isNotEmpty == true) {
                               setState(() {
-                                context.read<ReceiveTicketsBloc>().searchTicket(value: searchController.text);
+                                context
+                                    .read<ReceiveTicketsBloc>()
+                                    .searchTicket(value: searchController.text);
                               });
                             }
                           },
                           onPressed: () {
                             if (searchController.text.isNotEmpty == true) {
                               setState(() {
-                                context.read<ReceiveTicketsBloc>().searchTicket(value: searchController.text);
+                                context
+                                    .read<ReceiveTicketsBloc>()
+                                    .searchTicket(value: searchController.text);
                               });
                             }
                           },
                           onChanged: (String value) {
-                            EasyDebounce.debounce('deebouncer1', Duration(milliseconds: 700), () {
+                            EasyDebounce.debounce(
+                                'deebouncer1', Duration(milliseconds: 700), () {
                               setState(() {
-                                context.read<ReceiveTicketsBloc>().searchTicket(value: searchController.text);
+                                context
+                                    .read<ReceiveTicketsBloc>()
+                                    .searchTicket(value: searchController.text);
                               });
                             });
                           }),
@@ -139,48 +151,59 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                           child: Column(
                             children: <Widget>[
                               Visibility(
-                                  visible: state.shipTicketsModel?.isNotEmpty == true,
-                                  child:
-                                      Table(defaultVerticalAlignment: TableCellVerticalAlignment.middle, columnWidths: const <int, TableColumnWidth>{
-                                    0: FixedColumnWidth(38),
-                                    1: FixedColumnWidth(90),
-                                    2: FlexColumnWidth(),
-                                    3: FixedColumnWidth(70),
-                                  }, children: <TableRow>[
-                                    TableRow(children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 18, top: 20, bottom: 5),
-                                        child: SizedBox(),
-                                      ),
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        padding: const EdgeInsets.only(top: 20, bottom: 5),
-                                        child: ATText(
-                                          fontColor: AppColors.greyHeader,
-                                          text: 'ORDER #',
-                                          weight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        padding: const EdgeInsets.only(top: 20, bottom: 5),
-                                        child: ATText(
-                                          fontColor: AppColors.greyHeader,
-                                          text: 'LOCATION',
-                                          weight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Container(
-                                        alignment: Alignment.centerRight,
-                                        padding: const EdgeInsets.only(right: 18, top: 20, bottom: 5),
-                                        child: ATText(
-                                          fontColor: AppColors.greyHeader,
-                                          text: I18n.of(context).lines.toUpperCase(),
-                                          weight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ])
-                                  ])),
+                                  visible: state.shipTicketsModel?.isNotEmpty ==
+                                      true,
+                                  child: Table(
+                                      defaultVerticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      columnWidths: const <int,
+                                          TableColumnWidth>{
+                                        0: FixedColumnWidth(38),
+                                        1: FixedColumnWidth(90),
+                                        2: FlexColumnWidth(),
+                                        3: FixedColumnWidth(70),
+                                      },
+                                      children: <TableRow>[
+                                        TableRow(children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 18, top: 20, bottom: 5),
+                                            child: SizedBox(),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: const EdgeInsets.only(
+                                                top: 20, bottom: 5),
+                                            child: ATText(
+                                              fontColor: AppColors.greyHeader,
+                                              text: 'ORDER #',
+                                              weight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            padding: const EdgeInsets.only(
+                                                top: 20, bottom: 5),
+                                            child: ATText(
+                                              fontColor: AppColors.greyHeader,
+                                              text: 'LOCATION',
+                                              weight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            padding: const EdgeInsets.only(
+                                                right: 18, top: 20, bottom: 5),
+                                            child: ATText(
+                                              fontColor: AppColors.greyHeader,
+                                              text: I18n.of(context)
+                                                  .lines
+                                                  .toUpperCase(),
+                                              weight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ])
+                                      ])),
                             ],
                           )),
                     ),
@@ -195,8 +218,10 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                                       backgroundColor: AppColors.beachSea,
                                     ),
                                     child: ListView.builder(
-                                        itemCount: state.shipTicketsModel?.length ?? 0,
-                                        itemBuilder: (BuildContext context, int index) {
+                                        itemCount:
+                                            state.shipTicketsModel?.length ?? 0,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
                                           return Slidable(
                                               key: ValueKey<int>(index),
                                               startActionPane: ActionPane(
@@ -205,7 +230,8 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                                                   motion: const ScrollMotion(),
                                                   children: <Widget>[
                                                     SlidableAction(
-                                                      onPressed: (BuildContext navContext) {
+                                                      onPressed: (BuildContext
+                                                          navContext) {
                                                         /*Navigator.of(navContext)
                                                             .push(ReceiveTicketDetailsScreen.route(
                                                                 receiveTicketsModel: state.receiveTicketsModel?[index]))
@@ -213,14 +239,19 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                                                           context.read<ReceiveTicketsBloc>().getReceiveTickets(isScreenLoading: true);
                                                         });*/
                                                       },
-                                                      backgroundColor: AppColors.greyRed,
-                                                      foregroundColor: AppColors.white,
+                                                      backgroundColor:
+                                                          AppColors.greyRed,
+                                                      foregroundColor:
+                                                          AppColors.white,
                                                       icon: Icons.list_alt,
                                                     ),
                                                   ]),
                                               child: Table(
-                                                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                                                columnWidths: const <int, TableColumnWidth>{
+                                                defaultVerticalAlignment:
+                                                    TableCellVerticalAlignment
+                                                        .middle,
+                                                columnWidths: const <int,
+                                                    TableColumnWidth>{
                                                   0: FixedColumnWidth(40),
                                                   1: FixedColumnWidth(90),
                                                   2: FlexColumnWidth(),
@@ -228,52 +259,96 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                                                 },
                                                 children: <TableRow>[
                                                   TableRow(
-                                                      decoration: BoxDecoration(color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue),
+                                                      decoration: BoxDecoration(
+                                                          color: (index % 2) ==
+                                                                  0
+                                                              ? AppColors.white
+                                                              : AppColors
+                                                                  .lightBlue),
                                                       children: <Widget>[
                                                         Padding(
-                                                          padding: const EdgeInsets.only(left: 18, top: 20, bottom: 20),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 18,
+                                                                  top: 20,
+                                                                  bottom: 20),
                                                           child: Container(
-                                                            alignment: Alignment.centerLeft,
-                                                            child: PickTicketsStatusWidget(
-                                                              status: state.shipTicketsModel?[index].status,
-                                                              isPartial: state.shipTicketsModel?[index].isPartial,
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            child:
+                                                                PickTicketsStatusWidget(
+                                                              status: state
+                                                                  .shipTicketsModel?[
+                                                                      index]
+                                                                  .status,
+                                                              isPartial: state
+                                                                  .shipTicketsModel?[
+                                                                      index]
+                                                                  .isPartial,
                                                               turns: turns,
                                                             ),
                                                           ),
                                                         ),
                                                         Container(
                                                           child: ATText(
-                                                            text: 'PO-${state.shipTicketsModel?[index].num}',
+                                                            text:
+                                                                'PO-${state.shipTicketsModel?[index].num}',
                                                             fontSize: 15,
                                                           ),
                                                         ),
                                                         Container(
                                                           child: ATText(
-                                                            text: state.shipTicketsModel?[index].vendorName,
+                                                            text: state
+                                                                .shipTicketsModel?[
+                                                                    index]
+                                                                .vendorName,
                                                             fontSize: 15,
                                                           ),
                                                         ),
                                                         Padding(
-                                                          padding: const EdgeInsets.only(right: 18),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 18),
                                                           child: Container(
-                                                            alignment: Alignment.centerRight,
+                                                            alignment: Alignment
+                                                                .centerRight,
                                                             child: ATText(
-                                                              text: state.shipTicketsModel?[index].numLines,
+                                                              text: state
+                                                                  .shipTicketsModel?[
+                                                                      index]
+                                                                  .numLines,
                                                               fontSize: 15,
                                                             ),
                                                           ),
                                                         ),
                                                       ]),
                                                   TableRow(
-                                                      decoration: BoxDecoration(color: (index % 2) == 0 ? AppColors.white : AppColors.lightBlue),
+                                                      decoration: BoxDecoration(
+                                                          color: (index % 2) ==
+                                                                  0
+                                                              ? AppColors.white
+                                                              : AppColors
+                                                                  .lightBlue),
                                                       children: <Widget>[
                                                         SizedBox(),
                                                         SizedBox(),
-                                                        state.shipTicketsModel?[index].status?.toLowerCase() == 'processing'
+                                                        state.shipTicketsModel?[index]
+                                                                    .status
+                                                                    ?.toLowerCase() ==
+                                                                'processing'
                                                             ? Container(
-                                                                padding: const EdgeInsets.only(left: 10, bottom: 15),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10,
+                                                                        bottom:
+                                                                            15),
                                                                 child: ATText(
-                                                                  text: 'processing by ${state.shipTicketsModel?[index].fullName}',
+                                                                  text:
+                                                                      'processing by ${state.shipTicketsModel?[index].fullName}',
                                                                   fontSize: 13,
                                                                 ),
                                                               )
@@ -288,7 +363,9 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                                     width: double.infinity,
                                     color: AppColors.white,
                                     padding: const EdgeInsets.only(top: 30),
-                                    child: ATText(text: I18n.of(context).oops_item_returned_0_results),
+                                    child: ATText(
+                                        text: I18n.of(context)
+                                            .oops_item_returned_0_results),
                                   )
                             : Container(
                                 color: AppColors.white,
@@ -306,8 +383,11 @@ class _ShipTicketsScreen extends State<ShipTicketsScreen> {
                                     Container(
                                         alignment: Alignment.topCenter,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(top: 10),
-                                          child: ATText(text: I18n.of(context).please_wait_while_data_is_loaded),
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: ATText(
+                                              text: I18n.of(context)
+                                                  .please_wait_while_data_is_loaded),
                                         ))
                                   ],
                                 )))

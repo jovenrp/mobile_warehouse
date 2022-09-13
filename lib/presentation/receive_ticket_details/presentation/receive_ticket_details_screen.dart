@@ -273,8 +273,7 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                 isLoading: false,
                                 buttonText: I18n.of(context).done_button,
                                 onTap: () => Navigator.of(context).popUntil(
-                                    ModalRoute.withName(
-                                        '/receiveTicketDetails')),
+                                    ModalRoute.withName('/receiveTickets')),
                               ),
                             ),
                           ],
