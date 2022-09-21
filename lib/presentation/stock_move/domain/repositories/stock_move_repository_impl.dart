@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:mobile_warehouse/application/application.dart';
 import 'package:mobile_warehouse/core/domain/models/container_model.dart';
 import 'package:mobile_warehouse/core/domain/models/container_response.dart';
+import 'package:mobile_warehouse/presentation/stock_move/data/models/stock_yield_response.dart';
 import 'package:mobile_warehouse/presentation/stock_move/data/services/stock_move_api_service.dart';
 import 'package:mobile_warehouse/presentation/stock_move/domain/repositories/stock_move_repository.dart';
 
@@ -12,7 +13,7 @@ class StockMoveRepositoryImpl implements StockMoveRepository {
   final StockMoveApiService _apiService;
 
   @override
-  Future<String> stockMove(
+  Future<StockYieldResponse> stockMove(
       {String? token,
       String? sourceStockId,
       String? destContainerId,
@@ -23,15 +24,14 @@ class StockMoveRepositoryImpl implements StockMoveRepository {
           data:
               '|keys:srcContainerId=$sourceStockId^sku=$sku|vals:docType=XO^docNum=TEST101^destContainerId=$destContainerId^qty=$qty');
 
-      /*final StockAdjustResponse response =
-      StockAdjustResponse.fromJson(jsonDecode(result));*/
+      final StockYieldResponse response =
+          StockYieldResponse.fromJson(jsonDecode(result));
 
-      return '';
+      return response;
     } catch (_) {
       logger.e(_.toString());
-      return '';
-      /*return StockAdjustResponse(
-          error: true, message: 'Stock adjust has an api error.');*/
+      return StockYieldResponse(
+          error: true, message: 'Stock yield has an api error.');
     }
   }
 

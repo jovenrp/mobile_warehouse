@@ -4,6 +4,7 @@ import 'package:mobile_warehouse/application/application.dart';
 import 'package:mobile_warehouse/core/domain/models/container_model.dart';
 import 'package:mobile_warehouse/core/domain/models/container_response.dart';
 import 'package:mobile_warehouse/presentation/container_move/data/services/container_move_api_service.dart';
+import 'package:mobile_warehouse/presentation/stock_move/data/models/stock_yield_response.dart';
 import 'container_move_repository.dart';
 
 class ContainerMoveRepositoryImpl implements ContainerMoveRepository {
@@ -12,7 +13,7 @@ class ContainerMoveRepositoryImpl implements ContainerMoveRepository {
   final ContainerMoveApiService _apiService;
 
   @override
-  Future<String> moveContainer(
+  Future<StockYieldResponse> moveContainer(
       {String? token, String? containerId, String? destContainerId}) async {
     try {
       final String result = await _apiService.moveContainer(
@@ -21,15 +22,14 @@ class ContainerMoveRepositoryImpl implements ContainerMoveRepository {
         destContainerId: destContainerId,
       );
 
-      /*final StockAdjustResponse response =
-      StockAdjustResponse.fromJson(jsonDecode(result));*/
+      final StockYieldResponse response =
+          StockYieldResponse.fromJson(jsonDecode(result));
 
-      return '';
+      return response;
     } catch (_) {
       logger.e(_.toString());
-      return '';
-      /*return StockAdjustResponse(
-          error: true, message: 'Stock adjust has an api error.');*/
+      return StockYieldResponse(
+          error: true, message: 'Container move has an api error.');
     }
   }
 

@@ -178,7 +178,7 @@ class _ReceiveTicketsScreen extends State<ReceiveTicketsScreen> {
                                                 top: 20, bottom: 5),
                                             child: ATText(
                                               fontColor: AppColors.greyHeader,
-                                              text: 'ORDER #',
+                                              text: 'PO#',
                                               weight: FontWeight.bold,
                                             ),
                                           ),
@@ -188,7 +188,7 @@ class _ReceiveTicketsScreen extends State<ReceiveTicketsScreen> {
                                                 top: 20, bottom: 5),
                                             child: ATText(
                                               fontColor: AppColors.greyHeader,
-                                              text: 'LOCATION',
+                                              text: 'VENDOR',
                                               weight: FontWeight.bold,
                                             ),
                                           ),
@@ -303,8 +303,10 @@ class _ReceiveTicketsScreen extends State<ReceiveTicketsScreen> {
                                                         ),
                                                         Container(
                                                           child: ATText(
-                                                            text:
-                                                                'PO-${state.receiveTicketsModel?[index].num}',
+                                                            text: state
+                                                                .receiveTicketsModel?[
+                                                                    index]
+                                                                .num,
                                                             fontSize: 15,
                                                           ),
                                                         ),

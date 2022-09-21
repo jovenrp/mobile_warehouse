@@ -44,11 +44,84 @@ class _StockMoveScreen extends State<StockMoveScreen> {
   bool isSkuEmpty = false;
   bool isQtyEmpty = false;
 
+  bool containerFromTrigger = false;
+  bool containerToTrigger = false;
+
+  late String? containerNum;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<StockMoveBloc>().init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<StockMoveBloc, StockMoveState>(
         listener: (BuildContext context, StockMoveState state) {},
         builder: (BuildContext context, StockMoveState state) {
+          containerFromNode.addListener(() {
+            if (containerFromNode.hasFocus == true) {
+              containerFromTrigger = true;
+            }
+            if (containerFromNode.hasFocus == false) {
+              if (containerFromTrigger) {
+                containerFromTrigger = false;
+                if (containerFromController.text.trim().isNotEmpty == true) {
+                  context.read<StockMoveBloc>().searchContainer(
+                      containerNum: containerFromController.text.trim(),
+                      isDestination: false).then((List<ContainerModel> containerFrom) {
+                    containerNum = containerFrom.first.id;
+                  });
+                }
+              }
+            }
+          });
+
+          containerToNode.addListener(() {
+            if (containerToNode.hasFocus == true) {
+              containerToTrigger = true;
+            }
+            if (containerToNode.hasFocus == false) {
+              if (containerToTrigger) {
+                containerToTrigger = false;
+                if (containerToController.text.trim().isNotEmpty == true) {
+                  if (containerFromController.text.trim().isNotEmpty == true) {
+                    isFromEmpty = false;
+                    if (qtyController.text.trim().isNotEmpty == true) {
+                      isQtyEmpty = false;
+                      if (containerToController.text.trim().isNotEmpty ==
+                          true) {
+                        isToEmpty = false;
+                        //execute logic here
+                        context
+                            .read<StockMoveBloc>()
+                            .searchContainer(
+                                containerNum: containerToController.text.trim(),
+                                isDestination: true)
+                            .then((List<ContainerModel> containerTo) {
+                          context.read<StockMoveBloc>().stockMove(
+                              containerIdFrom: containerNum,
+                              sku: skuController.text,
+                              containerIdTo: containerTo.first.id,
+                              qty: qtyController.text);
+                        });
+                      } else {
+                        isToEmpty = true;
+                        containerToNode.requestFocus();
+                      }
+                    } else {
+                      isQtyEmpty = true;
+                      qtyNode.requestFocus();
+                    }
+                  } else {
+                    isFromEmpty = true;
+                    containerFromNode.requestFocus();
+                  }
+                }
+              }
+            }
+          });
           return SafeArea(
               child: Scaffold(
                   appBar: ATAppBar(
@@ -367,8 +440,7 @@ class _StockMoveScreen extends State<StockMoveScreen> {
                                       true,
                               child: Container(
                                 alignment: Alignment.center,
-                                padding:
-                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                padding: const EdgeInsets.all(20),
                                 child: Column(
                                   children: <Widget>[
                                     Icon(
@@ -379,7 +451,7 @@ class _StockMoveScreen extends State<StockMoveScreen> {
                                     ATText(
                                       text: state.isLoading
                                           ? 'Please wait, Stock is being moved.'
-                                          : '${state.isMovingSuccess == true ? 'Success moving stock' : 'Failed in moving stock'} to',
+                                          : '${state.hasError == true ? '${state.response?.message}' : state.isMovingSuccess == true ? 'Success moving stock' : 'Failed in moving stock'}',
                                       fontSize: 18,
                                     )
                                   ],

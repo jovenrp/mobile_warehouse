@@ -3,6 +3,7 @@ import 'package:mobile_warehouse/core/data/services/persistence_service.dart';
 import 'package:mobile_warehouse/core/domain/models/container_model.dart';
 import 'package:mobile_warehouse/presentation/container_move/bloc/container_move_state.dart';
 import 'package:mobile_warehouse/presentation/container_move/domain/repositories/container_move_repository.dart';
+import 'package:mobile_warehouse/presentation/stock_move/data/models/stock_yield_response.dart';
 
 class ContainerMoveBloc extends Cubit<ContainerMoveState> {
   ContainerMoveBloc({
@@ -68,12 +69,12 @@ class ContainerMoveBloc extends Cubit<ContainerMoveState> {
     emit(state.copyWith(isLoading: true)); //turn on loading indicator
     try {
       String? token = await persistenceService.dwnToken.get();
-      final String response = await containerMoveRepository.moveContainer(
+      final StockYieldResponse response = await containerMoveRepository.moveContainer(
           token: token,
           containerId: containerNum,
           destContainerId: destinationContainer);
 
-      emit(state.copyWith(isLoading: false, isMovingSuccess: true));
+      emit(state.copyWith(isLoading: false, hasError: response.error ?? false, containerMoveResponse: response, isMovingSuccess: true));
     } catch (_) {
       emit(state.copyWith(
           isLoading: false, hasError: true, isMovingSuccess: false));

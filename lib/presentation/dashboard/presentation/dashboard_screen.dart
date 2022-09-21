@@ -141,6 +141,7 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                         decoration: BoxDecoration(
                           color: AppColors.beachSea,
                         ),
+                        width: double.infinity,
                         padding: const EdgeInsets.only(
                             left: 18, top: 20, bottom: 30),
                         child: ATText(

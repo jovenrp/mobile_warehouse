@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mobile_warehouse/core/domain/models/container_model.dart';
 import 'package:mobile_warehouse/core/domain/models/container_response.dart';
 import 'package:mobile_warehouse/core/domain/models/errors/actiontrak_api_error.dart';
+import 'package:mobile_warehouse/presentation/stock_move/data/models/stock_yield_response.dart';
 
 part 'container_move_state.freezed.dart';
 
@@ -17,6 +18,7 @@ class ContainerMoveState with _$ContainerMoveState {
       ActionTRAKApiErrorCode? errorCode,
       String? errorMessage,
       ContainerResponse? response,
+      StockYieldResponse? containerMoveResponse,
       List<ContainerModel>? containers,
       List<ContainerModel>? containersDestination,
       ContainerModel? container,
