@@ -11,6 +11,7 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/generated/i18n.dart';
+import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/bloc/pick_tickets_bloc.dart';
 import 'package:mobile_warehouse/presentation/picktickets/bloc/pick_tickets_state.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/widgets/pick_tickets_status.dart';
@@ -65,6 +66,12 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
         listener: (BuildContext context, PickTicketsState state) {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
+      }
+
+      if (state.hasError) {
+        Navigator.of(context).popUntil(
+            ModalRoute.withName(
+                '/login'));
       }
     }, builder: (BuildContext context, PickTicketsState state) {
       return SafeArea(

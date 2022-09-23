@@ -36,7 +36,7 @@ class StockMoveRepositoryImpl implements StockMoveRepository {
   }
 
   @override
-  Future<List<ContainerModel>?> searchContainer(
+  Future<ContainerResponse> searchContainer(
       {String? token, String? containerNum}) async {
     try {
       final String result = await _apiService.getContainers(
@@ -46,10 +46,10 @@ class StockMoveRepositoryImpl implements StockMoveRepository {
       final ContainerResponse response =
           ContainerResponse.fromJson(jsonDecode(result));
 
-      return response.getContainers;
+      return response;
     } catch (_) {
       logger.e(_.toString());
-      return <ContainerModel>[];
+      return ContainerResponse(error: true, message: 'Search Container has an api error.');
     }
   }
 }

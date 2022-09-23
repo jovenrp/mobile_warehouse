@@ -44,6 +44,11 @@ class StockAdjustBloc extends Cubit<StockAdjustState> {
               qty: qty,
               absolute: absolute);
 
+      if (response.error == true) {
+        await persistenceService.logout();
+        emit(state.copyWith(isLoading: false, hasError: true));
+      }
+
       emit(state.copyWith(
         isAdjustLoading: false,
         hasError: false,
@@ -61,6 +66,10 @@ class StockAdjustBloc extends Cubit<StockAdjustState> {
       String? token = await persistenceService.dwnToken.get();
       final StockAdjustResponse response = await stockAdjustRepository
           .stockLookUp(token: token, sku: sku, locNum: locNum);
+
+      if (response.error == true) {
+        emit(state.copyWith(isLoading: false, hasError: true));
+      }
 
       emit(state.copyWith(
         isLoading: false,

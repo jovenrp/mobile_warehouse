@@ -21,6 +21,10 @@ class CountTicketsBloc extends Cubit<CountTicketsState> {
       final CountTicketsReponse response =
           await countTicketsRepository.getCountTickets(token: token);
 
+      if (response.error == true) {
+        emit(state.copyWith(isLoading: false, hasError: true));
+      }
+
       emit(state.copyWith(
           isLoading: false,
           hasError: false,

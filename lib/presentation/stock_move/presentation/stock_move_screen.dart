@@ -58,7 +58,13 @@ class _StockMoveScreen extends State<StockMoveScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<StockMoveBloc, StockMoveState>(
-        listener: (BuildContext context, StockMoveState state) {},
+        listener: (BuildContext context, StockMoveState state) {
+          if (state.hasError) {
+            Navigator.of(context).popUntil(
+                ModalRoute.withName(
+                    '/login'));
+          }
+        },
         builder: (BuildContext context, StockMoveState state) {
           containerFromNode.addListener(() {
             if (containerFromNode.hasFocus == true) {
@@ -68,9 +74,12 @@ class _StockMoveScreen extends State<StockMoveScreen> {
               if (containerFromTrigger) {
                 containerFromTrigger = false;
                 if (containerFromController.text.trim().isNotEmpty == true) {
-                  context.read<StockMoveBloc>().searchContainer(
-                      containerNum: containerFromController.text.trim(),
-                      isDestination: false).then((List<ContainerModel> containerFrom) {
+                  context
+                      .read<StockMoveBloc>()
+                      .searchContainer(
+                          containerNum: containerFromController.text.trim(),
+                          isDestination: false)
+                      .then((List<ContainerModel> containerFrom) {
                     containerNum = containerFrom.first.id;
                   });
                 }

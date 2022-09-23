@@ -6,7 +6,6 @@ import 'package:mobile_warehouse/core/presentation/widgets/at_loading_indicator.
 import 'package:mobile_warehouse/core/presentation/widgets/at_searchfield.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_text.dart';
 import 'package:mobile_warehouse/core/presentation/widgets/at_textfield.dart';
-import 'package:mobile_warehouse/presentation/item_lookup/data/models/item_alias_model.dart';
 import 'package:mobile_warehouse/presentation/qr/presentation/qr_stock_adjust_screen.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/bloc/stock_adjust_bloc.dart';
 import 'package:mobile_warehouse/presentation/stock_adjust/bloc/stock_adjust_state.dart';
@@ -50,7 +49,13 @@ class _StockAdjustScreen extends State<StockAdjustScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<StockAdjustBloc, StockAdjustState>(
-        listener: (BuildContext context, StockAdjustState state) {},
+        listener: (BuildContext context, StockAdjustState state) {
+          if (state.hasError) {
+            Navigator.of(context).popUntil(
+                ModalRoute.withName(
+                    '/login'));
+          }
+        },
         builder: (BuildContext context, StockAdjustState state) {
           return SafeArea(
               child: Scaffold(

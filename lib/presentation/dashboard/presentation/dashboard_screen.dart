@@ -16,6 +16,7 @@ import 'package:mobile_warehouse/generated/i18n.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
 import 'package:mobile_warehouse/presentation/item_lookup/presentation/item_lookup_screen.dart';
 import 'package:mobile_warehouse/presentation/login/presentation/login_screen.dart';
+import 'package:mobile_warehouse/presentation/pack_tickets/presentation/pack_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/parent_location/presentation/parent_location_screen.dart';
 import 'package:mobile_warehouse/presentation/picktickets/presentation/pick_tickets_screen.dart';
 import 'package:mobile_warehouse/presentation/receive_tickets/presentation/receive_tickets_screen.dart';
@@ -182,6 +183,16 @@ class _DashboardScreen extends State<DashboardScreen> with BackPressedMixin {
                                       title: 'Receive',
                                       description: '',
                                       icon: Icon(Icons.call_received,
+                                          color: AppColors.white, size: 70),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () => Navigator.of(context)
+                                        .push(PackTicketsScreen.route()),
+                                    child: ActionCardsWidget(
+                                      title: 'Pack',
+                                      description: '',
+                                      icon: Icon(Icons.backpack_outlined,
                                           color: AppColors.white, size: 70),
                                     ),
                                   ),

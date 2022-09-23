@@ -42,6 +42,11 @@ class ParentLocationBloc extends Cubit<ParentLocationState> {
             parentContainerModel: parent.container ?? <ContainerModel>[]));
       }
 
+      if (result.error == true || parent.error == true) {
+        await persistenceService.logout();
+        emit(state.copyWith(isLoading: false, hasError: true));
+      }
+
       ContainerModel? originalContainerModel = containerModel;
       emit(state.copyWith(
           isLoading: false,

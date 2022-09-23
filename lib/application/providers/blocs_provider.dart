@@ -27,6 +27,9 @@ import 'package:mobile_warehouse/presentation/location_mapper/domain/location_ma
 import 'package:mobile_warehouse/presentation/login/bloc/loginscreen_bloc.dart';
 import 'package:mobile_warehouse/presentation/login/data/services/login_api_service.dart';
 import 'package:mobile_warehouse/presentation/login/domain/repositories/login_repository_impl.dart';
+import 'package:mobile_warehouse/presentation/pack_tickets/bloc/pack_tickets_bloc.dart';
+import 'package:mobile_warehouse/presentation/pack_tickets/data/services/pack_tickets_api_service.dart';
+import 'package:mobile_warehouse/presentation/pack_tickets/domain/pack_tickets_repository_impl.dart';
 import 'package:mobile_warehouse/presentation/parent_location/bloc/parent_location_bloc.dart';
 import 'package:mobile_warehouse/presentation/picktickets/bloc/pick_tickets_bloc.dart';
 import 'package:mobile_warehouse/presentation/picktickets/data/services/pick_tickets_api_service.dart';
@@ -161,6 +164,12 @@ class BlocsProvider {
           create: (_) => ReceiveTicketsBloc(
               receiveTicketsRepository: ReceiveTicketsRepositoryImpl(
                   ReceiveTicketsApiService(dio, baseUrl: apiUrl)),
+              persistenceService: persistenceService),
+        ),
+        BlocProvider<PackTicketsBloc>(
+          create: (_) => PackTicketsBloc(
+              packTicketsRepository: PackTicketsRepositoryImpl(
+                  PackTicketsApiService(dio, baseUrl: apiUrl)),
               persistenceService: persistenceService),
         ),
         BlocProvider<ShipTicketsBloc>(

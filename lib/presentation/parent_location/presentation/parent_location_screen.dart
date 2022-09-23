@@ -118,6 +118,12 @@ class _ParentLocationScreen extends State<ParentLocationScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<ParentLocationBloc, ParentLocationState>(
         listener: (BuildContext context, ParentLocationState state) {
+          if (state.hasError) {
+            Navigator.of(context).popUntil(
+                ModalRoute.withName(
+                    '/login'));
+          }
+
       if (widget.navigation == 'pop' &&
           state.containerModel?.isNotEmpty == true &&
           state.parentContainerModel?.isNotEmpty == true) {

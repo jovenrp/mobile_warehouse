@@ -19,11 +19,12 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
     String? token = await persistenceService?.dwnToken.get();
     String loginTimestamp =
         await persistenceService?.loginTimestamp.get() ?? '0';
-    int currentTimestamp = DateTime.now().microsecondsSinceEpoch;
+    int currentTimestamp = DateTime.now().millisecondsSinceEpoch;
     bool isExpire =
-        currentTimestamp > (int.parse(loginTimestamp) + (43200 * 1000));
+        currentTimestamp > (int.parse(loginTimestamp) + ((60 * 60 * 6) * 1000));
 
-    //print('${currentTimestamp} ${int.parse(loginTimestamp) + (43200 * 1000)}');
+    print(
+        '${currentTimestamp} ${loginTimestamp} ${int.parse(loginTimestamp) + ((60 * 60 * 6) * 1000)} ${isExpire}');
     await persistenceService?.appConfiguration.set(config?.toJson());
 
     String? currentApi = await persistenceService?.preferredApi.get();
@@ -34,8 +35,6 @@ class SplashScreenBloc extends Cubit<SplashScreenState> {
 
     Timer(const Duration(seconds: 2), () {
       emit(state.copyWith(isLoading: false));
-      print(token);
-      print(isExpire);
       if (token == null || isExpire == true) {
         emit(state.copyWith(isAlreadySignedIn: false, apiUrl: currentApi));
       } else {

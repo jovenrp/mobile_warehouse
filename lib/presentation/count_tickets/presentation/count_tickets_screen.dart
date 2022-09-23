@@ -61,6 +61,12 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
       if (!state.isLoading) {
         refreshController.refreshCompleted();
       }
+
+      if (state.hasError) {
+        Navigator.of(context).popUntil(
+            ModalRoute.withName(
+                '/login'));
+      }
     }, builder: (BuildContext context, CountTicketsState state) {
       return SafeArea(
           child: Scaffold(

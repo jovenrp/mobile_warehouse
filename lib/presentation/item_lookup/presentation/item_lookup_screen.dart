@@ -45,7 +45,13 @@ class _ItemLookupScreen extends State<ItemLookupScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ItemLookupBloc, ItemLookupState>(
-        listener: (BuildContext context, ItemLookupState state) {},
+        listener: (BuildContext context, ItemLookupState state) {
+          if (state.hasError) {
+            Navigator.of(context).popUntil(
+                ModalRoute.withName(
+                    '/login'));
+          }
+        },
         builder: (BuildContext context, ItemLookupState state) {
           return SafeArea(
             child: Scaffold(

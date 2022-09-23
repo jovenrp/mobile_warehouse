@@ -33,6 +33,11 @@ class ItemLookupBloc extends Cubit<ItemLookupState> {
       final ItemLookupResponse response =
           await itemLookupRepository.lookupItemAlias(token: token, item: value);
 
+      if (response.error == true) {
+        await persistenceService.logout();
+        emit(state.copyWith(isLoading: false, hasError: true));
+      }
+
       String searchText = searchItem?.toLowerCase() ?? '';
       List<ItemAliasModel> values =
           response.itemAlias?.where((ItemAliasModel item) {

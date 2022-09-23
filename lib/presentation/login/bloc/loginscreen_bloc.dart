@@ -69,7 +69,6 @@ class LoginScreenBloc extends Cubit<LoginScreenState> {
     await persistenceService.preferredApi.set(api);
 
     ApplicationConfig? config = await persistenceService.appConfiguration.get();
-    print('${config?.apiUrl} $api');
     if (config?.apiUrl != api && api?.isNotEmpty == true) {
       emit(state.copyWith(
           appVersion: config?.appVersion,

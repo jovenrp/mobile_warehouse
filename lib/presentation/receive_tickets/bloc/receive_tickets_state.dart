@@ -9,8 +9,6 @@ part 'receive_tickets_state.freezed.dart';
 class ReceiveTicketsState with _$ReceiveTicketsState {
   factory ReceiveTicketsState(
       {@Default(false) bool isLoading,
-      @Default(false) bool isStockLoading,
-      @Default(false) bool isAdjustLoading,
       @Default(false) bool hasError,
       ActionTRAKApiErrorCode? errorCode,
       ReceiveTicketsResponse? response,
