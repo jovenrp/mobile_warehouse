@@ -47,7 +47,8 @@ class ContainerMoveRepositoryImpl implements ContainerMoveRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return ContainerResponse(error: true, message: 'Search container has an api error.');
+      return ContainerResponse(
+          error: true, message: 'Search container has an api error.');
     }
   }
 }

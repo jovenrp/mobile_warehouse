@@ -69,9 +69,7 @@ class _PickTicketsScreen extends State<PickTicketsScreen> {
       }
 
       if (state.hasError) {
-        Navigator.of(context).popUntil(
-            ModalRoute.withName(
-                '/login'));
+        Navigator.of(context).popUntil(ModalRoute.withName('/login'));
       }
     }, builder: (BuildContext context, PickTicketsState state) {
       return SafeArea(

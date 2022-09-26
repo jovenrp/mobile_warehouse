@@ -37,11 +37,12 @@ class StockMoveBloc extends Cubit<StockMoveState> {
         emit(state.copyWith(isLoading: false, hasError: true));
       }
 
-      List<ContainerModel> values = response.getContainers?.where((ContainerModel item) {
-            String num = item.num?.toLowerCase() ?? '';
-            return num.contains(containerNum ?? '');
-          }).toList() ??
-          <ContainerModel>[];
+      List<ContainerModel> values =
+          response.getContainers?.where((ContainerModel item) {
+                String num = item.num?.toLowerCase() ?? '';
+                return num.contains(containerNum ?? '');
+              }).toList() ??
+              <ContainerModel>[];
 
       if (isDestination == true) {
         emit(state.copyWith(

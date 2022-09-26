@@ -59,315 +59,303 @@ class _StockMoveScreen extends State<StockMoveScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<StockMoveBloc, StockMoveState>(
         listener: (BuildContext context, StockMoveState state) {
-          if (state.hasError) {
-            Navigator.of(context).popUntil(
-                ModalRoute.withName(
-                    '/login'));
+      if (state.hasError) {
+        Navigator.of(context).popUntil(ModalRoute.withName('/login'));
+      }
+    }, builder: (BuildContext context, StockMoveState state) {
+      containerFromNode.addListener(() {
+        if (containerFromNode.hasFocus == true) {
+          containerFromTrigger = true;
+        }
+        if (containerFromNode.hasFocus == false) {
+          if (containerFromTrigger) {
+            containerFromTrigger = false;
+            if (containerFromController.text.trim().isNotEmpty == true) {
+              context
+                  .read<StockMoveBloc>()
+                  .searchContainer(
+                      containerNum: containerFromController.text.trim(),
+                      isDestination: false)
+                  .then((List<ContainerModel> containerFrom) {
+                containerNum = containerFrom.first.id;
+              });
+            }
           }
-        },
-        builder: (BuildContext context, StockMoveState state) {
-          containerFromNode.addListener(() {
-            if (containerFromNode.hasFocus == true) {
-              containerFromTrigger = true;
-            }
-            if (containerFromNode.hasFocus == false) {
-              if (containerFromTrigger) {
-                containerFromTrigger = false;
-                if (containerFromController.text.trim().isNotEmpty == true) {
-                  context
-                      .read<StockMoveBloc>()
-                      .searchContainer(
-                          containerNum: containerFromController.text.trim(),
-                          isDestination: false)
-                      .then((List<ContainerModel> containerFrom) {
-                    containerNum = containerFrom.first.id;
-                  });
-                }
-              }
-            }
-          });
+        }
+      });
 
-          containerToNode.addListener(() {
-            if (containerToNode.hasFocus == true) {
-              containerToTrigger = true;
-            }
-            if (containerToNode.hasFocus == false) {
-              if (containerToTrigger) {
-                containerToTrigger = false;
-                if (containerToController.text.trim().isNotEmpty == true) {
-                  if (containerFromController.text.trim().isNotEmpty == true) {
-                    isFromEmpty = false;
-                    if (qtyController.text.trim().isNotEmpty == true) {
-                      isQtyEmpty = false;
-                      if (containerToController.text.trim().isNotEmpty ==
-                          true) {
-                        isToEmpty = false;
-                        //execute logic here
-                        context
-                            .read<StockMoveBloc>()
-                            .searchContainer(
-                                containerNum: containerToController.text.trim(),
-                                isDestination: true)
-                            .then((List<ContainerModel> containerTo) {
-                          context.read<StockMoveBloc>().stockMove(
-                              containerIdFrom: containerNum,
-                              sku: skuController.text,
-                              containerIdTo: containerTo.first.id,
-                              qty: qtyController.text);
-                        });
-                      } else {
-                        isToEmpty = true;
-                        containerToNode.requestFocus();
-                      }
-                    } else {
-                      isQtyEmpty = true;
-                      qtyNode.requestFocus();
-                    }
+      containerToNode.addListener(() {
+        if (containerToNode.hasFocus == true) {
+          containerToTrigger = true;
+        }
+        if (containerToNode.hasFocus == false) {
+          if (containerToTrigger) {
+            containerToTrigger = false;
+            if (containerToController.text.trim().isNotEmpty == true) {
+              if (containerFromController.text.trim().isNotEmpty == true) {
+                isFromEmpty = false;
+                if (qtyController.text.trim().isNotEmpty == true) {
+                  isQtyEmpty = false;
+                  if (containerToController.text.trim().isNotEmpty == true) {
+                    isToEmpty = false;
+                    //execute logic here
+                    context
+                        .read<StockMoveBloc>()
+                        .searchContainer(
+                            containerNum: containerToController.text.trim(),
+                            isDestination: true)
+                        .then((List<ContainerModel> containerTo) {
+                      context.read<StockMoveBloc>().stockMove(
+                          containerIdFrom: containerNum,
+                          sku: skuController.text,
+                          containerIdTo: containerTo.first.id,
+                          qty: qtyController.text);
+                    });
                   } else {
-                    isFromEmpty = true;
-                    containerFromNode.requestFocus();
+                    isToEmpty = true;
+                    containerToNode.requestFocus();
                   }
+                } else {
+                  isQtyEmpty = true;
+                  qtyNode.requestFocus();
                 }
+              } else {
+                isFromEmpty = true;
+                containerFromNode.requestFocus();
               }
             }
-          });
-          return SafeArea(
-              child: Scaffold(
-                  appBar: ATAppBar(
-                      title: 'Stock Move',
-                      icon: Icon(
-                        Icons.arrow_back_sharp,
-                        color: AppColors.white,
-                        size: 24.0,
-                      ),
-                      actions: <Widget>[
-                        state.isLoading
-                            ? Container(
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, right: 18),
-                                width: 35,
-                                child: ATLoadingIndicator(
-                                  strokeWidth: 3.0,
-                                  width: 15,
-                                  height: 10,
-                                ),
-                              )
-                            : SizedBox()
-                      ],
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      }),
-                  body: Container(
+          }
+        }
+      });
+      return SafeArea(
+          child: Scaffold(
+              appBar: ATAppBar(
+                  title: 'Stock Move',
+                  icon: Icon(
+                    Icons.arrow_back_sharp,
                     color: AppColors.white,
-                    child: SingleChildScrollView(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                          Visibility(
-                            visible: isFromEmpty,
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  left: 18, right: 18, bottom: 5),
-                              width: double.infinity,
-                              color: AppColors.beachSea,
-                              child: ATText(
-                                text: 'Container from must have a value.',
-                                style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColors.atWarningRed,
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            color: AppColors.beachSea,
+                    size: 24.0,
+                  ),
+                  actions: <Widget>[
+                    state.isLoading
+                        ? Container(
                             padding: const EdgeInsets.only(
-                                left: 18, right: 18, bottom: 20),
-                            child: ATSearchfield(
-                                hintText: 'Container From',
-                                textEditingController: containerFromController,
-                                focusNode: containerFromNode,
-                                isScanner: true,
-                                /*onPressed: () => Navigator.push(context,
+                                top: 20, bottom: 20, right: 18),
+                            width: 35,
+                            child: ATLoadingIndicator(
+                              strokeWidth: 3.0,
+                              width: 15,
+                              height: 10,
+                            ),
+                          )
+                        : SizedBox()
+                  ],
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  }),
+              body: Container(
+                color: AppColors.white,
+                child: SingleChildScrollView(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                      Visibility(
+                        visible: isFromEmpty,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 18, right: 18, bottom: 5),
+                          width: double.infinity,
+                          color: AppColors.beachSea,
+                          child: ATText(
+                            text: 'Container from must have a value.',
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: AppColors.atWarningRed,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: AppColors.beachSea,
+                        padding: const EdgeInsets.only(
+                            left: 18, right: 18, bottom: 20),
+                        child: ATSearchfield(
+                            hintText: 'Container From',
+                            textEditingController: containerFromController,
+                            focusNode: containerFromNode,
+                            isScanner: true,
+                            /*onPressed: () => Navigator.push(context,
                                 MaterialPageRoute<void>(
                                     builder: (BuildContext context) {
                                       return QRContainerMoveScreen(
                                           scanner: 'serial',
                                           isDestination: false);
                                     })),*/
-                                onFieldSubmitted: (String? value) {
-                                  setState(() {
-                                    if (containerFromController.text
+                            onFieldSubmitted: (String? value) {
+                              setState(() {
+                                if (containerFromController.text
+                                        .trim()
+                                        .isNotEmpty ==
+                                    true) {
+                                  skuNode.requestFocus();
+                                  isFromEmpty = false;
+                                  context.read<StockMoveBloc>().searchContainer(
+                                      containerNum:
+                                          containerFromController.text.trim(),
+                                      isDestination: false);
+                                } else {
+                                  isFromEmpty = true;
+                                }
+                              });
+                            }),
+                      ),
+                      Visibility(
+                        visible: isSkuEmpty,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 18, right: 18, bottom: 5),
+                          width: double.infinity,
+                          color: AppColors.beachSea,
+                          child: ATText(
+                            text: 'SKU must have a value.',
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: AppColors.atWarningRed,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: AppColors.beachSea,
+                        padding: const EdgeInsets.only(
+                            left: 18, right: 18, bottom: 20),
+                        child: ATSearchfield(
+                            hintText: 'SKU',
+                            textEditingController: skuController,
+                            focusNode: skuNode,
+                            isScanner: true,
+                            onFieldSubmitted: (String? value) {
+                              setState(() {
+                                qtyNode.requestFocus();
+                              });
+                            }),
+                      ),
+                      Visibility(
+                        visible: isQtyEmpty,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 18, right: 18, bottom: 5),
+                          width: double.infinity,
+                          color: AppColors.beachSea,
+                          child: ATText(
+                            text: 'Qty must have a value.',
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: AppColors.atWarningRed,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: AppColors.beachSea,
+                        padding: const EdgeInsets.only(
+                            left: 18, right: 18, bottom: 20),
+                        child: ATSearchfield(
+                            hintText: 'Qty',
+                            textEditingController: qtyController,
+                            focusNode: qtyNode,
+                            isScanner: false,
+                            onFieldSubmitted: (String? value) {
+                              setState(() {
+                                if (qtyController.text.trim().isNotEmpty ==
+                                    true) {
+                                  containerToNode.requestFocus();
+                                  isQtyEmpty = false;
+                                } else {
+                                  isQtyEmpty = true;
+                                }
+                              });
+                            }),
+                      ),
+                      Visibility(
+                        visible: isToEmpty,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 18, right: 18, bottom: 5),
+                          width: double.infinity,
+                          color: AppColors.beachSea,
+                          child: ATText(
+                            text: 'Container To must have a value.',
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: AppColors.atWarningRed,
+                                fontSize: 14),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: AppColors.beachSea,
+                        padding: const EdgeInsets.only(
+                            left: 18, right: 18, bottom: 20),
+                        child: ATSearchfield(
+                            hintText: 'Container To',
+                            textEditingController: containerToController,
+                            focusNode: containerToNode,
+                            isScanner: true,
+                            /*onPressed: () => Navigator.push(context,
+                                MaterialPageRoute<void>(
+                                    builder: (BuildContext context) {
+                                      return QRContainerMoveScreen(
+                                          scanner: 'serial',
+                                          isDestination: false);
+                                    })),*/
+                            onFieldSubmitted: (String? value) {
+                              setState(() {
+                                if (containerFromController.text
+                                        .trim()
+                                        .isNotEmpty ==
+                                    true) {
+                                  isFromEmpty = false;
+                                  if (qtyController.text.trim().isNotEmpty ==
+                                      true) {
+                                    isQtyEmpty = false;
+                                    if (containerToController.text
                                             .trim()
                                             .isNotEmpty ==
                                         true) {
-                                      skuNode.requestFocus();
-                                      isFromEmpty = false;
+                                      isToEmpty = false;
+                                      //execute logic here
                                       context
                                           .read<StockMoveBloc>()
                                           .searchContainer(
                                               containerNum:
-                                                  containerFromController.text
+                                                  containerToController.text
                                                       .trim(),
-                                              isDestination: false);
+                                              isDestination: true)
+                                          .then((List<ContainerModel>
+                                              containerTo) {
+                                        context.read<StockMoveBloc>().stockMove(
+                                            containerIdFrom:
+                                                state.containers?.first.id,
+                                            sku: skuController.text,
+                                            containerIdTo: containerTo.first.id,
+                                            qty: qtyController.text);
+                                      });
                                     } else {
-                                      isFromEmpty = true;
-                                    }
-                                  });
-                                }),
-                          ),
-                          Visibility(
-                            visible: isSkuEmpty,
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  left: 18, right: 18, bottom: 5),
-                              width: double.infinity,
-                              color: AppColors.beachSea,
-                              child: ATText(
-                                text: 'SKU must have a value.',
-                                style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColors.atWarningRed,
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            color: AppColors.beachSea,
-                            padding: const EdgeInsets.only(
-                                left: 18, right: 18, bottom: 20),
-                            child: ATSearchfield(
-                                hintText: 'SKU',
-                                textEditingController: skuController,
-                                focusNode: skuNode,
-                                isScanner: true,
-                                onFieldSubmitted: (String? value) {
-                                  setState(() {
-                                    qtyNode.requestFocus();
-                                  });
-                                }),
-                          ),
-                          Visibility(
-                            visible: isQtyEmpty,
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  left: 18, right: 18, bottom: 5),
-                              width: double.infinity,
-                              color: AppColors.beachSea,
-                              child: ATText(
-                                text: 'Qty must have a value.',
-                                style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColors.atWarningRed,
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            color: AppColors.beachSea,
-                            padding: const EdgeInsets.only(
-                                left: 18, right: 18, bottom: 20),
-                            child: ATSearchfield(
-                                hintText: 'Qty',
-                                textEditingController: qtyController,
-                                focusNode: qtyNode,
-                                isScanner: false,
-                                onFieldSubmitted: (String? value) {
-                                  setState(() {
-                                    if (qtyController.text.trim().isNotEmpty ==
-                                        true) {
+                                      isToEmpty = true;
                                       containerToNode.requestFocus();
-                                      isQtyEmpty = false;
-                                    } else {
-                                      isQtyEmpty = true;
                                     }
-                                  });
-                                }),
-                          ),
-                          Visibility(
-                            visible: isToEmpty,
-                            child: Container(
-                              padding: const EdgeInsets.only(
-                                  left: 18, right: 18, bottom: 5),
-                              width: double.infinity,
-                              color: AppColors.beachSea,
-                              child: ATText(
-                                text: 'Container To must have a value.',
-                                style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColors.atWarningRed,
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            color: AppColors.beachSea,
-                            padding: const EdgeInsets.only(
-                                left: 18, right: 18, bottom: 20),
-                            child: ATSearchfield(
-                                hintText: 'Container To',
-                                textEditingController: containerToController,
-                                focusNode: containerToNode,
-                                isScanner: true,
-                                /*onPressed: () => Navigator.push(context,
-                                MaterialPageRoute<void>(
-                                    builder: (BuildContext context) {
-                                      return QRContainerMoveScreen(
-                                          scanner: 'serial',
-                                          isDestination: false);
-                                    })),*/
-                                onFieldSubmitted: (String? value) {
-                                  setState(() {
-                                    if (containerFromController.text
-                                            .trim()
-                                            .isNotEmpty ==
-                                        true) {
-                                      isFromEmpty = false;
-                                      if (qtyController.text
-                                              .trim()
-                                              .isNotEmpty ==
-                                          true) {
-                                        isQtyEmpty = false;
-                                        if (containerToController.text
-                                                .trim()
-                                                .isNotEmpty ==
-                                            true) {
-                                          isToEmpty = false;
-                                          //execute logic here
-                                          context
-                                              .read<StockMoveBloc>()
-                                              .searchContainer(
-                                                  containerNum:
-                                                      containerToController.text
-                                                          .trim(),
-                                                  isDestination: true)
-                                              .then((List<ContainerModel>
-                                                  containerTo) {
-                                            context
-                                                .read<StockMoveBloc>()
-                                                .stockMove(
-                                                    containerIdFrom: state
-                                                        .containers?.first.id,
-                                                    sku: skuController.text,
-                                                    containerIdTo:
-                                                        containerTo.first.id,
-                                                    qty: qtyController.text);
-                                          });
-                                        } else {
-                                          isToEmpty = true;
-                                          containerToNode.requestFocus();
-                                        }
-                                      } else {
-                                        isQtyEmpty = true;
-                                        qtyNode.requestFocus();
-                                      }
-                                    } else {
-                                      isFromEmpty = true;
-                                      containerFromNode.requestFocus();
-                                    }
-                                  });
+                                  } else {
+                                    isQtyEmpty = true;
+                                    qtyNode.requestFocus();
+                                  }
+                                } else {
+                                  isFromEmpty = true;
+                                  containerFromNode.requestFocus();
+                                }
+                              });
 
-                                  /*context
+                              /*context
                                   .read<ContainerMoveBloc>()
                                   .searchContainer(
                                   containerNum: value,
@@ -375,168 +363,149 @@ class _StockMoveScreen extends State<StockMoveScreen> {
                                   .then((List<ContainerModel> container) {
                                 destContainerNumNode.requestFocus();
                               });*/
-                                }),
-                          ),
-                          Container(
+                            }),
+                      ),
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            Visibility(
+                                visible: state.containers?.isNotEmpty == true,
+                                child: Container(
+                                  child: Table(
+                                      defaultVerticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      columnWidths: const <int,
+                                          TableColumnWidth>{
+                                        0: FlexColumnWidth(100),
+                                        1: FlexColumnWidth(100),
+                                      },
+                                      children: <TableRow>[
+                                        TableRow(
+                                            decoration: BoxDecoration(
+                                                color:
+                                                    AppColors.beachSeaTint40),
+                                            children: <Widget>[
+                                              Container(
+                                                color: AppColors.beachSeaTint20,
+                                                padding: const EdgeInsets.only(
+                                                    left: 18,
+                                                    bottom: 18,
+                                                    top: 18),
+                                                child: ATText(
+                                                    text: 'CONTAINER',
+                                                    fontSize: 14,
+                                                    fontColor: AppColors.white,
+                                                    weight: FontWeight.bold),
+                                              ),
+                                              Container(
+                                                color: AppColors.beachSeaTint40,
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                padding: const EdgeInsets.only(
+                                                    right: 18,
+                                                    bottom: 6,
+                                                    top: 6),
+                                                child: ATText(
+                                                    text: state.containers
+                                                                ?.isNotEmpty ==
+                                                            true
+                                                        ? state.containers
+                                                            ?.first.code
+                                                        : '',
+                                                    fontSize: 14,
+                                                    fontColor: AppColors.white,
+                                                    weight: FontWeight.bold),
+                                              ),
+                                            ])
+                                      ]),
+                                )),
+                          ],
+                        ),
+                      ),
+                      Visibility(
+                          visible:
+                              state.containersDestination?.isNotEmpty == true,
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(20),
                             child: Column(
                               children: <Widget>[
-                                Visibility(
-                                    visible:
-                                        state.containers?.isNotEmpty == true,
-                                    child: Container(
-                                      child: Table(
-                                          defaultVerticalAlignment:
-                                              TableCellVerticalAlignment.middle,
-                                          columnWidths: const <int,
-                                              TableColumnWidth>{
-                                            0: FlexColumnWidth(100),
-                                            1: FlexColumnWidth(100),
-                                          },
-                                          children: <TableRow>[
-                                            TableRow(
-                                                decoration: BoxDecoration(
-                                                    color: AppColors
-                                                        .beachSeaTint40),
-                                                children: <Widget>[
-                                                  Container(
-                                                    color: AppColors
-                                                        .beachSeaTint20,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 18,
-                                                            bottom: 18,
-                                                            top: 18),
-                                                    child: ATText(
-                                                        text: 'CONTAINER',
-                                                        fontSize: 14,
-                                                        fontColor:
-                                                            AppColors.white,
-                                                        weight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Container(
-                                                    color: AppColors
-                                                        .beachSeaTint40,
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 18,
-                                                            bottom: 6,
-                                                            top: 6),
-                                                    child: ATText(
-                                                        text: state.containers
-                                                                    ?.isNotEmpty ==
-                                                                true
-                                                            ? state.containers
-                                                                ?.first.code
-                                                            : '',
-                                                        fontSize: 14,
-                                                        fontColor:
-                                                            AppColors.white,
-                                                        weight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ])
-                                          ]),
-                                    )),
+                                Icon(
+                                  Icons.arrow_circle_down_sharp,
+                                  size: 40,
+                                  color: AppColors.black,
+                                ),
+                                ATText(
+                                  text: state.isLoading
+                                      ? 'Please wait, Stock is being moved.'
+                                      : '${state.hasError == true ? '${state.response?.message}' : state.isMovingSuccess == true ? 'Success moving stock' : 'Failed in moving stock'}',
+                                  fontSize: 18,
+                                )
                               ],
                             ),
-                          ),
-                          Visibility(
-                              visible:
-                                  state.containersDestination?.isNotEmpty ==
-                                      true,
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.all(20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.arrow_circle_down_sharp,
-                                      size: 40,
-                                      color: AppColors.black,
-                                    ),
-                                    ATText(
-                                      text: state.isLoading
-                                          ? 'Please wait, Stock is being moved.'
-                                          : '${state.hasError == true ? '${state.response?.message}' : state.isMovingSuccess == true ? 'Success moving stock' : 'Failed in moving stock'}',
-                                      fontSize: 18,
-                                    )
-                                  ],
+                          )),
+                      Visibility(
+                          visible:
+                              state.containersDestination?.isNotEmpty == true,
+                          child: Container(
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Table(
+                                      defaultVerticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      columnWidths: const <int,
+                                          TableColumnWidth>{
+                                        0: FlexColumnWidth(100),
+                                        1: FlexColumnWidth(100),
+                                      },
+                                      children: <TableRow>[
+                                        TableRow(
+                                            decoration: BoxDecoration(
+                                                color:
+                                                    AppColors.beachSeaTint40),
+                                            children: <Widget>[
+                                              Container(
+                                                color: AppColors.beachSeaTint20,
+                                                padding: const EdgeInsets.only(
+                                                    left: 18,
+                                                    bottom: 18,
+                                                    top: 18),
+                                                child: ATText(
+                                                    text: 'DESTINATION',
+                                                    fontSize: 14,
+                                                    fontColor: AppColors.white,
+                                                    weight: FontWeight.bold),
+                                              ),
+                                              Container(
+                                                color: AppColors.beachSeaTint40,
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                padding: const EdgeInsets.only(
+                                                    right: 18,
+                                                    bottom: 6,
+                                                    top: 6),
+                                                child: ATText(
+                                                    text: state.containersDestination
+                                                                ?.isNotEmpty ==
+                                                            true
+                                                        ? state
+                                                            .containersDestination
+                                                            ?.first
+                                                            .code
+                                                        : '',
+                                                    fontSize: 14,
+                                                    fontColor: AppColors.white,
+                                                    weight: FontWeight.bold),
+                                              ),
+                                            ])
+                                      ]),
                                 ),
-                              )),
-                          Visibility(
-                              visible:
-                                  state.containersDestination?.isNotEmpty ==
-                                      true,
-                              child: Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      child: Table(
-                                          defaultVerticalAlignment:
-                                              TableCellVerticalAlignment.middle,
-                                          columnWidths: const <int,
-                                              TableColumnWidth>{
-                                            0: FlexColumnWidth(100),
-                                            1: FlexColumnWidth(100),
-                                          },
-                                          children: <TableRow>[
-                                            TableRow(
-                                                decoration: BoxDecoration(
-                                                    color: AppColors
-                                                        .beachSeaTint40),
-                                                children: <Widget>[
-                                                  Container(
-                                                    color: AppColors
-                                                        .beachSeaTint20,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 18,
-                                                            bottom: 18,
-                                                            top: 18),
-                                                    child: ATText(
-                                                        text: 'DESTINATION',
-                                                        fontSize: 14,
-                                                        fontColor:
-                                                            AppColors.white,
-                                                        weight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Container(
-                                                    color: AppColors
-                                                        .beachSeaTint40,
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 18,
-                                                            bottom: 6,
-                                                            top: 6),
-                                                    child: ATText(
-                                                        text: state.containersDestination
-                                                                    ?.isNotEmpty ==
-                                                                true
-                                                            ? state
-                                                                .containersDestination
-                                                                ?.first
-                                                                .code
-                                                            : '',
-                                                        fontSize: 14,
-                                                        fontColor:
-                                                            AppColors.white,
-                                                        weight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ])
-                                          ]),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                        ])),
-                  )));
-        });
+                              ],
+                            ),
+                          ))
+                    ])),
+              )));
+    });
   }
 }

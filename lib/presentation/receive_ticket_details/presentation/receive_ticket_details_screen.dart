@@ -152,7 +152,7 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                             ),
                             SizedBox(height: 10),
                             ATText(
-                              text: I18n.of(context).this_will_overpick_item,
+                              text: 'This will over receive item.',
                               fontSize: 16,
                               textAlign: TextAlign.center,
                             ),
@@ -161,7 +161,7 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                               width: double.infinity,
                               child: ATTextButton(
                                   isLoading: false,
-                                  buttonText: I18n.of(context).yes_pick_line,
+                                  buttonText: 'Yes, Receive item',
                                   onTap: () {
                                     context
                                         .read<ReceiveTicketDetailsBloc>()
@@ -249,7 +249,7 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                             SizedBox(height: 10),
                             ATText(
                               text: completeStatus == 'partial'
-                                  ? I18n.of(context).partial_pick_completed
+                                  ? 'Partial receive completed!'
                                   : I18n.of(context).completed_alert,
                               fontSize: completeStatus == 'partial' ? 20 : 20,
                               weight: FontWeight.bold,
@@ -841,8 +841,8 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                       ),
                                       SizedBox(height: 10),
                                       ATText(
-                                        text: I18n.of(context)
-                                            .there_are_lines_partially_picked,
+                                        text:
+                                            'There are items on this ticket that are partially received.',
                                         fontSize: 16,
                                         weight: FontWeight.bold,
                                         textAlign: TextAlign.center,
@@ -859,8 +859,7 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                         width: double.infinity,
                                         child: ATTextButton(
                                             isLoading: false,
-                                            buttonText: I18n.of(context)
-                                                .yes_complete_pick,
+                                            buttonText: 'Yes, Complete receive',
                                             onTap: () {
                                               Navigator.of(context).popUntil(
                                                   ModalRoute.withName(
@@ -1127,8 +1126,8 @@ class _TicketPicker extends State<TicketPicker> {
                                           ),
                                           SizedBox(height: 10),
                                           ATText(
-                                            text: I18n.of(context)
-                                                .this_will_reset_to_untouched,
+                                            text:
+                                                'This will reset this item to untouched.',
                                             fontSize: 16,
                                             textAlign: TextAlign.center,
                                           ),
@@ -1137,8 +1136,7 @@ class _TicketPicker extends State<TicketPicker> {
                                             width: double.infinity,
                                             child: ATTextButton(
                                                 isLoading: false,
-                                                buttonText: I18n.of(context)
-                                                    .yes_reset_line,
+                                                buttonText: 'Yes, Reset item',
                                                 onTap: widget.onReset),
                                           ),
                                           Container(

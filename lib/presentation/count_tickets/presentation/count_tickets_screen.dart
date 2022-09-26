@@ -63,9 +63,7 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
       }
 
       if (state.hasError) {
-        Navigator.of(context).popUntil(
-            ModalRoute.withName(
-                '/login'));
+        Navigator.of(context).popUntil(ModalRoute.withName('/login'));
       }
     }, builder: (BuildContext context, CountTicketsState state) {
       return SafeArea(

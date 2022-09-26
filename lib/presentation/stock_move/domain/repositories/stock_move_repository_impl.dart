@@ -49,7 +49,8 @@ class StockMoveRepositoryImpl implements StockMoveRepository {
       return response;
     } catch (_) {
       logger.e(_.toString());
-      return ContainerResponse(error: true, message: 'Search Container has an api error.');
+      return ContainerResponse(
+          error: true, message: 'Search Container has an api error.');
     }
   }
 }
