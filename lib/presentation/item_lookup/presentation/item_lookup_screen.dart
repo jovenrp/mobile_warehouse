@@ -144,94 +144,108 @@ class _ItemLookupScreen extends State<ItemLookupScreen> {
                                                         1: FlexColumnWidth(100),
                                                       },
                                                       children: <TableRow>[
-                                                        TableRow(children: <
-                                                            Widget>[
-                                                          Container(
-                                                            color: AppColors
-                                                                .greyHeader,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 10,
-                                                                    top: 5,
-                                                                    bottom: 5),
-                                                            child: ATText(
-                                                              fontColor:
-                                                                  AppColors
-                                                                      .white,
-                                                              text: 'ITEM',
-                                                              weight: FontWeight
-                                                                  .bold,
-                                                            ),
-                                                          ),
-                                                          Container(
-                                                            color: AppColors
-                                                                .greyHeader,
-                                                            alignment: Alignment
-                                                                .centerRight,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 10,
-                                                                    top: 5,
-                                                                    bottom: 5,
-                                                                    right: 10),
-                                                            child: ATText(
-                                                              fontColor:
-                                                                  AppColors
-                                                                      .white,
-                                                              text: 'SKU',
-                                                              weight: FontWeight
-                                                                  .bold,
-                                                            ),
-                                                          ),
-                                                        ]),
-                                                        TableRow(children: <
-                                                            Widget>[
-                                                          Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 10,
-                                                                    top: 5,
-                                                                    bottom: 5),
-                                                            child: ATText(
-                                                                text: state
-                                                                    .itemAlias
-                                                                    ?.first
-                                                                    .itemNum,
-                                                                fontSize: 14,
-                                                                fontColor:
-                                                                    AppColors
-                                                                        .black,
-                                                                weight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 10,
-                                                                    top: 5,
-                                                                    bottom: 5,
-                                                                    right: 10),
-                                                            alignment: Alignment
-                                                                .centerRight,
-                                                            child: ATText(
-                                                                text: state
-                                                                    .itemAlias
-                                                                    ?.first
-                                                                    .sku,
-                                                                fontSize: 14,
-                                                                fontColor:
-                                                                    AppColors
-                                                                        .black,
-                                                                weight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ])
+                                                        TableRow(
+                                                            children: <Widget>[
+                                                              Container(
+                                                                color: AppColors
+                                                                    .greyHeader,
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10,
+                                                                        top: 5,
+                                                                        bottom:
+                                                                            5),
+                                                                child: ATText(
+                                                                  fontColor:
+                                                                      AppColors
+                                                                          .white,
+                                                                  text: 'ITEM',
+                                                                  weight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                color: AppColors
+                                                                    .greyHeader,
+                                                                alignment: Alignment
+                                                                    .centerRight,
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10,
+                                                                        top: 5,
+                                                                        bottom:
+                                                                            5,
+                                                                        right:
+                                                                            10),
+                                                                child: ATText(
+                                                                  fontColor:
+                                                                      AppColors
+                                                                          .white,
+                                                                  text: 'SKU',
+                                                                  weight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                            ]),
+                                                        TableRow(
+                                                            children: <Widget>[
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10,
+                                                                        top: 5,
+                                                                        bottom:
+                                                                            5),
+                                                                child: ATText(
+                                                                    text: state
+                                                                        .itemAlias
+                                                                        ?.first
+                                                                        .itemNum,
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontColor:
+                                                                        AppColors
+                                                                            .black,
+                                                                    weight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10,
+                                                                        top: 5,
+                                                                        bottom:
+                                                                            5,
+                                                                        right:
+                                                                            10),
+                                                                alignment: Alignment
+                                                                    .centerRight,
+                                                                child: ATText(
+                                                                    text: state
+                                                                        .itemAlias
+                                                                        ?.first
+                                                                        .sku,
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontColor:
+                                                                        AppColors
+                                                                            .black,
+                                                                    weight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ])
                                                       ])),
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -626,8 +640,7 @@ class _ItemLookupScreen extends State<ItemLookupScreen> {
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
                                                                           .end,
-                                                                  children: <
-                                                                      Widget>[
+                                                                  children: <Widget>[
                                                                     ATText(
                                                                         text: state
                                                                             .itemStock?[

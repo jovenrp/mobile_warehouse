@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
-import 'package:mobile_warehouse/core/domain/models/errors/actiontrak_api_error.dart';
 import 'package:mobile_warehouse/core/domain/models/errors/api_error.dart';
 
 class ApiErrorTransformer {
@@ -11,7 +9,7 @@ class ApiErrorTransformer {
 
     const String defaultErrorMessage = 'Oops! Something went wrong!';
 
-    if (exception is DioError) {
+    /*if (exception is DioError) {
       switch (exception.type) {
         case DioErrorType.connectTimeout:
         case DioErrorType.receiveTimeout:
@@ -35,15 +33,15 @@ class ApiErrorTransformer {
           break;
 
         default:
-      }
+      }*/
 
-      if (exception.error is HttpException) {
-        return ConnectionException(
-          originalException: exception,
-        );
-      }
+    if (exception.error is HttpException) {
+      return ConnectionException(
+        originalException: exception,
+      );
+    }
 
-      if (exception.type == DioErrorType.response) {
+    /*if (exception.type == DioErrorType.response) {
         final Map<String, dynamic> data =
             exception.response?.data is Map<String, dynamic>
                 ? exception.response?.data
@@ -140,7 +138,7 @@ class ApiErrorTransformer {
             break;
         }
       }
-    }
+    }*/
 
     return UnknownException(
       message: defaultErrorMessage,

@@ -1,10 +1,7 @@
 import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:mobile_warehouse/application/application.dart';
-import 'package:native_flutter_proxy/custom_proxy.dart';
-import 'package:native_flutter_proxy/native_proxy_reader.dart';
 
 class ProxyApiInterceptor extends Interceptor {
   ProxyApiInterceptor(this._dio);
@@ -18,7 +15,7 @@ class ProxyApiInterceptor extends Interceptor {
     // ! MissingPluginException(No implementation found for method getProxySetting on channel native_flutter_proxy)
 
     try {
-      ProxySetting settings = await NativeProxyReader.proxySetting;
+      /*ProxySetting settings = await NativeProxyReader.proxySetting;
       bool enabled = settings.enabled;
       String? host = settings.host;
       int? port = settings.port;
@@ -35,7 +32,7 @@ class ProxyApiInterceptor extends Interceptor {
           client.badCertificateCallback =
               (X509Certificate cert, String host, int port) => true;
         };
-      }
+      }*/
     } catch (e) {
       logger.e(e);
     }

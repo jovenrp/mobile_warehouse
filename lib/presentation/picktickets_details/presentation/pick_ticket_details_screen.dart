@@ -613,11 +613,9 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                     });
                                                                   },
                                                                   child: Column(
-                                                                      children: <
-                                                                          Widget>[
+                                                                      children: <Widget>[
                                                                         Row(
-                                                                          children: <
-                                                                              Widget>[
+                                                                          children: <Widget>[
                                                                             Expanded(
                                                                               flex: 1,
                                                                               child: SizedBox(
@@ -663,8 +661,7 @@ class _PickTicketDetailsScreen extends State<PickTicketDetailsScreen> {
                                                                           ],
                                                                         ),
                                                                         Row(
-                                                                          children: <
-                                                                              Widget>[
+                                                                          children: <Widget>[
                                                                             Expanded(
                                                                               flex: 1,
                                                                               child: SizedBox(),

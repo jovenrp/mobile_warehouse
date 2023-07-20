@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:alice_lightweight/alice.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_formatter/dio_http_formatter.dart';
-import 'package:dio_retry/dio_retry.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as fss;
 import 'package:logger/logger.dart';
 import 'package:mobile_warehouse/application/providers/blocs_provider.dart';
@@ -170,9 +168,6 @@ class _ApplicationState extends State<Application> {
           builder: (BuildContext context, __) => MaterialApp(
             localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
               I18n.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate
             ],
             supportedLocales: I18n.delegate.supportedLocales,
             localeResolutionCallback: I18n.delegate.resolution(
@@ -335,7 +330,7 @@ extension ApplicationApiInterceptors on _ApplicationState {
       onNoInternetError: _handleNoInternetError,
     ));
 
-    dio.interceptors.add(RetryInterceptor(
+    /*dio.interceptors.add(RetryInterceptor(
       options: RetryOptions(
           retries: 3, // Number of retries before a failure
           retryInterval:
@@ -344,7 +339,7 @@ extension ApplicationApiInterceptors on _ApplicationState {
             return error.response?.statusCode == 429;
           }),
       dio: dio,
-    ));
+    ));*/
 
     if (isApiLoggingEnabled) {
       dio.interceptors.add(HttpFormatter(logger: logger));

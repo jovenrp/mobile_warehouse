@@ -1,7 +1,12 @@
 import 'dart:io';
 
-import 'package:catcher/catcher.dart';
+import 'package:catcher/core/catcher.dart';
+import 'package:catcher/mode/silent_report_mode.dart';
+import 'package:catcher/model/catcher_options.dart';
 import 'package:catcher/model/platform_type.dart';
+import 'package:catcher/model/report.dart';
+import 'package:catcher/model/report_handler.dart';
+import 'package:catcher/model/report_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_warehouse/application/application.dart';
 import 'package:mobile_warehouse/core/domain/utils/string_extensions.dart';
@@ -39,7 +44,7 @@ void commonMain(ApplicationConfig applicationConfig) async {
         ConsoleLoggedHandler(),
       ],
     ),
-    /*releaseConfig: CatcherOptions(
+    /* releaseConfig: CatcherOptions(
       SilentReportMode(),
       <ReportHandler>[
         // ConsoleLoggedHandler(),

@@ -93,60 +93,62 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
         ),
         body: Container(
             color: AppColors.beachSea,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                    Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 18, right: 18),
-                child: ATSearchfield(
-                    textEditingController: searchController,
-                    hintText: I18n.of(context).search,
-                    onPressed: () {
-                      /*if (searchController.text.isNotEmpty == true) {
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18, right: 18),
+                    child: ATSearchfield(
+                        textEditingController: searchController,
+                        hintText: I18n.of(context).search,
+                        onPressed: () {
+                          /*if (searchController.text.isNotEmpty == true) {
                                 setState(() {
                                   context
                                       .read<PickTicketsBloc>()
                                       .searchTicket(value: searchController.text);
                                 });
                               }*/
-                    },
-                    onChanged: (String value) {
-                      EasyDebounce.debounce(
-                          'deebouncer1', Duration(milliseconds: 700), () {
-                        /*setState(() {
+                        },
+                        onChanged: (String value) {
+                          EasyDebounce.debounce(
+                              'deebouncer1', Duration(milliseconds: 700), () {
+                            /*setState(() {
                                   context
                                       .read<PickTicketsBloc>()
                                       .searchTicket(value: searchController.text);
                                 });*/
-                      });
-                    }),
-              ),
-              SizedBox(height: 20),
-              state.isLoading
-                  ? SizedBox()
-                  : Container(
-                      color: AppColors.greyRow,
-                      padding: const EdgeInsets.only(top: 0, bottom: 10),
-                      child: Column(
-                        children: <Widget>[
-                          Visibility(
-                              visible: state.countTickets?.isNotEmpty == true,
-                              child: Table(
-                                  defaultVerticalAlignment:
-                                      TableCellVerticalAlignment.middle,
-                                  columnWidths: const <int, TableColumnWidth>{
-                                    0: FixedColumnWidth(38),
-                                    1: FixedColumnWidth(70),
-                                    2: FlexColumnWidth(),
-                                    3: FlexColumnWidth(),
-                                    4: FixedColumnWidth(70),
-                                  },
-                                  children: <TableRow>[
-                                    TableRow(children: <Widget>[
-                                      Ink(
-                                          child: InkWell(
-                                        onTap: () {
-                                          /*context
+                          });
+                        }),
+                  ),
+                  SizedBox(height: 20),
+                  state.isLoading
+                      ? SizedBox()
+                      : Container(
+                          color: AppColors.greyRow,
+                          padding: const EdgeInsets.only(top: 0, bottom: 10),
+                          child: Column(
+                            children: <Widget>[
+                              Visibility(
+                                  visible:
+                                      state.countTickets?.isNotEmpty == true,
+                                  child: Table(
+                                      defaultVerticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      columnWidths: const <int,
+                                          TableColumnWidth>{
+                                        0: FixedColumnWidth(38),
+                                        1: FixedColumnWidth(70),
+                                        2: FlexColumnWidth(),
+                                        3: FlexColumnWidth(),
+                                        4: FixedColumnWidth(70),
+                                      },
+                                      children: <TableRow>[
+                                        TableRow(children: <Widget>[
+                                          Ink(
+                                              child: InkWell(
+                                            onTap: () {
+                                              /*context
                                                       .read<PickTicketsBloc>()
                                                       .sortPickTicket(
                                                       pickTicket: state
@@ -156,17 +158,17 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                   setState(() {
                                                     isStatusSort = !isStatusSort;
                                                   });*/
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 18, top: 20, bottom: 5),
-                                          child: SizedBox(),
-                                        ),
-                                      )),
-                                      Ink(
-                                        child: InkWell(
-                                          onTap: () {
-                                            /*context
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18, top: 20, bottom: 5),
+                                              child: SizedBox(),
+                                            ),
+                                          )),
+                                          Ink(
+                                            child: InkWell(
+                                              onTap: () {
+                                                /*context
                                                     .read<PickTicketsBloc>()
                                                     .sortPickTicket(
                                                     pickTicket: state
@@ -179,24 +181,25 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                   isTicketNumberSort =
                                                   !isTicketNumberSort;
                                                 });*/
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.only(
-                                                top: 20, bottom: 5),
-                                            child: ATText(
-                                              fontColor: AppColors.greyHeader,
-                                              text: I18n.of(context)
-                                                  .ticket_number
-                                                  .toUpperCase(),
-                                              weight: FontWeight.bold,
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20, bottom: 5),
+                                                child: ATText(
+                                                  fontColor:
+                                                      AppColors.greyHeader,
+                                                  text: I18n.of(context)
+                                                      .ticket_number
+                                                      .toUpperCase(),
+                                                  weight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      Ink(
-                                        child: InkWell(
-                                          onTap: () {
-                                            /*context
+                                          Ink(
+                                            child: InkWell(
+                                              onTap: () {
+                                                /*context
                                                     .read<PickTicketsBloc>()
                                                     .sortPickTicket(
                                                     pickTicket: state
@@ -208,22 +211,23 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                   isDestinationSort =
                                                   !isDestinationSort;
                                                 });*/
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.only(
-                                                top: 20, bottom: 5),
-                                            child: ATText(
-                                              fontColor: AppColors.greyHeader,
-                                              text: 'Name'.toUpperCase(),
-                                              weight: FontWeight.bold,
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20, bottom: 5),
+                                                child: ATText(
+                                                  fontColor:
+                                                      AppColors.greyHeader,
+                                                  text: 'Name'.toUpperCase(),
+                                                  weight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      Ink(
-                                        child: InkWell(
-                                          onTap: () {
-                                            /*context
+                                          Ink(
+                                            child: InkWell(
+                                              onTap: () {
+                                                /*context
                                                     .read<PickTicketsBloc>()
                                                     .sortPickTicket(
                                                     pickTicket: state
@@ -235,22 +239,23 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                   isDestinationSort =
                                                   !isDestinationSort;
                                                 });*/
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.only(
-                                                top: 20, bottom: 5),
-                                            child: ATText(
-                                              fontColor: AppColors.greyHeader,
-                                              text: 'Type'.toUpperCase(),
-                                              weight: FontWeight.bold,
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20, bottom: 5),
+                                                child: ATText(
+                                                  fontColor:
+                                                      AppColors.greyHeader,
+                                                  text: 'Type'.toUpperCase(),
+                                                  weight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      Ink(
-                                        child: InkWell(
-                                          onTap: () {
-                                            /*context
+                                          Ink(
+                                            child: InkWell(
+                                              onTap: () {
+                                                /*context
                                                     .read<PickTicketsBloc>()
                                                     .sortPickTicket(
                                                     pickTicket: state
@@ -262,220 +267,230 @@ class _CountTicketsScreen extends State<CountTicketsScreen> {
                                                   isNumLineSort =
                                                   !isNumLineSort;
                                                 });*/
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.centerRight,
-                                            padding: const EdgeInsets.only(
-                                                right: 18, top: 20, bottom: 5),
-                                            child: ATText(
-                                              fontColor: AppColors.greyHeader,
-                                              text: I18n.of(context)
-                                                  .lines
-                                                  .toUpperCase(),
-                                              weight: FontWeight.bold,
+                                              },
+                                              child: Container(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                padding: const EdgeInsets.only(
+                                                    right: 18,
+                                                    top: 20,
+                                                    bottom: 5),
+                                                child: ATText(
+                                                  fontColor:
+                                                      AppColors.greyHeader,
+                                                  text: I18n.of(context)
+                                                      .lines
+                                                      .toUpperCase(),
+                                                  weight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      )
-                                    ])
-                                  ])),
-                        ],
-                      )),
-              Expanded(
-                child: InteractiveViewer(
-                    child: Container(
-                  color: AppColors.white,
-                  child: SmartRefresher(
-                      enablePullDown: canRefresh,
-                      onRefresh: _forcedRefresh,
-                      controller: refreshController,
-                      header: WaterDropMaterialHeader(
-                        backgroundColor: AppColors.beachSea,
-                      ),
-                      child: state.isLoading
-                          ? Column(
-                              children: <Widget>[
-                                SizedBox(height: 50),
-                                Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Icon(
-                                    Icons.move_to_inbox,
-                                    size: 100,
-                                    color: AppColors.grayElevent,
-                                  ),
-                                ),
-                                Container(
-                                    alignment: Alignment.topCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: ATText(
-                                          text: I18n.of(context)
-                                              .please_wait_while_data_is_loaded),
-                                    ))
-                              ],
-                            )
-                          : state.countTickets?.isNotEmpty == true
-                              ? ListView.builder(
-                                  itemCount:
-                                      (state.countTickets?.length ?? 0) + 1,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    if (index == 0) {
-                                      return SizedBox();
-                                    }
-                                    index -= 1;
-                                    return Slidable(
-                                        key: ValueKey<int>(index),
-                                        startActionPane: ActionPane(
-                                            // A motion is a widget used to control how the pane animates.
-                                            // A motion is a widget used to control how the pane animates.
-                                            motion: const ScrollMotion(),
-                                            children: <Widget>[
-                                              SlidableAction(
-                                                onPressed:
-                                                    (BuildContext navContext) {
-                                                  Navigator.of(navContext).push(
-                                                      CountTicketDetailsScreen
-                                                          .route(
+                                          )
+                                        ])
+                                      ])),
+                            ],
+                          )),
+                  Expanded(
+                    child: InteractiveViewer(
+                        child: Container(
+                      color: AppColors.white,
+                      child: SmartRefresher(
+                          enablePullDown: canRefresh,
+                          onRefresh: _forcedRefresh,
+                          controller: refreshController,
+                          header: WaterDropMaterialHeader(
+                            backgroundColor: AppColors.beachSea,
+                          ),
+                          child: state.isLoading
+                              ? Column(
+                                  children: <Widget>[
+                                    SizedBox(height: 50),
+                                    Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Icon(
+                                        Icons.move_to_inbox,
+                                        size: 100,
+                                        color: AppColors.grayElevent,
+                                      ),
+                                    ),
+                                    Container(
+                                        alignment: Alignment.topCenter,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: ATText(
+                                              text: I18n.of(context)
+                                                  .please_wait_while_data_is_loaded),
+                                        ))
+                                  ],
+                                )
+                              : state.countTickets?.isNotEmpty == true
+                                  ? ListView.builder(
+                                      itemCount:
+                                          (state.countTickets?.length ?? 0) + 1,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        if (index == 0) {
+                                          return SizedBox();
+                                        }
+                                        index -= 1;
+                                        return Slidable(
+                                            key: ValueKey<int>(index),
+                                            startActionPane: ActionPane(
+                                                // A motion is a widget used to control how the pane animates.
+                                                // A motion is a widget used to control how the pane animates.
+                                                motion: const ScrollMotion(),
+                                                children: <Widget>[
+                                                  SlidableAction(
+                                                    onPressed: (BuildContext
+                                                        navContext) {
+                                                      Navigator.of(navContext).push(
+                                                          CountTicketDetailsScreen.route(
                                                               countTicketsModel:
                                                                   state.countTickets?[
                                                                       index]));
-                                                },
-                                                backgroundColor:
-                                                    AppColors.greyRed,
-                                                foregroundColor:
-                                                    AppColors.white,
-                                                icon: Icons.list_alt,
-                                              ),
-                                            ]),
-                                        child: Table(
-                                          defaultVerticalAlignment:
-                                              TableCellVerticalAlignment.middle,
-                                          columnWidths: const <int,
-                                              TableColumnWidth>{
-                                            0: FixedColumnWidth(40),
-                                            1: FixedColumnWidth(70),
-                                            2: FlexColumnWidth(),
-                                            3: FlexColumnWidth(),
-                                            4: FixedColumnWidth(70),
-                                          },
-                                          children: <TableRow>[
-                                            TableRow(
-                                                decoration: BoxDecoration(
-                                                    color: (index % 2) == 0
-                                                        ? AppColors.white
-                                                        : AppColors.lightBlue),
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 18,
-                                                            top: 20,
-                                                            bottom: 20),
-                                                    child: Container(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child:
-                                                          PickTicketsStatusWidget(
-                                                        status: state
-                                                            .countTickets?[
-                                                                index]
-                                                            .status,
-                                                        turns: turns,
-                                                      ),
-                                                    ),
+                                                    },
+                                                    backgroundColor:
+                                                        AppColors.greyRed,
+                                                    foregroundColor:
+                                                        AppColors.white,
+                                                    icon: Icons.list_alt,
                                                   ),
-                                                  Container(
-                                                    child: ATText(
-                                                      text: state
-                                                              .countTickets?[
-                                                                  index]
-                                                              .num ??
-                                                          '',
-                                                      fontSize: 15,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: ATText(
-                                                      text: state
-                                                              .countTickets?[
-                                                                  index]
-                                                              .comments ??
-                                                          '',
-                                                      fontSize: 15,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: ATText(
-                                                      text: state
-                                                              .countTickets?[
-                                                                  index]
-                                                              .type ??
-                                                          '',
-                                                      fontSize: 15,
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 18),
-                                                    child: Container(
-                                                      alignment:
-                                                          Alignment.centerRight,
-                                                      child: ATText(
-                                                        text: state
+                                                ]),
+                                            child: Table(
+                                              defaultVerticalAlignment:
+                                                  TableCellVerticalAlignment
+                                                      .middle,
+                                              columnWidths: const <int,
+                                                  TableColumnWidth>{
+                                                0: FixedColumnWidth(40),
+                                                1: FixedColumnWidth(70),
+                                                2: FlexColumnWidth(),
+                                                3: FlexColumnWidth(),
+                                                4: FixedColumnWidth(70),
+                                              },
+                                              children: <TableRow>[
+                                                TableRow(
+                                                    decoration: BoxDecoration(
+                                                        color: (index % 2) == 0
+                                                            ? AppColors.white
+                                                            : AppColors
+                                                                .lightBlue),
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 18,
+                                                                top: 20,
+                                                                bottom: 20),
+                                                        child: Container(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child:
+                                                              PickTicketsStatusWidget(
+                                                            status: state
                                                                 .countTickets?[
                                                                     index]
-                                                                .num ??
-                                                            '',
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ]),
-                                            TableRow(
-                                                decoration: BoxDecoration(
-                                                    color: (index % 2) == 0
-                                                        ? AppColors.white
-                                                        : AppColors.lightBlue),
-                                                children: <Widget>[
-                                                  SizedBox(),
-                                                  SizedBox(),
-                                                  state.countTickets?[index]
-                                                              .status
-                                                              ?.toLowerCase() ==
-                                                          'processing'
-                                                      ? Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 10,
-                                                                  bottom: 15),
-                                                          child: ATText(
-                                                            text:
-                                                                'counting line ${state.countTickets?[index].num}',
-                                                            fontSize: 13,
+                                                                .status,
+                                                            turns: turns,
                                                           ),
-                                                        )
-                                                      : SizedBox(),
-                                                  SizedBox(),
-                                                  SizedBox(),
-                                                ]),
-                                          ],
-                                        ));
-                                  })
-                              : Container(
-                                  alignment: Alignment.topCenter,
-                                  width: double.infinity,
-                                  color: AppColors.white,
-                                  padding: const EdgeInsets.only(top: 30),
-                                  child: ATText(
-                                      text: I18n.of(context)
-                                          .oops_item_returned_0_results),
-                                )),
-                )),
-              )
-            ])),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: ATText(
+                                                          text: state
+                                                                  .countTickets?[
+                                                                      index]
+                                                                  .num ??
+                                                              '',
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: ATText(
+                                                          text: state
+                                                                  .countTickets?[
+                                                                      index]
+                                                                  .comments ??
+                                                              '',
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        child: ATText(
+                                                          text: state
+                                                                  .countTickets?[
+                                                                      index]
+                                                                  .type ??
+                                                              '',
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 18),
+                                                        child: Container(
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: ATText(
+                                                            text: state
+                                                                    .countTickets?[
+                                                                        index]
+                                                                    .num ??
+                                                                '',
+                                                            fontSize: 15,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                                TableRow(
+                                                    decoration: BoxDecoration(
+                                                        color: (index % 2) == 0
+                                                            ? AppColors.white
+                                                            : AppColors
+                                                                .lightBlue),
+                                                    children: <Widget>[
+                                                      SizedBox(),
+                                                      SizedBox(),
+                                                      state.countTickets?[index]
+                                                                  .status
+                                                                  ?.toLowerCase() ==
+                                                              'processing'
+                                                          ? Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left: 10,
+                                                                      bottom:
+                                                                          15),
+                                                              child: ATText(
+                                                                text:
+                                                                    'counting line ${state.countTickets?[index].num}',
+                                                                fontSize: 13,
+                                                              ),
+                                                            )
+                                                          : SizedBox(),
+                                                      SizedBox(),
+                                                      SizedBox(),
+                                                    ]),
+                                              ],
+                                            ));
+                                      })
+                                  : Container(
+                                      alignment: Alignment.topCenter,
+                                      width: double.infinity,
+                                      color: AppColors.white,
+                                      padding: const EdgeInsets.only(top: 30),
+                                      child: ATText(
+                                          text: I18n.of(context)
+                                              .oops_item_returned_0_results),
+                                    )),
+                    )),
+                  )
+                ])),
       ));
     });
   }

@@ -44,7 +44,7 @@ ThemeData darkTheme() {
   return ThemeData(
     brightness: Brightness.dark,
     primaryColor: AppColors.secondaryColor,
-    accentColor: AppColors.gomoRed,
+    hintColor: AppColors.gomoRed,
     splashColor: AppColors.gomoRed.withOpacity(0.25),
     backgroundColor: AppColors.secondaryColor,
     scaffoldBackgroundColor: AppColors.secondaryColor,
@@ -66,7 +66,7 @@ ThemeData darkTheme() {
       iconTheme: IconThemeData(
         color: AppColors.gomoRed,
       ),
-      textTheme: TextTheme(
+      /*textTheme: TextTheme(
         headline6: TextStyle(
           color: Colors.white,
           // fontFamily: Variables.kBaseFontFamily,
@@ -74,7 +74,7 @@ ThemeData darkTheme() {
           fontWeight: FontWeight.normal,
           fontSize: 20.0,
         ),
-      ),
+      ),*/
     ),
     cardTheme: CardTheme(
       elevation: 4.0,
@@ -109,7 +109,7 @@ ThemeData lightTheme() {
   return ThemeData(
     brightness: Brightness.light,
     primaryColor: AppColors.white,
-    accentColor: AppColors.gomoRed,
+    hintColor: AppColors.gomoRed,
     splashColor: AppColors.gomoRed.withOpacity(0.25),
     backgroundColor: AppColors.white,
     scaffoldBackgroundColor: AppColors.white,
@@ -132,7 +132,7 @@ ThemeData lightTheme() {
       iconTheme: IconThemeData(
         color: AppColors.gomoRed,
       ),
-      textTheme: TextTheme(
+      /*textTheme: TextTheme(
         headline6: TextStyle(
           color: Colors.white,
           // fontFamily: Variables.kBaseFontFamily,
@@ -140,7 +140,7 @@ ThemeData lightTheme() {
           fontWeight: FontWeight.normal,
           fontSize: 20.0,
         ),
-      ),
+      ),*/
     ),
     cardTheme: CardTheme(
       elevation: 4.0,

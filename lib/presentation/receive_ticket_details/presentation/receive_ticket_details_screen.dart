@@ -568,11 +568,9 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                                     });
                                                                   },
                                                                   child: Column(
-                                                                      children: <
-                                                                          Widget>[
+                                                                      children: <Widget>[
                                                                         Row(
-                                                                          children: <
-                                                                              Widget>[
+                                                                          children: <Widget>[
                                                                             Expanded(
                                                                               flex: 1,
                                                                               child: SizedBox(
@@ -614,8 +612,7 @@ class _ReceiveTicketDetailsScreen extends State<ReceiveTicketDetailsScreen> {
                                                                           ],
                                                                         ),
                                                                         Row(
-                                                                          children: <
-                                                                              Widget>[
+                                                                          children: <Widget>[
                                                                             Expanded(
                                                                               flex: 1,
                                                                               child: SizedBox(),

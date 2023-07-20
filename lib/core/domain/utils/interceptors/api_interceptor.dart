@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:appdynamics_mobilesdk/appdynamics_mobilesdk.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_warehouse/application/application.dart';
@@ -70,8 +69,8 @@ class ApiInterceptor extends Interceptor {
   final String? appVersion;
   final String? buildNumber;
 
-  final Map<String, AppdynamicsHttpRequestTracker> _trackerMap =
-      <String, AppdynamicsHttpRequestTracker>{};
+  /*final Map<String, AppdynamicsHttpRequestTracker> _trackerMap =
+      <String, AppdynamicsHttpRequestTracker>{};*/
 
   PackageInfo? _packageInfo;
 
@@ -100,9 +99,7 @@ class ApiInterceptor extends Interceptor {
   }
 
   bool _shouldRetry(DioError err) {
-    return err.type == DioErrorType.other &&
-        err.error != null &&
-        err.error is SocketException;
+    return err.error != null && err.error is SocketException;
   }
 
   @override
@@ -123,7 +120,7 @@ class ApiInterceptor extends Interceptor {
 
       String requestUUID =
           response.requestOptions.headers['request_uuid'] ?? '';
-      if (requestUUID.isNotEmpty) {
+      /*if (requestUUID.isNotEmpty) {
         AppdynamicsHttpRequestTracker? tracker = _trackerMap[requestUUID];
         if (tracker != null) {
           logger.d('[APPDYNAMICS] FINISHING RESPONSE for request '
@@ -135,7 +132,7 @@ class ApiInterceptor extends Interceptor {
         } else {
           logger.d('[APPDYNAMICS] has not started yet');
         }
-      }
+      }*/
     }
   }
 
@@ -162,9 +159,9 @@ class ApiInterceptor extends Interceptor {
 
     if (requestUUID.isNotEmpty && hasAppDynamicsStarted) {
       logger.d('[APPDYNAMICS] has started');
-      AppdynamicsHttpRequestTracker tracker =
+      /*AppdynamicsHttpRequestTracker tracker =
           AppdynamicsMobilesdk.startRequest(options.uri.toString());
-      _trackerMap[requestUUID] = tracker;
+      _trackerMap[requestUUID] = tracker;*/
     }
 
     options.headers.addAll(<String, String>{
